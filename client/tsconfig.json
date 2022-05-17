@@ -25,7 +25,8 @@
         "sourceMap": true,
         "strict": true,
         "target": "esnext",
-        "types": ["node"]
+        "types": ["node"],
+        "plugins": [{ "name": "typescript-plugin-css-modules" }]
     },
     "include": [
         "**/*.ts",

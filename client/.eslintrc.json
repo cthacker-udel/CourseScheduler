@@ -44,7 +44,6 @@
                 "import/named": "error",
                 "import/no-commonjs": "error",
                 "import/unambiguous": "error",
-                "no-console": "error",
                 "node/global-require": "error",
                 "node/no-unsupported-features/es-builtins": "error",
                 "node/no-unsupported-features/es-syntax": "error",
@@ -59,12 +58,6 @@
         "no-await-in-loop": "error",
         "no-compare-neg-zero": "error",
         "no-cond-assign": "error",
-        "no-console": [
-            "error",
-            {
-                "allow": ["warn", "error"]
-            }
-        ],
         "no-constant-condition": "error",
         "no-control-regex": "error",
         "no-debugger": "error",
@@ -511,7 +504,6 @@
         "eslint-comments/no-aggregating-enable": "error",
         "eslint-comments/no-duplicate-disable": "error",
         "eslint-comments/no-unlimited-disable": "error",
-        "eslint-comments/no-unused-disable": "error",
         "eslint-comments/no-unused-enable": "error",
         "eslint-comments/no-restricted-disable": "error",
         "eslint-comments/require-description": "error",
@@ -614,7 +606,6 @@
             }
         ],
         "@typescript-eslint/restrict-plus-operands": "error",
-        "@typescript-eslint/restrict-template-expressions": "error",
         "@typescript-eslint/sort-type-union-intersection-members": "error",
         "@typescript-eslint/strict-boolean-expressions": "error",
         "@typescript-eslint/switch-exhaustiveness-check": "error",
@@ -801,7 +792,6 @@
         "react/jsx-no-script-url": "error",
         "react/jsx-no-target-blank": "error",
         "react/jsx-no-useless-fragment": "error",
-        "react/jsx-one-expression-per-line": "error",
         "react/jsx-pascal-case": "error",
         "react/jsx-props-no-multi-spaces": "error",
         "react/jsx-sort-default-props": "error",
@@ -835,7 +825,6 @@
         "import/no-commonjs": "error",
         "import/no-import-module-exports": "error",
         "import/no-nodejs-modules": "error",
-        "import/unambiguous": "error",
         "import/dynamic-import-chunkname": "error",
         "import/exports-last": "error",
         "import/first": "error",

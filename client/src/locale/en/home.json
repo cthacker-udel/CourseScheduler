@@ -3,6 +3,8 @@
     "card_title": "Options (click each section to see more)",
     "created_by": "Created by {name1}.",
     "header": "Welcome to the UD planner!",
+    "accordion_options": "Courses\nSemesters\nPlans\nImport\nExport",
+    "accordion_descriptions": "A page where you can manage your courses. View a list of courses still available, and also customize courses as well. (More description as more functionality is added)\nSemesters is a page where you can manage your semesters. View a list of semesters active, and customize their name, what time they are. (More description as more functionality is added)\nPlans is a page where you can view your overall plans. View a list of plans active, and customize the individual plans. (More description as more functionality is added)\nImport is a page where you can import your plans from a csv file\nExport is a page where you can export your plans to a csv file to then be imported, or sent to other people",
     "option_1": "Courses",
     "option_1_desc": "A page where you can manage your courses. View a list of courses still available, and also customize courses as well. (More description as more functionality is added)",
     "option_2": "Semesters",
@@ -13,7 +15,6 @@
     "option_4_desc": "Import is a page where you can import your plans from a csv file",
     "option_5": "Export",
     "option_5_desc": "Export is a page where you can export your plans to a csv file to then be imported, or sent to other people",
-    "parts": "Plans\nSemesters\nCourses\nImports\nExports",
     "tooltip": "{type}",
     "primary_button_text": "Login",
     "secondary_button_text": "Sign Up"

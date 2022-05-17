@@ -12,7 +12,9 @@ import {
     Overlay,
     Tooltip,
 } from "react-bootstrap";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
+
+import styles from "./HomePage.module.css";
 
 type OverlayReducerActionType = "setLogin" | "setSignUp";
 
@@ -60,15 +62,38 @@ export const HomePage = (): JSX.Element => {
             signUp: false,
         }),
     );
+    const intl = useIntl();
+    const accordionOptions = intl
+        .formatMessage({ id: "accordion_options" })
+        .split("\n");
+    const accordionDescriptions = intl
+        .formatMessage({
+            id: "accordion_descriptions",
+        })
+        .split("\n");
+    const accordionItems = accordionDescriptions.map(
+        (eachDescription, index: number) => (
+            <Accordion.Item eventKey={`${index}`} key={`${eachDescription}`}>
+                <Accordion.Header>
+                    <h5 className="m-0">{accordionOptions[index]}</h5>
+                </Accordion.Header>
+                <Accordion.Body>{eachDescription}</Accordion.Body>
+            </Accordion.Item>
+        ),
+    );
     return (
         <Container className="d-flex flex-column justify-content-center mt-4">
             <div className="mb-3 mt-3">
-                <h1 className="text-center text-wrap font-weight-bold text-decoration-underline">
+                <h1
+                    className={`text-center text-wrap font-weight-bold text-decoration-underline ${styles.header}`}
+                >
                     <FormattedMessage id="header" />
                 </h1>
             </div>
             <div className="mb-5">
-                <h3 className="text-muted text-center text-wrap font-weight-light">
+                <h3
+                    className={`text-muted text-center text-wrap font-weight-light ${styles.sub_header}`}
+                >
                     <FormattedMessage
                         id="created_by"
                         values={{
@@ -77,62 +102,13 @@ export const HomePage = (): JSX.Element => {
                     />
                 </h3>
             </div>
-            <Card bg="light" border="primary">
+            <Card bg="light" border="primary" className={`${styles.body}`}>
                 <Card.Body>
                     <Card.Title className="text-center mt-2 mb-4">
                         <FormattedMessage id="card_title" />
                     </Card.Title>
                     <Accordion defaultActiveKey="-1">
-                        <Accordion.Item eventKey="0">
-                            <Accordion.Header>
-                                <h5 className="m-0">
-                                    <FormattedMessage id="option_1" />
-                                </h5>
-                            </Accordion.Header>
-                            <Accordion.Body>
-                                <FormattedMessage id="option_1_desc" />
-                            </Accordion.Body>
-                        </Accordion.Item>
-                        <Accordion.Item eventKey="1">
-                            <Accordion.Header>
-                                <h5 className="m-0">
-                                    <FormattedMessage id="option_2" />
-                                </h5>
-                            </Accordion.Header>
-                            <Accordion.Body>
-                                <FormattedMessage id="option_2_desc" />
-                            </Accordion.Body>
-                        </Accordion.Item>
-                        <Accordion.Item eventKey="2">
-                            <Accordion.Header>
-                                <h5 className="m-0">
-                                    <FormattedMessage id="option_3" />
-                                </h5>
-                            </Accordion.Header>
-                            <Accordion.Body>
-                                <FormattedMessage id="option_3_desc" />
-                            </Accordion.Body>
-                        </Accordion.Item>
-                        <Accordion.Item eventKey="3">
-                            <Accordion.Header>
-                                <h5 className="m-0">
-                                    <FormattedMessage id="option_4" />
-                                </h5>
-                            </Accordion.Header>
-                            <Accordion.Body>
-                                <FormattedMessage id="option_4_desc" />
-                            </Accordion.Body>
-                        </Accordion.Item>
-                        <Accordion.Item eventKey="4">
-                            <Accordion.Header>
-                                <h5 className="m-0">
-                                    <FormattedMessage id="option_5" />
-                                </h5>
-                            </Accordion.Header>
-                            <Accordion.Body>
-                                <FormattedMessage id="option_5_desc" />
-                            </Accordion.Body>
-                        </Accordion.Item>
+                        {accordionItems}
                     </Accordion>
                 </Card.Body>
                 <Card.Footer className="text-center">

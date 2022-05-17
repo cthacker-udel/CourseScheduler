@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading -- Disabled because overlay passes in lots of popper.js props, don't need to map them out directly */
 import {
     faBook,
     faBookAtlas,
