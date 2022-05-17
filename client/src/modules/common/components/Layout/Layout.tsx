@@ -1,17 +1,17 @@
 /* eslint-disable react/jsx-props-no-spreading -- Disabled because overlay passes in lots of popper.js props, don't need to map them out directly */
-import React, { ReactNode } from "react";
-import { Button, Navbar, Overlay, Tooltip } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-    faHome,
     faBook,
-    faClipboard,
     faBookAtlas,
+    faClipboard,
     faDownload,
     faFileExport,
+    faHome,
 } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React from "react";
+import { Button, Navbar, Overlay, Tooltip } from "react-bootstrap";
 import { FormattedMessage } from "react-intl";
+import { Link, Outlet } from "react-router-dom";
 
 type OverlayType =
     | "course"
@@ -21,12 +21,11 @@ type OverlayType =
     | "plan"
     | "semester";
 
-interface LayoutProps {
-    children: ReactNode;
-    footer?: ReactNode;
-}
-
-export const Layout = ({ children }: LayoutProps) => {
+/**
+ * @summary The Layout component, takes in no props and renders the overall layout of the application
+ * @returns {JSX.Element} Layout component
+ */
+export const Layout = (): JSX.Element => {
     const homeRef = React.useRef(null);
     const courseRef = React.useRef(null);
     const semesterRef = React.useRef(null);
@@ -42,7 +41,12 @@ export const Layout = ({ children }: LayoutProps) => {
         _semester: false,
     });
 
-    const toggleShowOverlay = (type: OverlayType, value: boolean) => {
+    /**
+     * @summary Toggles the overlay state via a set call to the consecutive overlay states
+     * @param type The type of overlay to toggle
+     * @param value The value to set the overlay state to
+     */
+    const toggleShowOverlay = (type: OverlayType, value: boolean): void => {
         switch (type) {
             case "home": {
                 setShowOverlays({ ...showOverlays, _home: value });
@@ -77,10 +81,10 @@ export const Layout = ({ children }: LayoutProps) => {
     const navigationLinks = [
         <Link className="text-muted text-wrap" key="home-link" to="/home">
             <Button
-                onMouseEnter={() => {
+                onMouseEnter={(): void => {
                     toggleShowOverlay("home", true);
                 }}
-                onMouseLeave={() => {
+                onMouseLeave={(): void => {
                     toggleShowOverlay("home", false);
                 }}
                 ref={homeRef}
@@ -91,10 +95,10 @@ export const Layout = ({ children }: LayoutProps) => {
         </Link>,
         <Link className="text-muted text-wrap" key="courses-link" to="/courses">
             <Button
-                onMouseEnter={() => {
+                onMouseEnter={(): void => {
                     toggleShowOverlay("course", true);
                 }}
-                onMouseLeave={() => {
+                onMouseLeave={(): void => {
                     toggleShowOverlay("course", false);
                 }}
                 ref={courseRef}
@@ -109,10 +113,10 @@ export const Layout = ({ children }: LayoutProps) => {
             to="/semesters"
         >
             <Button
-                onMouseEnter={() => {
+                onMouseEnter={(): void => {
                     toggleShowOverlay("semester", true);
                 }}
-                onMouseLeave={() => {
+                onMouseLeave={(): void => {
                     toggleShowOverlay("semester", false);
                 }}
                 ref={semesterRef}
@@ -123,10 +127,10 @@ export const Layout = ({ children }: LayoutProps) => {
         </Link>,
         <Link className="text-muted text-wrap" key="plans-link" to="/plans">
             <Button
-                onMouseEnter={() => {
+                onMouseEnter={(): void => {
                     toggleShowOverlay("plan", true);
                 }}
-                onMouseLeave={() => {
+                onMouseLeave={(): void => {
                     toggleShowOverlay("plan", false);
                 }}
                 ref={planRef}
@@ -137,10 +141,10 @@ export const Layout = ({ children }: LayoutProps) => {
         </Link>,
         <Link className="text-muted text-wrap" key="imports-link" to="/imports">
             <Button
-                onMouseEnter={() => {
+                onMouseEnter={(): void => {
                     toggleShowOverlay("import", true);
                 }}
-                onMouseLeave={() => {
+                onMouseLeave={(): void => {
                     toggleShowOverlay("import", false);
                 }}
                 ref={importRef}
@@ -151,10 +155,10 @@ export const Layout = ({ children }: LayoutProps) => {
         </Link>,
         <Link className="text-muted text-wrap" key="exports-link" to="/exports">
             <Button
-                onMouseEnter={() => {
+                onMouseEnter={(): void => {
                     toggleShowOverlay("export", true);
                 }}
-                onMouseLeave={() => {
+                onMouseLeave={(): void => {
                     toggleShowOverlay("export", false);
                 }}
                 ref={exportRef}
@@ -171,7 +175,7 @@ export const Layout = ({ children }: LayoutProps) => {
             show={showOverlays._course}
             target={courseRef.current}
         >
-            {(props) => (
+            {(props): JSX.Element => (
                 <Tooltip {...props}>
                     <FormattedMessage
                         id="tooltip"
@@ -186,7 +190,7 @@ export const Layout = ({ children }: LayoutProps) => {
             show={showOverlays._semester}
             target={semesterRef.current}
         >
-            {(props) => (
+            {(props): JSX.Element => (
                 <Tooltip {...props}>
                     <FormattedMessage
                         id="tooltip"
@@ -201,7 +205,7 @@ export const Layout = ({ children }: LayoutProps) => {
             show={showOverlays._plan}
             target={planRef.current}
         >
-            {(props) => (
+            {(props): JSX.Element => (
                 <Tooltip {...props}>
                     <FormattedMessage id="tooltip" values={{ type: "Plans" }} />
                 </Tooltip>
@@ -213,7 +217,7 @@ export const Layout = ({ children }: LayoutProps) => {
             show={showOverlays._home}
             target={homeRef.current}
         >
-            {(props) => (
+            {(props): JSX.Element => (
                 <Tooltip {...props}>
                     <FormattedMessage id="tooltip" values={{ type: "Home" }} />
                 </Tooltip>
@@ -225,7 +229,7 @@ export const Layout = ({ children }: LayoutProps) => {
             show={showOverlays._export}
             target={exportRef.current}
         >
-            {(props) => (
+            {(props): JSX.Element => (
                 <Tooltip {...props}>
                     <FormattedMessage
                         id="tooltip"
@@ -240,7 +244,7 @@ export const Layout = ({ children }: LayoutProps) => {
             show={showOverlays._import}
             target={importRef.current}
         >
-            {(props) => (
+            {(props): JSX.Element => (
                 <Tooltip {...props}>
                     <FormattedMessage
                         id="tooltip"
@@ -253,7 +257,9 @@ export const Layout = ({ children }: LayoutProps) => {
 
     return (
         <>
-            <div>{children}</div>
+            <div>
+                <Outlet />
+            </div>
             <div>
                 {" "}
                 <Navbar

@@ -1,14 +1,23 @@
+/* eslint-disable @typescript-eslint/no-explicit-any -- disabled any for renderWithIntl */
+/* eslint-disable @typescript-eslint/no-magic-numbers -- disabled */
+/* eslint-disable no-magic-numbers -- disabled */
+import "@testing-library/jest-dom";
+
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import "@testing-library/jest-dom";
 import React from "react";
 import { act } from "react-dom/test-utils";
 import { IntlProvider } from "react-intl";
 import { BrowserRouter } from "react-router-dom";
-import HomePage from "../HomePage";
-import homeMessages from "../../../locale/en/home.json";
+import homeMessages from "src/locale/en/home.json";
 
-const renderWithIntl = () =>
+import HomePage from "../HomePage";
+
+/**
+ * @summary Takes no arguments, returns HomePage component rendered with react-intl
+ * @returns The HomePage rendered with implementation of react-intl
+ */
+const renderWithIntl = (): any =>
     render(
         <IntlProvider
             defaultLocale="en"
@@ -21,9 +30,11 @@ const renderWithIntl = () =>
         </IntlProvider>,
     );
 
-describe("HomePage test suite", () => {
-    describe("HomePage", () => {
-        test("Home Page renders", () => {
+describe("homePage test suite", (): void => {
+    describe("homePage", () => {
+        test("home Page renders", () => {
+            expect.assertions(6);
+
             renderWithIntl();
 
             expect(screen.getByText(homeMessages.card_title)).toBeTruthy();
@@ -44,7 +55,9 @@ describe("HomePage test suite", () => {
             ).toBeGreaterThan(0);
         });
 
-        test("Clicking one accordion displays it's text, and clicking another accordion collapses the previous accordion's text, while also displaying the currently clicked accordion's text", () => {
+        test("clicking one accordion displays it's text, and clicking another accordion collapses the previous accordion's text, while also displaying the currently clicked accordion's text", () => {
+            expect.assertions(6);
+
             renderWithIntl();
 
             const accordion = screen.getByText(homeMessages.option_1);
@@ -61,15 +74,17 @@ describe("HomePage test suite", () => {
             });
 
             expect(accordion.parentElement).not.toBeNull();
-            expect(accordion2.parentElement).not.toBeNull();
-            expect(accordion?.parentElement.className).toContain("collapsed");
-            expect(accordion2.parentElement.className).not.toContain(
+            expect(accordion2?.parentElement).not.toBeNull();
+            expect(accordion?.parentElement?.className).toContain("collapsed");
+            expect(accordion2?.parentElement?.className).not.toContain(
                 "collapsed",
             );
             expect(screen.getByText(homeMessages.option_2_desc)).toBeTruthy();
         });
 
-        test("All accordions are clickable", () => {
+        test("all accordions are clickable", () => {
+            expect.assertions(5);
+
             renderWithIntl();
 
             expect(screen.getByText(homeMessages.option_1)).toBeTruthy();

@@ -1,6 +1,6 @@
 {
     "card_header": "This is a planner to help you schedule your courses for whichever plan you decide on doing.",
-    "card_title": "Options (click to expand to see more)",
+    "card_title": "Options (click each section to see more)",
     "created_by": "Created by {name1}.",
     "header": "Welcome to the UD planner!",
     "option_1": "Courses",
@@ -14,5 +14,7 @@
     "option_5": "Export",
     "option_5_desc": "Export is a page where you can export your plans to a csv file to then be imported, or sent to other people",
     "parts": "Plans\nSemesters\nCourses\nImports\nExports",
-    "tooltip": "{type}"
+    "tooltip": "{type}",
+    "primary_button_text": "Login",
+    "secondary_button_text": "Sign Up"
 }
