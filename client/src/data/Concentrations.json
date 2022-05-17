@@ -1,0 +1,189 @@
+[
+    {
+        "name": "Artificial Intelligence and Robotics",
+        "Requirements":
+        [
+            {
+                "id": "CISC-304",
+                "name": "Logic for Programming",
+                "credits": 3,
+                "courseID": "304",
+                "preReq": "CISC-220 and MATH-210"
+            },
+            {
+                "id": "CISC-361",
+                "name": "Operating Systens",
+                "credits": 3,
+                "courseId": "361",
+                "preReq":"CISC-220 and CISC-260"
+            },
+            {
+                "id": "CISC-442",
+                "name": "Computer Vision",
+                "credits": 3,
+                "courseID": "442",
+                "preReq": "CISC-220"
+            },
+            {
+                "id": "CISC-481",
+                "name": "Artificial Intelligence",
+                "credits": 3,
+                "courseID": "481",
+                "preReq": "CISC-220 and CISC-304"
+            },
+            {
+                "id": "CISC-483",
+                "name": "Introduction to Data Mining",
+                "credits": 3,
+                "courseId": "361",
+                "preReq":"CISC-220 and MATH-205 or MATH-350"
+            },
+            {
+                "id": "CISC-484",
+                "name": "Introduction to Data Mining",
+                "credits": 3,
+                "courseId": "361",
+                "preReq":"CISC-220 and MATH-205 or MATH-350"
+            }
+            
+        ]
+        
+    },
+    {
+        "name":"CyberSecurity",
+        "Requirements":
+        [
+            {
+                "id": "CISC-361",
+                "name": "Operating Systens",
+                "credits": 3,
+                "courseId": "361",
+                "preReq":"CISC-220 and CISC-260"
+            },
+            {
+                "id": "CISC-372",
+                "name": "Parallel Computing",
+                "credits": 3,
+                "courseId": "372",
+                "preReq":"CISC-220 and CISC-260"
+            },
+            {
+                "id": "CISC-450",
+                "name": "Computer Networks I",
+                "credits": 3,
+                "courseID": "450",
+                "preReq": "CISC-220"
+            },
+            {
+                "id": "CISC-464",
+                "name": "Introduction to Network Security",
+                "credits": 3,
+                "courseID": "464",
+                "preReq": "CISC-260 or CPEG-222"
+            },
+            {
+                "id": "CISC-465",
+                "name": "Introduction to Cybersecurity",
+                "credits": 3,
+                "courseId": "465",
+                "preReq":""
+            }
+        ]
+    },
+    {
+        "name":"Data Science Concentration",
+        "Requirements":
+        [
+            {
+                "id": "CISC-304",
+                "name": "Logic for Programming",
+                "credits": 3,
+                "courseId": "304",
+                "preReq": "CISC-220 and MATH-210"
+            },
+            {
+                "id": "CISC-372",
+                "name": "Parallel Computing",
+                "credits": 3,
+                "courseId": "372",
+                "preReq":"CISC-220 and CISC-260"
+            },
+            {
+                "id": "CISC-437",
+                "name": "Database Systems",
+                "credits": 3,
+                "courseId": "437",
+                "preReq":"CISC-220"
+            },
+            {
+                "id":"CISC-481",
+                "name":"Artificial Intelligence and Robotics",
+                "credits": 3,
+                "courseId": "481",
+                "preReq":"CISC-220 and CISC-304"
+            }
+        ]
+    },
+    {
+        "name":"High Performance Computing Concentration",
+        "Requirements":
+        [
+            {
+                "id": "CISC-360",
+                "name": "Computer Architecture",
+                "credits": 3,
+                "courseID": "360",
+                "preReq": "CISC-220 and CISC-260"
+            },
+            {
+                "id": "CISC-361",
+                "name": "Operating Systens",
+                "credits": 3,
+                "courseId": "361",
+                "preReq":"CISC-220 and CISC-260"
+            },
+            {
+                "id": "CISC-372",
+                "name": "Parallel Computing",
+                "credits": 3,
+                "courseId": "372",
+                "preReq":"CISC-220 and CISC-260"
+            },
+            {
+                "id": "CISC-450",
+                "name": "Computer Networks I",
+                "credits": 3,
+                "courseId": "450",
+                "preReq": "CISC-260 or CPEG-222"
+            },
+            {
+                "id": "CISC-471",
+                "name": "Compiler Design",
+                "credits": 3,
+                "courseId": "471",
+                "preReq": "CISC-260 and CISC-303"
+            }
+        ]
+    },
+    {
+        "name": "Theory and Computation Concentration",
+        "Requirements":
+        [
+            {
+                "id": "CISC-304",
+                "name":"Logic for Programming",
+                "credits": 3,
+                "courseId": "471",
+                "preReq": "CISC-220"
+            },
+            {
+                "id": "CISC-401",
+                "name":"Elements of the Theory of Computation",
+                "credits": 3,
+                "courseId": "401",
+                "preReq": "CISC-303"
+            }
+        ]
+    }
+    
+]

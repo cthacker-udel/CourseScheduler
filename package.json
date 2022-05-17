@@ -1,0 +1,30 @@
+{
+  "name": "courseschedulerv2",
+  "version": "1.0.0",
+  "description": "Course Scheduler Application",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "setup": "npm i",
+    "start": "concurrently \"cd client && npm run start\" \"cd server && npm run start\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cthacker-udel/CourseSchedulerV2.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cthacker-udel/CourseSchedulerV2/issues"
+  },
+  "homepage": "https://github.com/cthacker-udel/CourseSchedulerV2#readme",
+  "dependencies": {
+    "@types/react-dom": "^18.0.4",
+    "concurrently": "^7.2.0",
+    "npm-check": "^5.9.2"
+  },
+  "devDependencies": {
+    "react-dom": "^18.1.0"
+  }
+}
