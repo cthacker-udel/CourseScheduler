@@ -1,22 +1,40 @@
 {
     "compilerOptions": {
-        "target": "es5",
-        "lib": ["dom", "dom.iterable", "esnext"],
-        "types": ["react/next", "react-dom/next"],
-        "allowJs": true,
-        "skipLibCheck": true,
-        "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
-        "strict": true,
-        "forceConsistentCasingInFileNames": true,
-        "noFallthroughCasesInSwitch": true,
-        "module": "esnext",
+        "declaration": true,
+        "declarationMap": true,
+        "esModuleInterop": true,
+        "jsx": "react",
+        "lib": [
+            "es5",
+            "es6",
+            "dom",
+            "es2016",
+            "dom.iterable",
+            "es2015.iterable",
+            "esnext"
+        ],
+        "module": "es2020",
         "moduleResolution": "node",
+        "noUnusedLocals": false,
+        "noUnusedParameters": false,
+        "outDir": "build",
         "resolveJsonModule": true,
-        "isolatedModules": true,
-        "noEmit": true,
-        "jsx": "react-jsx",
-        "noImplicitAny": true
+        "skipLibCheck": true,
+        "sourceMap": true,
+        "strict": true,
+        "target": "esnext",
+        "types": ["node"]
     },
-    "include": ["src", "src/modules"]
+    "include": [
+        "**/*.ts",
+        "**/*.tsx",
+        "**/*.d.ts",
+        "**/*.mjs",
+        "**/*.js",
+        "**/*.jsx",
+        "**/*.json",
+        "playground.tsx"
+    ],
+    "exclude": ["node_modules"]
 }
