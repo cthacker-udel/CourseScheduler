@@ -107,7 +107,7 @@ export const HomePage = (): JSX.Element => {
                     <Card.Title className="text-center mt-2 mb-4">
                         <FormattedMessage id="card_title" />
                     </Card.Title>
-                    <Accordion defaultActiveKey="-1">
+                    <Accordion className="m-2" defaultActiveKey="-1">
                         {accordionItems}
                     </Accordion>
                 </Card.Body>
