@@ -1,6 +1,8 @@
 /* eslint-disable no-undefined -- disabled to use react-hook-form properly */
+import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
-import { Card, Container, Form } from "react-bootstrap";
+import { Card, Container, Form, InputGroup } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { FormattedMessage } from "react-intl";
 import { Link } from "react-router-dom";
@@ -50,18 +52,27 @@ export const LoginPage = (): JSX.Element => {
                                     <FormattedMessage id="login_form_title" />
                                 </h2>
                             </Card.Title>
-                            <Form className={`${styles.login_email_form}`}>
-                                <Form.Group controlId="password-form">
-                                    <Form.Label className="text-start fw-bolder text-wrap w-100 m-2">
-                                        {loginFormDetails.password_form1_label}
-                                    </Form.Label>
-                                    <Form.Control
-                                        className="m-2 p-2 w-50 mr-auto"
-                                        placeholder={
-                                            loginFormDetails.login_email_placeholder
-                                        }
-                                        type="email"
-                                    />
+                            <Form
+                                className={`w-100 ${styles.login_email_form}`}
+                            >
+                                <Form.Group className="mx-auto w-50 mt-4 mb-4">
+                                    <InputGroup>
+                                        <InputGroup.Text>
+                                            <label htmlFor="email_login_form_component">
+                                                <FontAwesomeIcon
+                                                    icon={faEnvelope}
+                                                />
+                                            </label>
+                                        </InputGroup.Text>
+                                        <Form.Control
+                                            className="p-2 w-75 mr-auto"
+                                            id="email_login_form_component"
+                                            placeholder={
+                                                loginFormDetails.login_email_placeholder
+                                            }
+                                            type="email"
+                                        />
+                                    </InputGroup>
                                     <div
                                         className="text-start w-100 m-2 text-muted"
                                         id="email_help_block"
