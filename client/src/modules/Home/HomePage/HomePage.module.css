@@ -1,0 +1,68 @@
+@keyframes header_animation {
+    from {
+        opacity: 0;
+        text-decoration: none;
+    }
+    to {
+        opacity: 1;
+        text-decoration: underline;
+    }
+}
+
+@keyframes subheader_animation {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes block_animation {
+    from {
+        margin-left: 100%;
+        opacity: 0;
+        width: 300%;
+    }
+    to {
+        margin-left: 0%;
+        width: 100%;
+        opacity: 1;
+    }
+}
+
+@keyframes accordion_header_anim {
+    from {
+        color: black;
+        border: none;
+        text-decoration: none;
+    }
+    to {
+        color: blue;
+        border: 1px solid blue;
+    }
+}
+
+.header {
+    animation-name: header_animation;
+    animation-duration: 1s;
+    animation-timing-function: ease-in-out;
+}
+
+.sub_header {
+    animation-name: subheader_animation;
+    animation-duration: 1s;
+    animation-timing-function: ease-in-out;
+}
+
+.body {
+    animation-name: block_animation;
+    animation-duration: 2s;
+    animation-timing-function: ease-in-out;
+}
+
+.accordion_header:hover {
+    animation-name: accordion_header_anim;
+    animation-duration: 1s;
+    animation-timing-function: ease-in-out;
+}
