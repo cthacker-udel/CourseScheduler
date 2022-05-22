@@ -371,7 +371,6 @@
         "no-plusplus": "error",
         "no-restricted-syntax": ["error", "BinaryExpression[operator='in']"],
         "no-tabs": "error",
-        "no-ternary": "error",
         "no-trailing-spaces": "error",
         "no-unneeded-ternary": "error",
         "no-whitespace-before-property": "error",

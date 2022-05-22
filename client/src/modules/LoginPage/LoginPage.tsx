@@ -1,8 +1,13 @@
 /* eslint-disable no-undefined -- disabled to use react-hook-form properly */
-import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
+import {
+    faEnvelope,
+    faEye,
+    faEyeSlash,
+    faKey,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
-import { Card, Container, Form, InputGroup } from "react-bootstrap";
+import { Button, Card, Container, Form, InputGroup } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { FormattedMessage } from "react-intl";
 import { Link } from "react-router-dom";
@@ -15,6 +20,7 @@ import styles from "./LoginPage.module.css";
  * @returns {JSX.Element} The Login Page component
  */
 export const LoginPage = (): JSX.Element => {
+    const [showPassword, setShowPassword] = React.useState<boolean>(false);
     useForm({
         context: undefined,
         criteriaMode: "all",
@@ -46,7 +52,7 @@ export const LoginPage = (): JSX.Element => {
                         <div className="border border-secondary opacity-50 shadow-lg w-50 mx-auto mt-5 mb-5" />
                         <Card>
                             <Card.Title
-                                className={`rounded border border-1 border-secondary mx-auto mt-4 ${styles.login_form_header}`}
+                                className={`mx-auto mt-4 ${styles.login_form_header}`}
                             >
                                 <h2 className="text-decoration-underline p-2 mr-3 ml-3">
                                     <FormattedMessage id="login_form_title" />
@@ -82,6 +88,48 @@ export const LoginPage = (): JSX.Element => {
                                             {loginFormDetails.email_forgot_text}
                                         </Link>
                                     </div>
+                                </Form.Group>
+                                <Form.Group className="mx-auto w-50 mt-4 mb-4">
+                                    <InputGroup>
+                                        <InputGroup.Text>
+                                            <label htmlFor="password_login_form_component">
+                                                <FontAwesomeIcon icon={faKey} />
+                                            </label>
+                                        </InputGroup.Text>
+                                        <Form.Control
+                                            className="p-2 w-75 mr-auto"
+                                            id="password_login_form_component"
+                                            placeholder={
+                                                loginFormDetails.password_form_placeholder
+                                            }
+                                            type={
+                                                showPassword
+                                                    ? "text"
+                                                    : "password"
+                                            }
+                                        />
+                                        <Button
+                                            id="show_password_button"
+                                            onClick={(): void => {
+                                                setShowPassword(
+                                                    (oldValue) => !oldValue,
+                                                );
+                                            }}
+                                            variant={
+                                                showPassword
+                                                    ? "outline-danger"
+                                                    : "outline-success"
+                                            }
+                                        >
+                                            <FontAwesomeIcon
+                                                icon={
+                                                    showPassword
+                                                        ? faEyeSlash
+                                                        : faEye
+                                                }
+                                            />
+                                        </Button>
+                                    </InputGroup>
                                 </Form.Group>
                             </Form>
                         </Card>
