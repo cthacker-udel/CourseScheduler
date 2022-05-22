@@ -1,3 +1,8 @@
 {
-    "button_text": "Login"
+    "button_text": "Login",
+    "login_header": "Login to the UD Planner",
+    "login_email_placeholder": "Enter Email",
+    "password_form1_label": "Enter your email address",
+    "email_form_help_text": "This is your email that you signed up with.",
+    "email_forgot_text": "Forgot your email?"
 }

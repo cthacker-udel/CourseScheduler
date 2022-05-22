@@ -17,8 +17,8 @@ const App = (): JSX.Element => (
         <IntlProvider defaultLocale="en" locale="en" messages={homeMessages}>
             <Routes>
                 <Route element={<Layout />} path="/">
-                    <Route element={<LoginPage />} path="login" />
-                    <Route element={<HomePage />} index />
+                    <Route element={<LoginPage />} index />
+                    <Route element={<HomePage />} path="dashboard" />
                     {/* <Route path="plan" element={<Plans />}>
                         <Route path=":planId" element={<Plan />} />
                         <Route path="new" element={<NewPlan />} />
