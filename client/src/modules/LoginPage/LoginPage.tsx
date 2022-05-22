@@ -43,12 +43,14 @@ export const LoginPage = (): JSX.Element => {
                         </Card.Title>
                         <div className="border border-secondary opacity-50 shadow-lg w-50 mx-auto mt-5 mb-5" />
                         <Card>
-                            <Card.Title className="rounded-pill border border-primary d-inline-block">
-                                <h2 className="text-decoration-underline mb-4">
+                            <Card.Title
+                                className={`rounded border border-1 border-secondary mx-auto mt-4 ${styles.login_form_header}`}
+                            >
+                                <h2 className="text-decoration-underline p-2 mr-3 ml-3">
                                     <FormattedMessage id="login_form_title" />
                                 </h2>
                             </Card.Title>
-                            <Form>
+                            <Form className={`${styles.login_email_form}`}>
                                 <Form.Group controlId="password-form">
                                     <Form.Label className="text-start fw-bolder text-wrap w-100 m-2">
                                         {loginFormDetails.password_form1_label}
