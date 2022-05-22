@@ -1,10 +1,10 @@
-import Semester from "./Semester";
+import type Semester from "./Semester";
 
 /**
  * Plan type, contains a list of courses
  */
-type Plan = {
+interface Plan {
     semesters: Semester[];
-};
+}
 
 export default Plan;
