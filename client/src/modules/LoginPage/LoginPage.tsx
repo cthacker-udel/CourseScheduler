@@ -7,7 +7,15 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
-import { Button, Card, Container, Form, InputGroup } from "react-bootstrap";
+import {
+    Button,
+    Card,
+    Container,
+    Form,
+    InputGroup,
+    Overlay,
+    Tooltip,
+} from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { FormattedMessage } from "react-intl";
 import { Link } from "react-router-dom";
@@ -21,6 +29,9 @@ import styles from "./LoginPage.module.css";
  */
 export const LoginPage = (): JSX.Element => {
     const [showPassword, setShowPassword] = React.useState<boolean>(false);
+    const [showPasswordOverlay, setShowPasswordOverlay] =
+        React.useState<boolean>(false);
+    const showPasswordRef = React.useRef(null);
     useForm({
         context: undefined,
         criteriaMode: "all",
@@ -115,6 +126,13 @@ export const LoginPage = (): JSX.Element => {
                                                     (oldValue) => !oldValue,
                                                 );
                                             }}
+                                            onMouseEnter={(): void => {
+                                                setShowPasswordOverlay(true);
+                                            }}
+                                            onMouseLeave={(): void => {
+                                                setShowPasswordOverlay(false);
+                                            }}
+                                            ref={showPasswordRef}
                                             variant={
                                                 showPassword
                                                     ? "outline-danger"
@@ -130,12 +148,39 @@ export const LoginPage = (): JSX.Element => {
                                             />
                                         </Button>
                                     </InputGroup>
+                                    <div
+                                        className="text-start w-100 m-2 text-muted"
+                                        id="password_help_block"
+                                    >
+                                        {
+                                            loginFormDetails.password_form_help_text
+                                        }{" "}
+                                        <Link to="forgot/password">
+                                            {
+                                                loginFormDetails.password_forgot_text
+                                            }
+                                        </Link>
+                                    </div>
                                 </Form.Group>
                             </Form>
                         </Card>
                     </Card.Body>
                 </Card>
             </div>
+            <Overlay
+                key="password_overlay"
+                placement="right"
+                show={showPasswordOverlay}
+                target={showPasswordRef.current}
+            >
+                {(props): JSX.Element => (
+                    <Tooltip {...props}>
+                        {showPassword
+                            ? loginFormDetails.password_form_hide
+                            : loginFormDetails.password_form_show}
+                    </Tooltip>
+                )}
+            </Overlay>
         </Container>
     );
 };
