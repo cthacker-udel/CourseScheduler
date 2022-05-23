@@ -15,6 +15,9 @@ lerna-debug.log*
 /config
 /.local.env
 
+#mongodb playground
+/playground
+
 # OS
 .DS_Store
 
