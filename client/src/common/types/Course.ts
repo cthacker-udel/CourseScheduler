@@ -5,10 +5,9 @@ interface Course {
     name: string;
     courseID: string;
     description: string;
-    credithours: number;
-    prereq:  string[];
-    satisfied_reqs: string[];
-    title?: string;
+    credits: number;
+    prereq: string;
+    satisfied_reqs: string;
 }
 
 export default Course;

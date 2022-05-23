@@ -4,7 +4,7 @@ import type Course from "./Course";
  * Semester type, contains a list of courses
  */
 interface Semester {
-    term: string;
+    term: number;
     year: number;
     title?: string;
     description: string;
