@@ -9,5 +9,7 @@
     "password_form_help_text": "This is the password for your account.",
     "password_forgot_text": "Forgot your password?",
     "password_form_show": "Show Password",
-    "password_form_hide": "Hide Password"
+    "password_form_hide": "Hide Password",
+    "login": "Login",
+    "sign_up": "Sign Up"
 }

@@ -1,9 +1,12 @@
+/* eslint-disable max-lines-per-function -- major file, intergral part of application should not be limited by line length */
 /* eslint-disable no-undefined -- disabled to use react-hook-form properly */
 import {
     faEnvelope,
     faEye,
     faEyeSlash,
     faKey,
+    faSignIn,
+    faUserPlus,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
@@ -24,24 +27,101 @@ import loginFormDetails from "src/locale/en/login.json";
 import styles from "./LoginPage.module.css";
 
 /**
+ * Interface for managing the state of overlays
+ */
+interface LoginPageState {
+    showPasswordOverlay: boolean;
+    showLoginOverlay: boolean;
+    showSignUpOverlay: boolean;
+    showPassword: boolean;
+}
+
+/**
+ * Types of actions the user can make
+ */
+type LoginPageReducerActionType =
+    | "setLoginOverlay"
+    | "setPasswordOverlay"
+    | "setShowPassword"
+    | "setSignUpOverlay";
+
+/**
+ * Action that will be utilized in the reducer
+ */
+interface LoginPageReducerAction {
+    type: LoginPageReducerActionType;
+    payload: LoginPageState;
+}
+
+/**
+ *
+ * @param state The current state of the application
+ * @param action The action the user is taking, along with any updates to state they want to make
+ * @returns The updated state
+ */
+const LoginPageReducer = (
+    state: LoginPageState,
+    action: LoginPageReducerAction,
+): LoginPageState => {
+    switch (action.type) {
+        case "setLoginOverlay": {
+            return {
+                ...state,
+                showLoginOverlay: action.payload.showLoginOverlay,
+            };
+        }
+        case "setPasswordOverlay": {
+            return {
+                ...state,
+                showPasswordOverlay: action.payload.showPasswordOverlay,
+            };
+        }
+        case "setSignUpOverlay": {
+            return {
+                ...state,
+                showSignUpOverlay: action.payload.showSignUpOverlay,
+            };
+        }
+        case "setShowPassword": {
+            return {
+                ...state,
+                showPassword: !state.showPassword,
+            };
+        }
+        default: {
+            return { ...state };
+        }
+    }
+};
+
+/**
  * @summary Login Page component
  * @returns {JSX.Element} The Login Page component
  */
 export const LoginPage = (): JSX.Element => {
-    const [showPassword, setShowPassword] = React.useState<boolean>(false);
-    const [showPasswordOverlay, setShowPasswordOverlay] =
-        React.useState<boolean>(false);
+    const [state, dispatch] = React.useReducer(LoginPageReducer, {}, () => ({
+        showLoginOverlay: false,
+        showPassword: false,
+        showPasswordOverlay: false,
+        showSignUpOverlay: false,
+    }));
     const showPasswordRef = React.useRef(null);
-    useForm({
+    const loginRef = React.useRef(null);
+    const signUpRef = React.useRef(null);
+    const { register } = useForm({
         context: undefined,
         criteriaMode: "all",
-        defaultValues: {},
+        defaultValues: {
+            email: "",
+            password: "",
+        },
         delayError: undefined,
         mode: "all",
         reValidateMode: "onChange",
         resolver: undefined,
         shouldFocusError: false,
     });
+
     return (
         <Container className="mt-4 d-flex flex-column justify-content-center text-center">
             <div className="mt-4 mb-4">
@@ -84,6 +164,7 @@ export const LoginPage = (): JSX.Element => {
                                         <Form.Control
                                             className="p-2 w-75 mr-auto"
                                             id="email_login_form_component"
+                                            {...register("email")}
                                             placeholder={
                                                 loginFormDetails.login_email_placeholder
                                             }
@@ -110,11 +191,12 @@ export const LoginPage = (): JSX.Element => {
                                         <Form.Control
                                             className="p-2 w-75 mr-auto"
                                             id="password_login_form_component"
+                                            {...register("password")}
                                             placeholder={
                                                 loginFormDetails.password_form_placeholder
                                             }
                                             type={
-                                                showPassword
+                                                state.showPassword
                                                     ? "text"
                                                     : "password"
                                             }
@@ -122,26 +204,41 @@ export const LoginPage = (): JSX.Element => {
                                         <Button
                                             id="show_password_button"
                                             onClick={(): void => {
-                                                setShowPassword(
-                                                    (oldValue) => !oldValue,
-                                                );
+                                                dispatch({
+                                                    payload: { ...state },
+                                                    type: "setShowPassword",
+                                                });
                                             }}
                                             onMouseEnter={(): void => {
-                                                setShowPasswordOverlay(true);
+                                                dispatch({
+                                                    payload: {
+                                                        ...state,
+                                                        showPasswordOverlay:
+                                                            true,
+                                                    },
+                                                    type: "setPasswordOverlay",
+                                                });
                                             }}
                                             onMouseLeave={(): void => {
-                                                setShowPasswordOverlay(false);
+                                                dispatch({
+                                                    payload: {
+                                                        ...state,
+                                                        showPasswordOverlay:
+                                                            false,
+                                                    },
+                                                    type: "setPasswordOverlay",
+                                                });
                                             }}
                                             ref={showPasswordRef}
                                             variant={
-                                                showPassword
+                                                state.showPassword
                                                     ? "outline-danger"
                                                     : "outline-success"
                                             }
                                         >
                                             <FontAwesomeIcon
                                                 icon={
-                                                    showPassword
+                                                    state.showPassword
                                                         ? faEyeSlash
                                                         : faEye
                                                 }
@@ -165,20 +262,92 @@ export const LoginPage = (): JSX.Element => {
                             </Form>
                         </Card>
                     </Card.Body>
+                    <div className="mb-4 mt-2">
+                        <Button
+                            className="me-2"
+                            onMouseEnter={(): void => {
+                                dispatch({
+                                    payload: {
+                                        ...state,
+                                        showLoginOverlay: true,
+                                    },
+                                    type: "setLoginOverlay",
+                                });
+                            }}
+                            onMouseLeave={(): void => {
+                                dispatch({
+                                    payload: {
+                                        ...state,
+                                        showLoginOverlay: false,
+                                    },
+                                    type: "setLoginOverlay",
+                                });
+                            }}
+                            ref={loginRef}
+                            variant="outline-primary"
+                        >
+                            <FontAwesomeIcon icon={faSignIn} />
+                        </Button>
+                        <Button
+                            className="ms-2"
+                            onMouseEnter={(): void => {
+                                dispatch({
+                                    payload: {
+                                        ...state,
+                                        showSignUpOverlay: true,
+                                    },
+                                    type: "setSignUpOverlay",
+                                });
+                            }}
+                            onMouseLeave={(): void => {
+                                dispatch({
+                                    payload: {
+                                        ...state,
+                                        showSignUpOverlay: false,
+                                    },
+                                    type: "setSignUpOverlay",
+                                });
+                            }}
+                            ref={signUpRef}
+                            variant="outline-info"
+                        >
+                            <FontAwesomeIcon icon={faUserPlus} />
+                        </Button>
+                    </div>
                 </Card>
             </div>
             <Overlay
                 key="password_overlay"
                 placement="right"
-                show={showPasswordOverlay}
+                show={state.showPasswordOverlay}
                 target={showPasswordRef.current}
             >
                 {(props): JSX.Element => (
                     <Tooltip {...props}>
-                        {showPassword
+                        {state.showPassword
                             ? loginFormDetails.password_form_hide
                             : loginFormDetails.password_form_show}
                     </Tooltip>
+                )}
+            </Overlay>
+            <Overlay
+                key="login_overlay"
+                placement="left"
+                show={state.showLoginOverlay}
+                target={loginRef.current}
+            >
+                {(props): JSX.Element => (
+                    <Tooltip {...props}>{loginFormDetails.login}</Tooltip>
+                )}
+            </Overlay>
+            <Overlay
+                key="signup_overlay"
+                placement="right"
+                show={state.showSignUpOverlay}
+                target={signUpRef.current}
+            >
+                {(props): JSX.Element => (
+                    <Tooltip {...props}>{loginFormDetails.sign_up}</Tooltip>
                 )}
             </Overlay>
         </Container>
