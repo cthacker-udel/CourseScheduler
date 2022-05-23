@@ -78,7 +78,7 @@ export const Layout = (): JSX.Element => {
     };
 
     const navigationLinks = [
-        <Link className="text-muted text-wrap" key="home-link" to="/home">
+        <Link className="text-muted text-wrap" key="home-link" to="/dashboard">
             <Button
                 onMouseEnter={(): void => {
                     toggleShowOverlay("home", true);
@@ -255,7 +255,7 @@ export const Layout = (): JSX.Element => {
     ];
 
     return (
-        <>
+        <div>
             <div>
                 <Outlet />
             </div>
@@ -270,6 +270,6 @@ export const Layout = (): JSX.Element => {
                 </Navbar>
             </div>
             {overlays}
-        </>
+        </div>
     );
 };

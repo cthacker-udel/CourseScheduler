@@ -1,7 +1,7 @@
 {
     "card_header": "This is a planner to help you schedule your courses for whichever plan you decide on doing.",
     "card_title": "Options (click each section to see more)",
-    "created_by": "Created by {name1}.",
+    "created_by": "Created by {name1} and Christopher Bennett.",
     "header": "Welcome to the UD planner!",
     "accordion_options": "Courses\nSemesters\nPlans\nImport\nExport",
     "accordion_descriptions": "A page where you can manage your courses. View a list of courses still available, and also customize courses as well. (More description as more functionality is added)\nSemesters is a page where you can manage your semesters. View a list of semesters active, and customize their name, what time they are. (More description as more functionality is added)\nPlans is a page where you can view your overall plans. View a list of plans active, and customize the individual plans. (More description as more functionality is added)\nImport is a page where you can import your plans from a csv file\nExport is a page where you can export your plans to a csv file to then be imported, or sent to other people",

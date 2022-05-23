@@ -3,6 +3,11 @@
  */
 interface Course {
     name: string;
+    courseID: string;
+    description: string;
+    credithours: number;
+    prereq:  string[];
+    satisfied_reqs: string[];
     title?: string;
 }
 
