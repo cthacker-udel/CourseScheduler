@@ -1,4 +1,5 @@
 import React from "react";
+import { Container } from "react-bootstrap";
 import ReactDOM from "react-dom";
 import { IntlProvider } from "react-intl";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
@@ -13,13 +14,21 @@ import LoginPage from "./modules/LoginPage";
  * @returns {JSX.Element} App component
  */
 const App = (): JSX.Element => (
-    <BrowserRouter window={window}>
-        <IntlProvider defaultLocale="en" locale="en" messages={homeMessages}>
-            <Routes>
-                <Route element={<Layout />} path="/">
-                    <Route element={<LoginPage />} index />
-                    <Route element={<HomePage />} path="dashboard" />
-                    {/* <Route path="plan" element={<Plans />}>
+    <Container
+        className="vh-100 p-0 d-flex flex-column justify-content-between"
+        fluid
+    >
+        <BrowserRouter window={window}>
+            <IntlProvider
+                defaultLocale="en"
+                locale="en"
+                messages={homeMessages}
+            >
+                <Routes>
+                    <Route element={<Layout />} path="/">
+                        <Route element={<LoginPage />} index />
+                        <Route element={<HomePage />} path="dashboard" />
+                        {/* <Route path="plan" element={<Plans />}>
                         <Route path=":planId" element={<Plan />} />
                         <Route path="new" element={<NewPlan />} />
                     </Route>
@@ -37,10 +46,11 @@ const App = (): JSX.Element => (
                     <Route path="export" element={<Exports />}>
                         <Route path="new" element={<NewExport />} />
                     </Route> */}
-                </Route>
-            </Routes>
-        </IntlProvider>
-    </BrowserRouter>
+                    </Route>
+                </Routes>
+            </IntlProvider>
+        </BrowserRouter>
+    </Container>
 );
 
 // eslint-disable-next-line jest/require-hook -- Not a jest test

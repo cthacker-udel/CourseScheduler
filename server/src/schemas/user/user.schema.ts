@@ -8,12 +8,21 @@ export type UserDocument = User & Document;
  */
 @Schema()
 export class User {
-  @Prop({ required: true })
-  email: string;
+    /**
+     * The email of the user
+     */
+    @Prop({ required: true })
+    email: string;
 
-  @Prop({ required: true })
-  password: string;
+    /**
+     * The user's password hash
+     */
+    @Prop({ required: true })
+    passwordHash: string;
 
-  @Prop({ required: true })
-  username: string;
+    /**
+     * The password salt
+     */
+    @Prop({ required: true })
+    passwordSalt: string;
 }

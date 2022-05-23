@@ -264,7 +264,6 @@ export const Layout = (): JSX.Element => {
                 <Navbar
                     bg="dark"
                     className="d-flex flex-row justify-content-around pt-3 pb-3"
-                    fixed="bottom"
                 >
                     {navigationLinks}
                 </Navbar>
