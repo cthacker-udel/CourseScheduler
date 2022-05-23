@@ -24,8 +24,8 @@ export class Lab {
     /**
      * The course that this lab is attributed to
      */
-    @Prop({ type: mongoose.Schema.Types.ObjectId, ref: "Course" })
-    courseId: Course;
+    @Prop({ type: mongoose.Schema.Types.Number, ref: "Course" })
+    courseId: number;
 }
 
 export const LabSchema = SchemaFactory.createForClass(Lab);
