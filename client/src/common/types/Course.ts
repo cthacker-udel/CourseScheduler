@@ -3,7 +3,11 @@
  */
 interface Course {
     name: string;
-    title?: string;
+    courseID: string;
+    description: string;
+    credits: number;
+    prereq: string;
+    satisfied_reqs: string;
 }
 
 export default Course;
