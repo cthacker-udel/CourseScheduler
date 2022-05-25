@@ -255,7 +255,7 @@ export const Layout = (): JSX.Element => {
     ];
 
     return (
-        <div>
+        <>
             <div>
                 <Outlet />
             </div>
@@ -269,6 +269,6 @@ export const Layout = (): JSX.Element => {
                 </Navbar>
             </div>
             {overlays}
-        </div>
+        </>
     );
 };

@@ -14,15 +14,11 @@ import LoginPage from "./modules/LoginPage";
  * @returns {JSX.Element} App component
  */
 const App = (): JSX.Element => (
-    <Container
-        className="vh-100 p-0 d-flex flex-column justify-content-between"
-        fluid
-    >
-        <BrowserRouter window={window}>
-            <IntlProvider
-                defaultLocale="en"
-                locale="en"
-                messages={homeMessages}
+    <BrowserRouter window={window}>
+        <IntlProvider defaultLocale="en" locale="en" messages={homeMessages}>
+            <Container
+                className="vh-100 p-0 d-flex flex-column justify-content-between"
+                fluid
             >
                 <Routes>
                     <Route element={<Layout />} path="/">
@@ -48,9 +44,9 @@ const App = (): JSX.Element => (
                     </Route> */}
                     </Route>
                 </Routes>
-            </IntlProvider>
-        </BrowserRouter>
-    </Container>
+            </Container>
+        </IntlProvider>
+    </BrowserRouter>
 );
 
 // eslint-disable-next-line jest/require-hook -- Not a jest test
