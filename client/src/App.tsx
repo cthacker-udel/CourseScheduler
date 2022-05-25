@@ -6,6 +6,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import homeMessages from "./locale/en/home.json";
 import Layout from "./modules/common/components/Layout";
+import Course from "./modules/Course";
 import HomePage from "./modules/Home/HomePage";
 import LoginPage from "./modules/LoginPage";
 
@@ -23,7 +24,8 @@ const App = (): JSX.Element => (
                 <Routes>
                     <Route element={<Layout />} path="/">
                         <Route element={<LoginPage />} index />
-                        <Route element={<HomePage />} path="dashboard" />
+                        <Route element={<HomePage />} path="home" />
+                        <Route element={<Course />} path="courses" />
                         {/* <Route path="plan" element={<Plans />}>
                         <Route path=":planId" element={<Plan />} />
                         <Route path="new" element={<NewPlan />} />
