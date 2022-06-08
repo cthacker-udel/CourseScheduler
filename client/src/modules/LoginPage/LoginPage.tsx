@@ -263,31 +263,33 @@ export const LoginPage = (): JSX.Element => {
                         </Card>
                     </Card.Body>
                     <div className="mb-4 mt-2">
-                        <Button
-                            className="me-2"
-                            onMouseEnter={(): void => {
-                                dispatch({
-                                    payload: {
-                                        ...state,
-                                        showLoginOverlay: true,
-                                    },
-                                    type: "setLoginOverlay",
-                                });
-                            }}
-                            onMouseLeave={(): void => {
-                                dispatch({
-                                    payload: {
-                                        ...state,
-                                        showLoginOverlay: false,
-                                    },
-                                    type: "setLoginOverlay",
-                                });
-                            }}
-                            ref={loginRef}
-                            variant="outline-primary"
-                        >
-                            <FontAwesomeIcon icon={faSignIn} />
-                        </Button>
+                        <Link to="home">
+                            <Button
+                                className="me-2"
+                                onMouseEnter={(): void => {
+                                    dispatch({
+                                        payload: {
+                                            ...state,
+                                            showLoginOverlay: true,
+                                        },
+                                        type: "setLoginOverlay",
+                                    });
+                                }}
+                                onMouseLeave={(): void => {
+                                    dispatch({
+                                        payload: {
+                                            ...state,
+                                            showLoginOverlay: false,
+                                        },
+                                        type: "setLoginOverlay",
+                                    });
+                                }}
+                                ref={loginRef}
+                                variant="outline-primary"
+                            >
+                                <FontAwesomeIcon icon={faSignIn} />
+                            </Button>
+                        </Link>
                         <Button
                             className="ms-2"
                             onMouseEnter={(): void => {
