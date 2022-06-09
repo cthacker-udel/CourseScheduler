@@ -43,13 +43,13 @@ export class Course {
     /**
      * References the lab that this class is attributed to
      */
-    @Prop({ type: mongoose.Schema.Types.Number, ref: Lab })
+    @Prop({ type: mongoose.Schema.Types.Number, ref: () => Lab })
     labIds: Lab[];
 
     /**
      * References the semesters that this course belongs to
      */
-    @Prop({ type: mongoose.Schema.Types.Number, ref: Semester })
+    @Prop({ type: mongoose.Schema.Types.Number, ref: () => Semester })
     semesterIds: Semester[];
 }
 

@@ -108,7 +108,7 @@ export const LoginPage = (): JSX.Element => {
     const showPasswordRef = React.useRef(null);
     const loginRef = React.useRef(null);
     const signUpRef = React.useRef(null);
-    const { register } = useForm({
+    const { register, formState } = useForm({
         context: undefined,
         criteriaMode: "all",
         defaultValues: {
@@ -121,6 +121,8 @@ export const LoginPage = (): JSX.Element => {
         resolver: undefined,
         shouldFocusError: false,
     });
+
+    const { dirtyFields } = formState;
 
     return (
         <Container className="mt-4 d-flex flex-column justify-content-center text-center">
@@ -263,9 +265,13 @@ export const LoginPage = (): JSX.Element => {
                         </Card>
                     </Card.Body>
                     <div className="mb-4 mt-2">
-                        <Link to="home">
+                        <Link to="courses">
                             <Button
                                 className="me-2"
+                                disabled={
+                                    dirtyFields.email === undefined ||
+                                    dirtyFields.password === undefined
+                                }
                                 onMouseEnter={(): void => {
                                     dispatch({
                                         payload: {

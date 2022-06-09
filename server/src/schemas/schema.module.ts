@@ -6,7 +6,7 @@ import { Semester, SemesterSchema } from "./semester/semester.schema";
 import { User, UserSchema } from "./user/user.schema";
 
 @Module({
-    imports: [],
+    imports: [MongooseModule],
     controllers: [],
     providers: [],
     exports: [

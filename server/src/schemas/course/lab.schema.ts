@@ -24,7 +24,7 @@ export class Lab {
     /**
      * The course that this lab is attributed to
      */
-    @Prop({ type: mongoose.Schema.Types.Number, ref: "Course" })
+    @Prop({ type: mongoose.Schema.Types.Number, ref: () => Course })
     courseId: number;
 }
 

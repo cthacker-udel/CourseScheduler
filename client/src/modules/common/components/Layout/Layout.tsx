@@ -78,7 +78,7 @@ export const Layout = (): JSX.Element => {
     };
 
     const navigationLinks = [
-        <Link className="text-muted text-wrap" key="home-link" to="/dashboard">
+        <Link className="text-muted text-wrap" key="home-link" to="/home">
             <Button
                 onMouseEnter={(): void => {
                     toggleShowOverlay("home", true);

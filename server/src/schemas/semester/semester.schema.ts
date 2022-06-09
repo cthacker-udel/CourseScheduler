@@ -1,20 +1,19 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import { Document } from "mongoose";
 import type { SemesterTerm } from "./SemesterTerm";
 
-export type SemesterDocument = Semester & Document;
-
 @Schema()
-export class Semester {
+export class Semester extends Document {
     /**
      * Term of the semester
      */
-    @Prop({ required: true })
+    @Prop()
     term: SemesterTerm;
 
     /**
      * Year of the semester
      */
-    @Prop({ required: true })
+    @Prop()
     year: number;
 
     /**

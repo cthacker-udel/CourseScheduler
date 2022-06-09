@@ -13,6 +13,7 @@ import {
     Tooltip,
 } from "react-bootstrap";
 import { FormattedMessage, useIntl } from "react-intl";
+import { useNavigate } from "react-router-dom";
 
 import styles from "./HomePage.module.css";
 
@@ -63,6 +64,7 @@ export const HomePage = (): JSX.Element => {
         }),
     );
     const intl = useIntl();
+    const navigate = useNavigate();
     const accordionOptions = intl
         .formatMessage({ id: "accordion_options" })
         .split("\n");
@@ -114,6 +116,9 @@ export const HomePage = (): JSX.Element => {
                 <Card.Footer className="text-center">
                     <Button
                         className="m-2"
+                        onClick={(): void => {
+                            navigate("/");
+                        }}
                         onMouseEnter={(): void => {
                             dispatch({ type: "setLogin", value: true });
                         }}
