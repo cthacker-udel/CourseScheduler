@@ -1,0 +1,77 @@
+@keyframes basic_opacity_animation {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes login_header_animation {
+    from {
+        opacity: 0;
+        font-size: 0.5em;
+    }
+    to {
+        opacity: 1;
+        font-size: calc(1.3rem + 0.6vw);
+    }
+}
+
+@keyframes login_description_animation {
+    from {
+        opacity: 0;
+        border: 0px solid gray;
+    }
+
+    to {
+        opacity: 1;
+        border: 1px solid gray;
+    }
+}
+
+@keyframes login_email_form_animation {
+    from {
+        opacity: 0;
+        width: 1%;
+        height: 0%;
+        font-size: 0em;
+    }
+
+    to {
+        opacity: 1;
+        width: 75%;
+        height: 50%;
+        font-size: 1em;
+    }
+}
+
+.login_email_form {
+    animation-name: login_email_form_animation;
+    animation-duration: 2.5s;
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: forwards;
+}
+
+.login_header {
+    animation-name: login_header_animation;
+    animation-duration: 1.5s;
+    animation-timing-function: ease-in-out;
+}
+
+.login_description {
+    animation-name: login_description_animation;
+    animation-duration: 5s;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-in-out;
+}
+
+.login_form_header {
+    width: fit-content;
+    font-family: "Apple Chancery";
+    animation-name: basic_opacity_animation;
+    animation-duration: 3s;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-in-out;
+}

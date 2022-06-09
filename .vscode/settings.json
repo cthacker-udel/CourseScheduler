@@ -1,0 +1,5 @@
+{
+  "discord.enabled": true,
+  "eslint.validate": ["typescriptreact", "html"],
+  "eslint.workingDirectories": ["client", "src", "src/modules/*"]
+}
