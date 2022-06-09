@@ -8,8 +8,8 @@
     "setup": "npm i",
     "clean": "rm -rf ./server/dist",
     "module_clean": "rm -rf ./server/node_modules && rm -rf ./client/node_modules",
-    "start": "concurrently \"cd client && npm run start\" \"cd server && npm run start\"",
-    "mass-setup": "concurrently \"cd client && npm i\" \"cd server && npm i\""
+    "start": "npm run mass-setup && concurrently \"cd client && npm run start\" \"cd server && npm run start\"",
+    "mass-setup": "npm i && concurrently \"cd client && npm i\" \"cd server && npm i\""
   },
   "repository": {
     "type": "git",
