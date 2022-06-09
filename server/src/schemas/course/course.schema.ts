@@ -52,3 +52,5 @@ export class Course {
     @Prop({ type: mongoose.Schema.Types.Number, ref: () => Semester })
     semesterIds: Semester[];
 }
+
+export const CourseSchema = SchemaFactory.createForClass(Course);
