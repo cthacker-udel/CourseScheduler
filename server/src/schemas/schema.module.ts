@@ -6,7 +6,14 @@ import { Semester, SemesterSchema } from "./semester/semester.schema";
 import { User, UserSchema } from "./user/user.schema";
 
 @Module({
-    imports: [MongooseModule],
+    imports: [
+        MongooseModule.forFeature([
+            { name: User.name, schema: UserSchema },
+            { name: Course.name, schema: CourseSchema },
+            { name: Lab.name, schema: LabSchema },
+            { name: Semester.name, schema: SemesterSchema },
+        ]),
+    ],
     controllers: [],
     providers: [],
     exports: [
