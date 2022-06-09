@@ -9,7 +9,8 @@
     "clean": "rm -rf ./server/dist",
     "module_clean": "rm -rf ./server/node_modules && rm -rf ./client/node_modules",
     "start": "npm run mass-setup && concurrently \"cd client && npm run start\" \"cd server && npm run start\"",
-    "mass-setup": "npm i && concurrently \"cd client && npm i\" \"cd server && npm i\""
+    "mass-setup": "npm i && concurrently \"cd client && npm i\" \"cd server && npm i\"",
+    "heroku-commit": "git push heroku main"
   },
   "repository": {
     "type": "git",

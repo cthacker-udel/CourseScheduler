@@ -296,31 +296,33 @@ export const LoginPage = (): JSX.Element => {
                                 <FontAwesomeIcon icon={faSignIn} />
                             </Button>
                         </Link>
-                        <Button
-                            className="ms-2"
-                            onMouseEnter={(): void => {
-                                dispatch({
-                                    payload: {
-                                        ...state,
-                                        showSignUpOverlay: true,
-                                    },
-                                    type: "setSignUpOverlay",
-                                });
-                            }}
-                            onMouseLeave={(): void => {
-                                dispatch({
-                                    payload: {
-                                        ...state,
-                                        showSignUpOverlay: false,
-                                    },
-                                    type: "setSignUpOverlay",
-                                });
-                            }}
-                            ref={signUpRef}
-                            variant="outline-info"
-                        >
-                            <FontAwesomeIcon icon={faUserPlus} />
-                        </Button>
+                        <Link replace to="/sign-up">
+                            <Button
+                                className="ms-2"
+                                onMouseEnter={(): void => {
+                                    dispatch({
+                                        payload: {
+                                            ...state,
+                                            showSignUpOverlay: true,
+                                        },
+                                        type: "setSignUpOverlay",
+                                    });
+                                }}
+                                onMouseLeave={(): void => {
+                                    dispatch({
+                                        payload: {
+                                            ...state,
+                                            showSignUpOverlay: false,
+                                        },
+                                        type: "setSignUpOverlay",
+                                    });
+                                }}
+                                ref={signUpRef}
+                                variant="outline-info"
+                            >
+                                <FontAwesomeIcon icon={faUserPlus} />
+                            </Button>
+                        </Link>
                     </div>
                 </Card>
             </div>
