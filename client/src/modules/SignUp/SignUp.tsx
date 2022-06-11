@@ -25,7 +25,7 @@ export const SignUp = (): JSX.Element => {
             password: "",
             username: "",
         },
-        reValidateMode: "onBlur",
+        reValidateMode: "onChange",
     });
 
     /**
@@ -73,17 +73,21 @@ export const SignUp = (): JSX.Element => {
                             required
                             type="text"
                             {...register("username", {
-                                pattern: {
-                                    message: intl.formatMessage({
-                                        id: "sign_up_form1_input_validation_error",
-                                    }),
-                                    value: /[^\W]/gu,
+                                maxLength: {
+                                    message: intl.formatMessage(
+                                        {
+                                            id: "sign_up_form1_input_error_max_length ",
+                                        },
+                                        { length: 20 },
+                                    ),
+                                    value: 20,
                                 },
                                 required: intl.formatMessage({
                                     id: "sign_up_form1_input_error_required",
                                 }),
                                 validate: (message: string) =>
-                                    !message.match(/[\W]/gu),
+                                    message.match(/[\W]/gu) ??
+                                    "Cannot contain symbols",
                             })}
                         />
                         {errors.username && (
