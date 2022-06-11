@@ -57,95 +57,102 @@ export const SignUp = (): JSX.Element => {
                 </span>
             </Card.Header>
             <Card.Body>
-                <Form.Group
-                    className={`w-50 mx-auto mt-4 mb-3 ${styles.username_form}`}
-                    controlId="username-sign-up-form"
-                >
-                    <Form.Label className="fw-bold mb-2 fs-5">
-                        <FormattedMessage id="sign_up_form1_title" />
-                    </Form.Label>
-                    <Form.Control
-                        placeholder={intl.formatMessage({
-                            id: "sign_up_form1_placeholder",
-                        })}
-                        required
-                        type="text"
-                        {...register("username", {
-                            pattern: {
-                                message: intl.formatMessage({
-                                    id: "sign_up_form1_input_validation_error",
-                                }),
-                                value: /[^\W]/gu,
-                            },
-                            required: intl.formatMessage({
-                                id: "sign_up_form1_input_error_required",
-                            }),
-                            validate: (message: string) =>
-                                !message.match(/[\W]/gu),
-                        })}
-                    />
-                    {errors.username && (
-                        <Form.Control.Feedback type="invalid">
-                            {errors.username.message}
-                        </Form.Control.Feedback>
-                    )}
-                </Form.Group>
-                <Form.Group className={`mt-5 ${styles.password_form}`}>
-                    <Form.Label>
-                        <span className="fs-5 fw-bold">
-                            <FormattedMessage id="sign_up_form2_label" />
-                        </span>
-                    </Form.Label>
-                    <InputGroup className="mx-auto w-50">
+                <Form>
+                    <Form.Group
+                        className={`w-50 mx-auto mt-4 mb-3 ${styles.username_form}`}
+                        controlId="username-sign-up-form"
+                    >
+                        <Form.Label className="fw-bold mb-2 fs-5">
+                            <FormattedMessage id="sign_up_form1_title" />
+                        </Form.Label>
                         <Form.Control
-                            {...register("password")}
+                            autoComplete="username"
                             placeholder={intl.formatMessage({
-                                id: "sign_up_form2_placeholder",
+                                id: "sign_up_form1_placeholder",
                             })}
-                            type={showPassword ? "text" : "password"}
+                            required
+                            type="text"
+                            {...register("username", {
+                                pattern: {
+                                    message: intl.formatMessage({
+                                        id: "sign_up_form1_input_validation_error",
+                                    }),
+                                    value: /[^\W]/gu,
+                                },
+                                required: intl.formatMessage({
+                                    id: "sign_up_form1_input_error_required",
+                                }),
+                                validate: (message: string) =>
+                                    !message.match(/[\W]/gu),
+                            })}
                         />
-                        <OverlayTrigger
-                            overlay={(props): JSX.Element =>
-                                renderPasswordTooltip(
-                                    props,
-                                    showPassword
-                                        ? "Hide password"
-                                        : "Show password",
-                                )
-                            }
-                            placement="right"
-                        >
-                            <Button
-                                onClick={(): void => {
-                                    setShowPassword((oldValue) => !oldValue);
-                                }}
-                                variant={
-                                    showPassword
-                                        ? "outline-success"
-                                        : "outline-danger"
+                        {errors.username && (
+                            <Form.Control.Feedback type="invalid">
+                                {errors.username.message}
+                            </Form.Control.Feedback>
+                        )}
+                    </Form.Group>
+                    <Form.Group className={`mt-5 ${styles.password_form}`}>
+                        <Form.Label>
+                            <span className="fs-5 fw-bold">
+                                <FormattedMessage id="sign_up_form2_label" />
+                            </span>
+                        </Form.Label>
+                        <InputGroup className="mx-auto w-50">
+                            <Form.Control
+                                autoComplete="new-password"
+                                {...register("password")}
+                                placeholder={intl.formatMessage({
+                                    id: "sign_up_form2_placeholder",
+                                })}
+                                type={showPassword ? "text" : "password"}
+                            />
+                            <OverlayTrigger
+                                overlay={(props): JSX.Element =>
+                                    renderPasswordTooltip(
+                                        props,
+                                        showPassword
+                                            ? "Hide password"
+                                            : "Show password",
+                                    )
                                 }
+                                placement="right"
                             >
-                                <FontAwesomeIcon
-                                    icon={showPassword ? faEyeSlash : faEye}
-                                />
-                            </Button>
-                        </OverlayTrigger>
-                    </InputGroup>
-                </Form.Group>
-                <Form.Group
-                    className={`mt-5 mb-3 mx-auto w-50 ${styles.confirm_password_form}`}
-                >
-                    <Form.Label className="fs-5 fw-bold">
-                        <FormattedMessage id="sign_up_form3_label" />
-                    </Form.Label>
-                    <Form.Control
-                        placeholder={intl.formatMessage({
-                            id: "sign_up_form3_placeholder",
-                        })}
-                        type="password"
-                        {...register("confirmPassword")}
-                    />
-                </Form.Group>
+                                <Button
+                                    onClick={(): void => {
+                                        setShowPassword(
+                                            (oldValue) => !oldValue,
+                                        );
+                                    }}
+                                    variant={
+                                        showPassword
+                                            ? "outline-success"
+                                            : "outline-danger"
+                                    }
+                                >
+                                    <FontAwesomeIcon
+                                        icon={showPassword ? faEyeSlash : faEye}
+                                    />
+                                </Button>
+                            </OverlayTrigger>
+                        </InputGroup>
+                    </Form.Group>
+                    <Form.Group
+                        className={`mt-5 mb-3 mx-auto w-50 ${styles.confirm_password_form}`}
+                    >
+                        <Form.Label className="fs-5 fw-bold">
+                            <FormattedMessage id="sign_up_form3_label" />
+                        </Form.Label>
+                        <Form.Control
+                            autoComplete="confirm-password"
+                            placeholder={intl.formatMessage({
+                                id: "sign_up_form3_placeholder",
+                            })}
+                            type="password"
+                            {...register("confirmPassword")}
+                        />
+                    </Form.Group>
+                </Form>
                 <Button
                     className={styles.sign_up_button}
                     variant="outline-primary mt-4 mx-auto"
