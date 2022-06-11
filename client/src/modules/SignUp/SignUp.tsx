@@ -49,7 +49,7 @@ export const SignUp = (): JSX.Element => {
     console.log("errors = ", errors);
     return (
         <Card
-            className={`text-center mx-auto w-50 text-wrap mt-5 ${styles.sign_up_card}`}
+            className={`text-center mx-auto w-50 text-wrap mt-5 pb-2 pr-2 pl-2 ${styles.sign_up_card}`}
         >
             <Card.Header className="fw-bold fs-4">
                 <span className={`${styles.header_text}`}>
@@ -133,7 +133,7 @@ export const SignUp = (): JSX.Element => {
                     </InputGroup>
                 </Form.Group>
                 <Form.Group
-                    className={`mt-5 mx-auto w-50 ${styles.confirm_password_form}`}
+                    className={`mt-5 mb-3 mx-auto w-50 ${styles.confirm_password_form}`}
                 >
                     <Form.Label className="fs-5 fw-bold">
                         <FormattedMessage id="sign_up_form3_label" />
