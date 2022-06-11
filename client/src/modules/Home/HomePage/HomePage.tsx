@@ -10,10 +10,12 @@ import {
     Card,
     Container,
     Overlay,
+    OverlayTrigger,
     Tooltip,
 } from "react-bootstrap";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useNavigate } from "react-router-dom";
+import LayoutProps from "src/modules/common/components/Layout";
 
 import styles from "./HomePage.module.css";
 
@@ -53,6 +55,7 @@ const OverlayReducer = (state: State, action: OverlayReducerAction): State => {
  * @returns {JSX.Element} Home Page component
  */
 export const HomePage = (): JSX.Element => {
+    const { generateTooltip } = LayoutProps;
     const loginRef = React.useRef(null);
     const signUpRef = React.useRef(null);
     const [state, dispatch] = React.useReducer(
@@ -114,62 +117,58 @@ export const HomePage = (): JSX.Element => {
                     </Accordion>
                 </Card.Body>
                 <Card.Footer className="text-center">
-                    <Button
-                        className="m-2"
-                        onClick={(): void => {
-                            navigate("/login");
-                        }}
-                        onMouseEnter={(): void => {
-                            dispatch({ type: "setLogin", value: true });
-                        }}
-                        onMouseLeave={(): void => {
-                            dispatch({ type: "setLogin", value: false });
-                        }}
-                        ref={loginRef}
-                        variant="outline-primary"
+                    <OverlayTrigger
+                        key="login-trigger"
+                        overlay={(props): JSX.Element =>
+                            generateTooltip("tooltip", props, {
+                                type: "Log In",
+                            })
+                        }
                     >
-                        <FontAwesomeIcon icon={faRightToBracket} />
-                    </Button>
-                    <Button
-                        className="m-2"
-                        onClick={(): void => {
-                            navigate("/sign-up");
-                        }}
-                        onMouseEnter={(): void => {
-                            dispatch({ type: "setSignUp", value: true });
-                        }}
-                        onMouseLeave={(): void => {
-                            dispatch({ type: "setSignUp", value: false });
-                        }}
-                        ref={signUpRef}
-                        variant="outline-primary"
+                        <Button
+                            className="m-2"
+                            onClick={(): void => {
+                                navigate("/login");
+                            }}
+                            onMouseEnter={(): void => {
+                                dispatch({ type: "setLogin", value: true });
+                            }}
+                            onMouseLeave={(): void => {
+                                dispatch({ type: "setLogin", value: false });
+                            }}
+                            ref={loginRef}
+                            variant="outline-primary"
+                        >
+                            <FontAwesomeIcon icon={faRightToBracket} />
+                        </Button>
+                    </OverlayTrigger>
+                    <OverlayTrigger
+                        key="sign-up-overlaytrigger"
+                        overlay={(props): JSX.Element =>
+                            generateTooltip("tooltip", props, {
+                                type: "Sign Up",
+                            })
+                        }
                     >
-                        <FontAwesomeIcon icon={faUserPlus} />
-                    </Button>
+                        <Button
+                            className="m-2"
+                            onClick={(): void => {
+                                navigate("/sign-up");
+                            }}
+                            onMouseEnter={(): void => {
+                                dispatch({ type: "setSignUp", value: true });
+                            }}
+                            onMouseLeave={(): void => {
+                                dispatch({ type: "setSignUp", value: false });
+                            }}
+                            ref={signUpRef}
+                            variant="outline-primary"
+                        >
+                            <FontAwesomeIcon icon={faUserPlus} />
+                        </Button>
+                    </OverlayTrigger>
                 </Card.Footer>
             </Card>
-            <Overlay
-                placement="bottom"
-                show={state.login}
-                target={loginRef.current}
-            >
-                {(props): JSX.Element => (
-                    <Tooltip id="login-tooltip" {...props}>
-                        <FormattedMessage id="primary_button_text" />
-                    </Tooltip>
-                )}
-            </Overlay>
-            <Overlay
-                placement="bottom"
-                show={state.signUp}
-                target={signUpRef.current}
-            >
-                {(props): JSX.Element => (
-                    <Tooltip id="signup-tooltip" {...props}>
-                        <FormattedMessage id="secondary_button_text" />
-                    </Tooltip>
-                )}
-            </Overlay>
         </Container>
     );
 };
