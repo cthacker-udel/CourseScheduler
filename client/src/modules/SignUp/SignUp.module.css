@@ -1,12 +1,12 @@
 @keyframes header_text_anim {
     from {
-        transform: translate(0px, -50vh) rotate(0deg);
+        transform: translate(0px, 0vh);
         color: transparent;
         font-size: 0em;
         text-shadow: 0%;
     }
     to {
-        transform: translate(0px, 0vh) rotate(360deg);
+        transform: translate(0px, 0vh);
         color: black;
         font-size: 1em;
         text-shadow: 100%;
@@ -15,19 +15,19 @@
 
 @keyframes username_form_anim {
     from {
-        transform: translate(150vw, 0px) rotate(0deg);
+        transform: translate(0vw, 0px);
     }
     to {
-        transform: translate(0vw, 0px) rotate(360deg);
+        transform: translate(0vw, 0px);
     }
 }
 
 @keyframes password_form_anim {
     from {
-        transform: translate(-150vw, 0px) rotate(0deg);
+        transform: translate(0vw, 0px);
     }
     to {
-        transform: translate(0vw, 0px) rotate(-360deg);
+        transform: translate(0vw, 0px);
     }
 }
 

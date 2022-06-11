@@ -15,7 +15,7 @@
     }
     to {
         opacity: 1;
-        font-size: calc(1.3rem + 0.6vw);
+        font-size: calc(1.3rem + 0.45vw);
     }
 }
 
