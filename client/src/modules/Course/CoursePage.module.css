@@ -1,0 +1,21 @@
+@keyframes course_block_anim {
+    from {
+        transform: translate(0px, 100vh);
+        color: transparent;
+        font-size: 0em;
+        text-shadow: 0%;
+    }
+    to {
+        transform: translate(0px, 0vh);
+        color: black;
+        font-size: 1em;
+        text-shadow: 100%;
+    }
+}
+
+.course_block {
+    animation-name: course_block_anim;
+    animation-duration: 1.5s;
+    animation-timing-function: ease-in-out;
+}
+

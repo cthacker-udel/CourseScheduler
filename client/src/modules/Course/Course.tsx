@@ -5,6 +5,8 @@ import { Badge, Card, Container } from "react-bootstrap";
 import type MockCourse from "src/common/types/MockCourse";
 import { useMockData } from "src/hooks/useMockData";
 
+import styles from "./CoursePage.module.css";
+
 const MOCK_COURSE_INDEX = 0;
 const DATA_NAME_SPLIT_INDEX = 1;
 const DATA_LENGTH_CHECK = 0;
@@ -29,7 +31,7 @@ export const Course = (): JSX.Element => {
     const parsedCredits = parseInt(credits, 10);
     return (
         <Container fluid>
-            <Card className="w-50 mx-auto mt-5">
+            <Card className={`w-50 mx-auto mt-5 ${styles.course_block}`}>
                 <Card.Body>
                     <Card.Title className="d-flex flex-row justify-content-around">
                         <span className="fw-bold fs-6 d-flex flex-column justify-content-around h-100">
