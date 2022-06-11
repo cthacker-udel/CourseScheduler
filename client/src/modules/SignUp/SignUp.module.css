@@ -1,0 +1,104 @@
+@keyframes header_text_anim {
+    from {
+        transform: translate(0px, -50vh) rotate(0deg);
+        color: transparent;
+        font-size: 0em;
+        text-shadow: 0%;
+    }
+    to {
+        transform: translate(0px, 0vh) rotate(360deg);
+        color: black;
+        font-size: 1em;
+        text-shadow: 100%;
+    }
+}
+
+@keyframes username_form_anim {
+    from {
+        transform: translate(150vw, 0px) rotate(0deg);
+    }
+    to {
+        transform: translate(0vw, 0px) rotate(360deg);
+    }
+}
+
+@keyframes password_form_anim {
+    from {
+        transform: translate(-150vw, 0px) rotate(0deg);
+    }
+    to {
+        transform: translate(0vw, 0px) rotate(-360deg);
+    }
+}
+
+@keyframes sign_up_card_anim {
+    from {
+        transform: scale(0, 0);
+    }
+    to {
+        transform: scale(1, 1);
+    }
+}
+
+@keyframes sign_up_button_anim {
+    0% {
+        transform: scale(0, 0);
+    }
+    20% {
+        transform: scale(0.5, 0.5);
+    }
+    40% {
+        transform: scale(0.7, 0.7);
+    }
+    60% {
+        transform: scale(1.2, 1.2);
+    }
+    80% {
+        transform: scale(4, 1.2);
+    }
+    100% {
+        transform: scale(1, 1);
+    }
+}
+
+.header_text {
+    animation-name: header_text_anim;
+    animation-duration: 3s;
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: forwards;
+}
+
+.username_form {
+    animation-name: username_form_anim;
+    animation-duration: 3s;
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: forwards;
+}
+
+.password_form {
+    animation-name: password_form_anim;
+    animation-duration: 3s;
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: forwards;
+}
+
+.confirm_password_form {
+    animation-name: header_text_anim;
+    animation-duration: 3s;
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: forwards;
+}
+
+.sign_up_card {
+    animation-name: sign_up_card_anim;
+    animation-duration: 3s;
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: forwards;
+}
+
+.sign_up_button {
+    animation-name: sign_up_button_anim;
+    animation-duration: 3s;
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: forwards;
+}

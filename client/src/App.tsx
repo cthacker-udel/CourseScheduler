@@ -9,6 +9,7 @@ import Layout from "./modules/common/components/Layout";
 import Course from "./modules/Course";
 import HomePage from "./modules/Home/HomePage";
 import LoginPage from "./modules/LoginPage";
+import SignUp from "./modules/SignUp";
 
 /**
  * @summary The App component takes in no props, and comprises of the router logic
@@ -23,9 +24,10 @@ const App = (): JSX.Element => (
             >
                 <Routes>
                     <Route element={<Layout />} path="/">
-                        <Route element={<LoginPage />} index />
-                        <Route element={<HomePage />} path="home" />
+                        <Route element={<HomePage />} index />
+                        <Route element={<LoginPage />} path="login" />
                         <Route element={<Course />} path="courses" />
+                        <Route element={<SignUp />} path="sign-up" />
                         {/* <Route path="plan" element={<Plans />}>
                         <Route path=":planId" element={<Plan />} />
                         <Route path="new" element={<NewPlan />} />

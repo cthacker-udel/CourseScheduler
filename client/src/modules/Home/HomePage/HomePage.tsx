@@ -117,7 +117,7 @@ export const HomePage = (): JSX.Element => {
                     <Button
                         className="m-2"
                         onClick={(): void => {
-                            navigate("/");
+                            navigate("/login");
                         }}
                         onMouseEnter={(): void => {
                             dispatch({ type: "setLogin", value: true });
@@ -132,6 +132,9 @@ export const HomePage = (): JSX.Element => {
                     </Button>
                     <Button
                         className="m-2"
+                        onClick={(): void => {
+                            navigate("/sign-up");
+                        }}
                         onMouseEnter={(): void => {
                             dispatch({ type: "setSignUp", value: true });
                         }}
