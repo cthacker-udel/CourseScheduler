@@ -28,5 +28,10 @@
     "sign_up_form1_title": "Username",
     "sign_up_form1_input_error_required": "Username is required",
     "sign_up_form1_input_error_min_length": "Username must be at least {length} characters",
-    "sign_up_form1_input_validation_error": "Username must not contain special characters"
+    "sign_up_form1_input_validation_error": "Username must not contain special characters",
+    "sign_up_form2_placeholder": "Enter your password here...",
+    "sign_up_form2_label": "Password",
+    "sign_up_form3_label": "Confirm Password",
+    "sign_up_form3_placeholder": "Confirm your password here...",
+    "sign_up_form_submit_button": "Sign up"
 }

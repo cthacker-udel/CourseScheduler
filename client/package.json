@@ -59,6 +59,7 @@
     "devDependencies": {
         "@babel/cli": "^7.17.10",
         "@babel/core": "^7.17.10",
+        "@types/react-bootstrap": "^0.32.30",
         "@types/react-csv": "^1.1.2",
         "@types/react-modal": "^3.13.1",
         "@typescript-eslint/eslint-plugin": "~5.17.0",
