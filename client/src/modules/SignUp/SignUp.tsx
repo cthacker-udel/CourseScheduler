@@ -15,22 +15,36 @@ import { generateTooltip } from "../common/utils/generateTooltip";
 import styles from "./SignUp.module.css";
 
 /**
+ * Minimum length the username field can be
+ */
+const USERNAME_MIN_LENGTH = 1;
+
+/**
  * Sign-Up Page component, will communicate with back-end to sign user up and insert record into mongo database
  */
 export const SignUp = (): JSX.Element => {
     const [showPassword, setShowPassword] = React.useState(false);
-    const { register, formState } = useForm({
+    const { register, formState, watch } = useForm({
         defaultValues: {
             confirmPassword: "",
             password: "",
             username: "",
         },
+        mode: "all",
         reValidateMode: "onChange",
     });
 
     const intl = useIntl();
-    const { errors } = formState;
-    console.log("errors = ", errors);
+    const userNameWatch = watch("username");
+    const { errors, dirtyFields, isValid } = formState;
+    console.log(
+        "errors = ",
+        errors,
+        " and dirtyFields = ",
+        dirtyFields,
+        " and isvalid = ",
+        isValid,
+    );
     return (
         <Card
             className={`text-center mx-auto w-50 text-wrap mt-5 pb-2 pr-2 pl-2 ${styles.sign_up_card}`}
@@ -51,6 +65,12 @@ export const SignUp = (): JSX.Element => {
                         </Form.Label>
                         <Form.Control
                             autoComplete="username"
+                            isInvalid={errors.username && true}
+                            isValid={
+                                !errors.username &&
+                                true &&
+                                userNameWatch.length >= USERNAME_MIN_LENGTH
+                            }
                             placeholder={intl.formatMessage({
                                 id: "sign_up_form1_placeholder",
                             })}
@@ -60,18 +80,19 @@ export const SignUp = (): JSX.Element => {
                                 maxLength: {
                                     message: intl.formatMessage(
                                         {
-                                            id: "sign_up_form1_input_error_max_length ",
+                                            id: "sign_up_form1_input_error_max_length",
                                         },
                                         { length: 20 },
                                     ),
                                     value: 20,
                                 },
+                                pattern: {
+                                    message: "Cannot contain symbols",
+                                    value: /^[^\W]+$/u,
+                                },
                                 required: intl.formatMessage({
                                     id: "sign_up_form1_input_error_required",
                                 }),
-                                validate: (message: string) =>
-                                    message.match(/[\W]/gu) ??
-                                    "Cannot contain symbols",
                             })}
                         />
                         {errors.username && (

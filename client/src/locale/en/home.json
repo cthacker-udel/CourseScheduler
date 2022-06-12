@@ -24,7 +24,7 @@
     "login_form_title": "Login Form",
     "sign_up_form_title": "Sign Up Form",
     "sign_up_form1_placeholder": "Enter your username here...",
-    "sign_up_form1_input_error_max_length": "Username cannot be more then {length} characters",
+    "sign_up_form1_input_error_max_length": "Username can be at most {length} characters",
     "sign_up_form1_title": "Username",
     "sign_up_form1_input_error_required": "Username is required",
     "sign_up_form1_input_error_min_length": "Username must be at least {length} characters",
