@@ -8,12 +8,9 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
-import { Button, Navbar, OverlayTrigger, Tooltip } from "react-bootstrap";
-import type { OverlayInjectedProps } from "react-bootstrap/esm/Overlay";
-import { FormattedMessage } from "react-intl";
+import { Button, Navbar, OverlayTrigger } from "react-bootstrap";
 import { Link, Outlet } from "react-router-dom";
-
-import styles from "./Layout.module.css";
+import moduleUtils from "src/modules/common/utils";
 
 type OverlayType =
     | "course"
@@ -24,31 +21,10 @@ type OverlayType =
     | "semester";
 
 /**
- * This generates the OverlayTrigger's tooltip
- * @param fmtMessageId The ID of the formatted message
- * @param props The PopperJS props passed into the tooltip via the OverlayTrigger component
- * @param values The values of the formattedMessage that display the message
- * @returns {JSX.Element} The tooltip with given props, values, and id
- */
-const generateTooltip = (
-    fmtMessageId: string,
-    props: OverlayInjectedProps,
-    values: { [key: string]: string },
-): JSX.Element => (
-    <Tooltip
-        {...props}
-        className={styles.custom_tooltip_override}
-        id={`${fmtMessageId}-${JSON.stringify(values)}`}
-    >
-        <FormattedMessage id={fmtMessageId} values={values} />
-    </Tooltip>
-);
-
-/**
  * @summary The Layout component, takes in no props and renders the overall layout of the application
  * @returns {JSX.Element} Layout component
  */
-const Layout = (): JSX.Element => {
+export const Layout = (): JSX.Element => {
     const homeRef = React.useRef(null);
     const courseRef = React.useRef(null);
     const semesterRef = React.useRef(null);
@@ -105,7 +81,7 @@ const Layout = (): JSX.Element => {
         <OverlayTrigger
             key="home-link"
             overlay={(props): JSX.Element =>
-                generateTooltip("tooltip", props, { type: "Home" })
+                moduleUtils.generateTooltip("tooltip", props, { type: "Home" })
             }
             placement="top"
         >
@@ -127,7 +103,9 @@ const Layout = (): JSX.Element => {
         <OverlayTrigger
             key="courses-link"
             overlay={(props): JSX.Element =>
-                generateTooltip("tooltip", props, { type: "Courses" })
+                moduleUtils.generateTooltip("tooltip", props, {
+                    type: "Courses",
+                })
             }
         >
             <Link
@@ -152,7 +130,9 @@ const Layout = (): JSX.Element => {
         <OverlayTrigger
             key="semester-link"
             overlay={(props): JSX.Element =>
-                generateTooltip("tooltip", props, { type: "Semesters" })
+                moduleUtils.generateTooltip("tooltip", props, {
+                    type: "Semesters",
+                })
             }
         >
             <Link
@@ -177,7 +157,7 @@ const Layout = (): JSX.Element => {
         <OverlayTrigger
             key="plans"
             overlay={(props): JSX.Element =>
-                generateTooltip("tooltip", props, { type: "Plans" })
+                moduleUtils.generateTooltip("tooltip", props, { type: "Plans" })
             }
         >
             <Link className="text-muted text-wrap" key="plans-link" to="/plans">
@@ -198,7 +178,9 @@ const Layout = (): JSX.Element => {
         <OverlayTrigger
             key="imports-link"
             overlay={(props): JSX.Element =>
-                generateTooltip("tooltip", props, { type: "Imports" })
+                moduleUtils.generateTooltip("tooltip", props, {
+                    type: "Imports",
+                })
             }
         >
             <Link
@@ -223,7 +205,9 @@ const Layout = (): JSX.Element => {
         <OverlayTrigger
             key="exports-link"
             overlay={(props): JSX.Element =>
-                generateTooltip("tooltip", props, { type: "Exports" })
+                moduleUtils.generateTooltip("tooltip", props, {
+                    type: "Exports",
+                })
             }
         >
             <Link
@@ -263,9 +247,4 @@ const Layout = (): JSX.Element => {
             </div>
         </>
     );
-};
-
-export const exports = {
-    Layout,
-    generateTooltip,
 };

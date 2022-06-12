@@ -9,63 +9,21 @@ import {
     Button,
     Card,
     Container,
-    Overlay,
     OverlayTrigger,
-    Tooltip,
 } from "react-bootstrap";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useNavigate } from "react-router-dom";
-import LayoutProps from "src/modules/common/components/Layout";
+import moduleUtils from "src/modules/common/utils";
 
 import styles from "./HomePage.module.css";
-
-type OverlayReducerActionType = "setLogin" | "setSignUp";
-
-interface State {
-    login: boolean;
-    signUp: boolean;
-}
-
-interface OverlayReducerAction {
-    type: OverlayReducerActionType;
-    value: boolean;
-}
-
-/**
- * @summary Updates the overlays on the two buttons
- * @param state The state of the component
- * @param action The action the user is taking to update the component state
- * @returns {State} The current state of the application after changes have been made
- */
-const OverlayReducer = (state: State, action: OverlayReducerAction): State => {
-    switch (action.type) {
-        case "setLogin": {
-            return { ...state, login: action.value };
-        }
-        case "setSignUp": {
-            return { ...state, signUp: action.value };
-        }
-        default:
-            return state;
-    }
-};
 
 /**
  * @summary Home Page component, comprises of the page the user sees when they first log in
  * @returns {JSX.Element} Home Page component
  */
 export const HomePage = (): JSX.Element => {
-    const { generateTooltip } = LayoutProps;
     const loginRef = React.useRef(null);
     const signUpRef = React.useRef(null);
-    const [state, dispatch] = React.useReducer(
-        OverlayReducer,
-        {},
-        (): State => ({
-            login: false,
-            signUp: false,
-        }),
-    );
     const intl = useIntl();
     const navigate = useNavigate();
     const accordionOptions = intl
@@ -120,21 +78,16 @@ export const HomePage = (): JSX.Element => {
                     <OverlayTrigger
                         key="login-trigger"
                         overlay={(props): JSX.Element =>
-                            generateTooltip("tooltip", props, {
+                            moduleUtils.generateTooltip("tooltip", props, {
                                 type: "Log In",
                             })
                         }
+                        placement="left"
                     >
                         <Button
                             className="m-2"
                             onClick={(): void => {
                                 navigate("/login");
-                            }}
-                            onMouseEnter={(): void => {
-                                dispatch({ type: "setLogin", value: true });
-                            }}
-                            onMouseLeave={(): void => {
-                                dispatch({ type: "setLogin", value: false });
                             }}
                             ref={loginRef}
                             variant="outline-primary"
@@ -145,21 +98,16 @@ export const HomePage = (): JSX.Element => {
                     <OverlayTrigger
                         key="sign-up-overlaytrigger"
                         overlay={(props): JSX.Element =>
-                            generateTooltip("tooltip", props, {
+                            moduleUtils.generateTooltip("tooltip", props, {
                                 type: "Sign Up",
                             })
                         }
+                        placement="right"
                     >
                         <Button
                             className="m-2"
                             onClick={(): void => {
                                 navigate("/sign-up");
-                            }}
-                            onMouseEnter={(): void => {
-                                dispatch({ type: "setSignUp", value: true });
-                            }}
-                            onMouseLeave={(): void => {
-                                dispatch({ type: "setSignUp", value: false });
                             }}
                             ref={signUpRef}
                             variant="outline-primary"

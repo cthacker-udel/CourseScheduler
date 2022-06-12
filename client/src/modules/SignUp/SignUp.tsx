@@ -7,11 +7,11 @@ import {
     Form,
     InputGroup,
     OverlayTrigger,
-    Tooltip,
 } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { FormattedMessage, useIntl } from "react-intl";
 
+import { generateTooltip } from "../common/utils/generateTooltip";
 import styles from "./SignUp.module.css";
 
 /**
@@ -27,22 +27,6 @@ export const SignUp = (): JSX.Element => {
         },
         reValidateMode: "onChange",
     });
-
-    /**
-     * This function generates the tooltip for the hide password button, which is conditional based on whether the password is shown or not.
-     * @param props The properties injected by the PopperJS config
-     * @param message The message the tooltip will contain
-     * @returns
-     */
-    const renderPasswordTooltip = (
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Due to not importing OverlayTriggerProps properly from react-bootstrap dep
-        props: any,
-        message: string,
-    ): JSX.Element => (
-        <Tooltip id={message} {...props}>
-            {message}
-        </Tooltip>
-    );
 
     const intl = useIntl();
     const { errors } = formState;
@@ -113,12 +97,11 @@ export const SignUp = (): JSX.Element => {
                             />
                             <OverlayTrigger
                                 overlay={(props): JSX.Element =>
-                                    renderPasswordTooltip(
-                                        props,
-                                        showPassword
-                                            ? "Hide password"
-                                            : "Show password",
-                                    )
+                                    generateTooltip("tooltip", props, {
+                                        type: showPassword
+                                            ? "Hide Password"
+                                            : "Show Password",
+                                    })
                                 }
                                 placement="right"
                             >
