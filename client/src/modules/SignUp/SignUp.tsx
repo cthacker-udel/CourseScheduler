@@ -42,17 +42,7 @@ export const SignUp = (): JSX.Element => {
     const userNameWatch = watch("username");
     const passwordWatch = watch("password");
     const confirmPasswordWatch = watch("confirmPassword");
-    const { errors, dirtyFields, isValid, isValidating } = formState;
-    console.log(
-        "errors = ",
-        errors,
-        " and dirtyFields = ",
-        dirtyFields,
-        " and isvalid = ",
-        isValid,
-        " and is validating = ",
-        isValidating,
-    );
+    const { errors, isValid, isValidating } = formState;
 
     /**
      * This function aids in the validation of the password, following a step-by-step algorithm to determine if the password is valid
