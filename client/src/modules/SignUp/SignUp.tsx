@@ -41,7 +41,8 @@ export const SignUp = (): JSX.Element => {
     const intl = useIntl();
     const userNameWatch = watch("username");
     const passwordWatch = watch("password");
-    const { errors, dirtyFields, isValid } = formState;
+    const confirmPasswordWatch = watch("confirmPassword");
+    const { errors, dirtyFields, isValid, isValidating } = formState;
     console.log(
         "errors = ",
         errors,
@@ -49,6 +50,8 @@ export const SignUp = (): JSX.Element => {
         dirtyFields,
         " and isvalid = ",
         isValid,
+        " and is validating = ",
+        isValidating,
     );
 
     /**
@@ -84,6 +87,17 @@ export const SignUp = (): JSX.Element => {
         return "Server Error";
     };
 
+    /**
+     * This function determines whether the submit button should be disabled
+     * @returns If the submit button should be disabled
+     */
+    const isSubmitButtonDisabled = (): boolean =>
+        userNameWatch.length < TEXT_FIELD_MIN_LENGTH ||
+        passwordWatch.length < TEXT_FIELD_MIN_LENGTH ||
+        confirmPasswordWatch.length < TEXT_FIELD_MIN_LENGTH ||
+        !isValid ||
+        isValidating;
+
     return (
         <Card
             className={`text-center mx-auto w-50 text-wrap mt-5 pb-2 pr-2 pl-2 ${styles.sign_up_card}`}
@@ -107,7 +121,6 @@ export const SignUp = (): JSX.Element => {
                             isInvalid={errors.username && true}
                             isValid={
                                 !errors.username &&
-                                true &&
                                 userNameWatch.length >= TEXT_FIELD_MIN_LENGTH
                             }
                             placeholder={intl.formatMessage({
@@ -153,7 +166,6 @@ export const SignUp = (): JSX.Element => {
                                     isInvalid={errors.password && true}
                                     isValid={
                                         !errors.password &&
-                                        true &&
                                         passwordWatch.length >=
                                             TEXT_FIELD_MIN_LENGTH
                                     }
@@ -234,17 +246,65 @@ export const SignUp = (): JSX.Element => {
                         </Form.Label>
                         <Form.Control
                             autoComplete="confirm-password"
+                            isInvalid={
+                                errors.confirmPassword &&
+                                confirmPasswordWatch.length >=
+                                    TEXT_FIELD_MIN_LENGTH
+                            }
+                            isValid={
+                                !errors.confirmPassword &&
+                                confirmPasswordWatch.length >=
+                                    TEXT_FIELD_MIN_LENGTH
+                            }
                             placeholder={intl.formatMessage({
                                 id: "sign_up_form3_placeholder",
                             })}
                             type="password"
-                            {...register("confirmPassword")}
+                            {...register("confirmPassword", {
+                                maxLength: {
+                                    message: intl.formatMessage(
+                                        {
+                                            id: "sign_up_form_confirm_password_max_length",
+                                        },
+                                        { amt: PASSWORD_MAX_LENGTH },
+                                    ),
+                                    value: PASSWORD_MAX_LENGTH,
+                                },
+                                minLength: {
+                                    message: intl.formatMessage(
+                                        {
+                                            id: "sign_up_form_confirm_password_min_length",
+                                        },
+                                        { amt: PASSWORD_MIN_LENGTH },
+                                    ),
+                                    value: PASSWORD_MIN_LENGTH,
+                                },
+                                required: {
+                                    message: intl.formatMessage({
+                                        id: "sign_up_form_confirm_password_required",
+                                    }),
+                                    value: true,
+                                },
+                                validate: (confirmPass: string) =>
+                                    confirmPass === passwordWatch ||
+                                    intl.formatMessage({
+                                        id: "sign_up_form_confirm_password_not_matching",
+                                    }),
+                            })}
                         />
+                        {errors.confirmPassword && (
+                            <Form.Control.Feedback type="invalid">
+                                {errors.confirmPassword.message}
+                            </Form.Control.Feedback>
+                        )}
                     </Form.Group>
                 </Form>
                 <Button
                     className={styles.sign_up_button}
-                    variant="outline-primary mt-4 mx-auto"
+                    disabled={isSubmitButtonDisabled()}
+                    variant={`outline-${
+                        isSubmitButtonDisabled() ? "secondary" : "success"
+                    } mt-4 mx-auto`}
                 >
                     <FormattedMessage id="sign_up_form_submit_button" />
                 </Button>
