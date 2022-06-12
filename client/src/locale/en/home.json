@@ -35,6 +35,9 @@
     "sign_up_form3_placeholder": "Confirm your password here...",
     "sign_up_form_submit_button": "Sign up",
     "sign_up_form_password_required": "Password is required",
-    "sign_up_form_password_max_length": "Password must not be at most {length} characters.",
-    "sign_up_form_password_min_length": "Password must be at least {length} character"
+    "sign_up_form_password_max_length": "Password must not be at most {length} character(s).",
+    "sign_up_form_password_min_length": "Password must be at least {length} character(s)",
+    "sign_up_form_password_upper": "Password must contain at least {amt} uppercase letter(s)",
+    "sign_up_form_password_symbol": "Password must contain at least {amt} symbol or number(s)",
+    "sign_up_form_password_lower": "Password must contain at least {amt} lowercase letter(s)"
 }

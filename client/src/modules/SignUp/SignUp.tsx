@@ -50,6 +50,40 @@ export const SignUp = (): JSX.Element => {
         " and isvalid = ",
         isValid,
     );
+
+    /**
+     * This function aids in the validation of the password, following a step-by-step algorithm to determine if the password is valid
+     * @param password The password the user is attempting to enter into the sign up form
+     */
+    const validatePassword = (password: string): boolean | string => {
+        const MIN_PASSWORD_REQUIRE = 1;
+        const lowercaseMatch = password.match(/[a-z]/gu);
+        const uppercaseMatch = password.match(/[A-Z]/gu);
+        const symbolMatch = password.match(/[\W]/gu);
+        if (lowercaseMatch && uppercaseMatch && symbolMatch) {
+            return true;
+        }
+        if (!lowercaseMatch) {
+            return intl.formatMessage(
+                { id: "sign_up_form_password_lower" },
+                { amt: MIN_PASSWORD_REQUIRE },
+            );
+        }
+        if (!uppercaseMatch) {
+            return intl.formatMessage(
+                { id: "sign_up_form_password_upper" },
+                { amt: MIN_PASSWORD_REQUIRE },
+            );
+        }
+        if (!symbolMatch) {
+            return intl.formatMessage(
+                { id: "sign_up_form_password_symbol" },
+                { amt: MIN_PASSWORD_REQUIRE },
+            );
+        }
+        return "Server Error";
+    };
+
     return (
         <Card
             className={`text-center mx-auto w-50 text-wrap mt-5 pb-2 pr-2 pl-2 ${styles.sign_up_card}`}
@@ -148,6 +182,8 @@ export const SignUp = (): JSX.Element => {
                                             }),
                                             value: true,
                                         },
+                                        validate: (pass: string) =>
+                                            validatePassword(pass),
                                     })}
                                     placeholder={intl.formatMessage({
                                         id: "sign_up_form2_placeholder",
@@ -180,7 +216,7 @@ export const SignUp = (): JSX.Element => {
                                     variant={
                                         showPassword
                                             ? "outline-success"
-                                            : "outline-danger"
+                                            : "outline-warning"
                                     }
                                 >
                                     <FontAwesomeIcon
