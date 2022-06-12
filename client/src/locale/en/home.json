@@ -33,5 +33,8 @@
     "sign_up_form2_label": "Password",
     "sign_up_form3_label": "Confirm Password",
     "sign_up_form3_placeholder": "Confirm your password here...",
-    "sign_up_form_submit_button": "Sign up"
+    "sign_up_form_submit_button": "Sign up",
+    "sign_up_form_password_required": "Password is required",
+    "sign_up_form_password_max_length": "Password must not be at most {length} characters.",
+    "sign_up_form_password_min_length": "Password must be at least {length} character"
 }
