@@ -9,6 +9,15 @@ import { generateTooltip } from "../common/utils/generateTooltip";
 import styles from "./SignUp.module.css";
 
 /**
+ * Type of the data that will be utilized within the sign up form
+ */
+interface FormData {
+    confirmPassword: string;
+    password: string;
+    username: string;
+}
+
+/**
  * General text field min length
  */
 const TEXT_FIELD_MIN_LENGTH = 1;
@@ -28,7 +37,7 @@ const PASSWORD_MIN_LENGTH = 7;
  */
 export const SignUp = (): JSX.Element => {
     const [showPassword, setShowPassword] = React.useState(false);
-    const { register, formState, watch } = useForm({
+    const { register, formState, watch } = useForm<FormData>({
         defaultValues: {
             confirmPassword: "",
             password: "",
