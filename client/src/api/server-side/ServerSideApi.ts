@@ -17,8 +17,13 @@ export class ServerSideApi {
             : configuration.SERVER_BASE_URL;
     }
 
-    // eslint-disable-next-line @typescript-eslint/promise-function-async -- not needed
-    public get = <T>(url: string): Promise<T> =>
-        // eslint-disable-next-line @typescript-eslint/promise-function-async -- not needed
-        fetch(`${this.BASE_URL}${url}`).then((res) => res.json());
+
+    public get = async <T, E>(url: string): Promise<T | E> => {
+        try {
+            return await fetch(`${this.BASE_URL}${url}`).then((res) => res.json());
+        } catch (error: E) {
+            
+        }
+    
+    }
 }
