@@ -24,7 +24,7 @@
     "login_form_title": "Login Form",
     "sign_up_form_title": "Sign Up Form",
     "sign_up_form1_placeholder": "Enter your username here...",
-    "sign_up_form1_input_error_max_length": "Username cannot be more then {length} characters",
+    "sign_up_form1_input_error_max_length": "Username can be at most {length} characters",
     "sign_up_form1_title": "Username",
     "sign_up_form1_input_error_required": "Username is required",
     "sign_up_form1_input_error_min_length": "Username must be at least {length} characters",
@@ -33,5 +33,15 @@
     "sign_up_form2_label": "Password",
     "sign_up_form3_label": "Confirm Password",
     "sign_up_form3_placeholder": "Confirm your password here...",
-    "sign_up_form_submit_button": "Sign up"
+    "sign_up_form_submit_button": "Sign up",
+    "sign_up_form_password_required": "Password is required",
+    "sign_up_form_password_max_length": "Password must be at most {length} character(s).",
+    "sign_up_form_password_min_length": "Password must be at least {length} character(s)",
+    "sign_up_form_password_upper": "Password must contain at least {amt} uppercase letter(s)",
+    "sign_up_form_password_symbol": "Password must contain at least {amt} symbol or number(s)",
+    "sign_up_form_password_lower": "Password must contain at least {amt} lowercase letter(s)",
+    "sign_up_form_confirm_password_required": "Confirm password is required.",
+    "sign_up_form_confirm_password_not_matching": "Confirm password does not match entered password.",
+    "sign_up_form_confirm_password_min_length": "Confirm password must be at least {amt} character(s).",
+    "sign_up_form_confirm_password_max_length": "Confirm password must be at most {amt} character(s)."
 }

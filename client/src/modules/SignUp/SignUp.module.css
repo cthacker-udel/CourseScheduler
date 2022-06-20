@@ -1,33 +1,13 @@
 @keyframes header_text_anim {
     from {
-        transform: translate(0px, 0vh);
         color: transparent;
         font-size: 0em;
         text-shadow: 0%;
     }
     to {
-        transform: translate(0px, 0vh);
         color: black;
         font-size: 1em;
         text-shadow: 100%;
-    }
-}
-
-@keyframes username_form_anim {
-    from {
-        transform: translate(0vw, 0px);
-    }
-    to {
-        transform: translate(0vw, 0px);
-    }
-}
-
-@keyframes password_form_anim {
-    from {
-        transform: translate(0vw, 0px);
-    }
-    to {
-        transform: translate(0vw, 0px);
     }
 }
 
@@ -63,20 +43,6 @@
 
 .header_text {
     animation-name: header_text_anim;
-    animation-duration: 3s;
-    animation-timing-function: ease-in-out;
-    animation-fill-mode: forwards;
-}
-
-.username_form {
-    animation-name: username_form_anim;
-    animation-duration: 3s;
-    animation-timing-function: ease-in-out;
-    animation-fill-mode: forwards;
-}
-
-.password_form {
-    animation-name: password_form_anim;
     animation-duration: 3s;
     animation-timing-function: ease-in-out;
     animation-fill-mode: forwards;

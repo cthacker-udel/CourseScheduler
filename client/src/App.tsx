@@ -3,6 +3,7 @@ import { Container } from "react-bootstrap";
 import ReactDOM from "react-dom";
 import { IntlProvider } from "react-intl";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { SWRConfig } from "swr";
 
 import homeMessages from "./locale/en/home.json";
 import Layout from "./modules/common/components/Layout";
@@ -16,19 +17,32 @@ import SignUp from "./modules/SignUp";
  * @returns {JSX.Element} App component
  */
 const App = (): JSX.Element => (
-    <BrowserRouter window={window}>
-        <IntlProvider defaultLocale="en" locale="en" messages={homeMessages}>
-            <Container
-                className="vh-100 p-0 d-flex flex-column justify-content-between"
-                fluid
+    <SWRConfig
+        value={{
+            // eslint-disable-next-line @typescript-eslint/promise-function-async -- not needed
+            fetcher: (resource, init) =>
+                // eslint-disable-next-line @typescript-eslint/promise-function-async -- not needed
+                fetch(resource, init).then((res) => res.json()),
+            refreshInterval: 3000,
+        }}
+    >
+        <BrowserRouter window={window}>
+            <IntlProvider
+                defaultLocale="en"
+                locale="en"
+                messages={homeMessages}
             >
-                <Routes>
-                    <Route element={<Layout />} path="/">
-                        <Route element={<HomePage />} index />
-                        <Route element={<LoginPage />} path="login" />
-                        <Route element={<Course />} path="courses" />
-                        <Route element={<SignUp />} path="sign-up" />
-                        {/* <Route path="plan" element={<Plans />}>
+                <Container
+                    className="vh-100 p-0 d-flex flex-column justify-content-between overflow-hidden"
+                    fluid
+                >
+                    <Routes>
+                        <Route element={<Layout />} path="/">
+                            <Route element={<HomePage />} index />
+                            <Route element={<LoginPage />} path="login" />
+                            <Route element={<Course />} path="courses" />
+                            <Route element={<SignUp />} path="sign-up" />
+                            {/* <Route path="plan" element={<Plans />}>
                         <Route path=":planId" element={<Plan />} />
                         <Route path="new" element={<NewPlan />} />
                     </Route>
@@ -46,11 +60,12 @@ const App = (): JSX.Element => (
                     <Route path="export" element={<Exports />}>
                         <Route path="new" element={<NewExport />} />
                     </Route> */}
-                    </Route>
-                </Routes>
-            </Container>
-        </IntlProvider>
-    </BrowserRouter>
+                        </Route>
+                    </Routes>
+                </Container>
+            </IntlProvider>
+        </BrowserRouter>
+    </SWRConfig>
 );
 
 // eslint-disable-next-line jest/require-hook -- Not a jest test

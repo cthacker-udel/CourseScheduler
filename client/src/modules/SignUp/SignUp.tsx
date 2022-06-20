@@ -1,52 +1,102 @@
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
-import {
-    Button,
-    Card,
-    Form,
-    InputGroup,
-    OverlayTrigger,
-    Tooltip,
-} from "react-bootstrap";
+import { Button, Card, Form, OverlayTrigger } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { FormattedMessage, useIntl } from "react-intl";
 
+import { generateTooltip } from "../common/utils/generateTooltip";
 import styles from "./SignUp.module.css";
+
+/**
+ * Type of the data that will be utilized within the sign up form
+ */
+interface FormData {
+    confirmPassword: string;
+    password: string;
+    username: string;
+}
+
+/**
+ * General text field min length
+ */
+const TEXT_FIELD_MIN_LENGTH = 1;
+
+/**
+ * Password max length
+ */
+const PASSWORD_MAX_LENGTH = 30;
+
+/**
+ * Password min length
+ */
+const PASSWORD_MIN_LENGTH = 7;
 
 /**
  * Sign-Up Page component, will communicate with back-end to sign user up and insert record into mongo database
  */
 export const SignUp = (): JSX.Element => {
     const [showPassword, setShowPassword] = React.useState(false);
-    const { register, formState } = useForm({
+    const { register, formState, watch } = useForm<FormData>({
         defaultValues: {
             confirmPassword: "",
             password: "",
             username: "",
         },
+        mode: "all",
         reValidateMode: "onChange",
     });
 
-    /**
-     * This function generates the tooltip for the hide password button, which is conditional based on whether the password is shown or not.
-     * @param props The properties injected by the PopperJS config
-     * @param message The message the tooltip will contain
-     * @returns
-     */
-    const renderPasswordTooltip = (
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Due to not importing OverlayTriggerProps properly from react-bootstrap dep
-        props: any,
-        message: string,
-    ): JSX.Element => (
-        <Tooltip id={message} {...props}>
-            {message}
-        </Tooltip>
-    );
-
     const intl = useIntl();
-    const { errors } = formState;
-    console.log("errors = ", errors);
+    const userNameWatch = watch("username");
+    const passwordWatch = watch("password");
+    const confirmPasswordWatch = watch("confirmPassword");
+    const { errors, isValid, isValidating } = formState;
+
+    /**
+     * This function aids in the validation of the password, following a step-by-step algorithm to determine if the password is valid
+     * @param password The password the user is attempting to enter into the sign up form
+     */
+    const validatePassword = (password: string): boolean | string => {
+        const MIN_PASSWORD_REQUIRE = 1;
+        const lowercaseMatch = password.match(/[a-z]/gu);
+        const uppercaseMatch = password.match(/[A-Z]/gu);
+        const symbolMatch = password.match(/[\W]/gu);
+        if (lowercaseMatch && uppercaseMatch && symbolMatch) {
+            return true;
+        }
+        if (!lowercaseMatch) {
+            return intl.formatMessage(
+                { id: "sign_up_form_password_lower" },
+                { amt: MIN_PASSWORD_REQUIRE },
+            );
+        }
+        if (!uppercaseMatch) {
+            return intl.formatMessage(
+                { id: "sign_up_form_password_upper" },
+                { amt: MIN_PASSWORD_REQUIRE },
+            );
+        }
+        if (!symbolMatch) {
+            return intl.formatMessage(
+                { id: "sign_up_form_password_symbol" },
+                { amt: MIN_PASSWORD_REQUIRE },
+            );
+        }
+        return "Server Error";
+    };
+
+    /**
+     * This function determines whether the submit button should be disabled
+     * @returns If the submit button should be disabled
+     */
+    const isSubmitButtonDisabled = (): boolean =>
+        userNameWatch.length < TEXT_FIELD_MIN_LENGTH ||
+        passwordWatch.length < TEXT_FIELD_MIN_LENGTH ||
+        confirmPasswordWatch.length < TEXT_FIELD_MIN_LENGTH ||
+        !isValid ||
+        isValidating;
+
     return (
         <Card
             className={`text-center mx-auto w-50 text-wrap mt-5 pb-2 pr-2 pl-2 ${styles.sign_up_card}`}
@@ -67,6 +117,11 @@ export const SignUp = (): JSX.Element => {
                         </Form.Label>
                         <Form.Control
                             autoComplete="username"
+                            isInvalid={errors.username && true}
+                            isValid={
+                                !errors.username &&
+                                userNameWatch.length >= TEXT_FIELD_MIN_LENGTH
+                            }
                             placeholder={intl.formatMessage({
                                 id: "sign_up_form1_placeholder",
                             })}
@@ -76,18 +131,19 @@ export const SignUp = (): JSX.Element => {
                                 maxLength: {
                                     message: intl.formatMessage(
                                         {
-                                            id: "sign_up_form1_input_error_max_length ",
+                                            id: "sign_up_form1_input_error_max_length",
                                         },
                                         { length: 20 },
                                     ),
                                     value: 20,
                                 },
+                                pattern: {
+                                    message: "Cannot contain symbols",
+                                    value: /^[^\W]+$/u,
+                                },
                                 required: intl.formatMessage({
                                     id: "sign_up_form1_input_error_required",
                                 }),
-                                validate: (message: string) =>
-                                    message.match(/[\W]/gu) ??
-                                    "Cannot contain symbols",
                             })}
                         />
                         {errors.username && (
@@ -102,27 +158,67 @@ export const SignUp = (): JSX.Element => {
                                 <FormattedMessage id="sign_up_form2_label" />
                             </span>
                         </Form.Label>
-                        <InputGroup className="mx-auto w-50">
-                            <Form.Control
-                                autoComplete="new-password"
-                                {...register("password")}
-                                placeholder={intl.formatMessage({
-                                    id: "sign_up_form2_placeholder",
-                                })}
-                                type={showPassword ? "text" : "password"}
-                            />
+                        <div className="mx-auto w-50 d-flex flex-row justify-content-around">
+                            <span className="w-100">
+                                <Form.Control
+                                    autoComplete="new-password"
+                                    isInvalid={errors.password && true}
+                                    isValid={
+                                        !errors.password &&
+                                        passwordWatch.length >=
+                                            TEXT_FIELD_MIN_LENGTH
+                                    }
+                                    {...register("password", {
+                                        maxLength: {
+                                            message: intl.formatMessage(
+                                                {
+                                                    id: "sign_up_form_password_max_length",
+                                                },
+                                                { length: PASSWORD_MAX_LENGTH },
+                                            ),
+                                            value: PASSWORD_MAX_LENGTH,
+                                        },
+                                        minLength: {
+                                            message: intl.formatMessage(
+                                                {
+                                                    id: "sign_up_form_password_min_length",
+                                                },
+                                                { length: PASSWORD_MIN_LENGTH },
+                                            ),
+                                            value: PASSWORD_MIN_LENGTH,
+                                        },
+                                        required: {
+                                            message: intl.formatMessage({
+                                                id: "sign_up_form_password_required",
+                                            }),
+                                            value: true,
+                                        },
+                                        validate: (pass: string) =>
+                                            validatePassword(pass),
+                                    })}
+                                    placeholder={intl.formatMessage({
+                                        id: "sign_up_form2_placeholder",
+                                    })}
+                                    type={showPassword ? "text" : "password"}
+                                />
+                                {errors.password && (
+                                    <Form.Control.Feedback type="invalid">
+                                        {errors.password.message}
+                                    </Form.Control.Feedback>
+                                )}
+                            </span>
                             <OverlayTrigger
                                 overlay={(props): JSX.Element =>
-                                    renderPasswordTooltip(
-                                        props,
-                                        showPassword
-                                            ? "Hide password"
-                                            : "Show password",
-                                    )
+                                    generateTooltip("tooltip", props, {
+                                        type: showPassword
+                                            ? "Hide Password"
+                                            : "Show Password",
+                                    })
                                 }
                                 placement="right"
                             >
                                 <Button
+                                    className="ms-3 h-50"
                                     onClick={(): void => {
                                         setShowPassword(
                                             (oldValue) => !oldValue,
@@ -131,7 +227,7 @@ export const SignUp = (): JSX.Element => {
                                     variant={
                                         showPassword
                                             ? "outline-success"
-                                            : "outline-danger"
+                                            : "outline-warning"
                                     }
                                 >
                                     <FontAwesomeIcon
@@ -139,7 +235,7 @@ export const SignUp = (): JSX.Element => {
                                     />
                                 </Button>
                             </OverlayTrigger>
-                        </InputGroup>
+                        </div>
                     </Form.Group>
                     <Form.Group
                         className={`mt-5 mb-3 mx-auto w-50 ${styles.confirm_password_form}`}
@@ -149,17 +245,65 @@ export const SignUp = (): JSX.Element => {
                         </Form.Label>
                         <Form.Control
                             autoComplete="confirm-password"
+                            isInvalid={
+                                errors.confirmPassword &&
+                                confirmPasswordWatch.length >=
+                                    TEXT_FIELD_MIN_LENGTH
+                            }
+                            isValid={
+                                !errors.confirmPassword &&
+                                confirmPasswordWatch.length >=
+                                    TEXT_FIELD_MIN_LENGTH
+                            }
                             placeholder={intl.formatMessage({
                                 id: "sign_up_form3_placeholder",
                             })}
                             type="password"
-                            {...register("confirmPassword")}
+                            {...register("confirmPassword", {
+                                maxLength: {
+                                    message: intl.formatMessage(
+                                        {
+                                            id: "sign_up_form_confirm_password_max_length",
+                                        },
+                                        { amt: PASSWORD_MAX_LENGTH },
+                                    ),
+                                    value: PASSWORD_MAX_LENGTH,
+                                },
+                                minLength: {
+                                    message: intl.formatMessage(
+                                        {
+                                            id: "sign_up_form_confirm_password_min_length",
+                                        },
+                                        { amt: PASSWORD_MIN_LENGTH },
+                                    ),
+                                    value: PASSWORD_MIN_LENGTH,
+                                },
+                                required: {
+                                    message: intl.formatMessage({
+                                        id: "sign_up_form_confirm_password_required",
+                                    }),
+                                    value: true,
+                                },
+                                validate: (confirmPass: string) =>
+                                    confirmPass === passwordWatch ||
+                                    intl.formatMessage({
+                                        id: "sign_up_form_confirm_password_not_matching",
+                                    }),
+                            })}
                         />
+                        {errors.confirmPassword && (
+                            <Form.Control.Feedback type="invalid">
+                                {errors.confirmPassword.message}
+                            </Form.Control.Feedback>
+                        )}
                     </Form.Group>
                 </Form>
                 <Button
                     className={styles.sign_up_button}
-                    variant="outline-primary mt-4 mx-auto"
+                    disabled={isSubmitButtonDisabled()}
+                    variant={`outline-${
+                        isSubmitButtonDisabled() ? "secondary" : "success"
+                    } mt-4 mx-auto`}
                 >
                     <FormattedMessage id="sign_up_form_submit_button" />
                 </Button>
