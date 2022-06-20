@@ -11,7 +11,7 @@ export class Logger {
     /**
      * No-Argument constructor, creates a winston logger with default parameters (for now)
      */
-    public constructor(inProduction: boolean) {
+    public constructor(inProduction = false) {
         this.logger = winston.createLogger({
             defaultMeta: { service: "logging-service" },
             format: winston.format.json(),
@@ -37,7 +37,7 @@ export class Logger {
      * @param message The header message for the log
      * @param content The content of the log
      */
-    public log = (level: LoggingType, message: string, content: unknown): void => {
+    public log = (level: LoggingType, message: string, content?: unknown): void => {
         this.logger.log({
             content,
             level,
