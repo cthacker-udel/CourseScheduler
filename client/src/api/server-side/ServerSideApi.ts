@@ -7,8 +7,15 @@ import { Logger } from "../Logger";
  * This is a Server-Side API wrapper class
  */
 export class ServerSideApi {
+
+    /**
+     * Base url for requests
+     */
     protected BASE_URL: string;
 
+    /**
+     * Logger instance
+     */
     protected logger: Logger;
 
     /**
@@ -50,11 +57,11 @@ export class ServerSideApi {
      * @param headers The headers of the post request
      * @returns The response of the post request
      */
-    public post = async (
+    public post = async <T>(
         url: string,
         body?: { [key: string]: unknown },
         headers?: { [key: string]: string },
-    ): Promise<Response> => {
+    ): Promise<T> => {
         try {
             const response: Response = await fetch(`${this.BASE_URL}${url}`, {
                 body: JSON.stringify(body ?? {}),
@@ -64,7 +71,7 @@ export class ServerSideApi {
                 mode: "no-cors",
             });
             this.logger.log("info", `Post request with url ${url} successful`);
-            return response;
+            return await response.json();
         } catch (error: unknown) {
             this.logger.log("error", `Post request with url ${url} failed`, error);
             throw error;
@@ -78,11 +85,11 @@ export class ServerSideApi {
      * @param headers The headers of the delete request
      * @returns The response from the delete request
      */
-    public delete = async (
+    public delete = async <T>(
         url: string,
         body?: { [key: string]: unknown },
         headers?: { [key: string]: string },
-    ): Promise<Response> => {
+    ): Promise<T> => {
         try {
             const response: Response = await fetch(`${this.BASE_URL}${url}`, {
                 body: JSON.stringify(body ?? {}),
@@ -92,7 +99,7 @@ export class ServerSideApi {
                 mode: "no-cors",
             });
             this.logger.log("info", `Delete request with url ${url} successful`);
-            return response;
+            return await response.json();
         } catch (error: unknown) {
             this.logger.log("error", `Delete request with url ${url} failed`, error);
             throw error;
@@ -106,11 +113,11 @@ export class ServerSideApi {
      * @param headers The headers of the put request
      * @returns The response from the put request
      */
-    public put = async (
+    public put = async <T>(
         url: string,
         body?: { [key: string]: unknown },
         headers?: { [key: string]: string },
-    ): Promise<Response> => {
+    ): Promise<T> => {
         try {
             const response: Response = await fetch(`${this.BASE_URL}${url}`, {
                 body: JSON.stringify(body ?? {}),
@@ -120,7 +127,7 @@ export class ServerSideApi {
                 mode: "no-cors",
             });
             this.logger.log("info", `Put request with url ${url} successful`);
-            return response;
+            return await response.json();
         } catch (error: unknown) {
             this.logger.log("error", `Put request with url ${url} failed`, error);
             throw error;
