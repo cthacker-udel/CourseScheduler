@@ -1,11 +1,22 @@
 import { Module } from "@nestjs/common";
-import { SchemaModule } from "src/schemas/schema.module";
+import { MongooseModule } from "@nestjs/mongoose";
+import { User, UserSchema } from "src/schemas/user/user.schema";
+import { CryptoModule } from "../Crypto/crypto.module";
 import { UserService } from "./user.service";
 
+/**
+ * The user module, exports the UserService while importing the SchemaModule
+ */
 @Module({
-    imports: [SchemaModule],
+    imports: [
+        CryptoModule,
+        MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
+    ],
     controllers: [],
     providers: [UserService],
-    exports: [UserService],
+    exports: [
+        UserService,
+        MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
+    ],
 })
 export class UserModule {}
