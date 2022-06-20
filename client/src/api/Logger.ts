@@ -1,4 +1,4 @@
-import * as winston from "winston";
+import winston from "winston";
 
 type LoggingType = "debug" | "error" | "http" | "info" | "silly" | "verbose" | "warn";
 
