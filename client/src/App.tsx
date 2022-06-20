@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/promise-function-async -- not needed for swr config */
+/* eslint-disable @typescript-eslint/no-explicit-any -- not needed for swr */
 import React from "react";
 import { Container } from "react-bootstrap";
 import ReactDOM from "react-dom";
@@ -19,10 +21,7 @@ import SignUp from "./modules/SignUp";
 const App = (): JSX.Element => (
     <SWRConfig
         value={{
-            // eslint-disable-next-line @typescript-eslint/promise-function-async -- not needed
-            fetcher: (resource, init) =>
-                // eslint-disable-next-line @typescript-eslint/promise-function-async -- not needed
-                fetch(resource, init).then((res) => res.json()),
+            fetcher: (resource: any, init: any) => fetch(resource, init).then((res) => res.json()),
             refreshInterval: 3000,
         }}
     >

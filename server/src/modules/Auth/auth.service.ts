@@ -1,7 +1,10 @@
-import { Injectable } from "@nestjs/common";
+import { HttpStatus, Injectable } from "@nestjs/common";
 import { CryptoService } from "../Crypto/crypto.service";
 import { UserService } from "../User/user.service";
-import { JwtService } from "@nestjs/jwt";
+import { ApiError, generateApiError } from "src/shared/api/ApiError";
+import { generateErrorCode } from "src/shared/api/ErrorCode";
+import { ApiSuccess, generateApiSuccess } from "src/shared/api/ApiSuccess";
+import { CreateUserDTO } from "src/shared/dto/user/create.user.dto";
 
 /**
  * Handles all authentication functions
@@ -15,7 +18,6 @@ export class AuthService {
     constructor(
         private userService: UserService,
         private cryptoService: CryptoService,
-        private jwtService: JwtService,
     ) {}
 
     /**
@@ -24,26 +26,87 @@ export class AuthService {
      * @param password The password of the user
      * @returns The user that is found and matches the given password
      */
-    validateUser = async (username: string, password: string) => {
-        const user = await this.userService.findOne(username);
-        const encodedPassword = await this.cryptoService.encode(password);
-        if (user && user.passwordHash === encodedPassword) {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars -- result is used, but we strip passwordHash from the object to return the object without the password
-            const { passwordHash, ...result } = user;
-            return result;
-        }
-        return null;
+    validatePassword = async (
+        savedPassword: string,
+        savedSalt: string,
+        savedIterations: number,
+        enteredPassword: string,
+    ) => {
+        return this.cryptoService.validatePassword(
+            enteredPassword,
+            savedPassword,
+            savedSalt,
+            savedIterations,
+        );
     };
 
     /**
-     * This function takes a User database object and returns the object JWT encoded
-     * @param user The user object from the database
-     * @returns The user object from the database encoded into a JWT
+     * This function takes in the user input and returns a boolean if successful or an ApiError if unsuccessful
+     * @param username The username supplied via front-end
+     * @param email The email supplied via front-end
+     * @param enteredPassword The entered password in the login form
+     * @returns Whether the user can login, if not, an ApiError specifying details of why the login failed
      */
-    login = async (user: any) => {
-        const payload = { username: user.email, sub: user["_id"] };
-        return {
-            access_token: this.jwtService.sign(payload),
-        };
+    login = async (
+        username: string,
+        email: string,
+        enteredPassword: string,
+    ): Promise<ApiError | boolean> => {
+        if (this.userService.doesUsernameExist(username)) {
+            if (this.userService.doesEmailExist(email)) {
+                const storedPasswordDetails =
+                    await this.userService.getSavedPasswordValidationInfo(
+                        username,
+                        email,
+                    );
+                const passwordValidationResult = await this.validatePassword(
+                    storedPasswordDetails.hash,
+                    storedPasswordDetails.salt,
+                    storedPasswordDetails.iterations,
+                    enteredPassword,
+                );
+                if (!passwordValidationResult) {
+                    console.error("Password invalid");
+                    return generateApiError(
+                        HttpStatus.BAD_REQUEST,
+                        generateErrorCode(5),
+                    );
+                }
+                return true;
+            } else {
+                console.error("Login failed: Email does not exist");
+                return generateApiError(
+                    HttpStatus.BAD_REQUEST,
+                    generateErrorCode(2),
+                );
+            }
+        } else {
+            console.error("Login failed: User does not exist");
+            return generateApiError(
+                HttpStatus.BAD_REQUEST,
+                generateErrorCode(1),
+            );
+        }
+    };
+
+    createUser = async (
+        request: CreateUserDTO,
+    ): Promise<ApiError | ApiSuccess> => {
+        if (!this.userService.doesUsernameExist(request.username)) {
+            if (!this.userService.doesEmailExist(request.email)) {
+                await this.userService.create(request);
+                return generateApiSuccess(HttpStatus.OK, { canLogin: true });
+            } else {
+                return generateApiError(
+                    HttpStatus.BAD_REQUEST,
+                    generateErrorCode(2),
+                );
+            }
+        } else {
+            return generateApiError(
+                HttpStatus.BAD_REQUEST,
+                generateErrorCode(1),
+            );
+        }
     };
 }
