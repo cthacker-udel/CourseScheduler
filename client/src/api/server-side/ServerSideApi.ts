@@ -117,7 +117,7 @@ export class ServerSideApi {
                 cache: "no-cache",
                 headers: headers ?? {},
                 method: "PUT",
-                mode: "no-cors"
+                mode: "no-cors",
             });
             this.logger.log("info", `Put request with url ${url} successful`);
             return response;
