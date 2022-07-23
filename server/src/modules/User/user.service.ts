@@ -4,7 +4,7 @@ import type { Model } from "mongoose";
 import {
     type CreateUserDTO,
     ServerSideCreateUserDTO,
-} from "src/shared/dto/user/create.user.dto";
+} from "src/dto/user/create.user.dto";
 import { User, type UserDocument } from "src/schemas/user/user.schema";
 import {
     type CryptoService,

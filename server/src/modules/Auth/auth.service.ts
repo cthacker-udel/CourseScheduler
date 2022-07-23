@@ -1,10 +1,10 @@
 import { HttpStatus, Injectable } from "@nestjs/common";
 import { CryptoService } from "../Crypto/crypto.service";
 import { UserService } from "../User/user.service";
-import { ApiError, generateApiError } from "src/shared/api/ApiError";
-import { generateErrorCode } from "src/shared/api/ErrorCode";
-import { ApiSuccess, generateApiSuccess } from "src/shared/api/ApiSuccess";
-import { CreateUserDTO } from "src/shared/dto/user/create.user.dto";
+import { ApiError, generateApiError } from "src/@types/api/ApiError";
+import { generateErrorCode } from "src/@types/api/ErrorCode";
+import { ApiSuccess, generateApiSuccess } from "src/@types/api/ApiSuccess";
+import { CreateUserDTO } from "src/dto/user/create.user.dto";
 
 /**
  * Handles all authentication functions

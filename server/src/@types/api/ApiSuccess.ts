@@ -3,10 +3,10 @@ import { HttpStatus } from "@nestjs/common";
 /**
  * An ApiSuccess interface, status representing the response from the backend
  */
-export interface ApiSuccess {
+export type ApiSuccess = {
     status: HttpStatus;
     result?: any;
-}
+};
 
 /**
  * Generates an ApiSuccess response

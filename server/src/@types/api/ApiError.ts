@@ -5,7 +5,7 @@ import { VALID_CODES } from "./ServerSideErrorCodes";
 /**
  * Represents an error occurring in the backend
  */
-export interface ApiError {
+export type ApiError = {
     /**
      * The HTTP response code
      */
@@ -18,7 +18,7 @@ export interface ApiError {
      * The error code, designating what kind of error occurred
      */
     errorCode: VALID_CODES;
-}
+};
 
 /**
  * This function takes in an ErrorCode object and returns a formatted ApiError

@@ -1,9 +1,9 @@
 import { Body, Controller, HttpStatus, Post } from "@nestjs/common";
-import { ApiError, generateApiError } from "src/shared/api/ApiError";
-import { ApiSuccess } from "src/shared/api/ApiSuccess";
-import { generateErrorCode } from "src/shared/api/ErrorCode";
-import { CreateUserDTO } from "src/shared/dto/user/create.user.dto";
-import { LoginDto } from "src/shared/dto/user/login.dto";
+import { ApiError, generateApiError } from "src/@types/api/ApiError";
+import { ApiSuccess } from "src/@types/api/ApiSuccess";
+import { generateErrorCode } from "src/@types/api/ErrorCode";
+import { CreateUserDTO } from "src/dto/user/create.user.dto";
+import { LoginDto } from "src/dto/user/login.dto";
 import { UserService } from "../User/user.service";
 import { AuthService } from "./auth.service";
 
