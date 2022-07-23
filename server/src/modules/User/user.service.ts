@@ -1,11 +1,11 @@
 import { Injectable } from "@nestjs/common";
-import { InjectModel } from "@nestjs/mongoose";
-import type { Model } from "mongoose";
+import { InjectRepository } from "@nestjs/typeorm";
+import type { Repository } from "typeorm";
 import {
     type CreateUserDTO,
     ServerSideCreateUserDTO,
 } from "src/dto/user/create.user.dto";
-import { User, type UserDocument } from "src/schemas/user/user.schema";
+import { User } from "src/entities";
 import {
     type CryptoService,
     type EncodingResult,
@@ -20,7 +20,7 @@ export class UserService {
      * @param userModel DI UserModel, allows for operations on the user database
      */
     constructor(
-        @InjectModel(User.name) private userModel: Model<UserDocument>,
+        @InjectRepository(User) private usersRepository: Repository<User>,
         private readonly cryptoService: CryptoService,
     ) {}
 
@@ -52,25 +52,7 @@ export class UserService {
         email: string,
     ): Promise<EncodingResult> => {
         let user: User;
-        await this.userModel.findOne(
-            { username, email },
-            null,
-            null,
-            (error, result) => {
-                if (error) {
-                    console.error(
-                        `Could not get saved password, error : ${error}`,
-                    );
-                    user = null;
-                } else if (!result) {
-                    console.error(`Could not find user, error : ${error}`);
-                    user = null;
-                } else {
-                    user = result;
-                    console.log("Found user");
-                }
-            },
-        );
+        await this.usersRepository.findOne({ where: { username, email } });
         return {
             hash: user.hash,
             iterations: user.iterations,
@@ -85,22 +67,7 @@ export class UserService {
      */
     doesUsernameExist = async (username: string): Promise<boolean> => {
         let isExistent;
-        await this.userModel.findOne(
-            { username },
-            null,
-            null,
-            (error, result) => {
-                if (error) {
-                    console.error(`Could not find username, error : ${error}`);
-                    isExistent = false;
-                } else if (result) {
-                    console.log(`Username ${username} found`);
-                    isExistent = true;
-                } else {
-                    isExistent = false;
-                }
-            },
-        );
+        await this.usersRepository.findOne({ where: { username } });
         return isExistent;
     };
 
@@ -111,17 +78,7 @@ export class UserService {
      */
     doesEmailExist = async (email: string): Promise<boolean> => {
         let isExistent;
-        await this.userModel.findOne({ email }, null, null, (error, result) => {
-            if (error) {
-                console.error(`Could not find email, error : ${error}`);
-                isExistent = false;
-            } else if (result) {
-                console.log(`Email ${email} found`);
-                isExistent = true;
-            } else {
-                isExistent = false;
-            }
-        });
+        await this.usersRepository.findOne({ where: { email } });
         return isExistent;
     };
 
@@ -135,7 +92,7 @@ export class UserService {
             request.password,
         );
         const user = this.createServerSideUser(request, encodingResult);
-        const createdUser = new this.userModel(user);
-        return createdUser.save();
+        const createdUser = await this.usersRepository.create(user);
+        return await this.usersRepository.save(createdUser);
     };
 }
