@@ -4,6 +4,7 @@ import React from "react";
 import { Button, Card, Form, OverlayTrigger } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { FormattedMessage, useIntl } from "react-intl";
+import { EMAIL, USERNAME } from "src/common";
 import { generateTooltip } from "src/helpers";
 
 import styles from "./SignUp.module.css";
@@ -13,6 +14,7 @@ import styles from "./SignUp.module.css";
  */
 type FormData = {
     confirmPassword: string;
+    email: string;
     password: string;
     username: string;
 };
@@ -40,6 +42,7 @@ export const SignUp = (): JSX.Element => {
     const { register, formState, watch } = useForm<FormData>({
         defaultValues: {
             confirmPassword: "",
+            email: "",
             password: "",
             username: "",
         },
@@ -51,6 +54,7 @@ export const SignUp = (): JSX.Element => {
     const userNameWatch = watch("username");
     const passwordWatch = watch("password");
     const confirmPasswordWatch = watch("confirmPassword");
+    const emailWatch = watch("email");
     const { errors, isValid, isValidating } = formState;
 
     /**
@@ -108,6 +112,59 @@ export const SignUp = (): JSX.Element => {
             </Card.Header>
             <Card.Body>
                 <Form>
+                    <Form.Group className="w-50 mx-auto mt-4 mb-3">
+                        <Form.Label className="fw-bold mb-2 fs-5">
+                            <FormattedMessage id="sign_up_form0_title" />
+                        </Form.Label>
+                        <Form.Control
+                            autoComplete="email"
+                            isInvalid={errors.email && true}
+                            isValid={
+                                !errors.email &&
+                                emailWatch.length >= TEXT_FIELD_MIN_LENGTH
+                            }
+                            placeholder={intl.formatMessage({
+                                id: "sign_up_form0_placeholder",
+                            })}
+                            required
+                            type="email"
+                            {...register("email", {
+                                maxLength: {
+                                    message: intl.formatMessage(
+                                        { id: "sign_up_form0_max_length" },
+                                        { length: 50 },
+                                    ),
+                                    value: 50,
+                                },
+                                minLength: {
+                                    message: intl.formatMessage(
+                                        {
+                                            id: "sign_up_form0_min_length",
+                                        },
+                                        { length: 1 },
+                                    ),
+                                    value: 1,
+                                },
+                                pattern: {
+                                    message: intl.formatMessage({
+                                        id: "sign_up_form0_validation_error",
+                                    }),
+                                    value: EMAIL,
+                                },
+                                required: {
+                                    message: intl.formatMessage({
+                                        id: "sign_up_form0_required",
+                                    }),
+                                    value: true,
+                                },
+                            })}
+                        />
+                        {errors.email && (
+                            <Form.Control.Feedback type="invalid">
+                                {errors.email.message}
+                            </Form.Control.Feedback>
+                        )}
+                    </Form.Group>
                     <Form.Group
                         className={`w-50 mx-auto mt-4 mb-3 ${styles.username_form}`}
                         controlId="username-sign-up-form"
@@ -139,7 +196,7 @@ export const SignUp = (): JSX.Element => {
                                 },
                                 pattern: {
                                     message: "Cannot contain symbols",
-                                    value: /^[^\W]+$/u,
+                                    value: USERNAME,
                                 },
                                 required: intl.formatMessage({
                                     id: "sign_up_form1_input_error_required",
