@@ -20,8 +20,8 @@ export class UserService {
      * @param userModel DI UserModel, allows for operations on the user database
      */
     constructor(
-        @InjectRepository(User) private usersRepository: Repository<User>,
-        private readonly cryptoService: CryptoService,
+        @InjectRepository(User, "mongo")
+        private usersRepository: Repository<User>, // private readonly cryptoService: CryptoService,
     ) {}
 
     /**
@@ -88,10 +88,15 @@ export class UserService {
      * @returns The created user
      */
     create = async (request: CreateUserDTO): Promise<User | undefined> => {
-        const encodingResult: EncodingResult = await this.cryptoService.encode(
-            request.password,
-        );
-        const user = this.createServerSideUser(request, encodingResult);
+        // const encodingResult: EncodingResult = await this.cryptoService.encode(
+        //     request.password,
+        // );
+        // const user = this.createServerSideUser(request, encodingResult);
+        const user = this.createServerSideUser(request, {
+            salt: "hello",
+            hash: "random",
+            iterations: 10,
+        });
         const createdUser = await this.usersRepository.create(user);
         return await this.usersRepository.save(createdUser);
     };

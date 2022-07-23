@@ -8,7 +8,7 @@ import { User } from "src/entities";
  * The user module, exports the UserService while importing the SchemaModule
  */
 @Module({
-    imports: [CryptoModule, TypeOrmModule.forFeature([User])],
+    imports: [TypeOrmModule.forFeature([User], "mongo")],
     controllers: [],
     providers: [UserService],
     exports: [UserService],
