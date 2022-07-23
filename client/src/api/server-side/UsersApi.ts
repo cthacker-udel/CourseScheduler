@@ -12,7 +12,7 @@ export class UsersApi extends ServerSideApi {
      * @param request The sign up request, appended into the body of the request
      * @returns
      */
-    public signUp = async (
+    public static signUp = async (
         request: SignUpRequest,
     ): Promise<ApiError | ApiSuccess> => {
         const result = await super.post<ApiError | ApiSuccess>(
