@@ -1,4 +1,4 @@
-import type { SemesterTerm } from "src/schemas/semester/SemesterTerm";
+import type { SemesterTerm } from "src/@types";
 
 export class CreateSemesterDTO {
     term: SemesterTerm;
