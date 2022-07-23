@@ -86,15 +86,10 @@ export class UserService {
      * @returns The created user
      */
     create = async (request: CreateUserDTO): Promise<User | undefined> => {
-        // const encodingResult: EncodingResult = await this.cryptoService.encode(
-        //     request.password,
-        // );
-        // const user = this.createServerSideUser(request, encodingResult);
-        const user = this.createServerSideUser(request, {
-            salt: "hello",
-            hash: "random",
-            iterations: 10,
-        });
+        const encodingResult: EncodingResult = await this.cryptoService.encode(
+            request.password,
+        );
+        const user = this.createServerSideUser(request, encodingResult);
         const createdUser = await this.usersRepository.create(user);
         return await this.usersRepository.save(createdUser);
     };
