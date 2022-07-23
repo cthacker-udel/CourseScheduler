@@ -20,6 +20,12 @@
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "outDir": "build",
+    "paths": {
+      "@/common/*": ["modules/common/*"],
+      "@/modules/*": ["modules/*"],
+      "@/hooks/*": ["hooks/*"],
+      "@/types/*": ["common/types/*"]
+    },
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "sourceMap": true,

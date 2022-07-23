@@ -9,6 +9,7 @@ import {
     faUserPlus,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Link from "next/link";
 import React from "react";
 import {
     Button,
@@ -21,7 +22,6 @@ import {
 } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { FormattedMessage } from "react-intl";
-import { Link } from "react-router-dom";
 import loginFormDetails from "src/locale/en/login.json";
 
 import styles from "./LoginPage.module.css";
@@ -29,7 +29,7 @@ import styles from "./LoginPage.module.css";
 /**
  * Interface for managing the state of overlays
  */
-interface LoginPageState {
+type LoginPageState {
     showPasswordOverlay: boolean;
     showLoginOverlay: boolean;
     showSignUpOverlay: boolean;
@@ -48,7 +48,7 @@ type LoginPageReducerActionType =
 /**
  * Action that will be utilized in the reducer
  */
-interface LoginPageReducerAction {
+type LoginPageReducerAction {
     type: LoginPageReducerActionType;
     payload: LoginPageState;
 }
@@ -178,7 +178,7 @@ export const LoginPage = (): JSX.Element => {
                                         id="email_help_block"
                                     >
                                         {loginFormDetails.email_form_help_text}{" "}
-                                        <Link to="forgot/email">
+                                        <Link href="forgot/email">
                                             {loginFormDetails.email_forgot_text}
                                         </Link>
                                     </div>
@@ -254,7 +254,7 @@ export const LoginPage = (): JSX.Element => {
                                         {
                                             loginFormDetails.password_form_help_text
                                         }{" "}
-                                        <Link to="forgot/password">
+                                        <Link href="forgot/password">
                                             {
                                                 loginFormDetails.password_forgot_text
                                             }
@@ -265,7 +265,7 @@ export const LoginPage = (): JSX.Element => {
                         </Card>
                     </Card.Body>
                     <div className="mb-4 mt-2">
-                        <Link to="courses">
+                        <Link href="courses">
                             <Button
                                 className="me-2"
                                 disabled={
@@ -296,7 +296,7 @@ export const LoginPage = (): JSX.Element => {
                                 <FontAwesomeIcon icon={faSignIn} />
                             </Button>
                         </Link>
-                        <Link replace to="/sign-up">
+                        <Link replace href="/sign-up">
                             <Button
                                 className="ms-2"
                                 onMouseEnter={(): void => {

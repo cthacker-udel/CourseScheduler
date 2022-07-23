@@ -86,7 +86,7 @@ export const HomePage = (): JSX.Element => {
                     >
                         <Button
                             className="m-2"
-                            onClick={async (): void => {
+                            onClick={async (): Promise<void> => {
                                 await router.push("/login");
                             }}
                             ref={loginRef}
@@ -106,7 +106,7 @@ export const HomePage = (): JSX.Element => {
                     >
                         <Button
                             className="m-2"
-                            onClick={async (): void => {
+                            onClick={async (): Promise<void> => {
                                 await router.push("/sign-up");
                             }}
                             ref={signUpRef}
