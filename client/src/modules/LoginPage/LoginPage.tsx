@@ -6,6 +6,7 @@ import {
     faEyeSlash,
     faKey,
     faSignIn,
+    faUser,
     faUserPlus,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -47,6 +48,7 @@ export const LoginPage = (): JSX.Element => {
         defaultValues: {
             email: "",
             password: "",
+            username: "",
         },
         delayError: undefined,
         mode: "all",
@@ -87,6 +89,39 @@ export const LoginPage = (): JSX.Element => {
                             <Form
                                 className={`w-100 ${styles.login_email_form}`}
                             >
+                                <Form.Group className="mx-auto w-50 mt-4 mb-4">
+                                    <InputGroup>
+                                        <InputGroup.Text>
+                                            <label htmlFor="username_login_form_component">
+                                                <FontAwesomeIcon
+                                                    icon={faUser}
+                                                />
+                                            </label>
+                                        </InputGroup.Text>
+                                        <Form.Control
+                                            className="p-2 w-75 mr-auto"
+                                            id="username_login_form_component"
+                                            {...register("username")}
+                                            placeholder={
+                                                loginFormDetails.login_username_placeholder
+                                            }
+                                            type="text"
+                                        />
+                                    </InputGroup>
+                                    <div
+                                        className="text-start w-100 m-2 text-muted"
+                                        id="username_help_block"
+                                    >
+                                        {
+                                            loginFormDetails.login_username_help_text
+                                        }{" "}
+                                        <Link href="forgot/username">
+                                            {
+                                                loginFormDetails.login_username_forgot_text
+                                            }
+                                        </Link>
+                                    </div>
+                                </Form.Group>
                                 <Form.Group className="mx-auto w-50 mt-4 mb-4">
                                     <InputGroup>
                                         <InputGroup.Text>

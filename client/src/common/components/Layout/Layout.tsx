@@ -9,7 +9,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import React, { type ReactNode } from "react";
-import { Button, Navbar, OverlayTrigger } from "react-bootstrap";
+import { Button, Container, OverlayTrigger } from "react-bootstrap";
 import { generateTooltip } from "src/helpers";
 
 type LayoutProps = {
@@ -98,6 +98,7 @@ export const Layout = ({ children }: LayoutProps): JSX.Element => {
                         toggleShowOverlay("home", false);
                     }}
                     ref={homeRef}
+                    title="Home Page"
                     variant="outline-primary"
                 >
                     <FontAwesomeIcon icon={faHome} />
@@ -125,6 +126,7 @@ export const Layout = ({ children }: LayoutProps): JSX.Element => {
                         toggleShowOverlay("course", false);
                     }}
                     ref={courseRef}
+                    title="Courses"
                     variant="outline-primary"
                 >
                     <FontAwesomeIcon icon={faBook} />
@@ -152,6 +154,7 @@ export const Layout = ({ children }: LayoutProps): JSX.Element => {
                         toggleShowOverlay("semester", false);
                     }}
                     ref={semesterRef}
+                    title="Semesters"
                     variant="outline-primary"
                 >
                     <FontAwesomeIcon icon={faBookAtlas} />
@@ -177,6 +180,7 @@ export const Layout = ({ children }: LayoutProps): JSX.Element => {
                         toggleShowOverlay("plan", false);
                     }}
                     ref={planRef}
+                    title="Plans"
                     variant="outline-primary"
                 >
                     <FontAwesomeIcon icon={faClipboard} />
@@ -204,6 +208,7 @@ export const Layout = ({ children }: LayoutProps): JSX.Element => {
                         toggleShowOverlay("import", false);
                     }}
                     ref={importRef}
+                    title="File Import"
                     variant="outline-primary"
                 >
                     <FontAwesomeIcon icon={faDownload} />
@@ -231,6 +236,7 @@ export const Layout = ({ children }: LayoutProps): JSX.Element => {
                         toggleShowOverlay("export", false);
                     }}
                     ref={exportRef}
+                    title="File Export"
                     variant="outline-primary"
                 >
                     <FontAwesomeIcon icon={faFileExport} />
@@ -242,14 +248,8 @@ export const Layout = ({ children }: LayoutProps): JSX.Element => {
     return (
         <>
             <div>{children}</div>
-            <div>
-                {" "}
-                <Navbar
-                    bg="dark"
-                    className="d-flex flex-row justify-content-around pt-3 pb-3"
-                >
-                    {navigationLinks}
-                </Navbar>
+            <div className="d-flex flex-row justify-content-around pb-3 pt-3 bg-dark bg-gradient">
+                {navigationLinks}
             </div>
         </>
     );

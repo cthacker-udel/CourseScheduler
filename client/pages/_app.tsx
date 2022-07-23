@@ -17,7 +17,7 @@ const ApplicationWrapper = ({
 }: AppProps): JSX.Element => (
     <IntlProvider defaultLocale="en" locale="en" messages={homeMessages}>
         <Container
-            className="vh-100 p-0 d-flex flex-column justify-content-between overflow-hidden"
+            className="vh-100 p-0 d-flex flex-column justify-content-around overflow-hidden"
             fluid
         >
             <Layout>
