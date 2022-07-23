@@ -1,64 +1,51 @@
 {
-  "compilerOptions": {
-    "baseUrl": ".",
-    "allowSyntheticDefaultImports": true,
-    "declaration": true,
-    "declarationMap": true,
-    "esModuleInterop": true,
-    "jsx": "preserve",
-    "lib": [
-      "es5",
-      "es6",
-      "dom",
-      "es2016",
-      "dom.iterable",
-      "es2015.iterable",
-      "esnext"
-    ],
-    "module": "es2020",
-    "moduleResolution": "node",
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
-    "outDir": "build",
-    "paths": {
-      "@/types": ["src/@types/*"],
-      "@/hooks": ["src/hooks/*"],
-      "@/modules": ["src/modules/*"],
-      "@/locale": ["src/locale/*"],
-      "@/common": ["src/common/*"],
-      "@/helpers": ["src/helpers/*"],
-      "@/config": ["src/config/*"]
+    "compilerOptions": {
+        "baseUrl": ".",
+        "allowSyntheticDefaultImports": true,
+        "declaration": true,
+        "declarationMap": true,
+        "esModuleInterop": true,
+        "jsx": "preserve",
+        "lib": [
+            "es5",
+            "es6",
+            "dom",
+            "es2016",
+            "dom.iterable",
+            "es2015.iterable",
+            "esnext"
+        ],
+        "module": "es2020",
+        "moduleResolution": "node",
+        "noUnusedLocals": false,
+        "noUnusedParameters": false,
+        "outDir": "build",
+        "resolveJsonModule": true,
+        "skipLibCheck": true,
+        "sourceMap": true,
+        "strict": true,
+        "target": "esnext",
+        "types": ["node"],
+        "plugins": [
+            {
+                "name": "typescript-plugin-css-modules"
+            }
+        ],
+        "allowJs": true,
+        "forceConsistentCasingInFileNames": true,
+        "noEmit": true,
+        "incremental": true,
+        "isolatedModules": true
     },
-    "resolveJsonModule": true,
-    "skipLibCheck": true,
-    "sourceMap": true,
-    "strict": true,
-    "target": "esnext",
-    "types": [
-      "node"
+    "include": [
+        "**/*.ts",
+        "**/*.tsx",
+        "**/*.d.ts",
+        "**/*.mjs",
+        "**/*.js",
+        "**/*.jsx",
+        "**/*.json",
+        "playground.tsx"
     ],
-    "plugins": [
-      {
-        "name": "typescript-plugin-css-modules"
-      }
-    ],
-    "allowJs": true,
-    "forceConsistentCasingInFileNames": true,
-    "noEmit": true,
-    "incremental": true,
-    "isolatedModules": true
-  },
-  "include": [
-    "**/*.ts",
-    "**/*.tsx",
-    "**/*.d.ts",
-    "**/*.mjs",
-    "**/*.js",
-    "**/*.jsx",
-    "**/*.json",
-    "playground.tsx"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+    "exclude": ["node_modules"]
 }

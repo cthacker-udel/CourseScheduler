@@ -57,6 +57,8 @@ export const SignUp = (): JSX.Element => {
     const emailWatch = watch("email");
     const { errors, isValid, isValidating } = formState;
 
+    console.log(watch());
+
     /**
      * This function aids in the validation of the password, following a step-by-step algorithm to determine if the password is valid
      * @param password The password the user is attempting to enter into the sign up form

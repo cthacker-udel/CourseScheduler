@@ -1,15 +1,14 @@
-import { configuration } from "src/config/configuration";
-import { localConfiguration } from "src/config/configuration.local";
+import { configuration, localConfiguration } from "src/config";
 import { Logger } from "src/log/Logger";
 
 /**
- * This is a Server-Side API wrapper class
+ * Client side api, makes requests to the pages to then call the server side api
  */
-export class ServerSideApi {
+export class ClientSideApi {
     /**
      * Base url for requests
      */
-    protected BASE_URL = "http://localhost:3100";
+    protected BASE_URL = "http://localhost:3000/api";
 
     /**
      * Logger instance
@@ -28,9 +27,10 @@ export class ServerSideApi {
     }
 
     /**
-     * This function serves as a get request helper method for server-side requests
-     * @param url The url the user is fetching from
-     * @returns The promise of the type of the response
+     * This function serves as a get request helper method for client-side reqeusts
+     *
+     * @param url
+     * @param headers
      */
     public get = async <T>(
         url: string,
@@ -62,7 +62,7 @@ export class ServerSideApi {
     };
 
     /**
-     * This function serves as a post request helper method for server-side requests
+     * This function serves as a post request helper method for client-side requests
      * @param url The url the user is fetching from
      * @param body The body of the post request
      * @param headers The headers of the post request
@@ -94,7 +94,7 @@ export class ServerSideApi {
     };
 
     /**
-     * This function serves as a delete request helper method for server-side requests
+     * This function serves as a delete request helper method for client-side requests
      * @param url The url of the delete request
      * @param body The body of the delete request
      * @param headers The headers of the delete request
@@ -129,7 +129,7 @@ export class ServerSideApi {
     };
 
     /**
-     * This function serves as a put request helper method for server-side requests
+     * This function serves as a put request helper method for client-side requests
      * @param url The url of the put request
      * @param body The body of the put request
      * @param headers The headers of the put request
