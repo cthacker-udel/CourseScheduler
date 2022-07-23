@@ -1,4 +1,4 @@
-import type { Course } from "./Course";
+import type { Course } from "../Course/Course";
 
 /**
  * Semester type, contains a list of courses

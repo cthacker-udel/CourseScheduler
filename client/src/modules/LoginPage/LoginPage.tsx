@@ -23,76 +23,9 @@ import {
 import { useForm } from "react-hook-form";
 import { FormattedMessage } from "react-intl";
 import loginFormDetails from "src/locale/en/login.json";
+import { LoginPageReducer } from "src/reducer";
 
 import styles from "./LoginPage.module.css";
-
-/**
- * Interface for managing the state of overlays
- */
-type LoginPageState = {
-    showPasswordOverlay: boolean;
-    showLoginOverlay: boolean;
-    showSignUpOverlay: boolean;
-    showPassword: boolean;
-};
-
-/**
- * Types of actions the user can make
- */
-type LoginPageReducerActionType =
-    | "setLoginOverlay"
-    | "setPasswordOverlay"
-    | "setShowPassword"
-    | "setSignUpOverlay";
-
-/**
- * Action that will be utilized in the reducer
- */
-type LoginPageReducerAction = {
-    type: LoginPageReducerActionType;
-    payload: LoginPageState;
-};
-
-/**
- *
- * @param state The current state of the application
- * @param action The action the user is taking, along with any updates to state they want to make
- * @returns The updated state
- */
-const LoginPageReducer = (
-    state: LoginPageState,
-    action: LoginPageReducerAction,
-): LoginPageState => {
-    switch (action.type) {
-        case "setLoginOverlay": {
-            return {
-                ...state,
-                showLoginOverlay: action.payload.showLoginOverlay,
-            };
-        }
-        case "setPasswordOverlay": {
-            return {
-                ...state,
-                showPasswordOverlay: action.payload.showPasswordOverlay,
-            };
-        }
-        case "setSignUpOverlay": {
-            return {
-                ...state,
-                showSignUpOverlay: action.payload.showSignUpOverlay,
-            };
-        }
-        case "setShowPassword": {
-            return {
-                ...state,
-                showPassword: !state.showPassword,
-            };
-        }
-        default: {
-            return { ...state };
-        }
-    }
-};
 
 /**
  * @summary Login Page component
