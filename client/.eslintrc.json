@@ -297,7 +297,7 @@
         ],
         "keyword-spacing": "error",
         "line-comment-position": "error",
-        "lines-around-comment": "error",
+        "lines-around-comment": ["error", { "beforeBlockComment": false }],
         "lines-between-class-members": "error",
         "max-depth": ["error", 7],
         "max-len": [

@@ -10,7 +10,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import React, { type ReactNode } from "react";
 import { Button, Navbar, OverlayTrigger } from "react-bootstrap";
-import moduleUtils from "src/modules/common/utils";
+import { generateTooltip } from "src/helpers";
 
 type LayoutProps = {
     children: JSX.Element | ReactNode;
@@ -85,7 +85,7 @@ export const Layout = ({ children }: LayoutProps): JSX.Element => {
         <OverlayTrigger
             key="home-link"
             overlay={(props): JSX.Element =>
-                moduleUtils.generateTooltip("tooltip", props, { type: "Home" })
+                generateTooltip("tooltip", props, { type: "Home" })
             }
             placement="top"
         >
@@ -107,7 +107,7 @@ export const Layout = ({ children }: LayoutProps): JSX.Element => {
         <OverlayTrigger
             key="courses-link"
             overlay={(props): JSX.Element =>
-                moduleUtils.generateTooltip("tooltip", props, {
+                generateTooltip("tooltip", props, {
                     type: "Courses",
                 })
             }
@@ -134,7 +134,7 @@ export const Layout = ({ children }: LayoutProps): JSX.Element => {
         <OverlayTrigger
             key="semester-link"
             overlay={(props): JSX.Element =>
-                moduleUtils.generateTooltip("tooltip", props, {
+                generateTooltip("tooltip", props, {
                     type: "Semesters",
                 })
             }
@@ -161,7 +161,7 @@ export const Layout = ({ children }: LayoutProps): JSX.Element => {
         <OverlayTrigger
             key="plans"
             overlay={(props): JSX.Element =>
-                moduleUtils.generateTooltip("tooltip", props, { type: "Plans" })
+                generateTooltip("tooltip", props, { type: "Plans" })
             }
         >
             <Link
@@ -186,7 +186,7 @@ export const Layout = ({ children }: LayoutProps): JSX.Element => {
         <OverlayTrigger
             key="imports-link"
             overlay={(props): JSX.Element =>
-                moduleUtils.generateTooltip("tooltip", props, {
+                generateTooltip("tooltip", props, {
                     type: "Imports",
                 })
             }
@@ -213,7 +213,7 @@ export const Layout = ({ children }: LayoutProps): JSX.Element => {
         <OverlayTrigger
             key="exports-link"
             overlay={(props): JSX.Element =>
-                moduleUtils.generateTooltip("tooltip", props, {
+                generateTooltip("tooltip", props, {
                     type: "Exports",
                 })
             }

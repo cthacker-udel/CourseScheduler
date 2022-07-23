@@ -29,12 +29,12 @@ import styles from "./LoginPage.module.css";
 /**
  * Interface for managing the state of overlays
  */
-type LoginPageState {
+type LoginPageState = {
     showPasswordOverlay: boolean;
     showLoginOverlay: boolean;
     showSignUpOverlay: boolean;
     showPassword: boolean;
-}
+};
 
 /**
  * Types of actions the user can make
@@ -48,10 +48,10 @@ type LoginPageReducerActionType =
 /**
  * Action that will be utilized in the reducer
  */
-type LoginPageReducerAction {
+type LoginPageReducerAction = {
     type: LoginPageReducerActionType;
     payload: LoginPageState;
-}
+};
 
 /**
  *
@@ -296,7 +296,7 @@ export const LoginPage = (): JSX.Element => {
                                 <FontAwesomeIcon icon={faSignIn} />
                             </Button>
                         </Link>
-                        <Link replace href="/sign-up">
+                        <Link href="/sign-up" replace>
                             <Button
                                 className="ms-2"
                                 onMouseEnter={(): void => {

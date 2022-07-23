@@ -1,13 +1,11 @@
-import { configuration } from "src/configuration";
-import { localConfiguration } from "src/configuration.local";
-
-import { Logger } from "../Logger";
+import { configuration } from "src/config/configuration";
+import { localConfiguration } from "src/config/configuration.local";
+import { Logger } from "src/log/Logger";
 
 /**
  * This is a Server-Side API wrapper class
  */
 export class ServerSideApi {
-
     /**
      * Base url for requests
      */
@@ -34,18 +32,31 @@ export class ServerSideApi {
      * @param url The url the user is fetching from
      * @returns The promise of the type of the response
      */
-    public get = async <T>(url: string, headers?: { [key: string]: string }): Promise<T> => {
+    public get = async <T>(
+        url: string,
+        headers?: { [key: string]: string },
+    ): Promise<T> => {
         try {
-            return await fetch(`${this.BASE_URL}${url}`, { headers: headers ?? {} }).then(async (res) => {
+            return await fetch(`${this.BASE_URL}${url}`, {
+                headers: headers ?? {},
+            }).then(async (res) => {
                 try {
                     return await res.json();
                 } catch (error: unknown) {
-                    this.logger.log("error", `Failed converting get response from ${url} to json`, error);
+                    this.logger.log(
+                        "error",
+                        `Failed converting get response from ${url} to json`,
+                        error,
+                    );
                     throw error;
                 }
             });
         } catch (error: unknown) {
-            this.logger.log("error", `Get request with url ${url} failed`, error);
+            this.logger.log(
+                "error",
+                `Get request with url ${url} failed`,
+                error,
+            );
             throw error;
         }
     };
@@ -73,7 +84,11 @@ export class ServerSideApi {
             this.logger.log("info", `Post request with url ${url} successful`);
             return await response.json();
         } catch (error: unknown) {
-            this.logger.log("error", `Post request with url ${url} failed`, error);
+            this.logger.log(
+                "error",
+                `Post request with url ${url} failed`,
+                error,
+            );
             throw error;
         }
     };
@@ -98,10 +113,17 @@ export class ServerSideApi {
                 method: "DELETE",
                 mode: "no-cors",
             });
-            this.logger.log("info", `Delete request with url ${url} successful`);
+            this.logger.log(
+                "info",
+                `Delete request with url ${url} successful`,
+            );
             return await response.json();
         } catch (error: unknown) {
-            this.logger.log("error", `Delete request with url ${url} failed`, error);
+            this.logger.log(
+                "error",
+                `Delete request with url ${url} failed`,
+                error,
+            );
             throw error;
         }
     };
@@ -129,7 +151,11 @@ export class ServerSideApi {
             this.logger.log("info", `Put request with url ${url} successful`);
             return await response.json();
         } catch (error: unknown) {
-            this.logger.log("error", `Put request with url ${url} failed`, error);
+            this.logger.log(
+                "error",
+                `Put request with url ${url} failed`,
+                error,
+            );
             throw error;
         }
     };

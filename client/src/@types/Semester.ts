@@ -1,14 +1,12 @@
-import type Course from "./Course";
+import type { Course } from "./Course";
 
 /**
  * Semester type, contains a list of courses
  */
-interface Semester {
+export type Semester = {
     term: number;
     year: number;
     title?: string;
     description: string;
     courses: Course[];
-}
-
-export default Semester;
+};

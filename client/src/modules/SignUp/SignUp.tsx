@@ -4,18 +4,18 @@ import React from "react";
 import { Button, Card, Form, OverlayTrigger } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { FormattedMessage, useIntl } from "react-intl";
+import { generateTooltip } from "src/helpers";
 
-import { generateTooltip } from "../common/utils/generateTooltip";
 import styles from "./SignUp.module.css";
 
 /**
  * Type of the data that will be utilized within the sign up form
  */
-interface FormData {
+type FormData = {
     confirmPassword: string;
     password: string;
     username: string;
-}
+};
 
 /**
  * General text field min length
