@@ -543,7 +543,7 @@
         "@typescript-eslint/consistent-type-exports": "error",
         "@typescript-eslint/consistent-type-definitions": [
             "error",
-            "interface"
+            "type"
         ],
         "@typescript-eslint/consistent-type-imports": "error",
         "@typescript-eslint/explicit-function-return-type": "error",
@@ -747,7 +747,7 @@
         "react/jsx-child-element-spacing": "error",
         "react/jsx-closing-bracket-location": "error",
         "react/jsx-closing-tag-location": "error",
-        "react/jsx-curly-brace-presence": "error",
+        "react/jsx-curly-brace-presence": ["error", { "props": "ignore", "children": "always", "propElementValues": "always"}],
         "react/jsx-curly-newline": "off",
         "react/jsx-curly-spacing": "error",
         "react/jsx-equals-spacing": "error",

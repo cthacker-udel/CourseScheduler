@@ -4,7 +4,7 @@
         [
             "react-intl",
             {
-                "messageDir": "./src/locale",
+                "moduleSourceName": "./src/locale",
                 "extractSourceLocation": true
             }
         ]

@@ -3,6 +3,7 @@ import {
     faUserPlus,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useRouter } from "next/router";
 import React from "react";
 import {
     Accordion,
@@ -12,7 +13,6 @@ import {
     OverlayTrigger,
 } from "react-bootstrap";
 import { FormattedMessage, useIntl } from "react-intl";
-import { useNavigate } from "react-router-dom";
 import moduleUtils from "src/modules/common/utils";
 
 import styles from "./HomePage.module.css";
@@ -24,8 +24,8 @@ import styles from "./HomePage.module.css";
 export const HomePage = (): JSX.Element => {
     const loginRef = React.useRef(null);
     const signUpRef = React.useRef(null);
+    const router = useRouter();
     const intl = useIntl();
-    const navigate = useNavigate();
     const accordionOptions = intl
         .formatMessage({ id: "accordion_options" })
         .split("\n");
@@ -86,8 +86,8 @@ export const HomePage = (): JSX.Element => {
                     >
                         <Button
                             className="m-2"
-                            onClick={(): void => {
-                                navigate("/login");
+                            onClick={async (): void => {
+                                await router.push("/login");
                             }}
                             ref={loginRef}
                             variant="outline-primary"
@@ -106,8 +106,8 @@ export const HomePage = (): JSX.Element => {
                     >
                         <Button
                             className="m-2"
-                            onClick={(): void => {
-                                navigate("/sign-up");
+                            onClick={async (): void => {
+                                await router.push("/sign-up");
                             }}
                             ref={signUpRef}
                             variant="outline-primary"

@@ -7,10 +7,14 @@ import {
     faHome,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React from "react";
+import Link from "next/link";
+import React, { type ReactNode } from "react";
 import { Button, Navbar, OverlayTrigger } from "react-bootstrap";
-import { Link, Outlet } from "react-router-dom";
 import moduleUtils from "src/modules/common/utils";
+
+type LayoutProps = {
+    children: JSX.Element | ReactNode;
+};
 
 type OverlayType =
     | "course"
@@ -24,7 +28,7 @@ type OverlayType =
  * @summary The Layout component, takes in no props and renders the overall layout of the application
  * @returns {JSX.Element} Layout component
  */
-export const Layout = (): JSX.Element => {
+export const Layout = ({ children }: LayoutProps): JSX.Element => {
     const homeRef = React.useRef(null);
     const courseRef = React.useRef(null);
     const semesterRef = React.useRef(null);
@@ -85,7 +89,7 @@ export const Layout = (): JSX.Element => {
             }
             placement="top"
         >
-            <Link className="text-muted text-wrap" to="/">
+            <Link className="text-muted text-wrap" href="/">
                 <Button
                     onMouseEnter={(): void => {
                         toggleShowOverlay("home", true);
@@ -110,8 +114,8 @@ export const Layout = (): JSX.Element => {
         >
             <Link
                 className="text-muted text-wrap"
+                href="/courses"
                 key="courses-link"
-                to="/courses"
             >
                 <Button
                     onMouseEnter={(): void => {
@@ -137,8 +141,8 @@ export const Layout = (): JSX.Element => {
         >
             <Link
                 className="text-muted text-wrap"
+                href="/semesters"
                 key="semesters-link"
-                to="/semesters"
             >
                 <Button
                     onMouseEnter={(): void => {
@@ -160,7 +164,11 @@ export const Layout = (): JSX.Element => {
                 moduleUtils.generateTooltip("tooltip", props, { type: "Plans" })
             }
         >
-            <Link className="text-muted text-wrap" key="plans-link" to="/plans">
+            <Link
+                className="text-muted text-wrap"
+                href="/plans"
+                key="plans-link"
+            >
                 <Button
                     onMouseEnter={(): void => {
                         toggleShowOverlay("plan", true);
@@ -185,8 +193,8 @@ export const Layout = (): JSX.Element => {
         >
             <Link
                 className="text-muted text-wrap"
+                href="/imports"
                 key="imports-link"
-                to="/imports"
             >
                 <Button
                     onMouseEnter={(): void => {
@@ -212,8 +220,8 @@ export const Layout = (): JSX.Element => {
         >
             <Link
                 className="text-muted text-wrap"
+                href="/exports"
                 key="exports-link"
-                to="/exports"
             >
                 <Button
                     onMouseEnter={(): void => {
@@ -233,9 +241,7 @@ export const Layout = (): JSX.Element => {
 
     return (
         <>
-            <div>
-                <Outlet />
-            </div>
+            <div>{children}</div>
             <div>
                 {" "}
                 <Navbar
