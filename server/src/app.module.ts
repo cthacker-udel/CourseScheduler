@@ -24,6 +24,7 @@ import { LoggerOptions } from "typeorm";
                 password: configurations.mongo_typeorm.password,
                 retryWrites: true,
                 w: "majority",
+                url: configurations.mongo_typeorm.url,
             }),
         }),
     ],

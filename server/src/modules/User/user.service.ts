@@ -6,10 +6,7 @@ import {
     ServerSideCreateUserDTO,
 } from "src/dto/user/create.user.dto";
 import { User } from "src/entities";
-import {
-    type CryptoService,
-    type EncodingResult,
-} from "../Crypto/crypto.service";
+import { CryptoService, type EncodingResult } from "../Crypto/crypto.service";
 
 /**
  * The users service, handling all operations involving the users collection
@@ -21,7 +18,8 @@ export class UserService {
      */
     constructor(
         @InjectRepository(User, "mongo")
-        private usersRepository: Repository<User>, // private readonly cryptoService: CryptoService,
+        private usersRepository: Repository<User>,
+        private readonly cryptoService: CryptoService,
     ) {}
 
     /**
