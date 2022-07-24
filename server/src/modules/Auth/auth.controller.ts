@@ -45,7 +45,6 @@ export class AuthController {
         try {
             return await this.authService.createUser(body);
         } catch (error: unknown) {
-            console.log("error = ", error);
             return generateApiError(
                 HttpStatus.BAD_REQUEST,
                 generateErrorCode(ERROR_CODES.UNKNOWN_SERVER_FAILURE),

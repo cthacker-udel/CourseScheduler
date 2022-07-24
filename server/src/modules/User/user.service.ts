@@ -67,7 +67,6 @@ export class UserService {
         const existentUser = await this.usersRepository.findOne({
             where: { username },
         });
-        console.log("existent user = ", existentUser);
         return existentUser !== null;
     };
 

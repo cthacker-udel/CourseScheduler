@@ -24,36 +24,36 @@ type FormData = {
 };
 
 /**
- * General text field min length
+ * Constants for the SignUp component
  */
-const TEXT_FIELD_MIN_LENGTH = 1;
-
-/**
- * Password max length
- */
-const PASSWORD_MAX_LENGTH = 30;
-
-/**
- * Password min length
- */
-const PASSWORD_MIN_LENGTH = 7;
-
-/**
- * The default sign up timeout
- */
-const SIGN_UP_ALERT_TIMEOUT = 5000;
-
-/**
- * The default time to wait until redirecting the user
- */
-const SIGN_UP_REDIRECT_TIMEOUT = 2500;
-
-/**
- * Error codes that concern the sign up flow
- */
-const SIGN_UP_ERROR_CODES = {
-    EMAIL: 2,
-    USER: 1,
+const CONSTANTS = {
+    /**
+     * Password max length
+     */
+    PASSWORD_MAX_LENGTH: 30,
+    /**
+     * Password min length
+     */
+    PASSWORD_MIN_LENGTH: 7,
+    /**
+     * The default sign up timeout
+     */
+    SIGN_UP_ALERT_TIMEOUT: 5000,
+    /**
+     * Error codes that concern the sign up flow
+     */
+    SIGN_UP_ERROR_CODES: {
+        EMAIL: 2,
+        USER: 1,
+    },
+    /**
+     * The default time to wait until redirecting the user
+     */
+    SIGN_UP_REDIRECT_TIMEOUT: 2500,
+    /**
+     * General text field min length
+     */
+    TEXT_FIELD_MIN_LENGTH: 1,
 };
 
 /**
@@ -91,7 +91,7 @@ export const SignUp = (): JSX.Element => {
         setApiError({ message });
         setTimeout(() => {
             setApiError(undefined);
-        }, SIGN_UP_ALERT_TIMEOUT);
+        }, CONSTANTS.SIGN_UP_ALERT_TIMEOUT);
     };
 
     /**
@@ -103,7 +103,7 @@ export const SignUp = (): JSX.Element => {
         setApiSuccess({ message });
         setTimeout(() => {
             setApiSuccess(undefined);
-        }, SIGN_UP_ALERT_TIMEOUT);
+        }, CONSTANTS.SIGN_UP_ALERT_TIMEOUT);
     };
 
     /**
@@ -117,11 +117,11 @@ export const SignUp = (): JSX.Element => {
         if ((result as ApiError).errorCode) {
             const convertedError = result as ApiError;
             switch (convertedError.errorCode) {
-                case SIGN_UP_ERROR_CODES.EMAIL: {
+                case CONSTANTS.SIGN_UP_ERROR_CODES.EMAIL: {
                     updateError("Email already exists");
                     break;
                 }
-                case SIGN_UP_ERROR_CODES.USER: {
+                case CONSTANTS.SIGN_UP_ERROR_CODES.USER: {
                     updateError("User already exists");
                     break;
                 }
@@ -134,7 +134,7 @@ export const SignUp = (): JSX.Element => {
             updateSuccess("Sign up complete");
             setTimeout(async () => {
                 await router.push("/login");
-            }, SIGN_UP_REDIRECT_TIMEOUT);
+            }, CONSTANTS.SIGN_UP_REDIRECT_TIMEOUT);
         }
     };
 
@@ -176,9 +176,9 @@ export const SignUp = (): JSX.Element => {
      * @returns If the submit button should be disabled
      */
     const isSubmitButtonDisabled = (): boolean =>
-        userNameWatch.length < TEXT_FIELD_MIN_LENGTH ||
-        passwordWatch.length < TEXT_FIELD_MIN_LENGTH ||
-        confirmPasswordWatch.length < TEXT_FIELD_MIN_LENGTH ||
+        userNameWatch.length < CONSTANTS.TEXT_FIELD_MIN_LENGTH ||
+        passwordWatch.length < CONSTANTS.TEXT_FIELD_MIN_LENGTH ||
+        confirmPasswordWatch.length < CONSTANTS.TEXT_FIELD_MIN_LENGTH ||
         !isValid ||
         isValidating;
 
@@ -208,7 +208,8 @@ export const SignUp = (): JSX.Element => {
                             isInvalid={errors.email && true}
                             isValid={
                                 !errors.email &&
-                                emailWatch.length >= TEXT_FIELD_MIN_LENGTH
+                                emailWatch.length >=
+                                    CONSTANTS.TEXT_FIELD_MIN_LENGTH
                             }
                             placeholder={intl.formatMessage({
                                 id: "sign_up_form0_placeholder",
@@ -264,7 +265,8 @@ export const SignUp = (): JSX.Element => {
                             isInvalid={errors.username && true}
                             isValid={
                                 !errors.username &&
-                                userNameWatch.length >= TEXT_FIELD_MIN_LENGTH
+                                userNameWatch.length >=
+                                    CONSTANTS.TEXT_FIELD_MIN_LENGTH
                             }
                             placeholder={intl.formatMessage({
                                 id: "sign_up_form1_placeholder",
@@ -310,7 +312,7 @@ export const SignUp = (): JSX.Element => {
                                     isValid={
                                         !errors.password &&
                                         passwordWatch.length >=
-                                            TEXT_FIELD_MIN_LENGTH
+                                            CONSTANTS.TEXT_FIELD_MIN_LENGTH
                                     }
                                     {...register("password", {
                                         maxLength: {
@@ -318,18 +320,22 @@ export const SignUp = (): JSX.Element => {
                                                 {
                                                     id: "sign_up_form_password_max_length",
                                                 },
-                                                { length: PASSWORD_MAX_LENGTH },
+                                                {
+                                                    length: CONSTANTS.PASSWORD_MAX_LENGTH,
+                                                },
                                             ),
-                                            value: PASSWORD_MAX_LENGTH,
+                                            value: CONSTANTS.PASSWORD_MAX_LENGTH,
                                         },
                                         minLength: {
                                             message: intl.formatMessage(
                                                 {
                                                     id: "sign_up_form_password_min_length",
                                                 },
-                                                { length: PASSWORD_MIN_LENGTH },
+                                                {
+                                                    length: CONSTANTS.PASSWORD_MIN_LENGTH,
+                                                },
                                             ),
-                                            value: PASSWORD_MIN_LENGTH,
+                                            value: CONSTANTS.PASSWORD_MIN_LENGTH,
                                         },
                                         required: {
                                             message: intl.formatMessage({
@@ -392,12 +398,12 @@ export const SignUp = (): JSX.Element => {
                             isInvalid={
                                 errors.confirmPassword &&
                                 confirmPasswordWatch.length >=
-                                    TEXT_FIELD_MIN_LENGTH
+                                    CONSTANTS.TEXT_FIELD_MIN_LENGTH
                             }
                             isValid={
                                 !errors.confirmPassword &&
                                 confirmPasswordWatch.length >=
-                                    TEXT_FIELD_MIN_LENGTH
+                                    CONSTANTS.TEXT_FIELD_MIN_LENGTH
                             }
                             placeholder={intl.formatMessage({
                                 id: "sign_up_form3_placeholder",
@@ -409,18 +415,18 @@ export const SignUp = (): JSX.Element => {
                                         {
                                             id: "sign_up_form_confirm_password_max_length",
                                         },
-                                        { amt: PASSWORD_MAX_LENGTH },
+                                        { amt: CONSTANTS.PASSWORD_MAX_LENGTH },
                                     ),
-                                    value: PASSWORD_MAX_LENGTH,
+                                    value: CONSTANTS.PASSWORD_MAX_LENGTH,
                                 },
                                 minLength: {
                                     message: intl.formatMessage(
                                         {
                                             id: "sign_up_form_confirm_password_min_length",
                                         },
-                                        { amt: PASSWORD_MIN_LENGTH },
+                                        { amt: CONSTANTS.PASSWORD_MIN_LENGTH },
                                     ),
-                                    value: PASSWORD_MIN_LENGTH,
+                                    value: CONSTANTS.PASSWORD_MIN_LENGTH,
                                 },
                                 required: {
                                     message: intl.formatMessage({

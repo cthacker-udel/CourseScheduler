@@ -69,7 +69,6 @@ export class AuthService {
                     enteredPassword,
                 );
                 if (!passwordValidationResult) {
-                    console.error("Password invalid");
                     return generateApiError(
                         HttpStatus.BAD_REQUEST,
                         generateErrorCode(ERROR_CODES.PASSWORD_INVALID),
@@ -77,14 +76,12 @@ export class AuthService {
                 }
                 return true;
             } else {
-                console.error("Login failed: Email does not exist");
                 return generateApiError(
                     HttpStatus.BAD_REQUEST,
                     generateErrorCode(ERROR_CODES.EMAIL_ALREADY_EXISTS),
                 );
             }
         } else {
-            console.error("Login failed: User does not exist");
             return generateApiError(
                 HttpStatus.BAD_REQUEST,
                 generateErrorCode(ERROR_CODES.USER_ALREADY_EXISTS),
@@ -98,15 +95,12 @@ export class AuthService {
         const doesUsernameExist = await this.userService.doesUsernameExist(
             request.username,
         );
-        console.log("username exists = ", doesUsernameExist);
         if (!doesUsernameExist) {
-            console.log("in if");
             const doesEmailExist = await this.userService.doesEmailExist(
                 request.email,
             );
             if (!doesEmailExist) {
-                const result = await this.userService.create(request);
-                console.log("result = ", result);
+                await this.userService.create(request);
                 return generateApiSuccess(HttpStatus.OK, { canLogin: true });
             } else {
                 return generateApiError(
