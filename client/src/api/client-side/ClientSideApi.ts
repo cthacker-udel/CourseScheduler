@@ -1,3 +1,4 @@
+/* eslint-disable no-magic-numbers -- disabled to avoid errors when logging with the line #*/
 /* eslint-disable @typescript-eslint/no-extraneous-class -- will fix later */
 import { configuration, localConfiguration } from "src/config";
 import { Logger } from "src/log/Logger";
@@ -12,16 +13,10 @@ export class ClientSideApi {
     protected static BASE_URL = "http://localhost:3000/api";
 
     /**
-     * Logger instance
-     */
-    protected static logger: Logger;
-
-    /**
      *
      * @param enabledLocal Whether to enable local configuration or not
      */
     public constructor(enabledLocal = true) {
-        ClientSideApi.logger = new Logger();
         ClientSideApi.BASE_URL = enabledLocal
             ? localConfiguration.SERVER_BASE_URL
             : configuration.SERVER_BASE_URL;
@@ -44,18 +39,22 @@ export class ClientSideApi {
                 try {
                     return await res.json();
                 } catch (error: unknown) {
-                    ClientSideApi.logger.log(
+                    Logger.log(
                         "error",
                         `Failed converting get response from ${url} to json`,
+                        "ClientSideApi",
+                        41,
                         error,
                     );
                     throw error;
                 }
             });
         } catch (error: unknown) {
-            ClientSideApi.logger.log(
+            Logger.log(
                 "error",
                 `Get request with url ${url} failed`,
+                "ClientSideApi",
+                53,
                 error,
             );
             throw error;
@@ -85,15 +84,19 @@ export class ClientSideApi {
                     mode: "no-cors",
                 },
             );
-            ClientSideApi.logger.log(
+            Logger.log(
                 "info",
                 `Post request with url ${url} successful`,
+                "ClientSideApi",
+                87,
             );
             return await response.json();
         } catch (error: unknown) {
-            ClientSideApi.logger.log(
+            Logger.log(
                 "error",
                 `Post request with url ${url} failed`,
+                "ClientSideApi",
+                95,
                 error,
             );
             throw error;
@@ -123,15 +126,19 @@ export class ClientSideApi {
                     mode: "no-cors",
                 },
             );
-            ClientSideApi.logger.log(
+            Logger.log(
                 "info",
                 `Delete request with url ${url} successful`,
+                "ClientSideApi",
+                129,
             );
             return await response.json();
         } catch (error: unknown) {
-            ClientSideApi.logger.log(
+            Logger.log(
                 "error",
                 `Delete request with url ${url} failed`,
+                "ClientSideApi",
+                137,
                 error,
             );
             throw error;
@@ -161,15 +168,19 @@ export class ClientSideApi {
                     mode: "no-cors",
                 },
             );
-            ClientSideApi.logger.log(
+            Logger.log(
                 "info",
                 `Put request with url ${url} successful`,
+                "ClientSideApi",
+                171,
             );
             return await response.json();
         } catch (error: unknown) {
-            ClientSideApi.logger.log(
+            Logger.log(
                 "error",
                 `Put request with url ${url} failed`,
+                "ClientSideApi",
+                179,
                 error,
             );
             throw error;

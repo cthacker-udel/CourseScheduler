@@ -6,17 +6,17 @@ export class CreateUserDTO {
         _username: string,
         _email: string,
         _password: string,
-        _lastLogin: Date,
+        _lastLogin?: Date,
     ) {
         this.username = _username;
         this.email = _email;
         this.password = _password;
-        this.lastLogin = _lastLogin;
+        this.lastLogin = _lastLogin ?? new Date();
     }
     username: string;
     email: string;
     password: string;
-    lastLogin: Date;
+    lastLogin?: Date;
 }
 
 /**

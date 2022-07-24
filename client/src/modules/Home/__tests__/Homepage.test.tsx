@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-floating-promises -- don't need to have exhaustive promise syntax for two assertions */
 /* eslint-disable @typescript-eslint/no-explicit-any -- disabled any for renderWithIntl */
 /* eslint-disable @typescript-eslint/no-magic-numbers -- disabled */
 /* eslint-disable no-magic-numbers -- disabled */
@@ -8,7 +9,6 @@ import userEvent from "@testing-library/user-event";
 import React from "react";
 import { act } from "react-dom/test-utils";
 import { IntlProvider } from "react-intl";
-import { BrowserRouter } from "react-router-dom";
 import homeMessages from "src/locale/en/home.json";
 
 import HomePage from "../HomePage";
@@ -24,9 +24,7 @@ const renderWithIntl = (): any =>
             locale="en"
             messages={{ ...homeMessages }}
         >
-            <BrowserRouter>
-                <HomePage />
-            </BrowserRouter>
+            <HomePage />
         </IntlProvider>,
     );
 
@@ -61,16 +59,16 @@ describe("homePage test suite", (): void => {
             renderWithIntl();
 
             const accordion = screen.getByText(homeMessages.option_1);
-            act(() => {
-                userEvent.click(accordion);
+            act(async (): Promise<void> => {
+                await userEvent.click(accordion);
             });
 
             expect(screen.getByText(homeMessages.option_1_desc)).toBeTruthy();
 
             const accordion2 = screen.getByText(homeMessages.option_2);
 
-            act(() => {
-                userEvent.click(accordion2);
+            act(async (): Promise<void> => {
+                await userEvent.click(accordion2);
             });
 
             expect(accordion.parentElement).not.toBeNull();

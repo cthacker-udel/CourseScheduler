@@ -13,11 +13,11 @@ export class UsersApi extends ServerSideApi {
      * @returns
      */
     public static signUp = async (
-        request: SignUpRequest,
+        request: Request,
     ): Promise<ApiError | ApiSuccess> => {
         const result = await super.post<ApiError | ApiSuccess>(
-            "auth/signup",
-            request,
+            "/auth/signup",
+            JSON.parse(request.body as unknown as string) as SignUpRequest,
         );
         return result;
     };

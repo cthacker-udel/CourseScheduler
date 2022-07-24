@@ -252,7 +252,6 @@
         "no-shadow": "error",
         "no-shadow-restricted-names": "error",
         "no-undef-init": "error",
-        "no-undefined": "error",
         "no-unused-vars": "error",
         "no-use-before-define": "error",
         "array-bracket-newline": ["error", "consistent"],
@@ -319,7 +318,7 @@
         "max-lines-per-function": [
             "error",
             {
-                "max": 350,
+                "max": 400,
                 "skipBlankLines": true,
                 "skipComments": true,
                 "IIFEs": false
@@ -557,7 +556,10 @@
         "@typescript-eslint/no-explicit-any": "error",
         "@typescript-eslint/no-extra-non-null-assertion": "error",
         "@typescript-eslint/no-extraneous-class": "error",
-        "@typescript-eslint/no-floating-promises": "error",
+        "@typescript-eslint/no-floating-promises": [
+            "error",
+            { "ignoreVoid": true }
+        ],
         "@typescript-eslint/no-for-in-array": "error",
         "@typescript-eslint/no-inferrable-types": "error",
         "@typescript-eslint/no-invalid-void-type": "error",
@@ -602,7 +604,10 @@
         ],
         "@typescript-eslint/restrict-plus-operands": "error",
         "@typescript-eslint/sort-type-union-intersection-members": "error",
-        "@typescript-eslint/strict-boolean-expressions": "error",
+        "@typescript-eslint/strict-boolean-expressions": [
+            "error",
+            { "allowString": true, "allowNullableString": true }
+        ],
         "@typescript-eslint/switch-exhaustiveness-check": "error",
         "@typescript-eslint/triple-slash-reference": "error",
         "@typescript-eslint/type-annotation-spacing": "error",
@@ -640,7 +645,6 @@
         "@typescript-eslint/no-invalid-this": "error",
         "@typescript-eslint/no-loop-func": "error",
         "@typescript-eslint/no-loss-of-precision": "error",
-        "@typescript-eslint/no-magic-numbers": "error",
         "@typescript-eslint/no-redeclare": "error",
         "@typescript-eslint/no-restricted-imports": "error",
         "@typescript-eslint/no-shadow": "error",

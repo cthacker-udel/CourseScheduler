@@ -9,7 +9,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import React, { type ReactNode } from "react";
-import { Button, Container, OverlayTrigger } from "react-bootstrap";
+import { Button, OverlayTrigger } from "react-bootstrap";
 import { generateTooltip } from "src/helpers";
 
 type LayoutProps = {

@@ -43,6 +43,7 @@ export class AuthController {
      */
     @Post("auth/signup")
     async signUp(@Body() body: CreateUserDTO): Promise<ApiSuccess | ApiError> {
+        console.log("body = ", body);
         try {
             return await this.authService.createUser(body);
         } catch (error: unknown) {

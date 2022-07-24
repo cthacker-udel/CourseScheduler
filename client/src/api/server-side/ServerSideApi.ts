@@ -1,3 +1,4 @@
+/* eslint-disable no-magic-numbers -- disabled to avoid errors when logging the line number */
 /* eslint-disable @typescript-eslint/no-extraneous-class -- will fix later */
 import { configuration } from "src/config/configuration";
 import { localConfiguration } from "src/config/configuration.local";
@@ -10,19 +11,13 @@ export class ServerSideApi {
     /**
      * Base url for requests
      */
-    protected static BASE_URL = "http://localhost:3100";
-
-    /**
-     * Logger instance
-     */
-    protected static logger: Logger;
+    protected static BASE_URL = "http://localhost:3001";
 
     /**
      *
      * @param enabledLocal Whether to enable local configuration or not
      */
     public constructor(enabledLocal = true) {
-        ServerSideApi.logger = new Logger();
         ServerSideApi.BASE_URL = enabledLocal
             ? localConfiguration.SERVER_BASE_URL
             : configuration.SERVER_BASE_URL;
@@ -44,18 +39,22 @@ export class ServerSideApi {
                 try {
                     return await res.json();
                 } catch (error: unknown) {
-                    ServerSideApi.logger.log(
+                    Logger.log(
                         "error",
                         `Failed converting get response from ${url} to json`,
+                        "ServerSideApi",
+                        41,
                         error,
                     );
                     throw error;
                 }
             });
         } catch (error: unknown) {
-            ServerSideApi.logger.log(
+            Logger.log(
                 "error",
                 `Get request with url ${url} failed`,
+                "ServerSideApi",
+                53,
                 error,
             );
             throw error;
@@ -72,28 +71,32 @@ export class ServerSideApi {
     public static post = async <T>(
         url: string,
         body?: { [key: string]: unknown },
-        headers?: { [key: string]: string },
+        headers: { [key: string]: string } = {
+            "Content-type": "application/json; charset=UTF-8",
+        },
     ): Promise<T> => {
         try {
             const response: Response = await fetch(
                 `${ServerSideApi.BASE_URL}${url}`,
                 {
                     body: JSON.stringify(body ?? {}),
-                    cache: "no-cache",
                     headers: headers ?? {},
                     method: "POST",
-                    mode: "no-cors",
                 },
             );
-            ServerSideApi.logger.log(
+            Logger.log(
                 "info",
                 `Post request with url ${url} successful`,
+                "ServerSideApi",
+                87,
             );
             return await response.json();
         } catch (error: unknown) {
-            ServerSideApi.logger.log(
+            Logger.log(
                 "error",
                 `Post request with url ${url} failed`,
+                "ServerSideApi",
+                95,
                 error,
             );
             throw error;
@@ -123,15 +126,19 @@ export class ServerSideApi {
                     mode: "no-cors",
                 },
             );
-            ServerSideApi.logger.log(
+            Logger.log(
                 "info",
                 `Delete request with url ${url} successful`,
+                "ServerSideApi",
+                129,
             );
             return await response.json();
         } catch (error: unknown) {
-            ServerSideApi.logger.log(
+            Logger.log(
                 "error",
                 `Delete request with url ${url} failed`,
+                "ServerSideApi",
+                137,
                 error,
             );
             throw error;
@@ -161,15 +168,19 @@ export class ServerSideApi {
                     mode: "no-cors",
                 },
             );
-            ServerSideApi.logger.log(
+            Logger.log(
                 "info",
                 `Put request with url ${url} successful`,
+                "ServerSideApi",
+                171,
             );
             return await response.json();
         } catch (error: unknown) {
-            ServerSideApi.logger.log(
+            Logger.log(
                 "error",
                 `Put request with url ${url} failed`,
+                "ServerSideApi",
+                179,
                 error,
             );
             throw error;

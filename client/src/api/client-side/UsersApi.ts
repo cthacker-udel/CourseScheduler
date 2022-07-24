@@ -16,7 +16,7 @@ export class UsersApi extends ClientSideApi {
         request: SignUpRequest,
     ): Promise<ApiError | ApiSuccess> => {
         const result = await super.post<ApiError | ApiSuccess>(
-            "users/signup",
+            "/users/signup",
             request,
         );
         return result;

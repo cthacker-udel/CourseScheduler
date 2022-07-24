@@ -2,7 +2,7 @@
 /* eslint-disable react/jsx-no-useless-fragment -- just for testing*/
 import React from "react";
 import { Badge, Card, Container } from "react-bootstrap";
-import type MockCourse from "src/common/types/MockCourse";
+import type { MockCourse } from "src/@types";
 import { useMockData } from "src/hooks/useMockData";
 
 import styles from "./CoursePage.module.css";

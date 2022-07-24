@@ -1,9 +1,13 @@
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useRouter } from "next/router";
 import React from "react";
-import { Button, Card, Form, OverlayTrigger } from "react-bootstrap";
+import { Alert, Button, Card, Form, OverlayTrigger } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { FormattedMessage, useIntl } from "react-intl";
+import type { ApiError, SignUpRequest } from "src/@types";
+import type { ApiMessage } from "src/api/ApiMessage/ApiMessage";
+import { UsersApi } from "src/api/client-side/UsersApi";
 import { EMAIL, USERNAME } from "src/common";
 import { generateTooltip } from "src/helpers";
 
@@ -35,11 +39,29 @@ const PASSWORD_MAX_LENGTH = 30;
 const PASSWORD_MIN_LENGTH = 7;
 
 /**
+ * The default sign up timeout
+ */
+const SIGN_UP_ALERT_TIMEOUT = 5000;
+
+/**
+ * The default time to wait until redirecting the user
+ */
+const SIGN_UP_REDIRECT_TIMEOUT = 2500;
+
+/**
+ * Error codes that concern the sign up flow
+ */
+const SIGN_UP_ERROR_CODES = {
+    EMAIL: 2,
+    USER: 1,
+};
+
+/**
  * Sign-Up Page component, will communicate with back-end to sign user up and insert record into mongo database
  */
 export const SignUp = (): JSX.Element => {
     const [showPassword, setShowPassword] = React.useState(false);
-    const { register, formState, watch } = useForm<FormData>({
+    const { register, formState, reset, watch } = useForm<FormData>({
         defaultValues: {
             confirmPassword: "",
             email: "",
@@ -49,6 +71,9 @@ export const SignUp = (): JSX.Element => {
         mode: "all",
         reValidateMode: "onChange",
     });
+    const router = useRouter();
+    const [apiError, setApiError] = React.useState<ApiMessage>();
+    const [apiSuccess, setApiSuccess] = React.useState<ApiMessage>();
 
     const intl = useIntl();
     const userNameWatch = watch("username");
@@ -57,7 +82,61 @@ export const SignUp = (): JSX.Element => {
     const emailWatch = watch("email");
     const { errors, isValid, isValidating } = formState;
 
-    console.log(watch());
+    /**
+     * Updates the error message for the front end to display
+     *
+     * @param message The error message to display
+     */
+    const updateError = (message: string): void => {
+        setApiError({ message });
+        setTimeout(() => {
+            setApiError(undefined);
+        }, SIGN_UP_ALERT_TIMEOUT);
+    };
+
+    /**
+     * Updates the success message for the front end to display
+     *
+     * @param message The success message to display
+     */
+    const updateSuccess = (message: string): void => {
+        setApiSuccess({ message });
+        setTimeout(() => {
+            setApiSuccess(undefined);
+        }, SIGN_UP_ALERT_TIMEOUT);
+    };
+
+    /**
+     * Signs a user up in the database, or returns an error.
+     *
+     * @param request The data used to sign a user up in the database
+     */
+    const signUp = async (request: SignUpRequest): Promise<void> => {
+        const result = await UsersApi.signUp(request);
+        reset();
+        if ((result as ApiError).errorCode) {
+            const convertedError = result as ApiError;
+            switch (convertedError.errorCode) {
+                case SIGN_UP_ERROR_CODES.EMAIL: {
+                    updateError("Email already exists");
+                    break;
+                }
+                case SIGN_UP_ERROR_CODES.USER: {
+                    updateError("User already exists");
+                    break;
+                }
+                default: {
+                    updateError("An error occurred, please try again");
+                    break;
+                }
+            }
+        } else {
+            updateSuccess("Sign up complete");
+            setTimeout(async () => {
+                await router.push("/login");
+            }, SIGN_UP_REDIRECT_TIMEOUT);
+        }
+    };
 
     /**
      * This function aids in the validation of the password, following a step-by-step algorithm to determine if the password is valid
@@ -107,6 +186,12 @@ export const SignUp = (): JSX.Element => {
         <Card
             className={`text-center mx-auto w-50 text-wrap mt-5 pb-2 pr-2 pl-2 ${styles.sign_up_card}`}
         >
+            {apiError?.message && (
+                <Alert variant="error">{apiError.message}</Alert>
+            )}
+            {apiSuccess?.message && (
+                <Alert variant="success">{apiSuccess.message}</Alert>
+            )}
             <Card.Header className="fw-bold fs-4">
                 <span className={`${styles.header_text}`}>
                     <FormattedMessage id="sign_up_form_title" />
@@ -360,6 +445,13 @@ export const SignUp = (): JSX.Element => {
                 <Button
                     className={styles.sign_up_button}
                     disabled={isSubmitButtonDisabled()}
+                    onClick={async (): Promise<void> => {
+                        await signUp({
+                            email: emailWatch,
+                            password: passwordWatch,
+                            username: userNameWatch,
+                        });
+                    }}
                     variant={`outline-${
                         isSubmitButtonDisabled() ? "secondary" : "success"
                     } mt-4 mx-auto`}

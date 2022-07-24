@@ -1,4 +1,4 @@
-import type MockCourse from "src/common/types/MockCourse";
+import type { MockCourse } from "src/@types";
 import courses from "src/data/catalog.json";
 
 /**
