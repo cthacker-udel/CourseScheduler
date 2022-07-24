@@ -1,9 +1,9 @@
 import { SemesterTerm } from "src/@types";
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ObjectIdColumn } from "typeorm";
 
 @Entity({ name: "semesters" })
 export class Semester {
-    @PrimaryGeneratedColumn()
+    @ObjectIdColumn()
     id: number;
 
     @Column()
