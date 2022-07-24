@@ -242,7 +242,7 @@ export const Layout = ({ children }: LayoutProps): JSX.Element => {
 
     return (
         <>
-            <div>{children}</div>
+            {children}
             <div className="d-flex flex-row justify-content-around pb-3 pt-3 bg-dark bg-gradient">
                 {navigationLinks}
             </div>
