@@ -61,16 +61,17 @@ const CONSTANTS = {
  */
 export const SignUp = (): JSX.Element => {
     const [showPassword, setShowPassword] = React.useState(false);
-    const { register, formState, reset, watch } = useForm<FormData>({
-        defaultValues: {
-            confirmPassword: "",
-            email: "",
-            password: "",
-            username: "",
-        },
-        mode: "all",
-        reValidateMode: "onChange",
-    });
+    const { formState, register, reset, setValue, trigger, watch } =
+        useForm<FormData>({
+            defaultValues: {
+                confirmPassword: "",
+                email: "",
+                password: "",
+                username: "",
+            },
+            mode: "all",
+            reValidateMode: "onChange",
+        });
     const router = useRouter();
     const [apiError, setApiError] = React.useState<ApiMessage>();
     const [apiSuccess, setApiSuccess] = React.useState<ApiMessage>();
@@ -232,6 +233,13 @@ export const SignUp = (): JSX.Element => {
                                         { length: 1 },
                                     ),
                                     value: 1,
+                                },
+                                onChange: async (value: string) => {
+                                    await trigger("email");
+                                    if (errors.email) {
+                                        return;
+                                    } else {
+                                    }
                                 },
                                 pattern: {
                                     message: intl.formatMessage({
