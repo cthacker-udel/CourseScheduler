@@ -1,15 +1,12 @@
-import { Injectable } from "@nestjs/common";
-import { InjectModel } from "@nestjs/mongoose";
-import type { Model } from "mongoose";
+import { Injectable, Logger } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import type { Repository } from "typeorm";
 import {
     type CreateUserDTO,
     ServerSideCreateUserDTO,
-} from "src/shared/dto/user/create.user.dto";
-import { User, type UserDocument } from "src/schemas/user/user.schema";
-import {
-    type CryptoService,
-    type EncodingResult,
-} from "../Crypto/crypto.service";
+} from "src/dto/user/create.user.dto";
+import { User } from "src/entities";
+import { CryptoService, type EncodingResult } from "../Crypto/crypto.service";
 
 /**
  * The users service, handling all operations involving the users collection
@@ -17,10 +14,15 @@ import {
 @Injectable()
 export class UserService {
     /**
+     * DI injected logger
+     */
+    private readonly logger = new Logger(UserService.name);
+    /**
      * @param userModel DI UserModel, allows for operations on the user database
      */
     constructor(
-        @InjectModel(User.name) private userModel: Model<UserDocument>,
+        @InjectRepository(User, "mongo")
+        private usersRepository: Repository<User>,
         private readonly cryptoService: CryptoService,
     ) {}
 
@@ -52,25 +54,7 @@ export class UserService {
         email: string,
     ): Promise<EncodingResult> => {
         let user: User;
-        await this.userModel.findOne(
-            { username, email },
-            null,
-            null,
-            (error, result) => {
-                if (error) {
-                    console.error(
-                        `Could not get saved password, error : ${error}`,
-                    );
-                    user = null;
-                } else if (!result) {
-                    console.error(`Could not find user, error : ${error}`);
-                    user = null;
-                } else {
-                    user = result;
-                    console.log("Found user");
-                }
-            },
-        );
+        await this.usersRepository.findOne({ where: { username, email } });
         return {
             hash: user.hash,
             iterations: user.iterations,
@@ -84,24 +68,15 @@ export class UserService {
      * @returns If the username exists in the database
      */
     doesUsernameExist = async (username: string): Promise<boolean> => {
-        let isExistent;
-        await this.userModel.findOne(
-            { username },
-            null,
-            null,
-            (error, result) => {
-                if (error) {
-                    console.error(`Could not find username, error : ${error}`);
-                    isExistent = false;
-                } else if (result) {
-                    console.log(`Username ${username} found`);
-                    isExistent = true;
-                } else {
-                    isExistent = false;
-                }
-            },
+        const existentUser = await this.usersRepository.findOne({
+            where: { username },
+        });
+        this.logger.log(
+            `Username ${username} ${
+                existentUser !== null ? "exists" : "does not exist"
+            }`,
         );
-        return isExistent;
+        return existentUser !== null;
     };
 
     /**
@@ -110,19 +85,15 @@ export class UserService {
      * @returns If the email exists in the database
      */
     doesEmailExist = async (email: string): Promise<boolean> => {
-        let isExistent;
-        await this.userModel.findOne({ email }, null, null, (error, result) => {
-            if (error) {
-                console.error(`Could not find email, error : ${error}`);
-                isExistent = false;
-            } else if (result) {
-                console.log(`Email ${email} found`);
-                isExistent = true;
-            } else {
-                isExistent = false;
-            }
+        const existentEmail = await this.usersRepository.findOne({
+            where: { email },
         });
-        return isExistent;
+        this.logger.log(
+            `Email ${email} ${
+                existentEmail !== null ? "exists" : "does not exist"
+            }`,
+        );
+        return existentEmail !== null;
     };
 
     /**
@@ -135,7 +106,8 @@ export class UserService {
             request.password,
         );
         const user = this.createServerSideUser(request, encodingResult);
-        const createdUser = new this.userModel(user);
-        return createdUser.save();
+        const createdUser = await this.usersRepository.create(user);
+        this.logger.log(`Created user ${createdUser.username}`);
+        return await this.usersRepository.save(createdUser);
     };
 }

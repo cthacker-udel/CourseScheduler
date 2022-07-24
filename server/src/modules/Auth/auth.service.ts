@@ -1,16 +1,23 @@
-import { HttpStatus, Injectable } from "@nestjs/common";
+import { HttpStatus, Injectable, Logger } from "@nestjs/common";
 import { CryptoService } from "../Crypto/crypto.service";
 import { UserService } from "../User/user.service";
-import { ApiError, generateApiError } from "src/shared/api/ApiError";
-import { generateErrorCode } from "src/shared/api/ErrorCode";
-import { ApiSuccess, generateApiSuccess } from "src/shared/api/ApiSuccess";
-import { CreateUserDTO } from "src/shared/dto/user/create.user.dto";
+import { CreateUserDTO } from "src/dto/user/create.user.dto";
+import { ApiError, ApiSuccess, ERROR_CODES } from "src/@types";
+import {
+    generateApiError,
+    generateApiSuccess,
+    generateErrorCode,
+} from "src/helpers";
 
 /**
  * Handles all authentication functions
  */
 @Injectable()
 export class AuthService {
+    /**
+     * DI injected logger
+     */
+    private readonly logger = new Logger(AuthService.name);
     /**
      * @param userService DI UserService, for looking up the user in the database
      * @param cryptoService DI CryptoService, for hashing the given password and comparing it to the database's
@@ -66,25 +73,31 @@ export class AuthService {
                     enteredPassword,
                 );
                 if (!passwordValidationResult) {
-                    console.error("Password invalid");
+                    this.logger.error(
+                        `(${email},${username}) Login failed - Password Invalid`,
+                    );
                     return generateApiError(
                         HttpStatus.BAD_REQUEST,
-                        generateErrorCode(5),
+                        generateErrorCode(ERROR_CODES.PASSWORD_INVALID),
                     );
                 }
                 return true;
             } else {
-                console.error("Login failed: Email does not exist");
+                this.logger.error(
+                    `(${email},${username}) Login failed  - Email Does Not Exist`,
+                );
                 return generateApiError(
                     HttpStatus.BAD_REQUEST,
-                    generateErrorCode(2),
+                    generateErrorCode(ERROR_CODES.EMAIL_DOES_NOT_EXIST),
                 );
             }
         } else {
-            console.error("Login failed: User does not exist");
+            this.logger.error(
+                `(${email},${username}) Login failed - Username Does Not Exist`,
+            );
             return generateApiError(
                 HttpStatus.BAD_REQUEST,
-                generateErrorCode(1),
+                generateErrorCode(ERROR_CODES.USER_DOES_NOT_EXIST),
             );
         }
     };
@@ -92,20 +105,26 @@ export class AuthService {
     createUser = async (
         request: CreateUserDTO,
     ): Promise<ApiError | ApiSuccess> => {
-        if (!this.userService.doesUsernameExist(request.username)) {
-            if (!this.userService.doesEmailExist(request.email)) {
+        const doesUsernameExist = await this.userService.doesUsernameExist(
+            request.username,
+        );
+        if (!doesUsernameExist) {
+            const doesEmailExist = await this.userService.doesEmailExist(
+                request.email,
+            );
+            if (!doesEmailExist) {
                 await this.userService.create(request);
                 return generateApiSuccess(HttpStatus.OK, { canLogin: true });
             } else {
                 return generateApiError(
                     HttpStatus.BAD_REQUEST,
-                    generateErrorCode(2),
+                    generateErrorCode(ERROR_CODES.EMAIL_ALREADY_EXISTS),
                 );
             }
         } else {
             return generateApiError(
                 HttpStatus.BAD_REQUEST,
-                generateErrorCode(1),
+                generateErrorCode(ERROR_CODES.USER_ALREADY_EXISTS),
             );
         }
     };

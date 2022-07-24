@@ -252,7 +252,6 @@
         "no-shadow": "error",
         "no-shadow-restricted-names": "error",
         "no-undef-init": "error",
-        "no-undefined": "error",
         "no-unused-vars": "error",
         "no-use-before-define": "error",
         "array-bracket-newline": ["error", "consistent"],
@@ -297,7 +296,7 @@
         ],
         "keyword-spacing": "error",
         "line-comment-position": "error",
-        "lines-around-comment": "error",
+        "lines-around-comment": ["error", { "beforeBlockComment": false }],
         "lines-between-class-members": "error",
         "max-depth": ["error", 7],
         "max-len": [
@@ -319,7 +318,7 @@
         "max-lines-per-function": [
             "error",
             {
-                "max": 300,
+                "max": 500,
                 "skipBlankLines": true,
                 "skipComments": true,
                 "IIFEs": false
@@ -541,10 +540,7 @@
         ],
         "@typescript-eslint/consistent-type-assertions": "error",
         "@typescript-eslint/consistent-type-exports": "error",
-        "@typescript-eslint/consistent-type-definitions": [
-            "error",
-            "interface"
-        ],
+        "@typescript-eslint/consistent-type-definitions": ["error", "type"],
         "@typescript-eslint/consistent-type-imports": "error",
         "@typescript-eslint/explicit-function-return-type": "error",
         "@typescript-eslint/explicit-member-accessibility": "error",
@@ -560,13 +556,15 @@
         "@typescript-eslint/no-explicit-any": "error",
         "@typescript-eslint/no-extra-non-null-assertion": "error",
         "@typescript-eslint/no-extraneous-class": "error",
-        "@typescript-eslint/no-floating-promises": "error",
+        "@typescript-eslint/no-floating-promises": [
+            "error",
+            { "ignoreVoid": true }
+        ],
         "@typescript-eslint/no-for-in-array": "error",
         "@typescript-eslint/no-inferrable-types": "error",
         "@typescript-eslint/no-invalid-void-type": "error",
         "@typescript-eslint/no-meaningless-void-operator": "error",
         "@typescript-eslint/no-misused-new": "error",
-        "@typescript-eslint/no-misused-promises": "error",
         "@typescript-eslint/no-namespace": "error",
         "@typescript-eslint/no-non-null-asserted-optional-chain": "error",
         "@typescript-eslint/no-non-null-asserted-nullish-coalescing": "error",
@@ -606,7 +604,10 @@
         ],
         "@typescript-eslint/restrict-plus-operands": "error",
         "@typescript-eslint/sort-type-union-intersection-members": "error",
-        "@typescript-eslint/strict-boolean-expressions": "error",
+        "@typescript-eslint/strict-boolean-expressions": [
+            "error",
+            { "allowString": true, "allowNullableString": true }
+        ],
         "@typescript-eslint/switch-exhaustiveness-check": "error",
         "@typescript-eslint/triple-slash-reference": "error",
         "@typescript-eslint/type-annotation-spacing": "error",
@@ -644,7 +645,6 @@
         "@typescript-eslint/no-invalid-this": "error",
         "@typescript-eslint/no-loop-func": "error",
         "@typescript-eslint/no-loss-of-precision": "error",
-        "@typescript-eslint/no-magic-numbers": "error",
         "@typescript-eslint/no-redeclare": "error",
         "@typescript-eslint/no-restricted-imports": "error",
         "@typescript-eslint/no-shadow": "error",
@@ -747,7 +747,14 @@
         "react/jsx-child-element-spacing": "error",
         "react/jsx-closing-bracket-location": "error",
         "react/jsx-closing-tag-location": "error",
-        "react/jsx-curly-brace-presence": "error",
+        "react/jsx-curly-brace-presence": [
+            "error",
+            {
+                "props": "ignore",
+                "children": "always",
+                "propElementValues": "always"
+            }
+        ],
         "react/jsx-curly-newline": "off",
         "react/jsx-curly-spacing": "error",
         "react/jsx-equals-spacing": "error",
@@ -831,7 +838,6 @@
         "import/no-duplicates": "error",
         "import/no-named-default": "error",
         "import/no-namespace": "error",
-        "import/order": "error",
         "simple-import-sort/exports": "error",
         "simple-import-sort/imports": "error",
         "jest/consistent-test-it": ["error", { "fn": "test" }],

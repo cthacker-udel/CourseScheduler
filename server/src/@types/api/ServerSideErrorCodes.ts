@@ -1,0 +1,75 @@
+import { ErrorCode } from "./ErrorCode";
+
+/**
+ * Enumerations of the error codes
+ */
+export enum ERROR_CODES {
+    UNKNOWN_SERVER_FAILURE,
+    USER_ALREADY_EXISTS,
+    EMAIL_ALREADY_EXISTS,
+    USER_DOES_NOT_EXIST,
+    EMAIL_DOES_NOT_EXIST,
+    PASSWORD_INVALID,
+    LOGIN_FAILED,
+}
+
+/**
+ * ErrorCode for server failing reason unknown
+ */
+export const UNKNOWN_SERVER_FAILURE_ERROR_CODE: ErrorCode = {
+    message: "Unknown API Error",
+    code: 0,
+};
+
+/**
+ * Errorcode for user already existing in database
+ */
+export const USER_ALREADY_EXISTS_ERROR_CODE: ErrorCode = {
+    message: "User already exists",
+    code: 1,
+};
+
+/**
+ * ErrorCode for email already existing in the database
+ */
+export const EMAIL_ALREADY_EXISTS_ERROR_CODE: ErrorCode = {
+    message: "Email already exists",
+    code: 2,
+};
+
+/**
+ * ErrorCode for user not existing in the database
+ */
+export const USER_DOES_NOT_EXIST_ERROR_CODE: ErrorCode = {
+    message: "User does not exist",
+    code: 3,
+};
+
+/**
+ * ErrorCode for email not existing in the database
+ */
+export const EMAIL_DOES_NOT_EXIST_ERROR_CODE: ErrorCode = {
+    message: "Email does not exist",
+    code: 4,
+};
+
+/**
+ * ErrorCode for invalid password
+ */
+export const PASSWORD_INVALID_ERROR_CODE: ErrorCode = {
+    message: "Password is invalid",
+    code: 5,
+};
+
+/**
+ * ErrorCode for login failing
+ */
+export const LOGIN_FAILED_ERROR_CODE: ErrorCode = {
+    message: "Login failed",
+    code: 6,
+};
+
+/**
+ * The valid codes
+ */
+export type VALID_CODES = 0 | 1 | 2 | 3 | 4 | 5 | 6;

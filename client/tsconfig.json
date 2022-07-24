@@ -1,11 +1,11 @@
 {
     "compilerOptions": {
-        "baseUrl": "./",
+        "baseUrl": ".",
         "allowSyntheticDefaultImports": true,
         "declaration": true,
         "declarationMap": true,
         "esModuleInterop": true,
-        "jsx": "react",
+        "jsx": "preserve",
         "lib": [
             "es5",
             "es6",
@@ -26,7 +26,16 @@
         "strict": true,
         "target": "esnext",
         "types": ["node"],
-        "plugins": [{ "name": "typescript-plugin-css-modules" }]
+        "plugins": [
+            {
+                "name": "typescript-plugin-css-modules"
+            }
+        ],
+        "allowJs": true,
+        "forceConsistentCasingInFileNames": true,
+        "noEmit": true,
+        "incremental": true,
+        "isolatedModules": true
     },
     "include": [
         "**/*.ts",
