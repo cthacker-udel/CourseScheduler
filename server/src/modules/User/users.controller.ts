@@ -32,7 +32,9 @@ export class UserController {
             this.logger.log(
                 `Username Validation on ${req.username}: ${doesUsernameExist}`,
             );
-            return generateApiSuccess(HttpStatus.OK);
+            return generateApiSuccess(
+                doesUsernameExist ? HttpStatus.OK : HttpStatus.BAD_REQUEST,
+            );
         } catch (error: unknown) {
             this.logger.error(error);
             return generateApiError(

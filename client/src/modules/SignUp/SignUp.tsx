@@ -55,6 +55,10 @@ const CONSTANTS = {
      */
     SIGN_UP_REDIRECT_TIMEOUT: 2500,
     /**
+     * Sign up username error http status
+     */
+    SIGN_UP_USERNAME_ERROR_STATUS: 200,
+    /**
      * General text field min length
      */
     TEXT_FIELD_MIN_LENGTH: 1,
@@ -238,7 +242,7 @@ export const SignUp = (): JSX.Element => {
                                     ),
                                     value: 1,
                                 },
-                                onChange: async (
+                                onBlur: async (
                                     email: React.ChangeEvent<HTMLInputElement>,
                                 ) => {
                                     await trigger("email");
@@ -311,6 +315,31 @@ export const SignUp = (): JSX.Element => {
                                         { length: 20 },
                                     ),
                                     value: 20,
+                                },
+                                onBlur: async (
+                                    username: React.ChangeEvent<HTMLInputElement>,
+                                ) => {
+                                    await trigger("username");
+                                    const registeredUsername =
+                                        username.target.value;
+                                    setValue("username", registeredUsername);
+                                    if (!errors.username) {
+                                        const result =
+                                            await UsersApi.checkUsername({
+                                                username: registeredUsername,
+                                            });
+                                        if (
+                                            (result as ApiSuccess).status ===
+                                            CONSTANTS.SIGN_UP_USERNAME_ERROR_STATUS
+                                        ) {
+                                            setError("username", {
+                                                message: intl.formatMessage({
+                                                    id: "sign_up_form_username_exists",
+                                                }),
+                                                type: "validate",
+                                            });
+                                        }
+                                    }
                                 },
                                 pattern: {
                                     message: "Cannot contain symbols",
