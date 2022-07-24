@@ -2,7 +2,11 @@ import { Body, Controller, HttpStatus, Logger, Post } from "@nestjs/common";
 import { ERROR_CODES } from "src/@types";
 import { EmailValidationDTO } from "src/dto/user/emailValidation.dto";
 import { UsernameValidationDTO } from "src/dto/user/usernameValidation.dto";
-import { generateApiError, generateErrorCode } from "src/helpers";
+import {
+    generateApiError,
+    generateApiSuccess,
+    generateErrorCode,
+} from "src/helpers";
 import { UserService } from "./user.service";
 
 @Controller()
@@ -28,7 +32,7 @@ export class UserController {
             this.logger.log(
                 `Username Validation on ${req.username}: ${doesUsernameExist}`,
             );
-            return doesUsernameExist;
+            return generateApiSuccess(HttpStatus.OK);
         } catch (error: unknown) {
             this.logger.error(error);
             return generateApiError(
@@ -40,7 +44,6 @@ export class UserController {
 
     @Post("users/email/validate")
     async validateEmail(@Body() req: EmailValidationDTO) {
-        this.logger.log("Request = ", req);
         try {
             const doesEmailExist = await this.usersService.doesEmailExist(
                 req.email,
@@ -48,7 +51,9 @@ export class UserController {
             this.logger.log(
                 `Email Validation on ${req.email}: ${doesEmailExist}`,
             );
-            return doesEmailExist;
+            return generateApiSuccess(
+                doesEmailExist ? HttpStatus.OK : HttpStatus.BAD_REQUEST,
+            );
         } catch (error: unknown) {
             this.logger.error(error);
             return generateApiError(

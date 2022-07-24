@@ -5,7 +5,7 @@ import React from "react";
 import { Alert, Button, Card, Form, OverlayTrigger } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { FormattedMessage, useIntl } from "react-intl";
-import type { ApiError, SignUpRequest } from "src/@types";
+import type { ApiError, ApiSuccess, SignUpRequest } from "src/@types";
 import type { ApiMessage } from "src/api/ApiMessage/ApiMessage";
 import { UsersApi } from "src/api/client-side/UsersApi";
 import { EMAIL, USERNAME } from "src/common";
@@ -40,6 +40,10 @@ const CONSTANTS = {
      */
     SIGN_UP_ALERT_TIMEOUT: 5000,
     /**
+     * Sign up email error http status
+     */
+    SIGN_UP_EMAIL_ERROR_STATUS: 200,
+    /**
      * Error codes that concern the sign up flow
      */
     SIGN_UP_ERROR_CODES: {
@@ -61,16 +65,17 @@ const CONSTANTS = {
  */
 export const SignUp = (): JSX.Element => {
     const [showPassword, setShowPassword] = React.useState(false);
-    const { formState, register, reset, trigger, watch } = useForm<FormData>({
-        defaultValues: {
-            confirmPassword: "",
-            email: "",
-            password: "",
-            username: "",
-        },
-        mode: "all",
-        reValidateMode: "onChange",
-    });
+    const { formState, register, reset, setError, setValue, trigger, watch } =
+        useForm<FormData>({
+            defaultValues: {
+                confirmPassword: "",
+                email: "",
+                password: "",
+                username: "",
+            },
+            mode: "all",
+            reValidateMode: "onChange",
+        });
     const router = useRouter();
     const [apiError, setApiError] = React.useState<ApiMessage>();
     const [apiSuccess, setApiSuccess] = React.useState<ApiMessage>();
@@ -204,7 +209,7 @@ export const SignUp = (): JSX.Element => {
                             <FormattedMessage id="sign_up_form0_title" />
                         </Form.Label>
                         <Form.Control
-                            autoComplete="email"
+                            autoComplete="off"
                             isInvalid={errors.email && true}
                             isValid={
                                 !errors.email &&
@@ -237,12 +242,24 @@ export const SignUp = (): JSX.Element => {
                                     email: React.ChangeEvent<HTMLInputElement>,
                                 ) => {
                                     await trigger("email");
+                                    const registeredEmail = email.target.value;
+                                    setValue("email", registeredEmail);
                                     if (!errors.email) {
                                         const result =
                                             await UsersApi.checkEmail({
-                                                email: email.target.value,
+                                                email: registeredEmail,
                                             });
-                                        console.log("result = ", result);
+                                        if (
+                                            (result as ApiSuccess).status ===
+                                            CONSTANTS.SIGN_UP_EMAIL_ERROR_STATUS
+                                        ) {
+                                            setError("email", {
+                                                message: intl.formatMessage({
+                                                    id: "sign_up_form_email_exists",
+                                                }),
+                                                type: "validate",
+                                            });
+                                        }
                                     }
                                 },
                                 pattern: {
