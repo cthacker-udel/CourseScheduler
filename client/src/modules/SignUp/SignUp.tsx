@@ -61,17 +61,16 @@ const CONSTANTS = {
  */
 export const SignUp = (): JSX.Element => {
     const [showPassword, setShowPassword] = React.useState(false);
-    const { formState, register, reset, setValue, trigger, watch } =
-        useForm<FormData>({
-            defaultValues: {
-                confirmPassword: "",
-                email: "",
-                password: "",
-                username: "",
-            },
-            mode: "all",
-            reValidateMode: "onChange",
-        });
+    const { formState, register, reset, trigger, watch } = useForm<FormData>({
+        defaultValues: {
+            confirmPassword: "",
+            email: "",
+            password: "",
+            username: "",
+        },
+        mode: "all",
+        reValidateMode: "onChange",
+    });
     const router = useRouter();
     const [apiError, setApiError] = React.useState<ApiMessage>();
     const [apiSuccess, setApiSuccess] = React.useState<ApiMessage>();
@@ -234,11 +233,16 @@ export const SignUp = (): JSX.Element => {
                                     ),
                                     value: 1,
                                 },
-                                onChange: async (value: string) => {
+                                onChange: async (
+                                    email: React.ChangeEvent<HTMLInputElement>,
+                                ) => {
                                     await trigger("email");
-                                    if (errors.email) {
-                                        return;
-                                    } else {
+                                    if (!errors.email) {
+                                        const result =
+                                            await UsersApi.checkEmail({
+                                                email: email.target.value,
+                                            });
+                                        console.log("result = ", result);
                                     }
                                 },
                                 pattern: {

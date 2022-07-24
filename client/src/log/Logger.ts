@@ -22,8 +22,8 @@ export class Logger {
     public static log = (
         level: LoggingType,
         message: string,
-        fileName: string,
-        lineNumber: number,
+        fileName?: string,
+        lineNumber?: number,
         content?: unknown,
     ): void => {
         console.log({
