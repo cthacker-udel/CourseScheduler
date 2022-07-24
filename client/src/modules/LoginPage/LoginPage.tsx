@@ -11,6 +11,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React, { type ReactNode } from "react";
 import {
     Button,
@@ -34,14 +35,9 @@ import styles from "./LoginPage.module.css";
  */
 export const LoginPage = (): JSX.Element => {
     const [state, dispatch] = React.useReducer(LoginPageReducer, {}, () => ({
-        showLoginOverlay: false,
         showPassword: false,
-        showPasswordOverlay: false,
-        showSignUpOverlay: false,
     }));
-    const showPasswordRef = React.useRef(null);
-    const loginRef = React.useRef(null);
-    const signUpRef = React.useRef(null);
+    const router = useRouter();
     const { register, formState } = useForm({
         context: undefined,
         criteriaMode: "all",
@@ -186,27 +182,6 @@ export const LoginPage = (): JSX.Element => {
                                                     type: "setShowPassword",
                                                 });
                                             }}
-                                            onMouseEnter={(): void => {
-                                                dispatch({
-                                                    payload: {
-                                                        ...state,
-                                                        showPasswordOverlay:
-                                                            true,
-                                                    },
-                                                    type: "setPasswordOverlay",
-                                                });
-                                            }}
-                                            onMouseLeave={(): void => {
-                                                dispatch({
-                                                    payload: {
-                                                        ...state,
-                                                        showPasswordOverlay:
-                                                            false,
-                                                    },
-                                                    type: "setPasswordOverlay",
-                                                });
-                                            }}
-                                            ref={showPasswordRef}
                                             variant={
                                                 state.showPassword
                                                     ? "outline-danger"
@@ -251,32 +226,14 @@ export const LoginPage = (): JSX.Element => {
                                     dirtyFields.email === undefined ||
                                     dirtyFields.password === undefined
                                 }
-                                onMouseEnter={(): void => {
-                                    dispatch({
-                                        payload: {
-                                            ...state,
-                                            showLoginOverlay: true,
-                                        },
-                                        type: "setLoginOverlay",
-                                    });
-                                }}
-                                onMouseLeave={(): void => {
-                                    dispatch({
-                                        payload: {
-                                            ...state,
-                                            showLoginOverlay: false,
-                                        },
-                                        type: "setLoginOverlay",
-                                    });
-                                }}
-                                ref={loginRef}
+                                title="Login"
                                 variant="outline-primary"
                             >
                                 <FontAwesomeIcon icon={faSignIn} />
                             </Button>
                         </OverlayTrigger>
                     </Link>
-                    <Link href="/sign-up" replace>
+                    <Link href="/sign-up">
                         <OverlayTrigger
                             delay={{ hide: 100, show: 100 }}
                             overlay={(props: OverlayInjectedProps): ReactNode =>
@@ -286,25 +243,10 @@ export const LoginPage = (): JSX.Element => {
                         >
                             <Button
                                 className="ms-2"
-                                onMouseEnter={(): void => {
-                                    dispatch({
-                                        payload: {
-                                            ...state,
-                                            showSignUpOverlay: true,
-                                        },
-                                        type: "setSignUpOverlay",
-                                    });
+                                onClick={async (): Promise<void> => {
+                                    await router.push("/sign-up");
                                 }}
-                                onMouseLeave={(): void => {
-                                    dispatch({
-                                        payload: {
-                                            ...state,
-                                            showSignUpOverlay: false,
-                                        },
-                                        type: "setSignUpOverlay",
-                                    });
-                                }}
-                                ref={signUpRef}
+                                title="Sign Up"
                                 variant="outline-info"
                             >
                                 <FontAwesomeIcon icon={faUserPlus} />
