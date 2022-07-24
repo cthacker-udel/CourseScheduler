@@ -28,7 +28,9 @@ export class Logger {
     ): void => {
         console.log({
             content,
+            fileName,
             level,
+            lineNumber,
             message,
         });
     };

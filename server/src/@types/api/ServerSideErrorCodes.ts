@@ -1,6 +1,19 @@
 import { ErrorCode } from "./ErrorCode";
 
 /**
+ * Enumerations of the error codes
+ */
+export enum ERROR_CODES {
+    UNKNOWN_SERVER_FAILURE,
+    USER_ALREADY_EXISTS,
+    EMAIL_ALREADY_EXISTS,
+    USER_DOES_NOT_EXIST,
+    EMAIL_DOES_NOT_EXIST,
+    PASSWORD_INVALID,
+    LOGIN_FAILED,
+}
+
+/**
  * ErrorCode for server failing reason unknown
  */
 export const UNKNOWN_SERVER_FAILURE_ERROR_CODE: ErrorCode = {
@@ -60,22 +73,3 @@ export const LOGIN_FAILED_ERROR_CODE: ErrorCode = {
  * The valid codes
  */
 export type VALID_CODES = 0 | 1 | 2 | 3 | 4 | 5 | 6;
-
-const ERROR_CODE_LOOKUP: Record<VALID_CODES, ErrorCode> = {
-    0: UNKNOWN_SERVER_FAILURE_ERROR_CODE,
-    1: USER_ALREADY_EXISTS_ERROR_CODE,
-    2: EMAIL_ALREADY_EXISTS_ERROR_CODE,
-    3: USER_DOES_NOT_EXIST_ERROR_CODE,
-    4: EMAIL_DOES_NOT_EXIST_ERROR_CODE,
-    5: PASSWORD_INVALID_ERROR_CODE,
-    6: LOGIN_FAILED_ERROR_CODE,
-};
-
-/**
- * This function looks up the corresponding ErrorCode given a valid code
- * @param code The code to find via ERROR_CODE_LOOKUP
- * @returns The ErrorCode corresponding to the code given
- */
-export const lookupErrorCodeByCode = (code: VALID_CODES) => {
-    return ERROR_CODE_LOOKUP[code];
-};

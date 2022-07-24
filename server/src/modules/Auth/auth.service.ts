@@ -1,10 +1,13 @@
 import { HttpStatus, Injectable } from "@nestjs/common";
 import { CryptoService } from "../Crypto/crypto.service";
 import { UserService } from "../User/user.service";
-import { ApiError, generateApiError } from "src/@types/api/ApiError";
-import { generateErrorCode } from "src/@types/api/ErrorCode";
-import { ApiSuccess, generateApiSuccess } from "src/@types/api/ApiSuccess";
 import { CreateUserDTO } from "src/dto/user/create.user.dto";
+import { ApiError, ApiSuccess, ERROR_CODES } from "src/@types";
+import {
+    generateApiError,
+    generateApiSuccess,
+    generateErrorCode,
+} from "src/helpers";
 
 /**
  * Handles all authentication functions
@@ -69,7 +72,7 @@ export class AuthService {
                     console.error("Password invalid");
                     return generateApiError(
                         HttpStatus.BAD_REQUEST,
-                        generateErrorCode(5),
+                        generateErrorCode(ERROR_CODES.PASSWORD_INVALID),
                     );
                 }
                 return true;
@@ -77,14 +80,14 @@ export class AuthService {
                 console.error("Login failed: Email does not exist");
                 return generateApiError(
                     HttpStatus.BAD_REQUEST,
-                    generateErrorCode(2),
+                    generateErrorCode(ERROR_CODES.EMAIL_ALREADY_EXISTS),
                 );
             }
         } else {
             console.error("Login failed: User does not exist");
             return generateApiError(
                 HttpStatus.BAD_REQUEST,
-                generateErrorCode(1),
+                generateErrorCode(ERROR_CODES.USER_ALREADY_EXISTS),
             );
         }
     };
@@ -94,18 +97,19 @@ export class AuthService {
     ): Promise<ApiError | ApiSuccess> => {
         if (!this.userService.doesUsernameExist(request.username)) {
             if (!this.userService.doesEmailExist(request.email)) {
-                await this.userService.create(request);
+                const result = await this.userService.create(request);
+                console.log("result = ", result);
                 return generateApiSuccess(HttpStatus.OK, { canLogin: true });
             } else {
                 return generateApiError(
                     HttpStatus.BAD_REQUEST,
-                    generateErrorCode(2),
+                    generateErrorCode(ERROR_CODES.EMAIL_ALREADY_EXISTS),
                 );
             }
         } else {
             return generateApiError(
                 HttpStatus.BAD_REQUEST,
-                generateErrorCode(1),
+                generateErrorCode(ERROR_CODES.USER_ALREADY_EXISTS),
             );
         }
     };

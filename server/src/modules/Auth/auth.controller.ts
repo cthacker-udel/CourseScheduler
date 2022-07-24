@@ -1,9 +1,8 @@
 import { Body, Controller, HttpStatus, Post } from "@nestjs/common";
-import { ApiError, generateApiError } from "src/@types/api/ApiError";
-import { ApiSuccess } from "src/@types/api/ApiSuccess";
-import { generateErrorCode } from "src/@types/api/ErrorCode";
+import { ApiError, ApiSuccess, ERROR_CODES } from "src/@types";
 import { CreateUserDTO } from "src/dto/user/create.user.dto";
 import { LoginDto } from "src/dto/user/login.dto";
+import { generateApiError, generateErrorCode } from "src/helpers";
 import { UserService } from "../User/user.service";
 import { AuthService } from "./auth.service";
 
@@ -31,7 +30,7 @@ export class AuthController {
         } catch (error: unknown) {
             return generateApiError(
                 HttpStatus.BAD_REQUEST,
-                generateErrorCode(6),
+                generateErrorCode(ERROR_CODES.LOGIN_FAILED),
             );
         }
     }
@@ -43,13 +42,12 @@ export class AuthController {
      */
     @Post("auth/signup")
     async signUp(@Body() body: CreateUserDTO): Promise<ApiSuccess | ApiError> {
-        console.log("body = ", body);
         try {
             return await this.authService.createUser(body);
         } catch (error: unknown) {
             return generateApiError(
                 HttpStatus.BAD_REQUEST,
-                generateErrorCode(0),
+                generateErrorCode(ERROR_CODES.UNKNOWN_SERVER_FAILURE),
             );
         }
     }

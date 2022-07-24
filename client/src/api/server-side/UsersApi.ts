@@ -19,6 +19,7 @@ export class UsersApi extends ServerSideApi {
             "/auth/signup",
             JSON.parse(request.body as unknown as string) as SignUpRequest,
         );
+        console.log("result = ", result);
         return result;
     };
 }
