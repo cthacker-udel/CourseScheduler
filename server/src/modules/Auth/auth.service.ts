@@ -1,4 +1,4 @@
-import { HttpStatus, Injectable } from "@nestjs/common";
+import { HttpStatus, Injectable, Logger } from "@nestjs/common";
 import { CryptoService } from "../Crypto/crypto.service";
 import { UserService } from "../User/user.service";
 import { CreateUserDTO } from "src/dto/user/create.user.dto";
@@ -14,6 +14,10 @@ import {
  */
 @Injectable()
 export class AuthService {
+    /**
+     * DI injected logger
+     */
+    private readonly logger = new Logger(AuthService.name);
     /**
      * @param userService DI UserService, for looking up the user in the database
      * @param cryptoService DI CryptoService, for hashing the given password and comparing it to the database's
@@ -69,6 +73,9 @@ export class AuthService {
                     enteredPassword,
                 );
                 if (!passwordValidationResult) {
+                    this.logger.error(
+                        `(${email},${username}) Login failed - Password Invalid`,
+                    );
                     return generateApiError(
                         HttpStatus.BAD_REQUEST,
                         generateErrorCode(ERROR_CODES.PASSWORD_INVALID),
@@ -76,15 +83,21 @@ export class AuthService {
                 }
                 return true;
             } else {
+                this.logger.error(
+                    `(${email},${username}) Login failed  - Email Does Not Exist`,
+                );
                 return generateApiError(
                     HttpStatus.BAD_REQUEST,
-                    generateErrorCode(ERROR_CODES.EMAIL_ALREADY_EXISTS),
+                    generateErrorCode(ERROR_CODES.EMAIL_DOES_NOT_EXIST),
                 );
             }
         } else {
+            this.logger.error(
+                `(${email},${username}) Login failed - Username Does Not Exist`,
+            );
             return generateApiError(
                 HttpStatus.BAD_REQUEST,
-                generateErrorCode(ERROR_CODES.USER_ALREADY_EXISTS),
+                generateErrorCode(ERROR_CODES.USER_DOES_NOT_EXIST),
             );
         }
     };

@@ -1,4 +1,4 @@
-import { Body, Controller, HttpStatus, Post } from "@nestjs/common";
+import { Body, Controller, HttpStatus, Logger, Post } from "@nestjs/common";
 import { ApiError, ApiSuccess, ERROR_CODES } from "src/@types";
 import { CreateUserDTO } from "src/dto/user/create.user.dto";
 import { LoginDto } from "src/dto/user/login.dto";
@@ -8,6 +8,7 @@ import { AuthService } from "./auth.service";
 
 @Controller()
 export class AuthController {
+    private readonly logger = new Logger(AuthController.name);
     constructor(
         private readonly authService: AuthService,
         private readonly userService: UserService,
@@ -28,6 +29,7 @@ export class AuthController {
             );
             return result;
         } catch (error: unknown) {
+            this.logger.error(`Login failed - ${error}`);
             return generateApiError(
                 HttpStatus.BAD_REQUEST,
                 generateErrorCode(ERROR_CODES.LOGIN_FAILED),
@@ -45,6 +47,7 @@ export class AuthController {
         try {
             return await this.authService.createUser(body);
         } catch (error: unknown) {
+            this.logger.error(`Sign Up failed - ${error}`);
             return generateApiError(
                 HttpStatus.BAD_REQUEST,
                 generateErrorCode(ERROR_CODES.UNKNOWN_SERVER_FAILURE),

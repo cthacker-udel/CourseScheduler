@@ -1,3 +1,4 @@
+import type { NextApiResponse } from "next";
 import type {
     ApiError,
     ApiSuccess,
@@ -20,12 +21,13 @@ export class UsersApi extends ServerSideApi {
      */
     public static signUp = async (
         request: Request,
-    ): Promise<ApiError | ApiSuccess> => {
+        response: NextApiResponse,
+    ): Promise<void> => {
         const result = await super.post<ApiError | ApiSuccess>(
             "/auth/signup",
             JSON.parse(request.body as unknown as string) as SignUpRequest,
         );
-        return result;
+        response.json(result);
     };
 
     /**
@@ -36,14 +38,15 @@ export class UsersApi extends ServerSideApi {
      */
     public static checkEmail = async (
         request: Request,
-    ): Promise<ApiError | ApiSuccess> => {
+        response: NextApiResponse,
+    ): Promise<void> => {
         const result = await super.post<ApiError | ApiSuccess>(
             "/users/email/validate",
             JSON.parse(
                 request.body as unknown as string,
             ) as EmailValidationRequest,
         );
-        return result;
+        response.json(result);
     };
 
     /**
@@ -54,13 +57,14 @@ export class UsersApi extends ServerSideApi {
      */
     public static checkUsername = async (
         request: Request,
-    ): Promise<ApiError | ApiSuccess> => {
+        response: NextApiResponse,
+    ): Promise<void> => {
         const result = await super.post<ApiError | ApiSuccess>(
             "/users/username/validate",
             JSON.parse(
                 request.body as unknown as string,
             ) as UsernameValidationRequest,
         );
-        return result;
+        response.json(result);
     };
 }

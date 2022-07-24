@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, Logger } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import type { Repository } from "typeorm";
 import {
@@ -13,6 +13,10 @@ import { CryptoService, type EncodingResult } from "../Crypto/crypto.service";
  */
 @Injectable()
 export class UserService {
+    /**
+     * DI injected logger
+     */
+    private readonly logger = new Logger(UserService.name);
     /**
      * @param userModel DI UserModel, allows for operations on the user database
      */
@@ -67,6 +71,11 @@ export class UserService {
         const existentUser = await this.usersRepository.findOne({
             where: { username },
         });
+        this.logger.log(
+            `Username ${username} ${
+                existentUser !== null ? "exists" : "does not exist"
+            }`,
+        );
         return existentUser !== null;
     };
 
@@ -79,6 +88,11 @@ export class UserService {
         const existentEmail = await this.usersRepository.findOne({
             where: { email },
         });
+        this.logger.log(
+            `Email ${email} ${
+                existentEmail !== null ? "exists" : "does not exist"
+            }`,
+        );
         return existentEmail !== null;
     };
 
@@ -93,6 +107,7 @@ export class UserService {
         );
         const user = this.createServerSideUser(request, encodingResult);
         const createdUser = await this.usersRepository.create(user);
+        this.logger.log(`Created user ${createdUser.username}`);
         return await this.usersRepository.save(createdUser);
     };
 }
