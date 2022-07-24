@@ -90,6 +90,7 @@ export const LoginPage = (): JSX.Element => {
                                         </label>
                                     </InputGroup.Text>
                                     <Form.Control
+                                        autoComplete="username"
                                         className="p-2 w-75 mr-auto"
                                         id="username_login_form_component"
                                         {...register("username")}
@@ -121,6 +122,7 @@ export const LoginPage = (): JSX.Element => {
                                         </label>
                                     </InputGroup.Text>
                                     <Form.Control
+                                        autoComplete="email"
                                         className="p-2 w-75 mr-auto"
                                         id="email_login_form_component"
                                         {...register("email")}
@@ -148,6 +150,7 @@ export const LoginPage = (): JSX.Element => {
                                         </label>
                                     </InputGroup.Text>
                                     <Form.Control
+                                        autoComplete="current-password"
                                         className="p-2 w-75 mr-auto"
                                         id="password_login_form_component"
                                         {...register("password")}
@@ -212,47 +215,46 @@ export const LoginPage = (): JSX.Element => {
                     </Card>
                 </Card.Body>
                 <div className="mb-4 mt-2">
-                    <Link href="courses">
-                        <OverlayTrigger
-                            delay={{ hide: 100, show: 100 }}
-                            overlay={(props: OverlayInjectedProps): ReactNode =>
-                                generateTooltip(loginFormDetails.login, props)
+                    <OverlayTrigger
+                        delay={{ hide: 100, show: 100 }}
+                        overlay={(props: OverlayInjectedProps): ReactNode =>
+                            generateTooltip(loginFormDetails.login, props)
+                        }
+                        placement="left"
+                    >
+                        <Button
+                            className="me-2"
+                            disabled={
+                                dirtyFields.email === undefined ||
+                                dirtyFields.password === undefined
                             }
-                            placement="left"
+                            onClick={async (): Promise<void> => {
+                                await router.push("courses");
+                            }}
+                            title="Login"
+                            variant="outline-primary"
                         >
-                            <Button
-                                className="me-2"
-                                disabled={
-                                    dirtyFields.email === undefined ||
-                                    dirtyFields.password === undefined
-                                }
-                                title="Login"
-                                variant="outline-primary"
-                            >
-                                <FontAwesomeIcon icon={faSignIn} />
-                            </Button>
-                        </OverlayTrigger>
-                    </Link>
-                    <Link href="/sign-up">
-                        <OverlayTrigger
-                            delay={{ hide: 100, show: 100 }}
-                            overlay={(props: OverlayInjectedProps): ReactNode =>
-                                generateTooltip(loginFormDetails.sign_up, props)
-                            }
-                            placement="right"
+                            <FontAwesomeIcon icon={faSignIn} />
+                        </Button>
+                    </OverlayTrigger>
+                    <OverlayTrigger
+                        delay={{ hide: 100, show: 100 }}
+                        overlay={(props: OverlayInjectedProps): ReactNode =>
+                            generateTooltip(loginFormDetails.sign_up, props)
+                        }
+                        placement="right"
+                    >
+                        <Button
+                            className="ms-2"
+                            onClick={async (): Promise<void> => {
+                                await router.push("/sign-up");
+                            }}
+                            title="Sign Up"
+                            variant="outline-info"
                         >
-                            <Button
-                                className="ms-2"
-                                onClick={async (): Promise<void> => {
-                                    await router.push("/sign-up");
-                                }}
-                                title="Sign Up"
-                                variant="outline-info"
-                            >
-                                <FontAwesomeIcon icon={faUserPlus} />
-                            </Button>
-                        </OverlayTrigger>
-                    </Link>
+                            <FontAwesomeIcon icon={faUserPlus} />
+                        </Button>
+                    </OverlayTrigger>
                 </div>
             </Card>
         </div>

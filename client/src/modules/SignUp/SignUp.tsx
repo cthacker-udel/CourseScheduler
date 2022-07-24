@@ -9,7 +9,7 @@ import type { ApiError, ApiSuccess, SignUpRequest } from "src/@types";
 import type { ApiMessage } from "src/api/ApiMessage/ApiMessage";
 import { UsersApi } from "src/api/client-side/UsersApi";
 import { EMAIL, USERNAME } from "src/common";
-import { generateTooltip } from "src/helpers";
+import { generateTooltipIntl } from "src/helpers";
 
 import styles from "./SignUp.module.css";
 
@@ -417,7 +417,7 @@ export const SignUp = (): JSX.Element => {
                             </span>
                             <OverlayTrigger
                                 overlay={(props): JSX.Element =>
-                                    generateTooltip("tooltip", props, {
+                                    generateTooltipIntl("tooltip", props, {
                                         type: showPassword
                                             ? "Hide Password"
                                             : "Show Password",
