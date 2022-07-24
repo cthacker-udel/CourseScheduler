@@ -7,7 +7,7 @@ import React from "react";
  * @returns The main document, with customization features
  */
 const Document = (): JSX.Element => (
-    <Html>
+    <Html lang="en">
         <Head>
             <link
                 crossOrigin="anonymous"
@@ -15,6 +15,7 @@ const Document = (): JSX.Element => (
                 integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
                 rel="stylesheet"
             />
+            <title>{"Course Scheduler"}</title>
         </Head>
         <body>
             <Main />
