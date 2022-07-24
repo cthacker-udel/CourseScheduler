@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { randomInt, randomBytes, pbkdf2 } from "crypto";
+import { randomInt, randomBytes, pbkdf2, pbkdf2Sync } from "crypto";
 
 /**
  * Represents the result of the encoding operation
@@ -23,25 +23,17 @@ export class CryptoService {
     encode = async (message: string): Promise<EncodingResult> => {
         const salt = randomBytes(128).toString("base64");
         const iterations = randomInt(1000, 10000);
-        let hash: string;
-        await pbkdf2(
+        const hash = pbkdf2Sync(
             message,
             salt,
             iterations,
             512,
             "sha256",
-            (err, derivedKey) => {
-                if (!err) {
-                    hash = derivedKey.toString("hex");
-                } else {
-                    throw err;
-                }
-            },
-        );
+        ).toString("hex");
         return {
             salt,
             hash,
-            iterations: iterations,
+            iterations,
         };
     };
 

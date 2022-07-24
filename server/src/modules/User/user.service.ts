@@ -40,6 +40,7 @@ export class UserService {
             user,
             encodingResult.hash,
             encodingResult.salt,
+            encodingResult.iterations,
         );
     };
 
@@ -106,7 +107,7 @@ export class UserService {
             request.password,
         );
         const user = this.createServerSideUser(request, encodingResult);
-        const createdUser = await this.usersRepository.create(user);
+        const createdUser = this.usersRepository.create(user);
         this.logger.log(`Created user ${createdUser.username}`);
         return await this.usersRepository.save(createdUser);
     };
