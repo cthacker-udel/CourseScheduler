@@ -84,12 +84,6 @@ export class ClientSideApi {
                     mode: "no-cors",
                 },
             );
-            Logger.log(
-                "info",
-                `Post request with url ${url} successful`,
-                "ClientSideApi",
-                87,
-            );
             return await response.json();
         } catch (error: unknown) {
             Logger.log(
@@ -126,12 +120,6 @@ export class ClientSideApi {
                     mode: "no-cors",
                 },
             );
-            Logger.log(
-                "info",
-                `Delete request with url ${url} successful`,
-                "ClientSideApi",
-                129,
-            );
             return await response.json();
         } catch (error: unknown) {
             Logger.log(
@@ -167,12 +155,6 @@ export class ClientSideApi {
                     method: "PUT",
                     mode: "no-cors",
                 },
-            );
-            Logger.log(
-                "info",
-                `Put request with url ${url} successful`,
-                "ClientSideApi",
-                171,
             );
             return await response.json();
         } catch (error: unknown) {

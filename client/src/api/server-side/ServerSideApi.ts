@@ -84,12 +84,6 @@ export class ServerSideApi {
                     method: "POST",
                 },
             );
-            Logger.log(
-                "info",
-                `Post request with url ${url} successful`,
-                "ServerSideApi",
-                87,
-            );
             return await response.json();
         } catch (error: unknown) {
             Logger.log(
@@ -125,12 +119,6 @@ export class ServerSideApi {
                     method: "DELETE",
                     mode: "no-cors",
                 },
-            );
-            Logger.log(
-                "info",
-                `Delete request with url ${url} successful`,
-                "ServerSideApi",
-                129,
             );
             return await response.json();
         } catch (error: unknown) {
