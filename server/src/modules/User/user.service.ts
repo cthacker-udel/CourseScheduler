@@ -64,9 +64,11 @@ export class UserService {
      * @returns If the username exists in the database
      */
     doesUsernameExist = async (username: string): Promise<boolean> => {
-        let isExistent;
-        await this.usersRepository.findOne({ where: { username } });
-        return isExistent;
+        const existentUser = await this.usersRepository.findOne({
+            where: { username },
+        });
+        console.log("existent user = ", existentUser);
+        return existentUser !== null;
     };
 
     /**
@@ -75,9 +77,10 @@ export class UserService {
      * @returns If the email exists in the database
      */
     doesEmailExist = async (email: string): Promise<boolean> => {
-        let isExistent;
-        await this.usersRepository.findOne({ where: { email } });
-        return isExistent;
+        const existentEmail = await this.usersRepository.findOne({
+            where: { email },
+        });
+        return existentEmail !== null;
     };
 
     /**

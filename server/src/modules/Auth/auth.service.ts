@@ -95,8 +95,16 @@ export class AuthService {
     createUser = async (
         request: CreateUserDTO,
     ): Promise<ApiError | ApiSuccess> => {
-        if (!this.userService.doesUsernameExist(request.username)) {
-            if (!this.userService.doesEmailExist(request.email)) {
+        const doesUsernameExist = await this.userService.doesUsernameExist(
+            request.username,
+        );
+        console.log("username exists = ", doesUsernameExist);
+        if (!doesUsernameExist) {
+            console.log("in if");
+            const doesEmailExist = await this.userService.doesEmailExist(
+                request.email,
+            );
+            if (!doesEmailExist) {
                 const result = await this.userService.create(request);
                 console.log("result = ", result);
                 return generateApiSuccess(HttpStatus.OK, { canLogin: true });
