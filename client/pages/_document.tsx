@@ -16,7 +16,7 @@ const Document = (): JSX.Element => (
                 rel="stylesheet"
             />
         </Head>
-        <body className="overflow-hidden">
+        <body>
             <Main />
             <NextScript />
         </body>

@@ -10,7 +10,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import React, { type ReactNode } from "react";
 import { Button, OverlayTrigger } from "react-bootstrap";
-import { generateTooltip } from "src/helpers";
+import { generateTooltipIntl } from "src/helpers";
 
 type LayoutProps = {
     children: JSX.Element | ReactNode;
@@ -82,14 +82,13 @@ export const Layout = ({ children }: LayoutProps): JSX.Element => {
     };
 
     const navigationLinks = [
-        <OverlayTrigger
-            key="home-link"
-            overlay={(props): JSX.Element =>
-                generateTooltip("tooltip", props, { type: "Home" })
-            }
-            placement="top"
-        >
-            <Link className="text-muted text-wrap" href="/">
+        <Link className="text-muted text-wrap" href="/" key="home-link">
+            <OverlayTrigger
+                overlay={(props): JSX.Element =>
+                    generateTooltipIntl("tooltip", props, { type: "Home" })
+                }
+                placement="top"
+            >
                 <Button
                     onMouseEnter={(): void => {
                         toggleShowOverlay("home", true);
@@ -103,20 +102,20 @@ export const Layout = ({ children }: LayoutProps): JSX.Element => {
                 >
                     <FontAwesomeIcon icon={faHome} />
                 </Button>
-            </Link>
-        </OverlayTrigger>,
-        <OverlayTrigger
+            </OverlayTrigger>
+        </Link>,
+        <Link
+            className="text-muted text-wrap"
+            href="/courses"
             key="courses-link"
-            overlay={(props): JSX.Element =>
-                generateTooltip("tooltip", props, {
-                    type: "Courses",
-                })
-            }
         >
-            <Link
-                className="text-muted text-wrap"
-                href="/courses"
-                key="courses-link"
+            <OverlayTrigger
+                overlay={(props): JSX.Element =>
+                    generateTooltipIntl("tooltip", props, {
+                        type: "Courses",
+                    })
+                }
+                placement="top"
             >
                 <Button
                     onMouseEnter={(): void => {
@@ -131,20 +130,20 @@ export const Layout = ({ children }: LayoutProps): JSX.Element => {
                 >
                     <FontAwesomeIcon icon={faBook} />
                 </Button>
-            </Link>
-        </OverlayTrigger>,
-        <OverlayTrigger
-            key="semester-link"
-            overlay={(props): JSX.Element =>
-                generateTooltip("tooltip", props, {
-                    type: "Semesters",
-                })
-            }
+            </OverlayTrigger>
+        </Link>,
+        <Link
+            className="text-muted text-wrap"
+            href="/semesters"
+            key="semesters-link"
         >
-            <Link
-                className="text-muted text-wrap"
-                href="/semesters"
-                key="semesters-link"
+            <OverlayTrigger
+                overlay={(props): JSX.Element =>
+                    generateTooltipIntl("tooltip", props, {
+                        type: "Semesters",
+                    })
+                }
+                placement="top"
             >
                 <Button
                     onMouseEnter={(): void => {
@@ -159,18 +158,14 @@ export const Layout = ({ children }: LayoutProps): JSX.Element => {
                 >
                     <FontAwesomeIcon icon={faBookAtlas} />
                 </Button>
-            </Link>
-        </OverlayTrigger>,
-        <OverlayTrigger
-            key="plans"
-            overlay={(props): JSX.Element =>
-                generateTooltip("tooltip", props, { type: "Plans" })
-            }
-        >
-            <Link
-                className="text-muted text-wrap"
-                href="/plans"
-                key="plans-link"
+            </OverlayTrigger>
+        </Link>,
+        <Link className="text-muted text-wrap" href="/plans" key="plans-link">
+            <OverlayTrigger
+                overlay={(props): JSX.Element =>
+                    generateTooltipIntl("tooltip", props, { type: "Plans" })
+                }
+                placement="top"
             >
                 <Button
                     onMouseEnter={(): void => {
@@ -185,20 +180,20 @@ export const Layout = ({ children }: LayoutProps): JSX.Element => {
                 >
                     <FontAwesomeIcon icon={faClipboard} />
                 </Button>
-            </Link>
-        </OverlayTrigger>,
-        <OverlayTrigger
+            </OverlayTrigger>
+        </Link>,
+        <Link
+            className="text-muted text-wrap"
+            href="/imports"
             key="imports-link"
-            overlay={(props): JSX.Element =>
-                generateTooltip("tooltip", props, {
-                    type: "Imports",
-                })
-            }
         >
-            <Link
-                className="text-muted text-wrap"
-                href="/imports"
-                key="imports-link"
+            <OverlayTrigger
+                overlay={(props): JSX.Element =>
+                    generateTooltipIntl("tooltip", props, {
+                        type: "Imports",
+                    })
+                }
+                placement="top"
             >
                 <Button
                     onMouseEnter={(): void => {
@@ -213,20 +208,20 @@ export const Layout = ({ children }: LayoutProps): JSX.Element => {
                 >
                     <FontAwesomeIcon icon={faDownload} />
                 </Button>
-            </Link>
-        </OverlayTrigger>,
-        <OverlayTrigger
+            </OverlayTrigger>
+        </Link>,
+        <Link
+            className="text-muted text-wrap"
+            href="/exports"
             key="exports-link"
-            overlay={(props): JSX.Element =>
-                generateTooltip("tooltip", props, {
-                    type: "Exports",
-                })
-            }
         >
-            <Link
-                className="text-muted text-wrap"
-                href="/exports"
-                key="exports-link"
+            <OverlayTrigger
+                overlay={(props): JSX.Element =>
+                    generateTooltipIntl("tooltip", props, {
+                        type: "Exports",
+                    })
+                }
+                placement="top"
             >
                 <Button
                     onMouseEnter={(): void => {
@@ -241,13 +236,13 @@ export const Layout = ({ children }: LayoutProps): JSX.Element => {
                 >
                     <FontAwesomeIcon icon={faFileExport} />
                 </Button>
-            </Link>
-        </OverlayTrigger>,
+            </OverlayTrigger>
+        </Link>,
     ];
 
     return (
         <>
-            <div>{children}</div>
+            {children}
             <div className="d-flex flex-row justify-content-around pb-3 pt-3 bg-dark bg-gradient">
                 {navigationLinks}
             </div>

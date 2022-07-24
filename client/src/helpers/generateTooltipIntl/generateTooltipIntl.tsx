@@ -1,8 +1,9 @@
 import React from "react";
 import { Tooltip } from "react-bootstrap";
 import type { OverlayInjectedProps } from "react-bootstrap/esm/Overlay";
+import { FormattedMessage } from "react-intl";
 
-import styles from "./generateTooltip.module.css";
+import styles from "./generateTooltipIntl.module.css";
 
 /**
  * This generates the OverlayTrigger's tooltip
@@ -11,15 +12,16 @@ import styles from "./generateTooltip.module.css";
  * @param values The values of the formattedMessage that display the message
  * @returns {JSX.Element} The tooltip with given props, values, and id
  */
-export const generateTooltip = (
-    message: string,
+export const generateTooltipIntl = (
+    fmtMessageId: string,
     props: OverlayInjectedProps,
+    values: { [key: string]: string },
 ): JSX.Element => (
     <Tooltip
         {...props}
         className={styles.custom_tooltip_override}
-        id={`tooltip-${message}`}
+        id={`${fmtMessageId}-${JSON.stringify(values)}`}
     >
-        {message}
+        <FormattedMessage id={fmtMessageId} values={values} />
     </Tooltip>
 );
