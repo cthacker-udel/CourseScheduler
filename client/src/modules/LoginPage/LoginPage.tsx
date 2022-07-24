@@ -11,18 +11,19 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
-import React from "react";
+import React, { type ReactNode } from "react";
 import {
     Button,
     Card,
     Container,
     Form,
     InputGroup,
-    Overlay,
-    Tooltip,
+    OverlayTrigger,
 } from "react-bootstrap";
+import type { OverlayInjectedProps } from "react-bootstrap/esm/Overlay";
 import { useForm } from "react-hook-form";
 import { FormattedMessage } from "react-intl";
+import { generateTooltip } from "src/helpers";
 import loginFormDetails from "src/locale/en/login.json";
 import { LoginPageReducer } from "src/reducer";
 
@@ -171,49 +172,64 @@ export const LoginPage = (): JSX.Element => {
                                                     : "password"
                                             }
                                         />
-                                        <Button
-                                            id="show_password_button"
-                                            onClick={(): void => {
-                                                dispatch({
-                                                    payload: { ...state },
-                                                    type: "setShowPassword",
-                                                });
-                                            }}
-                                            onMouseEnter={(): void => {
-                                                dispatch({
-                                                    payload: {
-                                                        ...state,
-                                                        showPasswordOverlay:
-                                                            true,
-                                                    },
-                                                    type: "setPasswordOverlay",
-                                                });
-                                            }}
-                                            onMouseLeave={(): void => {
-                                                dispatch({
-                                                    payload: {
-                                                        ...state,
-                                                        showPasswordOverlay:
-                                                            false,
-                                                    },
-                                                    type: "setPasswordOverlay",
-                                                });
-                                            }}
-                                            ref={showPasswordRef}
-                                            variant={
-                                                state.showPassword
-                                                    ? "outline-danger"
-                                                    : "outline-success"
-                                            }
-                                        >
-                                            <FontAwesomeIcon
-                                                icon={
+                                        <OverlayTrigger
+                                            delay={{ hide: 100, show: 100 }}
+                                            overlay={(
+                                                injected: OverlayInjectedProps,
+                                            ): ReactNode =>
+                                                generateTooltip(
                                                     state.showPassword
-                                                        ? faEyeSlash
-                                                        : faEye
+                                                        ? loginFormDetails.password_form_hide
+                                                        : loginFormDetails.password_form_show,
+                                                    injected,
+                                                )
+                                            }
+                                            placement="right"
+                                        >
+                                            <Button
+                                                id="show_password_button"
+                                                onClick={(): void => {
+                                                    dispatch({
+                                                        payload: { ...state },
+                                                        type: "setShowPassword",
+                                                    });
+                                                }}
+                                                onMouseEnter={(): void => {
+                                                    dispatch({
+                                                        payload: {
+                                                            ...state,
+                                                            showPasswordOverlay:
+                                                                true,
+                                                        },
+                                                        type: "setPasswordOverlay",
+                                                    });
+                                                }}
+                                                onMouseLeave={(): void => {
+                                                    dispatch({
+                                                        payload: {
+                                                            ...state,
+                                                            showPasswordOverlay:
+                                                                false,
+                                                        },
+                                                        type: "setPasswordOverlay",
+                                                    });
+                                                }}
+                                                ref={showPasswordRef}
+                                                variant={
+                                                    state.showPassword
+                                                        ? "outline-danger"
+                                                        : "outline-success"
                                                 }
-                                            />
-                                        </Button>
+                                            >
+                                                <FontAwesomeIcon
+                                                    icon={
+                                                        state.showPassword
+                                                            ? faEyeSlash
+                                                            : faEye
+                                                    }
+                                                />
+                                            </Button>
+                                        </OverlayTrigger>
                                     </InputGroup>
                                     <div
                                         className="text-start w-100 m-2 text-muted"
@@ -234,100 +250,92 @@ export const LoginPage = (): JSX.Element => {
                     </Card.Body>
                     <div className="mb-4 mt-2">
                         <Link href="courses">
-                            <Button
-                                className="me-2"
-                                disabled={
-                                    dirtyFields.email === undefined ||
-                                    dirtyFields.password === undefined
+                            <OverlayTrigger
+                                delay={{ hide: 100, show: 100 }}
+                                overlay={(
+                                    props: OverlayInjectedProps,
+                                ): ReactNode =>
+                                    generateTooltip(
+                                        loginFormDetails.login,
+                                        props,
+                                    )
                                 }
-                                onMouseEnter={(): void => {
-                                    dispatch({
-                                        payload: {
-                                            ...state,
-                                            showLoginOverlay: true,
-                                        },
-                                        type: "setLoginOverlay",
-                                    });
-                                }}
-                                onMouseLeave={(): void => {
-                                    dispatch({
-                                        payload: {
-                                            ...state,
-                                            showLoginOverlay: false,
-                                        },
-                                        type: "setLoginOverlay",
-                                    });
-                                }}
-                                ref={loginRef}
-                                variant="outline-primary"
+                                placement="left"
                             >
-                                <FontAwesomeIcon icon={faSignIn} />
-                            </Button>
+                                <Button
+                                    className="me-2"
+                                    disabled={
+                                        dirtyFields.email === undefined ||
+                                        dirtyFields.password === undefined
+                                    }
+                                    onMouseEnter={(): void => {
+                                        dispatch({
+                                            payload: {
+                                                ...state,
+                                                showLoginOverlay: true,
+                                            },
+                                            type: "setLoginOverlay",
+                                        });
+                                    }}
+                                    onMouseLeave={(): void => {
+                                        dispatch({
+                                            payload: {
+                                                ...state,
+                                                showLoginOverlay: false,
+                                            },
+                                            type: "setLoginOverlay",
+                                        });
+                                    }}
+                                    ref={loginRef}
+                                    variant="outline-primary"
+                                >
+                                    <FontAwesomeIcon icon={faSignIn} />
+                                </Button>
+                            </OverlayTrigger>
                         </Link>
                         <Link href="/sign-up" replace>
-                            <Button
-                                className="ms-2"
-                                onMouseEnter={(): void => {
-                                    dispatch({
-                                        payload: {
-                                            ...state,
-                                            showSignUpOverlay: true,
-                                        },
-                                        type: "setSignUpOverlay",
-                                    });
-                                }}
-                                onMouseLeave={(): void => {
-                                    dispatch({
-                                        payload: {
-                                            ...state,
-                                            showSignUpOverlay: false,
-                                        },
-                                        type: "setSignUpOverlay",
-                                    });
-                                }}
-                                ref={signUpRef}
-                                variant="outline-info"
+                            <OverlayTrigger
+                                delay={{ hide: 100, show: 100 }}
+                                overlay={(
+                                    props: OverlayInjectedProps,
+                                ): ReactNode =>
+                                    generateTooltip(
+                                        loginFormDetails.sign_up,
+                                        props,
+                                    )
+                                }
+                                placement="right"
                             >
-                                <FontAwesomeIcon icon={faUserPlus} />
-                            </Button>
+                                <Button
+                                    className="ms-2"
+                                    onMouseEnter={(): void => {
+                                        dispatch({
+                                            payload: {
+                                                ...state,
+                                                showSignUpOverlay: true,
+                                            },
+                                            type: "setSignUpOverlay",
+                                        });
+                                    }}
+                                    onMouseLeave={(): void => {
+                                        dispatch({
+                                            payload: {
+                                                ...state,
+                                                showSignUpOverlay: false,
+                                            },
+                                            type: "setSignUpOverlay",
+                                        });
+                                    }}
+                                    ref={signUpRef}
+                                    variant="outline-info"
+                                >
+                                    <FontAwesomeIcon icon={faUserPlus} />
+                                </Button>
+                            </OverlayTrigger>
                         </Link>
                     </div>
                 </Card>
             </div>
-            <Overlay
-                key="password_overlay"
-                placement="right"
-                show={state.showPasswordOverlay}
-                target={showPasswordRef.current}
-            >
-                {(props): JSX.Element => (
-                    <Tooltip {...props}>
-                        {state.showPassword
-                            ? loginFormDetails.password_form_hide
-                            : loginFormDetails.password_form_show}
-                    </Tooltip>
-                )}
-            </Overlay>
-            <Overlay
-                key="login_overlay"
-                placement="left"
-                show={state.showLoginOverlay}
-                target={loginRef.current}
-            >
-                {(props): JSX.Element => (
-                    <Tooltip {...props}>{loginFormDetails.login}</Tooltip>
-                )}
-            </Overlay>
-            <Overlay
-                key="signup_overlay"
-                placement="right"
-                show={state.showSignUpOverlay}
-                target={signUpRef.current}
-            >
-                {(props): JSX.Element => (
-                    <Tooltip {...props}>{loginFormDetails.sign_up}</Tooltip>
-                )}
-            </Overlay>
         </Container>
     );
 };
