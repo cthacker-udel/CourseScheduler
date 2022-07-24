@@ -23,11 +23,18 @@ export class CreateUserDTO {
  * DTO for backend creation of user, in which salts and password hash is generated
  */
 export class ServerSideCreateUserDTO extends CreateUserDTO {
-    constructor(base: CreateUserDTO, _hash: string, _salt: string) {
+    constructor(
+        base: CreateUserDTO,
+        _hash: string,
+        _salt: string,
+        _iterations: number,
+    ) {
         super(base.username, base.email, base.password, base.lastLogin);
-        this.passwordHash = _hash;
-        this.passwordSalt = _salt;
+        this.hash = _hash;
+        this.salt = _salt;
+        this.iterations = _iterations;
     }
-    passwordHash: string;
-    passwordSalt: string;
+    hash: string;
+    salt: string;
+    iterations: number;
 }
