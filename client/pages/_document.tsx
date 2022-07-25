@@ -7,7 +7,7 @@ import React from "react";
  * @returns The main document, with customization features
  */
 const Document = (): JSX.Element => (
-    <Html>
+    <Html lang="en">
         <Head>
             <link
                 crossOrigin="anonymous"

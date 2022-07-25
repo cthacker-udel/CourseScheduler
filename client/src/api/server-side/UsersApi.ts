@@ -1,8 +1,9 @@
-import type { NextApiResponse } from "next";
+import type { NextApiRequest, NextApiResponse } from "next";
 import type {
     ApiError,
     ApiSuccess,
     EmailValidationRequest,
+    LoginResponse,
     SignUpRequest,
     UsernameValidationRequest,
 } from "src/@types";
@@ -26,6 +27,23 @@ export class UsersApi extends ServerSideApi {
         const result = await super.post<ApiError | ApiSuccess>(
             "/auth/signup",
             JSON.parse(request.body as unknown as string) as SignUpRequest,
+        );
+        response.json(result);
+    };
+
+    /**
+     * Log in action, logs a user into the system
+     *
+     * @param request The request coming from the serverless api
+     * @param response The formatted response to send back to the user
+     */
+    public static login = async (
+        request: NextApiRequest,
+        response: NextApiResponse,
+    ): Promise<void> => {
+        const result = await super.post<LoginResponse>(
+            "/auth/login",
+            JSON.parse(request.body),
         );
         response.json(result);
     };

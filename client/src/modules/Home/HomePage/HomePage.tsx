@@ -13,7 +13,7 @@ import {
     OverlayTrigger,
 } from "react-bootstrap";
 import { FormattedMessage, useIntl } from "react-intl";
-import { generateTooltip } from "src/helpers";
+import { generateTooltipIntl } from "src/helpers";
 
 import styles from "./HomePage.module.css";
 
@@ -78,7 +78,7 @@ export const HomePage = (): JSX.Element => {
                     <OverlayTrigger
                         key="login-trigger"
                         overlay={(props): JSX.Element =>
-                            generateTooltip("tooltip", props, {
+                            generateTooltipIntl("tooltip", props, {
                                 type: "Log In",
                             })
                         }
@@ -98,7 +98,7 @@ export const HomePage = (): JSX.Element => {
                     <OverlayTrigger
                         key="sign-up-overlaytrigger"
                         overlay={(props): JSX.Element =>
-                            generateTooltip("tooltip", props, {
+                            generateTooltipIntl("tooltip", props, {
                                 type: "Sign Up",
                             })
                         }

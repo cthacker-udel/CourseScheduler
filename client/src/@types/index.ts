@@ -1,5 +1,6 @@
 import type { ApiError } from "./api/ApiError";
 import type { ApiSuccess } from "./api/ApiSuccess";
+import type { LoginRequest } from "./api/Login/LoginRequest";
 import type { LoginResponse } from "./api/Login/LoginResponse";
 import type { EmailValidationRequest } from "./api/SignUp/EmailValidationRequest";
 import type { SignUpRequest } from "./api/SignUp/SignUpRequest";
@@ -20,6 +21,7 @@ export type {
     LoginPageReducerAction,
     LoginPageReducerActionType,
     LoginPageState,
+    LoginRequest,
     LoginResponse,
     MockCourse,
     Plan,

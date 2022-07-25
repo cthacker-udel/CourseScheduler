@@ -11,8 +11,10 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React, { type ReactNode } from "react";
 import {
+    Alert,
     Button,
     Card,
     Form,
@@ -22,11 +24,18 @@ import {
 import type { OverlayInjectedProps } from "react-bootstrap/esm/Overlay";
 import { useForm } from "react-hook-form";
 import { FormattedMessage } from "react-intl";
+import type { LoginRequest, LoginResponse } from "src/@types";
+import type { ApiMessage } from "src/api/ApiMessage/ApiMessage";
+import { UsersApi } from "src/api/client-side/UsersApi";
 import { generateTooltip } from "src/helpers";
 import loginFormDetails from "src/locale/en/login.json";
 import { LoginPageReducer } from "src/reducer";
 
 import styles from "./LoginPage.module.css";
+
+const CONSTANTS = {
+    LOGIN_PAGE_SUCCESSFUL_LOGIN_TIMEOUT: 5000,
+};
 
 /**
  * @summary Login Page component
@@ -34,15 +43,10 @@ import styles from "./LoginPage.module.css";
  */
 export const LoginPage = (): JSX.Element => {
     const [state, dispatch] = React.useReducer(LoginPageReducer, {}, () => ({
-        showLoginOverlay: false,
         showPassword: false,
-        showPasswordOverlay: false,
-        showSignUpOverlay: false,
     }));
-    const showPasswordRef = React.useRef(null);
-    const loginRef = React.useRef(null);
-    const signUpRef = React.useRef(null);
-    const { register, formState } = useForm({
+    const router = useRouter();
+    const { formState, register, reset, watch } = useForm({
         context: undefined,
         criteriaMode: "all",
         defaultValues: {
@@ -56,8 +60,32 @@ export const LoginPage = (): JSX.Element => {
         resolver: undefined,
         shouldFocusError: false,
     });
+    const [apiError, setApiError] = React.useState<ApiMessage>();
+    const [apiSuccess, setApiSuccess] = React.useState<ApiMessage>();
 
     const { dirtyFields } = formState;
+
+    /**
+     * Handles login logic in regards to the component state
+     *
+     * @param data The login request, containing the username, password, and email of the user
+     */
+    const validateLogin = async (data: LoginRequest): Promise<void> => {
+        const result: LoginResponse = await UsersApi.login(data);
+        if (result.canLogin) {
+            setApiSuccess({ message: "Login succeeded!" });
+            reset();
+            setTimeout(async () => {
+                await router.push("/courses");
+                setApiSuccess(undefined);
+            }, CONSTANTS.LOGIN_PAGE_SUCCESSFUL_LOGIN_TIMEOUT);
+        } else {
+            setApiError({ message: "Login failed" });
+            setTimeout(() => {
+                setApiError(undefined);
+            }, CONSTANTS.LOGIN_PAGE_SUCCESSFUL_LOGIN_TIMEOUT);
+        }
+    };
 
     return (
         <div className="mt-4 d-flex flex-column justify-content-center text-center mx-4">
@@ -84,6 +112,16 @@ export const LoginPage = (): JSX.Element => {
                             <h2 className="text-decoration-underline p-2 mr-3 ml-3">
                                 <FormattedMessage id="login_form_title" />
                             </h2>
+                            {apiError?.message && (
+                                <Alert variant="error">
+                                    {apiError.message}
+                                </Alert>
+                            )}
+                            {apiSuccess?.message && (
+                                <Alert variant="success">
+                                    {apiSuccess.message}
+                                </Alert>
+                            )}
                         </Card.Title>
                         <Form className={`w-100 ${styles.login_email_form}`}>
                             <Form.Group className="mx-auto w-50 mt-4 mb-4">
@@ -94,6 +132,7 @@ export const LoginPage = (): JSX.Element => {
                                         </label>
                                     </InputGroup.Text>
                                     <Form.Control
+                                        autoComplete="username"
                                         className="p-2 w-75 mr-auto"
                                         id="username_login_form_component"
                                         {...register("username")}
@@ -125,6 +164,7 @@ export const LoginPage = (): JSX.Element => {
                                         </label>
                                     </InputGroup.Text>
                                     <Form.Control
+                                        autoComplete="email"
                                         className="p-2 w-75 mr-auto"
                                         id="email_login_form_component"
                                         {...register("email")}
@@ -152,6 +192,7 @@ export const LoginPage = (): JSX.Element => {
                                         </label>
                                     </InputGroup.Text>
                                     <Form.Control
+                                        autoComplete="current-password"
                                         className="p-2 w-75 mr-auto"
                                         id="password_login_form_component"
                                         {...register("password")}
@@ -186,27 +227,6 @@ export const LoginPage = (): JSX.Element => {
                                                     type: "setShowPassword",
                                                 });
                                             }}
-                                            onMouseEnter={(): void => {
-                                                dispatch({
-                                                    payload: {
-                                                        ...state,
-                                                        showPasswordOverlay:
-                                                            true,
-                                                    },
-                                                    type: "setPasswordOverlay",
-                                                });
-                                            }}
-                                            onMouseLeave={(): void => {
-                                                dispatch({
-                                                    payload: {
-                                                        ...state,
-                                                        showPasswordOverlay:
-                                                            false,
-                                                    },
-                                                    type: "setPasswordOverlay",
-                                                });
-                                            }}
-                                            ref={showPasswordRef}
                                             variant={
                                                 state.showPassword
                                                     ? "outline-danger"
@@ -237,80 +257,46 @@ export const LoginPage = (): JSX.Element => {
                     </Card>
                 </Card.Body>
                 <div className="mb-4 mt-2">
-                    <Link href="courses">
-                        <OverlayTrigger
-                            delay={{ hide: 100, show: 100 }}
-                            overlay={(props: OverlayInjectedProps): ReactNode =>
-                                generateTooltip(loginFormDetails.login, props)
+                    <OverlayTrigger
+                        delay={{ hide: 100, show: 100 }}
+                        overlay={(props: OverlayInjectedProps): ReactNode =>
+                            generateTooltip(loginFormDetails.login, props)
+                        }
+                        placement="left"
+                    >
+                        <Button
+                            className="me-2"
+                            disabled={
+                                dirtyFields.email === undefined ||
+                                dirtyFields.password === undefined
                             }
-                            placement="left"
+                            onClick={async (): Promise<void> => {
+                                await validateLogin(watch());
+                            }}
+                            title="Login"
+                            variant="outline-primary"
                         >
-                            <Button
-                                className="me-2"
-                                disabled={
-                                    dirtyFields.email === undefined ||
-                                    dirtyFields.password === undefined
-                                }
-                                onMouseEnter={(): void => {
-                                    dispatch({
-                                        payload: {
-                                            ...state,
-                                            showLoginOverlay: true,
-                                        },
-                                        type: "setLoginOverlay",
-                                    });
-                                }}
-                                onMouseLeave={(): void => {
-                                    dispatch({
-                                        payload: {
-                                            ...state,
-                                            showLoginOverlay: false,
-                                        },
-                                        type: "setLoginOverlay",
-                                    });
-                                }}
-                                ref={loginRef}
-                                variant="outline-primary"
-                            >
-                                <FontAwesomeIcon icon={faSignIn} />
-                            </Button>
-                        </OverlayTrigger>
-                    </Link>
-                    <Link href="/sign-up" replace>
-                        <OverlayTrigger
-                            delay={{ hide: 100, show: 100 }}
-                            overlay={(props: OverlayInjectedProps): ReactNode =>
-                                generateTooltip(loginFormDetails.sign_up, props)
-                            }
-                            placement="right"
+                            <FontAwesomeIcon icon={faSignIn} />
+                        </Button>
+                    </OverlayTrigger>
+                    <OverlayTrigger
+                        delay={{ hide: 100, show: 100 }}
+                        overlay={(props: OverlayInjectedProps): ReactNode =>
+                            generateTooltip(loginFormDetails.sign_up, props)
+                        }
+                        placement="right"
+                    >
+                        <Button
+                            className="ms-2"
+                            onClick={async (): Promise<void> => {
+                                await router.push("/sign-up");
+                            }}
+                            title="Sign Up"
+                            variant="outline-info"
                         >
-                            <Button
-                                className="ms-2"
-                                onMouseEnter={(): void => {
-                                    dispatch({
-                                        payload: {
-                                            ...state,
-                                            showSignUpOverlay: true,
-                                        },
-                                        type: "setSignUpOverlay",
-                                    });
-                                }}
-                                onMouseLeave={(): void => {
-                                    dispatch({
-                                        payload: {
-                                            ...state,
-                                            showSignUpOverlay: false,
-                                        },
-                                        type: "setSignUpOverlay",
-                                    });
-                                }}
-                                ref={signUpRef}
-                                variant="outline-info"
-                            >
-                                <FontAwesomeIcon icon={faUserPlus} />
-                            </Button>
-                        </OverlayTrigger>
-                    </Link>
+                            <FontAwesomeIcon icon={faUserPlus} />
+                        </Button>
+                    </OverlayTrigger>
                 </div>
             </Card>
         </div>
