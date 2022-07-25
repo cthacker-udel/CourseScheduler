@@ -252,7 +252,7 @@
         "no-shadow": "error",
         "no-shadow-restricted-names": "error",
         "no-undef-init": "error",
-        "no-unused-vars": "error",
+        "no-unused-vars": ["error", { "varsIgnorePattern": "^_", "argsIgnorePattern": "^_", "destructuredArrayIgnorePattern": "^_"}],
         "no-use-before-define": "error",
         "array-bracket-newline": ["error", "consistent"],
         "array-bracket-spacing": ["error", "never"],

@@ -10,6 +10,9 @@ import type { MockCourse } from "./Course/MockCourse";
 import type { LoginPageReducerAction } from "./Login/LoginPageReducerAction";
 import type { LoginPageReducerActionType } from "./Login/LoginPageReducerActionType";
 import type { LoginPageState } from "./Login/LoginPageState";
+import type { iNotificationContext } from "./Notification/iNotificationContext";
+import type { Notification } from "./Notification/Notification";
+import type { NotificationMessage } from "./Notification/NotificationMessage";
 import type { Plan } from "./Plan/Plan";
 import type { Semester } from "./Semester/Semester";
 
@@ -18,12 +21,15 @@ export type {
     ApiSuccess,
     Course,
     EmailValidationRequest,
+    iNotificationContext,
     LoginPageReducerAction,
     LoginPageReducerActionType,
     LoginPageState,
     LoginRequest,
     LoginResponse,
     MockCourse,
+    Notification,
+    NotificationMessage,
     Plan,
     Semester,
     SignUpRequest,

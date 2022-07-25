@@ -2,13 +2,13 @@ import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRouter } from "next/router";
 import React from "react";
-import { Alert, Button, Card, Form, OverlayTrigger } from "react-bootstrap";
+import { Button, Form, OverlayTrigger } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { FormattedMessage, useIntl } from "react-intl";
 import type { ApiError, ApiSuccess, SignUpRequest } from "src/@types";
-import type { ApiMessage } from "src/api/ApiMessage/ApiMessage";
 import { UsersApi } from "src/api/client-side/UsersApi";
 import { EMAIL, USERNAME } from "src/common";
+import { useNotificationContext } from "src/context/NotificationContext/useNotificationContext";
 import { generateTooltipIntl } from "src/helpers";
 
 import styles from "./SignUp.module.css";
@@ -68,6 +68,7 @@ const CONSTANTS = {
  * Sign-Up Page component, will communicate with back-end to sign user up and insert record into mongo database
  */
 export const SignUp = (): JSX.Element => {
+    const { addNotification } = useNotificationContext();
     const [showPassword, setShowPassword] = React.useState(false);
     const { formState, register, reset, setError, setValue, trigger, watch } =
         useForm<FormData>({
@@ -81,8 +82,6 @@ export const SignUp = (): JSX.Element => {
             reValidateMode: "onChange",
         });
     const router = useRouter();
-    const [apiError, setApiError] = React.useState<ApiMessage>();
-    const [apiSuccess, setApiSuccess] = React.useState<ApiMessage>();
 
     const intl = useIntl();
     const userNameWatch = watch("username");
@@ -91,29 +90,7 @@ export const SignUp = (): JSX.Element => {
     const emailWatch = watch("email");
     const { errors, isValid, isValidating } = formState;
 
-    /**
-     * Updates the error message for the front end to display
-     *
-     * @param message The error message to display
-     */
-    const updateError = (message: string): void => {
-        setApiError({ message });
-        setTimeout(() => {
-            setApiError(undefined);
-        }, CONSTANTS.SIGN_UP_ALERT_TIMEOUT);
-    };
-
-    /**
-     * Updates the success message for the front end to display
-     *
-     * @param message The success message to display
-     */
-    const updateSuccess = (message: string): void => {
-        setApiSuccess({ message });
-        setTimeout(() => {
-            setApiSuccess(undefined);
-        }, CONSTANTS.SIGN_UP_ALERT_TIMEOUT);
-    };
+    // Console.log("errors = ", errors, " and watch = ", watch());
 
     /**
      * Signs a user up in the database, or returns an error.
@@ -127,20 +104,44 @@ export const SignUp = (): JSX.Element => {
             const convertedError = result as ApiError;
             switch (convertedError.errorCode) {
                 case CONSTANTS.SIGN_UP_ERROR_CODES.EMAIL: {
-                    updateError("Email already exists");
+                    addNotification({
+                        message: {
+                            body: "Email already exists",
+                            header: "Email error",
+                        },
+                        variant: "error",
+                    });
                     break;
                 }
                 case CONSTANTS.SIGN_UP_ERROR_CODES.USER: {
-                    updateError("User already exists");
+                    addNotification({
+                        message: {
+                            body: "User already exists",
+                            header: "User error",
+                        },
+                        variant: "error",
+                    });
                     break;
                 }
                 default: {
-                    updateError("An error occurred, please try again");
+                    addNotification({
+                        message: {
+                            body: "An error occurred, please try again",
+                            header: "User error",
+                        },
+                        variant: "error",
+                    });
                     break;
                 }
             }
         } else {
-            updateSuccess("Sign up complete");
+            addNotification({
+                message: {
+                    body: "Sign up complete",
+                    header: "Sign up completed, redirecting you to the login page.",
+                },
+                variant: "success",
+            });
             setTimeout(async () => {
                 await router.push("/login");
             }, CONSTANTS.SIGN_UP_REDIRECT_TIMEOUT);
@@ -192,180 +193,191 @@ export const SignUp = (): JSX.Element => {
         isValidating;
 
     return (
-        <Card
-            className={`text-center mx-auto w-50 text-wrap mt-5 pb-2 pr-2 pl-2 ${styles.sign_up_card}`}
+        <div
+            className={`h-100 text-center justify-content-center d-flex flex-row align-items-center ${styles.sign_up_card}`}
         >
-            {apiError?.message && (
-                <Alert variant="error">{apiError.message}</Alert>
-            )}
-            {apiSuccess?.message && (
-                <Alert variant="success">{apiSuccess.message}</Alert>
-            )}
-            <Card.Header className="fw-bold fs-4">
-                <span className={`${styles.header_text}`}>
+            <div className="w-75 border border-secondary mx-auto d-flex flex-column justify-content-between">
+                <span
+                    className={`fw-bolder fs-4 text-decoration-underline bg-light py-1 ${styles.header_text}`}
+                >
                     <FormattedMessage id="sign_up_form_title" />
                 </span>
-            </Card.Header>
-            <Card.Body>
-                <Form>
-                    <Form.Group className="w-50 mx-auto mt-4 mb-3">
-                        <Form.Label className="fw-bold mb-2 fs-5">
+                <div className="d-flex flex-column justify-content-around py-3">
+                    <div className="w-50 mx-auto">
+                        <label className="fw-bold fs-5" htmlFor="sign-up-form">
                             <FormattedMessage id="sign_up_form0_title" />
-                        </Form.Label>
-                        <Form.Control
-                            autoComplete="off"
-                            isInvalid={errors.email && true}
-                            isValid={
-                                !errors.email &&
-                                emailWatch.length >=
-                                    CONSTANTS.TEXT_FIELD_MIN_LENGTH
-                            }
-                            placeholder={intl.formatMessage({
-                                id: "sign_up_form0_placeholder",
-                            })}
-                            required
-                            type="email"
-                            {...register("email", {
-                                maxLength: {
-                                    message: intl.formatMessage(
-                                        { id: "sign_up_form0_max_length" },
-                                        { length: 50 },
-                                    ),
-                                    value: 50,
-                                },
-                                minLength: {
-                                    message: intl.formatMessage(
-                                        {
-                                            id: "sign_up_form0_min_length",
-                                        },
-                                        { length: 1 },
-                                    ),
-                                    value: 1,
-                                },
-                                onBlur: async (
-                                    email: React.ChangeEvent<HTMLInputElement>,
-                                ) => {
-                                    await trigger("email");
-                                    const registeredEmail = email.target.value;
-                                    setValue("email", registeredEmail);
-                                    if (!errors.email) {
-                                        const result =
-                                            await UsersApi.checkEmail({
-                                                email: registeredEmail,
-                                            });
-                                        if (
-                                            (result as ApiSuccess).status ===
-                                            CONSTANTS.SIGN_UP_EMAIL_ERROR_STATUS
-                                        ) {
-                                            setError("email", {
-                                                message: intl.formatMessage({
-                                                    id: "sign_up_form_email_exists",
-                                                }),
-                                                type: "validate",
-                                            });
+                        </label>
+                        <span className="d-flex flex-column pt-1">
+                            <Form.Control
+                                autoComplete="off"
+                                className="shadow"
+                                id="sign-up-form"
+                                isInvalid={errors.email && true}
+                                isValid={
+                                    !errors.email &&
+                                    emailWatch.length >=
+                                        CONSTANTS.TEXT_FIELD_MIN_LENGTH
+                                }
+                                placeholder={intl.formatMessage({
+                                    id: "sign_up_form0_placeholder",
+                                })}
+                                required
+                                type="email"
+                                {...register("email", {
+                                    maxLength: {
+                                        message: intl.formatMessage(
+                                            { id: "sign_up_form0_max_length" },
+                                            { length: 50 },
+                                        ),
+                                        value: 50,
+                                    },
+                                    minLength: {
+                                        message: intl.formatMessage(
+                                            {
+                                                id: "sign_up_form0_min_length",
+                                            },
+                                            { length: 1 },
+                                        ),
+                                        value: 1,
+                                    },
+                                    onBlur: async (
+                                        email: React.ChangeEvent<HTMLInputElement>,
+                                    ) => {
+                                        await trigger("email");
+                                        const registeredEmail =
+                                            email.target.value;
+                                        setValue("email", registeredEmail);
+                                        if (!errors.email) {
+                                            const result =
+                                                await UsersApi.checkEmail({
+                                                    email: registeredEmail,
+                                                });
+                                            if (
+                                                (result as ApiSuccess)
+                                                    .status ===
+                                                CONSTANTS.SIGN_UP_EMAIL_ERROR_STATUS
+                                            ) {
+                                                setError("email", {
+                                                    message: intl.formatMessage(
+                                                        {
+                                                            id: "sign_up_form_email_exists",
+                                                        },
+                                                    ),
+                                                    type: "validate",
+                                                });
+                                            }
                                         }
-                                    }
-                                },
-                                pattern: {
-                                    message: intl.formatMessage({
-                                        id: "sign_up_form0_validation_error",
-                                    }),
-                                    value: EMAIL,
-                                },
-                                required: {
-                                    message: intl.formatMessage({
-                                        id: "sign_up_form0_required",
-                                    }),
-                                    value: true,
-                                },
-                            })}
-                        />
-                        {errors.email && (
-                            <Form.Control.Feedback type="invalid">
-                                {errors.email.message}
-                            </Form.Control.Feedback>
-                        )}
-                    </Form.Group>
-                    <Form.Group
-                        className={`w-50 mx-auto mt-4 mb-3 ${styles.username_form}`}
-                        controlId="username-sign-up-form"
-                    >
-                        <Form.Label className="fw-bold mb-2 fs-5">
+                                    },
+                                    pattern: {
+                                        message: intl.formatMessage({
+                                            id: "sign_up_form0_validation_error",
+                                        }),
+                                        value: EMAIL,
+                                    },
+                                    required: {
+                                        message: intl.formatMessage({
+                                            id: "sign_up_form0_required",
+                                        }),
+                                        value: true,
+                                    },
+                                })}
+                            />
+                            {errors.email && (
+                                <Form.Control.Feedback type="invalid">
+                                    {errors.email.message}
+                                </Form.Control.Feedback>
+                            )}
+                        </span>
+                    </div>
+                    <div className="w-50 pt-3 mx-auto">
+                        <label className="fw-bold fs-5" htmlFor="username-form">
                             <FormattedMessage id="sign_up_form1_title" />
-                        </Form.Label>
-                        <Form.Control
-                            autoComplete="username"
-                            isInvalid={errors.username && true}
-                            isValid={
-                                !errors.username &&
-                                userNameWatch.length >=
-                                    CONSTANTS.TEXT_FIELD_MIN_LENGTH
-                            }
-                            placeholder={intl.formatMessage({
-                                id: "sign_up_form1_placeholder",
-                            })}
-                            required
-                            type="text"
-                            {...register("username", {
-                                maxLength: {
-                                    message: intl.formatMessage(
-                                        {
-                                            id: "sign_up_form1_input_error_max_length",
-                                        },
-                                        { length: 20 },
-                                    ),
-                                    value: 20,
-                                },
-                                onBlur: async (
-                                    username: React.ChangeEvent<HTMLInputElement>,
-                                ) => {
-                                    await trigger("username");
-                                    const registeredUsername =
-                                        username.target.value;
-                                    setValue("username", registeredUsername);
-                                    if (!errors.username) {
-                                        const result =
-                                            await UsersApi.checkUsername({
-                                                username: registeredUsername,
-                                            });
-                                        if (
-                                            (result as ApiSuccess).status ===
-                                            CONSTANTS.SIGN_UP_USERNAME_ERROR_STATUS
-                                        ) {
-                                            setError("username", {
-                                                message: intl.formatMessage({
-                                                    id: "sign_up_form_username_exists",
-                                                }),
-                                                type: "validate",
-                                            });
+                        </label>
+                        <span className="pt-2 d-flex flex-column">
+                            <Form.Control
+                                autoComplete="username"
+                                className="shadow"
+                                id="username-form"
+                                isInvalid={errors.username && true}
+                                isValid={
+                                    !errors.username &&
+                                    userNameWatch.length >=
+                                        CONSTANTS.TEXT_FIELD_MIN_LENGTH
+                                }
+                                placeholder={intl.formatMessage({
+                                    id: "sign_up_form1_placeholder",
+                                })}
+                                required
+                                type="text"
+                                {...register("username", {
+                                    maxLength: {
+                                        message: intl.formatMessage(
+                                            {
+                                                id: "sign_up_form1_input_error_max_length",
+                                            },
+                                            { length: 20 },
+                                        ),
+                                        value: 20,
+                                    },
+                                    onBlur: async (
+                                        username: React.ChangeEvent<HTMLInputElement>,
+                                    ) => {
+                                        await trigger("username");
+                                        const registeredUsername =
+                                            username.target.value;
+                                        setValue(
+                                            "username",
+                                            registeredUsername,
+                                        );
+                                        if (!errors.username) {
+                                            const result =
+                                                await UsersApi.checkUsername({
+                                                    username:
+                                                        registeredUsername,
+                                                });
+                                            if (
+                                                (result as ApiSuccess)
+                                                    .status ===
+                                                CONSTANTS.SIGN_UP_USERNAME_ERROR_STATUS
+                                            ) {
+                                                setError("username", {
+                                                    message: intl.formatMessage(
+                                                        {
+                                                            id: "sign_up_form_username_exists",
+                                                        },
+                                                    ),
+                                                    type: "validate",
+                                                });
+                                            }
                                         }
-                                    }
-                                },
-                                pattern: {
-                                    message: "Cannot contain symbols",
-                                    value: USERNAME,
-                                },
-                                required: intl.formatMessage({
-                                    id: "sign_up_form1_input_error_required",
-                                }),
-                            })}
-                        />
-                        {errors.username && (
-                            <Form.Control.Feedback type="invalid">
-                                {errors.username.message}
-                            </Form.Control.Feedback>
-                        )}
-                    </Form.Group>
-                    <Form.Group className={`mt-5 ${styles.password_form}`}>
-                        <Form.Label>
-                            <span className="fs-5 fw-bold">
-                                <FormattedMessage id="sign_up_form2_label" />
-                            </span>
-                        </Form.Label>
-                        <div className="mx-auto w-50 d-flex flex-row justify-content-around">
+                                    },
+                                    pattern: {
+                                        message: "Cannot contain symbols",
+                                        value: USERNAME,
+                                    },
+                                    required: intl.formatMessage({
+                                        id: "sign_up_form1_input_error_required",
+                                    }),
+                                })}
+                            />
+                            {errors.username && (
+                                <Form.Control.Feedback type="invalid">
+                                    {errors.username.message}
+                                </Form.Control.Feedback>
+                            )}
+                        </span>
+                    </div>
+                    <div className="w-50 pt-3 mx-auto">
+                        <label className="fw-bold fs-5" htmlFor="password-form">
+                            <FormattedMessage id="sign_up_form2_label" />
+                        </label>
+
+                        <span className="d-flex flex-row pt-1">
                             <span className="w-100">
                                 <Form.Control
                                     autoComplete="new-password"
+                                    className="shadow"
+                                    id="password-form"
                                     isInvalid={errors.password && true}
                                     isValid={
                                         !errors.password &&
@@ -394,6 +406,15 @@ export const SignUp = (): JSX.Element => {
                                                 },
                                             ),
                                             value: CONSTANTS.PASSWORD_MIN_LENGTH,
+                                        },
+                                        onChange: async (
+                                            event: React.ChangeEvent<HTMLInputElement>,
+                                        ) => {
+                                            setValue(
+                                                "password",
+                                                event.target.value,
+                                            );
+                                            await trigger("confirmPassword");
                                         },
                                         required: {
                                             message: intl.formatMessage({
@@ -443,16 +464,19 @@ export const SignUp = (): JSX.Element => {
                                     />
                                 </Button>
                             </OverlayTrigger>
-                        </div>
-                    </Form.Group>
-                    <Form.Group
-                        className={`mt-5 mb-3 mx-auto w-50 ${styles.confirm_password_form}`}
-                    >
-                        <Form.Label className="fs-5 fw-bold">
+                        </span>
+                    </div>
+                    <div className="w-50 pt-3 mx-auto">
+                        <label
+                            className="fs-5 fw-bold"
+                            htmlFor="confirm-password-form"
+                        >
                             <FormattedMessage id="sign_up_form3_label" />
-                        </Form.Label>
+                        </label>
                         <Form.Control
                             autoComplete="confirm-password"
+                            className="shadow"
+                            id="confirm-password-form"
                             isInvalid={
                                 errors.confirmPassword &&
                                 confirmPasswordWatch.length >=
@@ -473,7 +497,9 @@ export const SignUp = (): JSX.Element => {
                                         {
                                             id: "sign_up_form_confirm_password_max_length",
                                         },
-                                        { amt: CONSTANTS.PASSWORD_MAX_LENGTH },
+                                        {
+                                            amt: CONSTANTS.PASSWORD_MAX_LENGTH,
+                                        },
                                     ),
                                     value: CONSTANTS.PASSWORD_MAX_LENGTH,
                                 },
@@ -482,7 +508,9 @@ export const SignUp = (): JSX.Element => {
                                         {
                                             id: "sign_up_form_confirm_password_min_length",
                                         },
-                                        { amt: CONSTANTS.PASSWORD_MIN_LENGTH },
+                                        {
+                                            amt: CONSTANTS.PASSWORD_MIN_LENGTH,
+                                        },
                                     ),
                                     value: CONSTANTS.PASSWORD_MIN_LENGTH,
                                 },
@@ -492,8 +520,8 @@ export const SignUp = (): JSX.Element => {
                                     }),
                                     value: true,
                                 },
-                                validate: (confirmPass: string) =>
-                                    confirmPass === passwordWatch ||
+                                validate: (confirmPassword: string) =>
+                                    confirmPassword === watch().password ||
                                     intl.formatMessage({
                                         id: "sign_up_form_confirm_password_not_matching",
                                     }),
@@ -504,25 +532,25 @@ export const SignUp = (): JSX.Element => {
                                 {errors.confirmPassword.message}
                             </Form.Control.Feedback>
                         )}
-                    </Form.Group>
-                </Form>
-                <Button
-                    className={styles.sign_up_button}
-                    disabled={isSubmitButtonDisabled()}
-                    onClick={async (): Promise<void> => {
-                        await signUp({
-                            email: emailWatch,
-                            password: passwordWatch,
-                            username: userNameWatch,
-                        });
-                    }}
-                    variant={`outline-${
-                        isSubmitButtonDisabled() ? "secondary" : "success"
-                    } mt-4 mx-auto`}
-                >
-                    <FormattedMessage id="sign_up_form_submit_button" />
-                </Button>
-            </Card.Body>
-        </Card>
+                    </div>
+                    <Button
+                        className={`${styles.sign_up_button} mx-auto mt-3`}
+                        disabled={isSubmitButtonDisabled()}
+                        onClick={async (): Promise<void> => {
+                            await signUp({
+                                email: emailWatch,
+                                password: passwordWatch,
+                                username: userNameWatch,
+                            });
+                        }}
+                        variant={`outline-${
+                            isSubmitButtonDisabled() ? "secondary" : "success"
+                        }`}
+                    >
+                        <FormattedMessage id="sign_up_form_submit_button" />
+                    </Button>
+                </div>
+            </div>
+        </div>
     );
 };
