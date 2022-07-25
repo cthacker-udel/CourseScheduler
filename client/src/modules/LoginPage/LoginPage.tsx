@@ -14,6 +14,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { type ReactNode } from "react";
 import {
+    Alert,
     Button,
     Card,
     Form,
@@ -23,11 +24,18 @@ import {
 import type { OverlayInjectedProps } from "react-bootstrap/esm/Overlay";
 import { useForm } from "react-hook-form";
 import { FormattedMessage } from "react-intl";
+import type { LoginRequest, LoginResponse } from "src/@types";
+import type { ApiMessage } from "src/api/ApiMessage/ApiMessage";
+import { UsersApi } from "src/api/client-side/UsersApi";
 import { generateTooltip } from "src/helpers";
 import loginFormDetails from "src/locale/en/login.json";
 import { LoginPageReducer } from "src/reducer";
 
 import styles from "./LoginPage.module.css";
+
+const CONSTANTS = {
+    LOGIN_PAGE_SUCCESSFUL_LOGIN_TIMEOUT: 5000,
+};
 
 /**
  * @summary Login Page component
@@ -38,7 +46,7 @@ export const LoginPage = (): JSX.Element => {
         showPassword: false,
     }));
     const router = useRouter();
-    const { register, formState } = useForm({
+    const { register, reset, formState } = useForm({
         context: undefined,
         criteriaMode: "all",
         defaultValues: {
@@ -52,8 +60,31 @@ export const LoginPage = (): JSX.Element => {
         resolver: undefined,
         shouldFocusError: false,
     });
+    const [apiError, setApiError] = React.useState<ApiMessage>();
+    const [apiSuccess, setApiSuccess] = React.useState<ApiMessage>();
 
     const { dirtyFields } = formState;
+
+    /**
+     *
+     * @param param0
+     */
+    const validateLogin = async (data: LoginRequest): Promise<void> => {
+        const result: LoginResponse = await UsersApi.login(data);
+        if (result.canLogin) {
+            setApiSuccess({ message: "Login succeeded!" });
+            reset();
+            setTimeout(async () => {
+                await router.push("/courses");
+                setApiSuccess(undefined);
+            }, CONSTANTS.LOGIN_PAGE_SUCCESSFUL_LOGIN_TIMEOUT);
+        } else {
+            setApiError({ message: "Login failed" });
+            setTimeout(() => {
+                setApiError(undefined);
+            }, CONSTANTS.LOGIN_PAGE_SUCCESSFUL_LOGIN_TIMEOUT);
+        }
+    };
 
     return (
         <div className="mt-4 d-flex flex-column justify-content-center text-center mx-4">
@@ -80,6 +111,16 @@ export const LoginPage = (): JSX.Element => {
                             <h2 className="text-decoration-underline p-2 mr-3 ml-3">
                                 <FormattedMessage id="login_form_title" />
                             </h2>
+                            {apiError?.message && (
+                                <Alert variant="error">
+                                    {apiError.message}
+                                </Alert>
+                            )}
+                            {apiSuccess?.message && (
+                                <Alert variant="success">
+                                    {apiSuccess.message}
+                                </Alert>
+                            )}
                         </Card.Title>
                         <Form className={`w-100 ${styles.login_email_form}`}>
                             <Form.Group className="mx-auto w-50 mt-4 mb-4">

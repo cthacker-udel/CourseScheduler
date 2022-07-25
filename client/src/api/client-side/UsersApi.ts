@@ -2,6 +2,8 @@ import type {
     ApiError,
     ApiSuccess,
     EmailValidationRequest,
+    LoginRequest,
+    LoginResponse,
     SignUpRequest,
     UsernameValidationRequest,
 } from "src/@types";
@@ -25,6 +27,19 @@ export class UsersApi extends ClientSideApi {
             "/users/signup",
             request,
         );
+        return result;
+    };
+
+    /**
+     * Represents the log in request, which requires a level of authentication, which is handled in the backend
+     *
+     * @param request The user sent request which contains their email, password, and username
+     * @returns The user's token, and whether they can login or not
+     */
+    public static login = async (
+        request: LoginRequest,
+    ): Promise<LoginResponse> => {
+        const result = await super.post<LoginResponse>("/users/login", request);
         return result;
     };
 
