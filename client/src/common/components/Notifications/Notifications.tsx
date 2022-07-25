@@ -3,6 +3,8 @@ import { Toast, ToastBody, ToastContainer, ToastHeader } from "react-bootstrap";
 import type { Notification } from "src/@types";
 import { useNotificationContext } from "src/context/NotificationContext/useNotificationContext";
 
+import styles from "./Notifications.module.css";
+
 const DEFAULT_NOTIFICATION_DELAY = 5000;
 
 /**
@@ -13,7 +15,7 @@ const DEFAULT_NOTIFICATION_DELAY = 5000;
 export const Notifications = (): JSX.Element => {
     const { notifications } = useNotificationContext();
     return (
-        <ToastContainer position="top-end">
+        <ToastContainer className={styles.toast_override} position="top-end">
             {notifications.map((eachNotification: Notification) => (
                 <Toast
                     animation

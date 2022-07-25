@@ -45,7 +45,7 @@ export const HomePage = (): JSX.Element => {
         ),
     );
     return (
-        <Container className="d-flex flex-column justify-content-center mt-4">
+        <Container className="d-flex flex-column justify-content-center">
             <div className="mb-3 mt-3">
                 <h1
                     className={`text-center text-wrap font-weight-bold text-decoration-underline ${styles.header}`}

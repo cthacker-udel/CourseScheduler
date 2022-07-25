@@ -15,9 +15,18 @@ import { NotificationContext } from "src/context/NotificationContext/Notificatio
 import { generateTooltipIntl } from "src/helpers";
 
 import { Notifications } from "../Notifications/Notifications";
+import styles from "./Layout.module.css";
 
 type LayoutProps = {
     children: JSX.Element | ReactNode;
+};
+
+/**
+ * Constants for the notification context
+ */
+const NOTIFICATION_CONSTANTS = {
+    NOTIFICATION_DELETE_SLICE_BEGIN: 1,
+    NOTIFICATION_TIMEOUT: 5000,
 };
 
 /**
@@ -153,12 +162,13 @@ export const Layout = ({ children }: LayoutProps): JSX.Element => {
                     notification,
                     ...oldNotifications,
                 ]);
-            },
-            deleteNotification: (index: number): void => {
-                const notificationsClone = [...notifications].filter(
-                    (_value, ind) => ind !== index,
-                );
-                setNotifications(notificationsClone);
+                setTimeout(() => {
+                    setNotifications((oldNotifications) =>
+                        oldNotifications.slice(
+                            NOTIFICATION_CONSTANTS.NOTIFICATION_DELETE_SLICE_BEGIN,
+                        ),
+                    );
+                }, NOTIFICATION_CONSTANTS.NOTIFICATION_TIMEOUT);
             },
             notifications,
         }),
@@ -169,9 +179,11 @@ export const Layout = ({ children }: LayoutProps): JSX.Element => {
         <>
             <NotificationContext.Provider value={notificationsMemo()}>
                 <Notifications />
-                {children}
+                <div className={styles.main_page}>{children}</div>
             </NotificationContext.Provider>
-            <div className="d-flex flex-row justify-content-around pb-3 pt-3 bg-dark bg-gradient">
+            <div
+                className={`d-flex flex-row justify-content-around pb-3 pt-3 bg-dark bg-gradient ${styles.bottom_toolbar}`}
+            >
                 {navigationLinks}
             </div>
         </>
