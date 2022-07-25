@@ -46,7 +46,7 @@ export const LoginPage = (): JSX.Element => {
         showPassword: false,
     }));
     const router = useRouter();
-    const { register, reset, formState } = useForm({
+    const { formState, register, reset, watch } = useForm({
         context: undefined,
         criteriaMode: "all",
         defaultValues: {
@@ -66,8 +66,9 @@ export const LoginPage = (): JSX.Element => {
     const { dirtyFields } = formState;
 
     /**
+     * Handles login logic in regards to the component state
      *
-     * @param param0
+     * @param data The login request, containing the username, password, and email of the user
      */
     const validateLogin = async (data: LoginRequest): Promise<void> => {
         const result: LoginResponse = await UsersApi.login(data);
@@ -270,7 +271,7 @@ export const LoginPage = (): JSX.Element => {
                                 dirtyFields.password === undefined
                             }
                             onClick={async (): Promise<void> => {
-                                await router.push("courses");
+                                await validateLogin(watch());
                             }}
                             title="Login"
                             variant="outline-primary"
