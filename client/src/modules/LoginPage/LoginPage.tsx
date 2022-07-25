@@ -13,13 +13,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { type ReactNode } from "react";
-import {
-    Alert,
-    Button,
-    Form,
-    InputGroup,
-    OverlayTrigger,
-} from "react-bootstrap";
+import { Button, Form, InputGroup, OverlayTrigger } from "react-bootstrap";
 import type { OverlayInjectedProps } from "react-bootstrap/esm/Overlay";
 import { useForm } from "react-hook-form";
 import { FormattedMessage } from "react-intl";
@@ -100,7 +94,7 @@ export const LoginPage = (): JSX.Element => {
                 <div className="border border-secondary opacity-50 shadow-lg w-50 mx-auto my-3" />
             </span>
             <span>
-                <div className="border border-secondary border-opacity-50 shadow-lg mx-5 pb-4">
+                <div className="border border-secondary border-opacity-50 shadow-lg w-75 pb-4 pt-2 mx-auto">
                     <h2 className="pt-3">
                         <FormattedMessage id="login_form_title" />
                     </h2>
@@ -121,10 +115,17 @@ export const LoginPage = (): JSX.Element => {
                                 type="text"
                             />
                         </InputGroup>
-                        <div className="pt-1" id="username_help_block">
+                        <div
+                            className="pt-1 text-start"
+                            id="username_help_block"
+                        >
                             {loginFormDetails.login_username_help_text}{" "}
-                            <Link href="forgot/username">
-                                {loginFormDetails.login_username_forgot_text}
+                            <Link href="forgot/username" passHref>
+                                <a className="text-decoration-none">
+                                    {
+                                        loginFormDetails.login_username_forgot_text
+                                    }
+                                </a>
                             </Link>
                         </div>
                     </div>
@@ -145,10 +146,12 @@ export const LoginPage = (): JSX.Element => {
                                 type="email"
                             />
                         </InputGroup>
-                        <div className="pt-1" id="email_help_block">
+                        <div className="pt-1 text-start" id="email_help_block">
                             {loginFormDetails.email_form_help_text}{" "}
-                            <Link href="forgot/email">
-                                {loginFormDetails.email_forgot_text}
+                            <Link href="forgot/email" passHref>
+                                <a className="text-decoration-none">
+                                    {loginFormDetails.email_forgot_text}
+                                </a>
                             </Link>
                         </div>
                     </div>
@@ -206,10 +209,15 @@ export const LoginPage = (): JSX.Element => {
                                 </Button>
                             </OverlayTrigger>
                         </InputGroup>
-                        <div className="pt-1" id="password_help_block">
+                        <div
+                            className="pt-1 text-start"
+                            id="password_help_block"
+                        >
                             {loginFormDetails.password_form_help_text}{" "}
-                            <Link href="forgot/password">
-                                {loginFormDetails.password_forgot_text}
+                            <Link href="forgot/password" passHref>
+                                <a className="text-decoration-none">
+                                    {loginFormDetails.password_forgot_text}
+                                </a>
                             </Link>
                         </div>
                     </div>

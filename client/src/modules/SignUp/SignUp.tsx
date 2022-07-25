@@ -2,7 +2,7 @@ import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRouter } from "next/router";
 import React from "react";
-import { Button, Card, Form, OverlayTrigger } from "react-bootstrap";
+import { Button, Form, OverlayTrigger } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { FormattedMessage, useIntl } from "react-intl";
 import type { ApiError, ApiSuccess, SignUpRequest } from "src/@types";
@@ -89,6 +89,8 @@ export const SignUp = (): JSX.Element => {
     const confirmPasswordWatch = watch("confirmPassword");
     const emailWatch = watch("email");
     const { errors, isValid, isValidating } = formState;
+
+    // Console.log("errors = ", errors, " and watch = ", watch());
 
     /**
      * Signs a user up in the database, or returns an error.
@@ -196,7 +198,7 @@ export const SignUp = (): JSX.Element => {
         >
             <div className="w-75 border border-secondary mx-auto d-flex flex-column justify-content-between">
                 <span
-                    className={`fw-bold fs-5 bg-light py-1 ${styles.header_text}`}
+                    className={`fw-bolder fs-4 text-decoration-underline bg-light py-1 ${styles.header_text}`}
                 >
                     <FormattedMessage id="sign_up_form_title" />
                 </span>
@@ -405,6 +407,15 @@ export const SignUp = (): JSX.Element => {
                                             ),
                                             value: CONSTANTS.PASSWORD_MIN_LENGTH,
                                         },
+                                        onChange: async (
+                                            event: React.ChangeEvent<HTMLInputElement>,
+                                        ) => {
+                                            setValue(
+                                                "password",
+                                                event.target.value,
+                                            );
+                                            await trigger("confirmPassword");
+                                        },
                                         required: {
                                             message: intl.formatMessage({
                                                 id: "sign_up_form_password_required",
@@ -509,8 +520,8 @@ export const SignUp = (): JSX.Element => {
                                     }),
                                     value: true,
                                 },
-                                validate: (confirmPass: string) =>
-                                    confirmPass === passwordWatch ||
+                                validate: (confirmPassword: string) =>
+                                    confirmPassword === watch().password ||
                                     intl.formatMessage({
                                         id: "sign_up_form_confirm_password_not_matching",
                                     }),
@@ -523,7 +534,7 @@ export const SignUp = (): JSX.Element => {
                         )}
                     </div>
                     <Button
-                        className={`${styles.sign_up_button} w-25 mx-auto mt-3`}
+                        className={`${styles.sign_up_button} mx-auto mt-3`}
                         disabled={isSubmitButtonDisabled()}
                         onClick={async (): Promise<void> => {
                             await signUp({
