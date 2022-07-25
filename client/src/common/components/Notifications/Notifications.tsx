@@ -26,11 +26,13 @@ export const Notifications = (): JSX.Element => {
                     show
                 >
                     {eachNotification.message.header && (
-                        <ToastHeader>
+                        <ToastHeader className="text-wrap text-center">
                             {eachNotification.message.header}
                         </ToastHeader>
                     )}
-                    <ToastBody>{eachNotification.message.body}</ToastBody>
+                    <ToastBody className="text-wrap text-center">
+                        {eachNotification.message.body}
+                    </ToastBody>
                 </Toast>
             ))}
         </ToastContainer>

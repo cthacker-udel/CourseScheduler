@@ -1,4 +1,4 @@
-export const TEMP_SECRETS = {
+export const SECRETS = {
     SECRET: "Random secret",
     MONGO_CONNECT_STRING: "random-connect-string",
 };

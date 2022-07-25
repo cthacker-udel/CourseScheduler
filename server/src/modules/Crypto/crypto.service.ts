@@ -1,5 +1,6 @@
 import { Injectable } from "@nestjs/common";
-import { randomInt, randomBytes, pbkdf2, pbkdf2Sync } from "crypto";
+import { SECRETS } from "config";
+import { randomInt, randomBytes, pbkdf2Sync, createHmac } from "crypto";
 
 /**
  * Represents the result of the encoding operation
@@ -50,21 +51,25 @@ export class CryptoService {
         savedSalt: string,
         savedIterations: number,
     ): Promise<boolean> => {
-        let hash;
-        await pbkdf2(
+        const hash = pbkdf2Sync(
             enteredPassword,
             savedSalt,
             savedIterations,
             512,
             "sha256",
-            (err, derivedKey) => {
-                if (!err) {
-                    hash = derivedKey.toString("hex");
-                } else {
-                    throw err;
-                }
-            },
-        );
+        ).toString("hex");
         return hash === savedPassword;
+    };
+
+    /**
+     * Utility function for generating a random token for the user to use as their session token
+     *
+     * @returns The randomly generated token, which serves as a session token
+     */
+    generateToken = () => {
+        const hash = createHmac("sha512", SECRETS.SECRET)
+            .update(randomBytes(256).toString("hex"))
+            .digest("hex");
+        return hash;
     };
 }

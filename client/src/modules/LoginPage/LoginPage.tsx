@@ -24,8 +24,6 @@ import { generateTooltip } from "src/helpers";
 import loginFormDetails from "src/locale/en/login.json";
 import { LoginPageReducer } from "src/reducer";
 
-import styles from "./LoginPage.module.css";
-
 const CONSTANTS = {
     LOGIN_PAGE_SUCCESSFUL_LOGIN_TIMEOUT: 5000,
 };
@@ -66,7 +64,9 @@ export const LoginPage = (): JSX.Element => {
         const result: LoginResponse = await UsersApi.login(data);
         if (result.canLogin) {
             addNotification({
-                message: { body: "Login successful." },
+                message: {
+                    body: "Login successful, redirecting to the courses page",
+                },
                 variant: "success",
             });
             reset();
@@ -76,7 +76,7 @@ export const LoginPage = (): JSX.Element => {
         } else {
             addNotification({
                 message: { body: "Login failed" },
-                variant: "error",
+                variant: "danger",
             });
         }
     };

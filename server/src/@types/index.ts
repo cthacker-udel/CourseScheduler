@@ -13,6 +13,7 @@ import {
     VALID_CODES,
     ERROR_CODES,
 } from "./api/ServerSideErrorCodes";
+import { LoginResponse } from "./Login/LoginResponse";
 
 export {
     ApiError,
@@ -22,6 +23,7 @@ export {
     ErrorCode,
     ERROR_CODES,
     LOGIN_FAILED_ERROR_CODE,
+    LoginResponse,
     PASSWORD_INVALID_ERROR_CODE,
     SemesterTerm,
     UNKNOWN_SERVER_FAILURE_ERROR_CODE,

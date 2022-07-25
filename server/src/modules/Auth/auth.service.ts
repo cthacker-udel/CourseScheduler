@@ -2,11 +2,12 @@ import { HttpStatus, Injectable, Logger } from "@nestjs/common";
 import { CryptoService } from "../Crypto/crypto.service";
 import { UserService } from "../User/user.service";
 import { CreateUserDTO } from "src/dto/user/create.user.dto";
-import { ApiError, ApiSuccess, ERROR_CODES } from "src/@types";
+import { ApiError, ApiSuccess, ERROR_CODES, LoginResponse } from "src/@types";
 import {
     generateApiError,
     generateApiSuccess,
     generateErrorCode,
+    generateLoginResponse,
 } from "src/helpers";
 
 /**
@@ -58,7 +59,7 @@ export class AuthService {
         username: string,
         email: string,
         enteredPassword: string,
-    ): Promise<ApiError | boolean> => {
+    ): Promise<LoginResponse> => {
         if (this.userService.doesUsernameExist(username)) {
             if (this.userService.doesEmailExist(email)) {
                 const storedPasswordDetails =
@@ -76,29 +77,21 @@ export class AuthService {
                     this.logger.error(
                         `(${email},${username}) Login failed - Password Invalid`,
                     );
-                    return generateApiError(
-                        HttpStatus.BAD_REQUEST,
-                        generateErrorCode(ERROR_CODES.PASSWORD_INVALID),
-                    );
+                    return generateLoginResponse(false);
                 }
-                return true;
+                const token = this.cryptoService.generateToken();
+                return generateLoginResponse(passwordValidationResult, token);
             } else {
                 this.logger.error(
                     `(${email},${username}) Login failed  - Email Does Not Exist`,
                 );
-                return generateApiError(
-                    HttpStatus.BAD_REQUEST,
-                    generateErrorCode(ERROR_CODES.EMAIL_DOES_NOT_EXIST),
-                );
+                return generateLoginResponse(false);
             }
         } else {
             this.logger.error(
                 `(${email},${username}) Login failed - Username Does Not Exist`,
             );
-            return generateApiError(
-                HttpStatus.BAD_REQUEST,
-                generateErrorCode(ERROR_CODES.USER_DOES_NOT_EXIST),
-            );
+            return generateLoginResponse(false);
         }
     };
 
