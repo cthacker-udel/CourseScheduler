@@ -1,19 +1,6 @@
 import { ErrorCode } from "./ErrorCode";
 
 /**
- * Enumerations of the error codes
- */
-export enum ERROR_CODES {
-    UNKNOWN_SERVER_FAILURE,
-    USER_ALREADY_EXISTS,
-    EMAIL_ALREADY_EXISTS,
-    USER_DOES_NOT_EXIST,
-    EMAIL_DOES_NOT_EXIST,
-    PASSWORD_INVALID,
-    LOGIN_FAILED,
-}
-
-/**
  * ErrorCode for server failing reason unknown
  */
 export const UNKNOWN_SERVER_FAILURE_ERROR_CODE: ErrorCode = {
@@ -73,3 +60,16 @@ export const LOGIN_FAILED_ERROR_CODE: ErrorCode = {
  * The valid codes
  */
 export type VALID_CODES = 0 | 1 | 2 | 3 | 4 | 5 | 6;
+
+/**
+ * Enumerations of the error codes
+ */
+export const ERROR_CODES = {
+    UNKNOWN_SERVER_FAILURE_ERROR_CODE,
+    USER_ALREADY_EXISTS_ERROR_CODE,
+    EMAIL_ALREADY_EXISTS_ERROR_CODE,
+    USER_DOES_NOT_EXIST_ERROR_CODE,
+    EMAIL_DOES_NOT_EXIST_ERROR_CODE,
+    PASSWORD_INVALID_ERROR_CODE,
+    LOGIN_FAILED_ERROR_CODE,
+};

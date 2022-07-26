@@ -14,6 +14,7 @@ import {
     ERROR_CODES,
 } from "./api/ServerSideErrorCodes";
 import { LoginResponse } from "./Login/LoginResponse";
+import { ForgotUsernameRequest } from "./ForgotUsername/ForgotUsernameRequest";
 
 export {
     ApiError,
@@ -22,6 +23,7 @@ export {
     EMAIL_DOES_NOT_EXIST_ERROR_CODE,
     ErrorCode,
     ERROR_CODES,
+    ForgotUsernameRequest,
     LOGIN_FAILED_ERROR_CODE,
     LoginResponse,
     PASSWORD_INVALID_ERROR_CODE,

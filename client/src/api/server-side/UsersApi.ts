@@ -3,11 +3,14 @@ import type {
     ApiError,
     ApiSuccess,
     EmailValidationRequest,
+    ForgotUsernameRequest,
+    ForgotUsernameResponse,
     LoginResponse,
     SignUpRequest,
     UsernameValidationRequest,
 } from "src/@types";
 
+// TODO: Implement the forgot username flow in the backend
 import { ServerSideApi } from "./ServerSideApi";
 
 /**
@@ -21,12 +24,12 @@ export class UsersApi extends ServerSideApi {
      * @returns
      */
     public static signUp = async (
-        request: Request,
+        request: NextApiRequest,
         response: NextApiResponse,
     ): Promise<void> => {
         const result = await super.post<ApiError | ApiSuccess>(
             "/auth/signup",
-            JSON.parse(request.body as unknown as string) as SignUpRequest,
+            JSON.parse(request.body) as SignUpRequest,
         );
         response.json(result);
     };
@@ -55,14 +58,12 @@ export class UsersApi extends ServerSideApi {
      * @returns An api error or an api success if the email is present in the database
      */
     public static checkEmail = async (
-        request: Request,
+        request: NextApiRequest,
         response: NextApiResponse,
     ): Promise<void> => {
         const result = await super.post<ApiError | ApiSuccess>(
             "/users/email/validate",
-            JSON.parse(
-                request.body as unknown as string,
-            ) as EmailValidationRequest,
+            JSON.parse(request.body) as EmailValidationRequest,
         );
         response.json(result);
     };
@@ -74,14 +75,29 @@ export class UsersApi extends ServerSideApi {
      * @returns An api error or an api success if the username is present in the database
      */
     public static checkUsername = async (
-        request: Request,
+        request: NextApiRequest,
         response: NextApiResponse,
     ): Promise<void> => {
         const result = await super.post<ApiError | ApiSuccess>(
             "/users/username/validate",
-            JSON.parse(
-                request.body as unknown as string,
-            ) as UsernameValidationRequest,
+            JSON.parse(request.body) as UsernameValidationRequest,
+        );
+        response.json(result);
+    };
+
+    /**
+     * Server-side forgot username flow
+     *
+     * @param request The request containing in the body the full ForgotUsernameRequest type
+     * @param response The next/api response
+     */
+    public static forgotUsername = async (
+        request: NextApiRequest,
+        response: NextApiResponse,
+    ): Promise<void> => {
+        const result = await super.post<ForgotUsernameResponse>(
+            "/forgot/forgotusername",
+            JSON.parse(request.body) as ForgotUsernameRequest,
         );
         response.json(result);
     };

@@ -76,8 +76,6 @@ export const ForgotUsername = (): JSX.Element => {
 
     const { errors, dirtyFields, isDirty, isValid, isValidating } = formState;
 
-    console.log({ dirtyFields, errors, isDirty, isValid, isValidating });
-
     /**
      * Validates the password entered in by the user
      *

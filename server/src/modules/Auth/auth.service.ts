@@ -6,7 +6,6 @@ import { ApiError, ApiSuccess, ERROR_CODES, LoginResponse } from "src/@types";
 import {
     generateApiError,
     generateApiSuccess,
-    generateErrorCode,
     generateLoginResponse,
 } from "src/helpers";
 
@@ -111,13 +110,13 @@ export class AuthService {
             } else {
                 return generateApiError(
                     HttpStatus.BAD_REQUEST,
-                    generateErrorCode(ERROR_CODES.EMAIL_ALREADY_EXISTS),
+                    ERROR_CODES.EMAIL_ALREADY_EXISTS_ERROR_CODE,
                 );
             }
         } else {
             return generateApiError(
                 HttpStatus.BAD_REQUEST,
-                generateErrorCode(ERROR_CODES.USER_ALREADY_EXISTS),
+                ERROR_CODES.USER_ALREADY_EXISTS_ERROR_CODE,
             );
         }
     };
