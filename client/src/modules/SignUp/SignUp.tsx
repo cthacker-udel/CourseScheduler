@@ -10,6 +10,7 @@ import { UsersApi } from "src/api/client-side/UsersApi";
 import { EMAIL, USERNAME } from "src/common";
 import { useNotificationContext } from "src/context/NotificationContext/useNotificationContext";
 import { generateTooltipIntl } from "src/helpers";
+import { Logger } from "src/log/Logger";
 
 import styles from "./SignUp.module.css";
 
@@ -90,7 +91,21 @@ export const SignUp = (): JSX.Element => {
     const emailWatch = watch("email");
     const { errors, isValid, isValidating } = formState;
 
-    // Console.log("errors = ", errors, " and watch = ", watch());
+    React.useEffect(() => {
+        /**
+         * Prefetches routes for quicker page loading
+         */
+        const preFetchRoutes = async (): Promise<void> => {
+            await router.prefetch("/login");
+        };
+        preFetchRoutes()
+            .then(() => {
+                Logger.log("info", "routes prefetched");
+            })
+            .catch((err) => {
+                Logger.log("error", err);
+            });
+    }, [router]);
 
     /**
      * Signs a user up in the database, or returns an error.
@@ -98,6 +113,9 @@ export const SignUp = (): JSX.Element => {
      * @param request The data used to sign a user up in the database
      */
     const signUp = async (request: SignUpRequest): Promise<void> => {
+        if (!request.email || !request.password || !request.username) {
+            return;
+        }
         const result = await UsersApi.signUp(request);
         reset();
         if ((result as ApiError).errorCode) {
@@ -247,7 +265,7 @@ export const SignUp = (): JSX.Element => {
                                         const registeredEmail =
                                             email.target.value;
                                         setValue("email", registeredEmail);
-                                        if (!errors.email) {
+                                        if (!errors.email && registeredEmail) {
                                             const result =
                                                 await UsersApi.checkEmail({
                                                     email: registeredEmail,

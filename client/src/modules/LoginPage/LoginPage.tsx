@@ -22,6 +22,7 @@ import { UsersApi } from "src/api/client-side/UsersApi";
 import { useNotificationContext } from "src/context/NotificationContext/useNotificationContext";
 import { generateTooltip } from "src/helpers";
 import loginFormDetails from "src/locale/en/login.json";
+import { Logger } from "src/log/Logger";
 import { LoginPageReducer } from "src/reducer";
 
 const CONSTANTS = {
@@ -54,6 +55,23 @@ export const LoginPage = (): JSX.Element => {
     });
 
     const { dirtyFields } = formState;
+
+    React.useEffect(() => {
+        /**
+         * Pre fetches routes to make loading times significantly faster
+         */
+        const preFetchRoutes = async (): Promise<void> => {
+            await router.prefetch("/courses");
+            await router.prefetch("/sign-up");
+        };
+        preFetchRoutes()
+            .then(() => {
+                Logger.log("info", "routes prefetched");
+            })
+            .catch((err) => {
+                Logger.log("error", err);
+            });
+    }, [router]);
 
     /**
      * Handles login logic in regards to the component state
