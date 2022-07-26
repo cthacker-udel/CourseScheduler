@@ -1,4 +1,10 @@
 import { Module } from "@nestjs/common";
+import { ForgotController } from "./Forgot.controller";
 
-@Module({ controllers: [], exports: [], imports: [], providers: [] })
+@Module({
+    controllers: [ForgotController],
+    exports: [],
+    imports: [],
+    providers: [],
+})
 export class ForgotModule {}

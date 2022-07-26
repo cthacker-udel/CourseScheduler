@@ -1,46 +1,28 @@
 import { Controller, HttpStatus, Post } from "@nestjs/common";
-import { ForgotUsernameRequest } from "src/@types";
+import {
+    ApiError,
+    ForgotUsernameRequest,
+    ForgotUsernameResponse,
+} from "src/@types";
 import { ERROR_CODES } from "src/ErrorCode";
 import { generateApiError } from "src/helpers";
-import { UserService } from "src/modules/User/user.service";
-import { AuthService } from "../Auth/auth.service";
-import { CryptoService } from "../Crypto/crypto.service";
+import { ForgotService } from "./Forgot.service";
 
 @Controller("forgot")
 export class ForgotController {
-    constructor(
-        private readonly userService: UserService,
-        private readonly authService: AuthService,
-        private readonly cryptoService: CryptoService,
-    ) {}
+    constructor(private readonly forgotService: ForgotService) {}
 
     @Post("username")
-    async forgotUsername(request: ForgotUsernameRequest) {
-        const { email, password } = request;
-        const findUserWithEmail = await this.userService.doesEmailExist(email);
-        if (!findUserWithEmail) {
+    async forgotUsername(
+        request: ForgotUsernameRequest,
+    ): Promise<ApiError | ForgotUsernameResponse> {
+        try {
+            return await this.forgotService.forgotUsername(request);
+        } catch (error: unknown) {
             return generateApiError(
-                HttpStatus.BAD_REQUEST,
-                ERROR_CODES.EMAIL_DOES_NOT_EXIST,
+                HttpStatus.SERVICE_UNAVAILABLE,
+                ERROR_CODES.UNKNOWN_SERVER_FAILURE,
             );
         }
-        const passwordValidationDetails =
-            await this.userService.getSavedPasswordValidationInfo(email);
-        const validationResult = await this.authService.validatePassword(
-            passwordValidationDetails.hash,
-            passwordValidationDetails.salt,
-            passwordValidationDetails.iterations,
-            password,
-        );
-
-        if (validationResult) {
-            const token = await this.cryptoService.generateToken();
-            const validUntil = Date.now();
-            return { token, validUntil };
-        }
-        return generateApiError(
-            HttpStatus.BAD_REQUEST,
-            ERROR_CODES.UNKNOWN_SERVER_FAILURE,
-        );
     }
 }
