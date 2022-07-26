@@ -1,4 +1,4 @@
-import { VALID_CODES } from "src/@types/api/ServerSideErrorCodes";
+import { ValidCodes } from "src/@types";
 import { ERROR_CODE_LOOKUP } from "src/util";
 
 /**
@@ -6,6 +6,6 @@ import { ERROR_CODE_LOOKUP } from "src/util";
  * @param code The code to find via ERROR_CODE_LOOKUP
  * @returns The ErrorCode corresponding to the code given
  */
-export const lookupErrorCodeByCode = (code: VALID_CODES) => {
+export const lookupErrorCodeByCode = (code: ValidCodes) => {
     return ERROR_CODE_LOOKUP[code];
 };

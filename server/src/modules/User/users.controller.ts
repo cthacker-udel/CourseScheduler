@@ -1,7 +1,7 @@
 import { Body, Controller, HttpStatus, Logger, Post } from "@nestjs/common";
-import { ERROR_CODES } from "src/@types";
 import { EmailValidationDTO } from "src/dto/user/emailValidation.dto";
 import { UsernameValidationDTO } from "src/dto/user/usernameValidation.dto";
+import { ERROR_CODES } from "src/ErrorCode";
 import { generateApiError, generateApiSuccess } from "src/helpers";
 import { UserService } from "./user.service";
 

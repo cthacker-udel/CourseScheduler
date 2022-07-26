@@ -62,7 +62,7 @@ export class CryptoService {
     };
 
     /**
-     * Utility function for generating a random token for the user to use as their session token
+     * Utility function for generating a **256** byte random token for the user to use as their session token
      *
      * @returns The randomly generated token, which serves as a session token
      */

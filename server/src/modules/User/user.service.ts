@@ -51,8 +51,8 @@ export class UserService {
      * @returns The stored hash password for the user, salt, and iterations
      */
     getSavedPasswordValidationInfo = async (
-        username: string,
-        email: string,
+        username?: string,
+        email?: string,
     ): Promise<EncodingResult> => {
         const user: User = await this.usersRepository.findOne({
             where: { username, email },

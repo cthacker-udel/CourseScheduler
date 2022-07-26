@@ -1,7 +1,8 @@
 import { Body, Controller, HttpStatus, Logger, Post } from "@nestjs/common";
-import { ApiError, ApiSuccess, ERROR_CODES, LoginResponse } from "src/@types";
+import { ApiError, ApiSuccess, LoginResponse } from "src/@types";
 import { CreateUserDTO } from "src/dto/user/create.user.dto";
 import { LoginDto } from "src/dto/user/login.dto";
+import { ERROR_CODES } from "src/ErrorCode";
 import { generateApiError, generateLoginResponse } from "src/helpers";
 import { UserService } from "../User/user.service";
 import { AuthService } from "./auth.service";

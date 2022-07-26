@@ -1,4 +1,4 @@
-import { ErrorCode } from "./ErrorCode";
+import { ErrorCode } from "../@types/api/ErrorCode";
 
 /**
  * ErrorCode for server failing reason unknown
@@ -55,11 +55,6 @@ export const LOGIN_FAILED_ERROR_CODE: ErrorCode = {
     message: "Login failed",
     code: 6,
 };
-
-/**
- * The valid codes
- */
-export type VALID_CODES = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
 /**
  * Enumerations of the error codes
