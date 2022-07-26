@@ -22,6 +22,7 @@ import { UsersApi } from "src/api/client-side/UsersApi";
 import { useNotificationContext } from "src/context/NotificationContext/useNotificationContext";
 import { generateTooltip } from "src/helpers";
 import loginFormDetails from "src/locale/en/login.json";
+import { Logger } from "src/log/Logger";
 import { LoginPageReducer } from "src/reducer";
 
 const CONSTANTS = {
@@ -54,6 +55,23 @@ export const LoginPage = (): JSX.Element => {
     });
 
     const { dirtyFields } = formState;
+
+    React.useEffect(() => {
+        /**
+         * Pre fetches routes to make loading times significantly faster
+         */
+        const preFetchRoutes = async (): Promise<void> => {
+            await router.prefetch("/courses");
+            await router.prefetch("/sign-up");
+        };
+        preFetchRoutes()
+            .then(() => {
+                Logger.log("info", "routes prefetched");
+            })
+            .catch((err) => {
+                Logger.log("error", err);
+            });
+    }, [router]);
 
     /**
      * Handles login logic in regards to the component state
@@ -120,7 +138,7 @@ export const LoginPage = (): JSX.Element => {
                             id="username_help_block"
                         >
                             {loginFormDetails.login_username_help_text}{" "}
-                            <Link href="forgot/username" passHref>
+                            <Link href="construction" passHref>
                                 <a className="text-decoration-none">
                                     {
                                         loginFormDetails.login_username_forgot_text
@@ -148,7 +166,7 @@ export const LoginPage = (): JSX.Element => {
                         </InputGroup>
                         <div className="pt-1 text-start" id="email_help_block">
                             {loginFormDetails.email_form_help_text}{" "}
-                            <Link href="forgot/email" passHref>
+                            <Link href="construction" passHref>
                                 <a className="text-decoration-none">
                                     {loginFormDetails.email_forgot_text}
                                 </a>
@@ -214,7 +232,7 @@ export const LoginPage = (): JSX.Element => {
                             id="password_help_block"
                         >
                             {loginFormDetails.password_form_help_text}{" "}
-                            <Link href="forgot/password" passHref>
+                            <Link href="construction" passHref>
                                 <a className="text-decoration-none">
                                     {loginFormDetails.password_forgot_text}
                                 </a>

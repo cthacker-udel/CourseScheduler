@@ -14,6 +14,7 @@ import {
 } from "react-bootstrap";
 import { FormattedMessage, useIntl } from "react-intl";
 import { generateTooltipIntl } from "src/helpers";
+import { Logger } from "src/log/Logger";
 
 import styles from "./HomePage.module.css";
 
@@ -44,6 +45,24 @@ export const HomePage = (): JSX.Element => {
             </Accordion.Item>
         ),
     );
+
+    React.useEffect(() => {
+        /**
+         * Pre-fetches all necessary routes
+         */
+        const preFetchRoutes = async (): Promise<void> => {
+            await router.prefetch("/login");
+            await router.prefetch("/sign-up");
+        };
+        preFetchRoutes()
+            .then(() => {
+                Logger.log("info", "routes prefetched");
+            })
+            .catch((err) => {
+                Logger.log("info", err);
+            });
+    }, [router]);
+
     return (
         <Container className="d-flex flex-column justify-content-center">
             <div className="mb-3 mt-3">
