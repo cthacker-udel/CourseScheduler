@@ -9,7 +9,7 @@ import type { ApiError, ApiSuccess, SignUpRequest } from "src/@types";
 import { UsersApi } from "src/api/client-side/UsersApi";
 import { EMAIL, USERNAME } from "src/common";
 import { useNotificationContext } from "src/context/NotificationContext/useNotificationContext";
-import { generateTooltipIntl } from "src/helpers";
+import { generateTooltipIntl, validatePassword } from "src/helpers";
 import { Logger } from "src/log/Logger";
 
 import styles from "./SignUp.module.css";
@@ -170,27 +170,29 @@ export const SignUp = (): JSX.Element => {
      * This function aids in the validation of the password, following a step-by-step algorithm to determine if the password is valid
      * @param password The password the user is attempting to enter into the sign up form
      */
-    const validatePassword = (password: string): boolean | string => {
+    const validatePass = (password: string): boolean | string => {
         const MIN_PASSWORD_REQUIRE = 1;
-        const lowercaseMatch = password.match(/[a-z]/gu);
-        const uppercaseMatch = password.match(/[A-Z]/gu);
-        const symbolMatch = password.match(/[\W]/gu);
-        if (lowercaseMatch && uppercaseMatch && symbolMatch) {
+        const matches = validatePassword(password);
+        if (
+            matches.lowercaseMatch &&
+            matches.uppercaseMatch &&
+            matches.symbolMatch
+        ) {
             return true;
         }
-        if (!lowercaseMatch) {
+        if (!matches.lowercaseMatch) {
             return intl.formatMessage(
                 { id: "sign_up_form_password_lower" },
                 { amt: MIN_PASSWORD_REQUIRE },
             );
         }
-        if (!uppercaseMatch) {
+        if (!matches.uppercaseMatch) {
             return intl.formatMessage(
                 { id: "sign_up_form_password_upper" },
                 { amt: MIN_PASSWORD_REQUIRE },
             );
         }
-        if (!symbolMatch) {
+        if (!matches.symbolMatch) {
             return intl.formatMessage(
                 { id: "sign_up_form_password_symbol" },
                 { amt: MIN_PASSWORD_REQUIRE },
@@ -441,7 +443,7 @@ export const SignUp = (): JSX.Element => {
                                             value: true,
                                         },
                                         validate: (pass: string) =>
-                                            validatePassword(pass),
+                                            validatePass(pass),
                                     })}
                                     placeholder={intl.formatMessage({
                                         id: "sign_up_form2_placeholder",

@@ -138,7 +138,7 @@ export const LoginPage = (): JSX.Element => {
                             id="username_help_block"
                         >
                             {loginFormDetails.login_username_help_text}{" "}
-                            <Link href="construction" passHref>
+                            <Link href="/forgot/username" passHref>
                                 <a className="text-decoration-none">
                                     {
                                         loginFormDetails.login_username_forgot_text
