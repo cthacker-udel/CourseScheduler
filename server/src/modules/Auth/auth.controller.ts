@@ -48,7 +48,7 @@ export class AuthController {
             this.logger.error(`Sign Up failed - ${error}`);
             return generateApiError(
                 HttpStatus.BAD_REQUEST,
-                ERROR_CODES.UNKNOWN_SERVER_FAILURE_ERROR_CODE,
+                ERROR_CODES.UNKNOWN_SERVER_FAILURE,
             );
         }
     }

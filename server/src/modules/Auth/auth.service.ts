@@ -111,13 +111,13 @@ export class AuthService {
             } else {
                 return generateApiError(
                     HttpStatus.BAD_REQUEST,
-                    ERROR_CODES.EMAIL_ALREADY_EXISTS_ERROR_CODE,
+                    ERROR_CODES.EMAIL_ALREADY_EXISTS,
                 );
             }
         } else {
             return generateApiError(
                 HttpStatus.BAD_REQUEST,
-                ERROR_CODES.USER_ALREADY_EXISTS_ERROR_CODE,
+                ERROR_CODES.USER_ALREADY_EXISTS,
             );
         }
     };

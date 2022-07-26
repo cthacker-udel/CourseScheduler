@@ -35,7 +35,7 @@ export class UserController {
             this.logger.error(error);
             return generateApiError(
                 HttpStatus.BAD_REQUEST,
-                ERROR_CODES.UNKNOWN_SERVER_FAILURE_ERROR_CODE,
+                ERROR_CODES.UNKNOWN_SERVER_FAILURE,
             );
         }
     }
@@ -56,7 +56,7 @@ export class UserController {
             this.logger.error(error);
             return generateApiError(
                 HttpStatus.BAD_REQUEST,
-                ERROR_CODES.UNKNOWN_SERVER_FAILURE_ERROR_CODE,
+                ERROR_CODES.UNKNOWN_SERVER_FAILURE,
             );
         }
     }

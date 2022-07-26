@@ -21,7 +21,7 @@ export class ForgotController {
         if (!findUserWithEmail) {
             return generateApiError(
                 HttpStatus.BAD_REQUEST,
-                ERROR_CODES.EMAIL_DOES_NOT_EXIST_ERROR_CODE,
+                ERROR_CODES.EMAIL_DOES_NOT_EXIST,
             );
         }
         const passwordValidationDetails =
@@ -38,6 +38,9 @@ export class ForgotController {
             const validUntil = Date.now();
             return { token, validUntil };
         }
-        return;
+        return generateApiError(
+            HttpStatus.BAD_REQUEST,
+            ERROR_CODES.UNKNOWN_SERVER_FAILURE,
+        );
     }
 }
