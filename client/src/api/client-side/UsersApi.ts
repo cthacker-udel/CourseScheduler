@@ -87,7 +87,7 @@ export class UsersApi extends ClientSideApi {
         request: ForgotUsernameRequest,
     ): Promise<ForgotUsernameResponse> => {
         const result = await super.post<ForgotUsernameResponse>(
-            "/forgot/forgotusername",
+            "/forgot/username",
             request,
         );
         return result;

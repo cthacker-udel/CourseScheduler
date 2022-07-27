@@ -24,7 +24,10 @@ export class ForgotService {
             );
         }
         const passwordValidationDetails =
-            await this.userService.getSavedPasswordValidationInfo(email);
+            await this.userService.getSavedPasswordValidationInfo(
+                undefined,
+                email,
+            );
         const validationResult = await this.authService.validatePassword(
             passwordValidationDetails.hash,
             passwordValidationDetails.salt,
@@ -34,7 +37,7 @@ export class ForgotService {
 
         if (validationResult) {
             const token = this.cryptoService.generateToken();
-            const validUntil = new Date(Date.now());
+            const validUntil = new Date(Date.now() + 345600000);
             return { token, validUntil };
         }
         return generateApiError(

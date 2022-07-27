@@ -96,7 +96,7 @@ export class UsersApi extends ServerSideApi {
         response: NextApiResponse,
     ): Promise<void> => {
         const result = await super.post<ForgotUsernameResponse>(
-            "/forgot/forgotusername",
+            "/forgot/username",
             JSON.parse(request.body) as ForgotUsernameRequest,
         );
         response.json(result);

@@ -379,7 +379,6 @@
             }
         ],
         "no-negated-condition": "error",
-        "no-nested-ternary": "error",
         "no-new-object": "error",
         "no-plusplus": "error",
         "no-restricted-syntax": ["error", "BinaryExpression[operator='in']"],

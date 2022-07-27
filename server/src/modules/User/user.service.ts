@@ -55,7 +55,7 @@ export class UserService {
         email?: string,
     ): Promise<EncodingResult> => {
         const user: User = await this.usersRepository.findOne({
-            where: { username, email },
+            where: { ...(username && { username }), ...(email && { email }) },
         });
         return {
             hash: user.hash,

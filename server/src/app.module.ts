@@ -5,6 +5,7 @@ import { CryptoModule } from "./modules/Crypto/crypto.module";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { configurations } from "config";
 import { LoggerOptions } from "typeorm";
+import { ForgotModule } from "./modules/Forgot/Forgot.module";
 
 @Module({
     imports: [
@@ -27,6 +28,7 @@ import { LoggerOptions } from "typeorm";
                 url: configurations.mongo_typeorm.url,
             }),
         }),
+        ForgotModule,
     ],
     controllers: [],
     providers: [],
