@@ -6,8 +6,10 @@ import { LoginResponse } from "./Login/LoginResponse";
 import { ForgotUsernameRequest } from "./ForgotUsername/ForgotUsernameRequest";
 import { ValidCodes } from "./api/ValidCodes";
 import { ForgotUsernameResponse } from "./ForgotUsername/ForgotUsernameResponse";
+import { AddResetTokenQuery } from "./ResetToken/AddResetTokenQuery";
 
 export {
+    AddResetTokenQuery,
     ApiError,
     ApiSuccess,
     ErrorCode,

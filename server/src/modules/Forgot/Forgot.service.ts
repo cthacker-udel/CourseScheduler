@@ -38,6 +38,7 @@ export class ForgotService {
         if (validationResult) {
             const token = this.cryptoService.generateToken();
             const validUntil = new Date(Date.now() + 345600000);
+            await this.userService.addResetToken({ email }, token, validUntil);
             return { token, validUntil };
         }
         return generateApiError(

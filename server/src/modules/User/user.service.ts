@@ -7,6 +7,7 @@ import {
 } from "src/dto/user/create.user.dto";
 import { User } from "src/entities";
 import { CryptoService, type EncodingResult } from "../Crypto/crypto.service";
+import { AddResetTokenQuery } from "src/@types";
 
 /**
  * The users service, handling all operations involving the users collection
@@ -41,6 +42,34 @@ export class UserService {
             encodingResult.hash,
             encodingResult.salt,
             encodingResult.iterations,
+        );
+    };
+
+    /**
+     * Adds a reset token to the user when requested
+     *
+     * @param query The query to find the select user from the database
+     * @param token The token to add to the user entity
+     * @param validUntil When the token expires
+     */
+    addResetToken = async (
+        query: AddResetTokenQuery,
+        token: string,
+        validUntil: Date,
+    ) => {
+        await this.usersRepository.update(
+            { ...query },
+            {
+                resetToken: {
+                    token,
+                    validUntil: validUntil.toUTCString(),
+                },
+            },
+        );
+        this.logger.log(
+            `Added reset token to ${
+                query.email ? `Email [${query.email}]` : ""
+            }, ${query.username ? `Username [${query.username}]` : ""}`,
         );
     };
 
