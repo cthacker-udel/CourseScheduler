@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import { Button, Form, InputGroup } from "react-bootstrap";
 import { useForm } from "react-hook-form";
+import { UsersApi } from "src/api/client-side/UsersApi";
 import { EMAIL } from "src/common";
 import { validatePassword } from "src/helpers";
 
@@ -63,7 +64,7 @@ const FORGOT_USERNAME_VALIDATION_PASSWORD_MESSAGES = {
  * When the user forgot their username, form to retrieve a token and then enter it into a prompt to reset it
  */
 export const ForgotUsername = (): JSX.Element => {
-    const { formState, register, watch } = useForm({
+    const { formState, getValues, register, watch } = useForm({
         criteriaMode: "all",
         defaultValues: {
             confirmEmail: "",
@@ -295,6 +296,14 @@ export const ForgotUsername = (): JSX.Element => {
                 <Button
                     className="w-25 mx-auto"
                     disabled={!isValid || isValidating}
+                    onClick={async (): Promise<void> => {
+                        const { email, password } = getValues();
+                        const response = await UsersApi.forgotUsername({
+                            email,
+                            password,
+                        });
+                        // display modal telling them the token
+                    }}
                     variant={
                         isValid && !isValidating && isDirty
                             ? "success"
