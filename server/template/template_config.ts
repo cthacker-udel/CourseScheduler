@@ -1,3 +1,9 @@
+/**
+ * Place in server/config/config.ts file
+ *
+ * Folder should look like: config(folder) --> [ config.ts, index.ts ]
+ */
+
 export const SECRETS = {
     SECRET: "Random secret",
     MONGO_CONNECT_STRING: "random-connect-string",
