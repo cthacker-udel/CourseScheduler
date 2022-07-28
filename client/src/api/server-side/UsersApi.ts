@@ -3,6 +3,7 @@ import type {
     ApiError,
     ApiSuccess,
     EmailValidationRequest,
+    ForgotEmailRequest,
     ForgotPasswordRequest,
     ForgotUsernameRequest,
     LoginResponse,
@@ -116,6 +117,23 @@ export class UsersApi extends ServerSideApi {
         const result = await super.post<TokenResponse>(
             "/forgot/password",
             JSON.parse(request.body) as ForgotPasswordRequest,
+        );
+        response.json(result);
+    };
+
+    /**
+     * Server-side forgot email flow
+     *
+     * @param request The request containing the username and password in the body
+     * @param response The next/api response
+     */
+    public static forgotEmail = async (
+        request: NextApiRequest,
+        response: NextApiResponse,
+    ): Promise<void> => {
+        const result = await super.post<TokenResponse>(
+            "/forgot/email",
+            JSON.parse(request.body) as ForgotEmailRequest,
         );
         response.json(result);
     };

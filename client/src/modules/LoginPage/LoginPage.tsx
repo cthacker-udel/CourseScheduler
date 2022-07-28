@@ -166,7 +166,7 @@ export const LoginPage = (): JSX.Element => {
                         </InputGroup>
                         <div className="pt-1 text-start" id="email_help_block">
                             {loginFormDetails.email_form_help_text}{" "}
-                            <Link href="construction" passHref>
+                            <Link href="/forgot/email" passHref>
                                 <a className="text-decoration-none">
                                     {loginFormDetails.email_forgot_text}
                                 </a>

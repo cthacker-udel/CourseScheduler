@@ -2,6 +2,7 @@ import type {
     ApiError,
     ApiSuccess,
     EmailValidationRequest,
+    ForgotEmailRequest,
     ForgotPasswordRequest,
     ForgotUsernameRequest,
     LoginRequest,
@@ -105,6 +106,22 @@ export class UsersApi extends ClientSideApi {
     ): Promise<TokenResponse> => {
         const result = await super.post<TokenResponse>(
             "/forgot/password",
+            request,
+        );
+        return result;
+    };
+
+    /**
+     * Represents an forgot email flow, returns a token for the user to utilize when authenticating
+     *
+     * @param request The request, contains email and username
+     * @returns The api result, could either be an valid token or an empty string
+     */
+    public static forgotEmail = async (
+        request: ForgotEmailRequest,
+    ): Promise<TokenResponse> => {
+        const result = await super.post<TokenResponse>(
+            "/forgot/email",
             request,
         );
         return result;

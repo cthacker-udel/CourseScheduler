@@ -50,7 +50,7 @@ export class ForgotController {
         @Body() request: ForgotEmailRequest,
     ): Promise<ApiError | ForgotTokenResponse> {
         try {
-            return;
+            return await this.forgotService.forgotEmail(request);
         } catch (error: unknown) {
             Logger.error(error);
             return generateApiError(
