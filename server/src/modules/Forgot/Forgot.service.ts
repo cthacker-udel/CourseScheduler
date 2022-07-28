@@ -1,6 +1,7 @@
 import { HttpStatus, Injectable } from "@nestjs/common";
 import {
     ApiError,
+    ForgotEmailRequest,
     ForgotPasswordRequest,
     ForgotTokenResponse,
     ForgotUsernameRequest,
@@ -82,6 +83,41 @@ export class ForgotService {
         return generateApiError(
             HttpStatus.BAD_REQUEST,
             ERROR_CODES.UNKNOWN_SERVER_FAILURE,
+        );
+    };
+
+    forgotEmail = async (
+        request: ForgotEmailRequest,
+    ): Promise<ApiError | ForgotTokenResponse> => {
+        const { password, username } = request;
+        if (this.userService.doesUsernameExist(username)) {
+            const passwordValidationDetails =
+                await this.userService.getSavedPasswordValidationInfo(username);
+            const validationResult = await this.authService.validatePassword(
+                passwordValidationDetails.hash,
+                passwordValidationDetails.salt,
+                passwordValidationDetails.iterations,
+                password,
+            );
+            if (validationResult) {
+                const token = this.cryptoService.generateToken();
+                const validUntil = new Date(Date.now() + FOUR_DAYS_MS);
+                await this.userService.addResetToken(
+                    { username },
+                    token,
+                    "email",
+                    validUntil,
+                );
+                return { token, validUntil };
+            }
+            return generateApiError(
+                HttpStatus.BAD_REQUEST,
+                ERROR_CODES.PASSWORD_INVALID,
+            );
+        }
+        return generateApiError(
+            HttpStatus.BAD_REQUEST,
+            ERROR_CODES.USER_DOES_NOT_EXIST,
         );
     };
 }

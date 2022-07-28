@@ -4,6 +4,7 @@ import {
     ForgotUsernameRequest,
     ForgotTokenResponse,
     ForgotPasswordRequest,
+    ForgotEmailRequest,
 } from "src/@types";
 import { ERROR_CODES } from "src/ErrorCode";
 import { generateApiError } from "src/helpers";
@@ -35,6 +36,21 @@ export class ForgotController {
     ): Promise<ApiError | ForgotTokenResponse> {
         try {
             return await this.forgotService.forgotPassword(request);
+        } catch (error: unknown) {
+            Logger.error(error);
+            return generateApiError(
+                HttpStatus.SERVICE_UNAVAILABLE,
+                ERROR_CODES.UNKNOWN_SERVER_FAILURE,
+            );
+        }
+    }
+
+    @Post("email")
+    async forgotEmail(
+        @Body() request: ForgotEmailRequest,
+    ): Promise<ApiError | ForgotTokenResponse> {
+        try {
+            return;
         } catch (error: unknown) {
             Logger.error(error);
             return generateApiError(

@@ -10,11 +10,13 @@ import { ResetTokenType } from "./ResetToken/ResetTokenType";
 import { ResetToken } from "./ResetToken/ResetToken";
 import { ForgotTokenResponse } from "./Forgot/ForgotTokenResponse";
 import { ForgotPasswordRequest } from "./Forgot/ForgotPasswordRequest";
+import { ForgotEmailRequest } from "./Forgot/ForgotEmailRequest";
 
 export {
     ApiError,
     ApiSuccess,
     ErrorCode,
+    ForgotEmailRequest,
     ForgotUsernameRequest,
     ForgotPasswordRequest,
     ForgotTokenResponse,
