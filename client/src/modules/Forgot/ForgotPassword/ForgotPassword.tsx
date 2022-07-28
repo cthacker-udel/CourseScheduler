@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/indent -- indenting error that is unfixable as of right now */
-import { faEnvelope, faKey } from "@fortawesome/free-solid-svg-icons";
+import { faEnvelope, faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import { Button, Form, InputGroup } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { UsersApi } from "src/api/client-side/UsersApi";
-import { EMAIL } from "src/common";
+import { EMAIL, USERNAME } from "src/common";
 import { TokenModal } from "src/modules/TokenModal/TokenModal";
 
 const FORGOT_PASSWORD_CONSTANTS = {
@@ -49,7 +49,10 @@ const FORGOT_PASSWORD_VALIDATION_MESSAGES = {
     emailMaxLength: `Email must be at most ${FORGOT_PASSWORD_VALIDATION_VALUES.emailMaxLength} character(s).`,
     emailMinLength: `Email be at least ${FORGOT_PASSWORD_VALIDATION_VALUES.emailMinLength} character(s)`,
     emailRequired: "Email is required",
-    usernameMaxLength: "Username",
+    usernameInvalid: "Username is invalid",
+    usernameMaxLength: `Username must be at most ${FORGOT_PASSWORD_VALIDATION_VALUES.usernameMaxLength} character(s).`,
+    usernameMinLength: `Username must be at least ${FORGOT_PASSWORD_VALIDATION_VALUES.usernameMinLength} character(s).`,
+    usernameRequired: "Username is required",
     validEmail: "Email is valid",
     validUsername: "Username is valid.",
 };
@@ -222,7 +225,7 @@ export const ForgotPassword = (): JSX.Element => {
                         <InputGroup>
                             <InputGroup.Text>
                                 <label htmlFor="current-username-form">
-                                    <FontAwesomeIcon icon={faKey} />
+                                    <FontAwesomeIcon icon={faUser} />
                                 </label>
                             </InputGroup.Text>
                             <Form.Control
@@ -242,7 +245,28 @@ export const ForgotPassword = (): JSX.Element => {
                                     FORGOT_PASSWORD_CONSTANTS.usernamePlaceholder
                                 }
                                 type="password"
-                                {...register("username")}
+                                {...register("username", {
+                                    maxLength: {
+                                        message:
+                                            FORGOT_PASSWORD_VALIDATION_MESSAGES.usernameMaxLength,
+                                        value: FORGOT_PASSWORD_VALIDATION_VALUES.usernameMaxLength,
+                                    },
+                                    minLength: {
+                                        message:
+                                            FORGOT_PASSWORD_VALIDATION_MESSAGES.usernameMinLength,
+                                        value: FORGOT_PASSWORD_VALIDATION_VALUES.usernameMinLength,
+                                    },
+                                    pattern: {
+                                        message:
+                                            FORGOT_PASSWORD_VALIDATION_MESSAGES.usernameInvalid,
+                                        value: USERNAME,
+                                    },
+                                    required: {
+                                        message:
+                                            FORGOT_PASSWORD_VALIDATION_MESSAGES.usernameRequired,
+                                        value: FORGOT_PASSWORD_VALIDATION_VALUES.usernameRequired,
+                                    },
+                                })}
                             />
                             {dirtyFields?.username && errors.username && (
                                 <Form.Control.Feedback type="invalid">
