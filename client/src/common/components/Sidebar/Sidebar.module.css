@@ -50,7 +50,9 @@
         opacity: 1;
     }
     to {
-        opacity: 0;
+        display: none;
+        cursor: default;
+        visibility: hidden;
     }
 }
 
@@ -94,7 +96,7 @@
     background-color: aliceblue;
 }
 
-.sidebar_content_closed > * {
+.sidebar_content_closed * {
     animation-name: sidebar_content_closed_inner_anim;
     animation-duration: 1.5s;
     animation-timing-function: ease-in-out;
