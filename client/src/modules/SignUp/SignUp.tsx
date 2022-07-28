@@ -1,8 +1,14 @@
-import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import {
+    faEnvelope,
+    faEye,
+    faEyeSlash,
+    faKey,
+    faUser,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRouter } from "next/router";
 import React from "react";
-import { Button, Form, OverlayTrigger } from "react-bootstrap";
+import { Button, Form, InputGroup, OverlayTrigger } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { FormattedMessage, useIntl } from "react-intl";
 import type { ApiError, ApiSuccess, SignUpRequest } from "src/@types";
@@ -224,237 +230,257 @@ export const SignUp = (): JSX.Element => {
                 </span>
                 <div className="d-flex flex-column justify-content-around py-3">
                     <div className="w-50 mx-auto">
-                        <label className="fw-bold fs-5" htmlFor="sign-up-form">
-                            <FormattedMessage id="sign_up_form0_title" />
-                        </label>
                         <span className="d-flex flex-column pt-1">
-                            <Form.Control
-                                autoComplete="off"
-                                className="shadow"
-                                id="sign-up-form"
-                                isInvalid={errors.email && true}
-                                isValid={
-                                    !errors.email &&
-                                    emailWatch.length >=
-                                        CONSTANTS.TEXT_FIELD_MIN_LENGTH
-                                }
-                                placeholder={intl.formatMessage({
-                                    id: "sign_up_form0_placeholder",
-                                })}
-                                required
-                                type="email"
-                                {...register("email", {
-                                    maxLength: {
-                                        message: intl.formatMessage(
-                                            { id: "sign_up_form0_max_length" },
-                                            { length: 50 },
-                                        ),
-                                        value: 50,
-                                    },
-                                    minLength: {
-                                        message: intl.formatMessage(
-                                            {
-                                                id: "sign_up_form0_min_length",
-                                            },
-                                            { length: 1 },
-                                        ),
-                                        value: 1,
-                                    },
-                                    onBlur: async (
-                                        email: React.ChangeEvent<HTMLInputElement>,
-                                    ) => {
-                                        await trigger("email");
-                                        const registeredEmail =
-                                            email.target.value;
-                                        setValue("email", registeredEmail);
-                                        if (!errors.email && registeredEmail) {
-                                            const result =
-                                                await UsersApi.checkEmail({
-                                                    email: registeredEmail,
-                                                });
-                                            if (
-                                                (result as ApiSuccess)
-                                                    .status ===
-                                                CONSTANTS.SIGN_UP_EMAIL_ERROR_STATUS
-                                            ) {
-                                                setError("email", {
-                                                    message: intl.formatMessage(
-                                                        {
-                                                            id: "sign_up_form_email_exists",
-                                                        },
-                                                    ),
-                                                    type: "validate",
-                                                });
-                                            }
-                                        }
-                                    },
-                                    pattern: {
-                                        message: intl.formatMessage({
-                                            id: "sign_up_form0_validation_error",
-                                        }),
-                                        value: EMAIL,
-                                    },
-                                    required: {
-                                        message: intl.formatMessage({
-                                            id: "sign_up_form0_required",
-                                        }),
-                                        value: true,
-                                    },
-                                })}
-                            />
-                            {errors.email && (
-                                <Form.Control.Feedback type="invalid">
-                                    {errors.email.message}
-                                </Form.Control.Feedback>
-                            )}
-                        </span>
-                    </div>
-                    <div className="w-50 pt-3 mx-auto">
-                        <label className="fw-bold fs-5" htmlFor="username-form">
-                            <FormattedMessage id="sign_up_form1_title" />
-                        </label>
-                        <span className="pt-2 d-flex flex-column">
-                            <Form.Control
-                                autoComplete="username"
-                                className="shadow"
-                                id="username-form"
-                                isInvalid={errors.username && true}
-                                isValid={
-                                    !errors.username &&
-                                    userNameWatch.length >=
-                                        CONSTANTS.TEXT_FIELD_MIN_LENGTH
-                                }
-                                placeholder={intl.formatMessage({
-                                    id: "sign_up_form1_placeholder",
-                                })}
-                                required
-                                type="text"
-                                {...register("username", {
-                                    maxLength: {
-                                        message: intl.formatMessage(
-                                            {
-                                                id: "sign_up_form1_input_error_max_length",
-                                            },
-                                            { length: 20 },
-                                        ),
-                                        value: 20,
-                                    },
-                                    onBlur: async (
-                                        username: React.ChangeEvent<HTMLInputElement>,
-                                    ) => {
-                                        await trigger("username");
-                                        const registeredUsername =
-                                            username.target.value;
-                                        setValue(
-                                            "username",
-                                            registeredUsername,
-                                        );
-                                        if (!errors.username) {
-                                            const result =
-                                                await UsersApi.checkUsername({
-                                                    username:
-                                                        registeredUsername,
-                                                });
-                                            if (
-                                                (result as ApiSuccess)
-                                                    .status ===
-                                                CONSTANTS.SIGN_UP_USERNAME_ERROR_STATUS
-                                            ) {
-                                                setError("username", {
-                                                    message: intl.formatMessage(
-                                                        {
-                                                            id: "sign_up_form_username_exists",
-                                                        },
-                                                    ),
-                                                    type: "validate",
-                                                });
-                                            }
-                                        }
-                                    },
-                                    pattern: {
-                                        message: "Cannot contain symbols",
-                                        value: USERNAME,
-                                    },
-                                    required: intl.formatMessage({
-                                        id: "sign_up_form1_input_error_required",
-                                    }),
-                                })}
-                            />
-                            {errors.username && (
-                                <Form.Control.Feedback type="invalid">
-                                    {errors.username.message}
-                                </Form.Control.Feedback>
-                            )}
-                        </span>
-                    </div>
-                    <div className="w-50 pt-3 mx-auto">
-                        <label className="fw-bold fs-5" htmlFor="password-form">
-                            <FormattedMessage id="sign_up_form2_label" />
-                        </label>
-
-                        <span className="d-flex flex-row pt-1">
-                            <span className="w-100">
+                            <InputGroup hasValidation>
+                                <InputGroup.Text className="shadow">
+                                    <label htmlFor="sign-up-form">
+                                        <FontAwesomeIcon icon={faEnvelope} />
+                                    </label>
+                                </InputGroup.Text>
                                 <Form.Control
-                                    autoComplete="new-password"
+                                    autoComplete="off"
                                     className="shadow"
-                                    id="password-form"
-                                    isInvalid={errors.password && true}
+                                    id="sign-up-form"
+                                    isInvalid={errors.email && true}
                                     isValid={
-                                        !errors.password &&
-                                        passwordWatch.length >=
+                                        !errors.email &&
+                                        emailWatch.length >=
                                             CONSTANTS.TEXT_FIELD_MIN_LENGTH
                                     }
-                                    {...register("password", {
+                                    placeholder={intl.formatMessage({
+                                        id: "sign_up_form0_placeholder",
+                                    })}
+                                    required
+                                    type="email"
+                                    {...register("email", {
                                         maxLength: {
                                             message: intl.formatMessage(
                                                 {
-                                                    id: "sign_up_form_password_max_length",
+                                                    id: "sign_up_form0_max_length",
                                                 },
-                                                {
-                                                    length: CONSTANTS.PASSWORD_MAX_LENGTH,
-                                                },
+                                                { length: 50 },
                                             ),
-                                            value: CONSTANTS.PASSWORD_MAX_LENGTH,
+                                            value: 50,
                                         },
                                         minLength: {
                                             message: intl.formatMessage(
                                                 {
-                                                    id: "sign_up_form_password_min_length",
+                                                    id: "sign_up_form0_min_length",
                                                 },
-                                                {
-                                                    length: CONSTANTS.PASSWORD_MIN_LENGTH,
-                                                },
+                                                { length: 1 },
                                             ),
-                                            value: CONSTANTS.PASSWORD_MIN_LENGTH,
+                                            value: 1,
                                         },
-                                        onChange: async (
-                                            event: React.ChangeEvent<HTMLInputElement>,
+                                        onBlur: async (
+                                            email: React.ChangeEvent<HTMLInputElement>,
                                         ) => {
-                                            setValue(
-                                                "password",
-                                                event.target.value,
-                                            );
-                                            await trigger("confirmPassword");
+                                            await trigger("email");
+                                            const registeredEmail =
+                                                email.target.value;
+                                            setValue("email", registeredEmail);
+                                            if (
+                                                !errors.email &&
+                                                registeredEmail
+                                            ) {
+                                                const result =
+                                                    await UsersApi.checkEmail({
+                                                        email: registeredEmail,
+                                                    });
+                                                if (
+                                                    (result as ApiSuccess)
+                                                        .status ===
+                                                    CONSTANTS.SIGN_UP_EMAIL_ERROR_STATUS
+                                                ) {
+                                                    setError("email", {
+                                                        message:
+                                                            intl.formatMessage({
+                                                                id: "sign_up_form_email_exists",
+                                                            }),
+                                                        type: "validate",
+                                                    });
+                                                }
+                                            }
+                                        },
+                                        pattern: {
+                                            message: intl.formatMessage({
+                                                id: "sign_up_form0_validation_error",
+                                            }),
+                                            value: EMAIL,
                                         },
                                         required: {
                                             message: intl.formatMessage({
-                                                id: "sign_up_form_password_required",
+                                                id: "sign_up_form0_required",
                                             }),
                                             value: true,
                                         },
-                                        validate: (pass: string) =>
-                                            validatePass(pass),
                                     })}
-                                    placeholder={intl.formatMessage({
-                                        id: "sign_up_form2_placeholder",
-                                    })}
-                                    type={showPassword ? "text" : "password"}
                                 />
-                                {errors.password && (
+                                {errors.email && (
                                     <Form.Control.Feedback type="invalid">
-                                        {errors.password.message}
+                                        {errors.email.message}
                                     </Form.Control.Feedback>
                                 )}
+                            </InputGroup>
+                        </span>
+                    </div>
+                    <div className="w-50 pt-3 mx-auto">
+                        <span className="pt-2 d-flex flex-column">
+                            <InputGroup hasValidation>
+                                <InputGroup.Text className="shadow">
+                                    <label htmlFor="username-form">
+                                        <FontAwesomeIcon icon={faUser} />
+                                    </label>
+                                </InputGroup.Text>
+                                <Form.Control
+                                    autoComplete="username"
+                                    className="shadow"
+                                    id="username-form"
+                                    isInvalid={errors.username && true}
+                                    isValid={
+                                        !errors.username &&
+                                        userNameWatch.length >=
+                                            CONSTANTS.TEXT_FIELD_MIN_LENGTH
+                                    }
+                                    placeholder={intl.formatMessage({
+                                        id: "sign_up_form1_placeholder",
+                                    })}
+                                    required
+                                    type="text"
+                                    {...register("username", {
+                                        maxLength: {
+                                            message: intl.formatMessage(
+                                                {
+                                                    id: "sign_up_form1_input_error_max_length",
+                                                },
+                                                { length: 20 },
+                                            ),
+                                            value: 20,
+                                        },
+                                        onBlur: async (
+                                            username: React.ChangeEvent<HTMLInputElement>,
+                                        ) => {
+                                            await trigger("username");
+                                            const registeredUsername =
+                                                username.target.value;
+                                            setValue(
+                                                "username",
+                                                registeredUsername,
+                                            );
+                                            if (!errors.username) {
+                                                const result =
+                                                    await UsersApi.checkUsername(
+                                                        {
+                                                            username:
+                                                                registeredUsername,
+                                                        },
+                                                    );
+                                                if (
+                                                    (result as ApiSuccess)
+                                                        .status ===
+                                                    CONSTANTS.SIGN_UP_USERNAME_ERROR_STATUS
+                                                ) {
+                                                    setError("username", {
+                                                        message:
+                                                            intl.formatMessage({
+                                                                id: "sign_up_form_username_exists",
+                                                            }),
+                                                        type: "validate",
+                                                    });
+                                                }
+                                            }
+                                        },
+                                        pattern: {
+                                            message: "Cannot contain symbols",
+                                            value: USERNAME,
+                                        },
+                                        required: intl.formatMessage({
+                                            id: "sign_up_form1_input_error_required",
+                                        }),
+                                    })}
+                                />
+                                {errors.username && (
+                                    <Form.Control.Feedback type="invalid">
+                                        {errors.username.message}
+                                    </Form.Control.Feedback>
+                                )}
+                            </InputGroup>
+                        </span>
+                    </div>
+                    <div className="w-50 pt-3 mx-auto">
+                        <span className="d-flex flex-row pt-1">
+                            <span className="w-100">
+                                <InputGroup hasValidation>
+                                    <InputGroup.Text className="shadow">
+                                        <label htmlFor="password-form">
+                                            <FontAwesomeIcon icon={faKey} />
+                                        </label>
+                                    </InputGroup.Text>
+                                    <Form.Control
+                                        autoComplete="new-password"
+                                        className="shadow"
+                                        id="password-form"
+                                        isInvalid={errors.password && true}
+                                        isValid={
+                                            !errors.password &&
+                                            passwordWatch.length >=
+                                                CONSTANTS.TEXT_FIELD_MIN_LENGTH
+                                        }
+                                        {...register("password", {
+                                            maxLength: {
+                                                message: intl.formatMessage(
+                                                    {
+                                                        id: "sign_up_form_password_max_length",
+                                                    },
+                                                    {
+                                                        length: CONSTANTS.PASSWORD_MAX_LENGTH,
+                                                    },
+                                                ),
+                                                value: CONSTANTS.PASSWORD_MAX_LENGTH,
+                                            },
+                                            minLength: {
+                                                message: intl.formatMessage(
+                                                    {
+                                                        id: "sign_up_form_password_min_length",
+                                                    },
+                                                    {
+                                                        length: CONSTANTS.PASSWORD_MIN_LENGTH,
+                                                    },
+                                                ),
+                                                value: CONSTANTS.PASSWORD_MIN_LENGTH,
+                                            },
+                                            onChange: async (
+                                                event: React.ChangeEvent<HTMLInputElement>,
+                                            ) => {
+                                                setValue(
+                                                    "password",
+                                                    event.target.value,
+                                                );
+                                                await trigger(
+                                                    "confirmPassword",
+                                                );
+                                            },
+                                            required: {
+                                                message: intl.formatMessage({
+                                                    id: "sign_up_form_password_required",
+                                                }),
+                                                value: true,
+                                            },
+                                            validate: (pass: string) =>
+                                                validatePass(pass),
+                                        })}
+                                        placeholder={intl.formatMessage({
+                                            id: "sign_up_form2_placeholder",
+                                        })}
+                                        type={
+                                            showPassword ? "text" : "password"
+                                        }
+                                    />
+                                    {errors.password && (
+                                        <Form.Control.Feedback type="invalid">
+                                            {errors.password.message}
+                                        </Form.Control.Feedback>
+                                    )}
+                                </InputGroup>
                             </span>
                             <OverlayTrigger
                                 overlay={(props): JSX.Element =>
@@ -487,71 +513,72 @@ export const SignUp = (): JSX.Element => {
                         </span>
                     </div>
                     <div className="w-50 pt-3 mx-auto">
-                        <label
-                            className="fs-5 fw-bold"
-                            htmlFor="confirm-password-form"
-                        >
-                            <FormattedMessage id="sign_up_form3_label" />
-                        </label>
-                        <Form.Control
-                            autoComplete="confirm-password"
-                            className="shadow"
-                            id="confirm-password-form"
-                            isInvalid={
-                                errors.confirmPassword &&
-                                confirmPasswordWatch.length >=
-                                    CONSTANTS.TEXT_FIELD_MIN_LENGTH
-                            }
-                            isValid={
-                                !errors.confirmPassword &&
-                                confirmPasswordWatch.length >=
-                                    CONSTANTS.TEXT_FIELD_MIN_LENGTH
-                            }
-                            placeholder={intl.formatMessage({
-                                id: "sign_up_form3_placeholder",
-                            })}
-                            type="password"
-                            {...register("confirmPassword", {
-                                maxLength: {
-                                    message: intl.formatMessage(
-                                        {
-                                            id: "sign_up_form_confirm_password_max_length",
-                                        },
-                                        {
-                                            amt: CONSTANTS.PASSWORD_MAX_LENGTH,
-                                        },
-                                    ),
-                                    value: CONSTANTS.PASSWORD_MAX_LENGTH,
-                                },
-                                minLength: {
-                                    message: intl.formatMessage(
-                                        {
-                                            id: "sign_up_form_confirm_password_min_length",
-                                        },
-                                        {
-                                            amt: CONSTANTS.PASSWORD_MIN_LENGTH,
-                                        },
-                                    ),
-                                    value: CONSTANTS.PASSWORD_MIN_LENGTH,
-                                },
-                                required: {
-                                    message: intl.formatMessage({
-                                        id: "sign_up_form_confirm_password_required",
-                                    }),
-                                    value: true,
-                                },
-                                validate: (confirmPassword: string) =>
-                                    confirmPassword === watch().password ||
-                                    intl.formatMessage({
-                                        id: "sign_up_form_confirm_password_not_matching",
-                                    }),
-                            })}
-                        />
-                        {errors.confirmPassword && (
-                            <Form.Control.Feedback type="invalid">
-                                {errors.confirmPassword.message}
-                            </Form.Control.Feedback>
-                        )}
+                        <InputGroup hasValidation>
+                            <InputGroup.Text className="shadow">
+                                <label htmlFor="confirm-password-form">
+                                    <FontAwesomeIcon icon={faKey} />
+                                </label>
+                            </InputGroup.Text>
+                            <Form.Control
+                                autoComplete="confirm-password"
+                                className="shadow"
+                                id="confirm-password-form"
+                                isInvalid={
+                                    errors.confirmPassword &&
+                                    confirmPasswordWatch.length >=
+                                        CONSTANTS.TEXT_FIELD_MIN_LENGTH
+                                }
+                                isValid={
+                                    !errors.confirmPassword &&
+                                    confirmPasswordWatch.length >=
+                                        CONSTANTS.TEXT_FIELD_MIN_LENGTH
+                                }
+                                placeholder={intl.formatMessage({
+                                    id: "sign_up_form3_placeholder",
+                                })}
+                                type="password"
+                                {...register("confirmPassword", {
+                                    maxLength: {
+                                        message: intl.formatMessage(
+                                            {
+                                                id: "sign_up_form_confirm_password_max_length",
+                                            },
+                                            {
+                                                amt: CONSTANTS.PASSWORD_MAX_LENGTH,
+                                            },
+                                        ),
+                                        value: CONSTANTS.PASSWORD_MAX_LENGTH,
+                                    },
+                                    minLength: {
+                                        message: intl.formatMessage(
+                                            {
+                                                id: "sign_up_form_confirm_password_min_length",
+                                            },
+                                            {
+                                                amt: CONSTANTS.PASSWORD_MIN_LENGTH,
+                                            },
+                                        ),
+                                        value: CONSTANTS.PASSWORD_MIN_LENGTH,
+                                    },
+                                    required: {
+                                        message: intl.formatMessage({
+                                            id: "sign_up_form_confirm_password_required",
+                                        }),
+                                        value: true,
+                                    },
+                                    validate: (confirmPassword: string) =>
+                                        confirmPassword === watch().password ||
+                                        intl.formatMessage({
+                                            id: "sign_up_form_confirm_password_not_matching",
+                                        }),
+                                })}
+                            />
+                            {errors.confirmPassword && (
+                                <Form.Control.Feedback type="invalid">
+                                    {errors.confirmPassword.message}
+                                </Form.Control.Feedback>
+                            )}
+                        </InputGroup>
                     </div>
                     <Button
                         className={`${styles.sign_up_button} mx-auto mt-3`}
