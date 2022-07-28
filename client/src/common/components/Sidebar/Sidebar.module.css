@@ -1,0 +1,25 @@
+.sidebar_closed {
+    position: absolute;
+    top: 80px;
+    right: 100;
+    color: red;
+}
+
+.sidebar_open {
+    position: absolute;
+    top: 80px;
+    left: 10vw;
+    color: red;
+}
+
+.sidebar_toggle {
+    width: 20px;
+    height: 30px;
+    background-color: lightblue;
+}
+
+.sidebar_toggle_icon {
+    position: relative;
+    top: 3px;
+    left: 5px;
+}
