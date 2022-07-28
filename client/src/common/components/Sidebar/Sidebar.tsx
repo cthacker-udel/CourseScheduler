@@ -1,4 +1,4 @@
-import { faCaretRight } from "@fortawesome/free-solid-svg-icons";
+import { faCaretLeft, faCaretRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import { OverlayTrigger } from "react-bootstrap";
@@ -32,7 +32,7 @@ export const Sidebar = (): JSX.Element => {
                 >
                     <FontAwesomeIcon
                         className={styles.sidebar_toggle_icon}
-                        icon={faCaretRight}
+                        icon={isClosed ? faCaretRight : faCaretLeft}
                     />
                 </div>
             </OverlayTrigger>

@@ -1,18 +1,6 @@
-import {
-    faBook,
-    faBookAtlas,
-    faClipboard,
-    faDownload,
-    faFileExport,
-    faHome,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useRouter } from "next/router";
 import React, { type ReactNode } from "react";
-import { Button, OverlayTrigger } from "react-bootstrap";
 import type { Notification } from "src/@types";
 import { NotificationContext } from "src/context/NotificationContext/NotificationContext";
-import { generateTooltipIntl } from "src/helpers";
 
 import { Notifications } from "../Notifications/Notifications";
 import { Sidebar } from "../Sidebar/Sidebar";
