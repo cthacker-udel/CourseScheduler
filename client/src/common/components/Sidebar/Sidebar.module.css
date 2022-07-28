@@ -18,42 +18,55 @@
 
     to {
         right: 100;
-        left: 0
+        left: 0;
     }
 }
 @keyframes sidebar_content_open_anim {
     from {
         display: none;
         width: 0vw;
+        opacity: 0;
     }
 
     to {
-        display: block;
+        opacity: 1;
         width: 10vw;
     }
 }
+
+@keyframes sidebar_content_closed_anim {
+    from {
+        width: 10vw;
+        opacity: 1;
+    }
+    to {
+        width: 0vw;
+        opacity: 0;
+    }
+}
+
 .sidebar_closed {
     position: absolute;
     top: 80px;
     animation-name: sidebar_closed_anim;
-        animation-timing-function: ease-in-out;
-        animation-duration: 3s;
-        animation-fill-mode: forwards;
+    animation-timing-function: ease-in-out;
+    animation-duration: 3s;
+    animation-fill-mode: forwards;
 }
 
 .sidebar_open {
     position: absolute;
     top: 80px;
     animation-name: sidebar_open_anim;
-        animation-timing-function: ease-in-out;
-        animation-duration: 3s;
-        animation-fill-mode: forwards;
+    animation-timing-function: ease-in-out;
+    animation-duration: 3s;
+    animation-fill-mode: forwards;
 }
 
 .sidebar_toggle {
     width: 20px;
     height: 30px;
-    border-color: rgba(var(--bs-dark-rgb), .5) !important;
+    border-color: rgba(var(--bs-dark-rgb), 0.5) !important;
 }
 
 .sidebar_toggle_icon {
@@ -62,10 +75,12 @@
     left: 5px;
 }
 .sidebar_content_closed {
-    display: none;
+    animation-name: sidebar_content_closed_anim;
+    animation-duration: 3s;
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: forwards;
     position: absolute;
     height: 100vh;
-    width: 0vw;
     top: 0;
     background-color: aliceblue;
 }
@@ -75,6 +90,8 @@
     animation-duration: 3s;
     animation-timing-function: ease-in-out;
     animation-fill-mode: forwards;
+    display: flex;
+    flex-direction: column;
     position: absolute;
     height: 100vh;
     width: 10vw;

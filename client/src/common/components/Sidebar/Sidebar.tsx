@@ -49,7 +49,8 @@ export const Sidebar = (): JSX.Element => {
                         : styles.sidebar_content_open
                 }
             >
-                {"Sidebar here"}
+                <span>{"Hello"}</span>
+                <span>{"there"}</span>
             </div>
         </>
     );
