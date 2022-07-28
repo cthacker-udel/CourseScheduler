@@ -5,6 +5,7 @@ import {
     faCaretRight,
     faClinicMedical,
     faClipboard,
+    faCoins,
     faDownload,
     faFileExport,
     faHome,
@@ -120,6 +121,13 @@ export const Sidebar = (): JSX.Element => {
                         icon={faFileExport}
                     />
                     <span className="fw-bold">{"Exports"}</span>
+                </span>
+                <span
+                    className={`${styles.sidebar_individual_content} d-flex flex-row justify-content-center pt-2 border-bottom pb-2`}
+                    role="button"
+                >
+                    <FontAwesomeIcon className="my-auto pe-1" icon={faCoins} />
+                    <span className="fw-bold">{"Tokens"}</span>
                 </span>
             </div>
         </>
