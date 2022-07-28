@@ -6,7 +6,7 @@ import { Button, Form, InputGroup } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { UsersApi } from "src/api/client-side/UsersApi";
 import { EMAIL, USERNAME } from "src/common";
-import { TokenModal } from "src/modules/TokenModal/TokenModal";
+import { TokenModal } from "src/modules/Tokens/TokenModal/TokenModal";
 
 const FORGOT_PASSWORD_CONSTANTS = {
     buttonText: "Request token",
