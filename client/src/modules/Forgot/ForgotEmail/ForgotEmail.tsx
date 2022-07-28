@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/indent -- indenting error that is unfixable as of right now */
-import { faEnvelope, faKey, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faKey, faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import { Button, Form, InputGroup } from "react-bootstrap";
@@ -22,10 +22,10 @@ const FORGOT_EMAIL_CONSTANTS = {
             <span className="fst-italic fw-bold">{"token"}</span>
             {", which you will redeem at the "}
             <span className="fst-italic fw-bold">{"token redeem page"}</span>
-            {" to retrieve your username."}
+            {" to retrieve your email."}
         </>
     ),
-    header: "Forgot Username Form",
+    header: "Forgot Email Form",
     passwordPlaceholder: "Enter password here...",
     usernamePlaceholder: "Enter username here...",
     validConfirmUsername: "Usernames Match.",
@@ -189,7 +189,7 @@ export const ForgotEmail = (): JSX.Element => {
                                     className="fw-bold fs-6"
                                     htmlFor="current-confirm-username-form"
                                 >
-                                    <FontAwesomeIcon icon={faEnvelope} />
+                                    <FontAwesomeIcon icon={faUser} />
                                 </label>
                             </InputGroup.Text>
                             <Form.Control
