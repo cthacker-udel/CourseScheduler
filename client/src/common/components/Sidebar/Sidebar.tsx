@@ -3,7 +3,6 @@ import {
     faBookAtlas,
     faCaretLeft,
     faCaretRight,
-    faClinicMedical,
     faClipboard,
     faCoins,
     faDownload,
@@ -11,6 +10,7 @@ import {
     faHome,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useRouter } from "next/router";
 import React from "react";
 import { OverlayTrigger } from "react-bootstrap";
 import { generateTooltip } from "src/helpers";
@@ -28,6 +28,7 @@ const SIDEBAR_CONSTANTS = {
  */
 export const Sidebar = (): JSX.Element => {
     const [isClosed, setIsClosed] = React.useState<boolean>(true);
+    const router = useRouter();
     return (
         <>
             <span
@@ -70,6 +71,9 @@ export const Sidebar = (): JSX.Element => {
                 </span>
                 <span
                     className={`${styles.sidebar_individual_content} d-flex flex-row justify-content-center pt-2 border-bottom pb-2`}
+                    onClick={async (): Promise<void> => {
+                        await router.push("/");
+                    }}
                     role="button"
                 >
                     <FontAwesomeIcon className="my-auto pe-1" icon={faHome} />
@@ -77,6 +81,9 @@ export const Sidebar = (): JSX.Element => {
                 </span>
                 <span
                     className={`${styles.sidebar_individual_content} d-flex flex-row justify-content-center pt-2 border-bottom pb-2`}
+                    onClick={async (): Promise<void> => {
+                        await router.push("/courses");
+                    }}
                     role="button"
                 >
                     <FontAwesomeIcon className="my-auto pe-1" icon={faBook} />
@@ -84,6 +91,9 @@ export const Sidebar = (): JSX.Element => {
                 </span>
                 <span
                     className={`${styles.sidebar_individual_content} d-flex flex-row justify-content-center pt-2 border-bottom pb-2`}
+                    onClick={async (): Promise<void> => {
+                        await router.push("/semesters");
+                    }}
                     role="button"
                 >
                     <FontAwesomeIcon
@@ -94,6 +104,9 @@ export const Sidebar = (): JSX.Element => {
                 </span>
                 <span
                     className={`${styles.sidebar_individual_content} d-flex flex-row justify-content-center pt-2 border-bottom pb-2`}
+                    onClick={async (): Promise<void> => {
+                        await router.push("/plans");
+                    }}
                     role="button"
                 >
                     <FontAwesomeIcon
@@ -104,6 +117,9 @@ export const Sidebar = (): JSX.Element => {
                 </span>
                 <span
                     className={`${styles.sidebar_individual_content} d-flex flex-row justify-content-center pt-2 border-bottom pb-2`}
+                    onClick={async (): Promise<void> => {
+                        await router.push("/imports");
+                    }}
                     role="button"
                 >
                     <FontAwesomeIcon
@@ -114,6 +130,9 @@ export const Sidebar = (): JSX.Element => {
                 </span>
                 <span
                     className={`${styles.sidebar_individual_content} d-flex flex-row justify-content-center pt-2 border-bottom pb-2`}
+                    onClick={async (): Promise<void> => {
+                        await router.push("/exports");
+                    }}
                     role="button"
                 >
                     <FontAwesomeIcon
@@ -124,6 +143,9 @@ export const Sidebar = (): JSX.Element => {
                 </span>
                 <span
                     className={`${styles.sidebar_individual_content} d-flex flex-row justify-content-center pt-2 border-bottom pb-2`}
+                    onClick={async (): Promise<void> => {
+                        await router.push("/tokens");
+                    }}
                     role="button"
                 >
                     <FontAwesomeIcon className="my-auto pe-1" icon={faCoins} />
