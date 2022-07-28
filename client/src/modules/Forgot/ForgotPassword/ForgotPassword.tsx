@@ -263,7 +263,10 @@ export const ForgotPassword = (): JSX.Element => {
                         disabled={!isValid || isValidating}
                         onClick={async (): Promise<void> => {
                             const { email, username } = getValues();
-                            /// Api call
+                            const response = await UsersApi.forgotPassword({
+                                email,
+                                username,
+                            });
                             const { token } = response;
                             if (token) {
                                 setPasswordToken(token);
