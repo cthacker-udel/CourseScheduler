@@ -332,7 +332,7 @@
         "max-lines-per-function": [
             "error",
             {
-                "max": 500,
+                "max": 1000,
                 "skipBlankLines": true,
                 "skipComments": true,
                 "IIFEs": false
