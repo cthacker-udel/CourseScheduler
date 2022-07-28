@@ -62,13 +62,14 @@ export class CryptoService {
     };
 
     /**
-     * Utility function for generating a random token for the user to use as their session token
+     * Utility function for generating a `amt` byte random token for the user to use as their session token (if `amt` not specified, 256)
      *
+     * @param amt The # of bytes the token should be
      * @returns The randomly generated token, which serves as a session token
      */
-    generateToken = () => {
+    generateToken = (amt?: number) => {
         const hash = createHmac("sha512", SECRETS.SECRET)
-            .update(randomBytes(256).toString("hex"))
+            .update(randomBytes(amt ?? 256).toString("hex"))
             .digest("hex");
         return hash;
     };

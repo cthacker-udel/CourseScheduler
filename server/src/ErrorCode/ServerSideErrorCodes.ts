@@ -1,17 +1,4 @@
-import { ErrorCode } from "./ErrorCode";
-
-/**
- * Enumerations of the error codes
- */
-export enum ERROR_CODES {
-    UNKNOWN_SERVER_FAILURE,
-    USER_ALREADY_EXISTS,
-    EMAIL_ALREADY_EXISTS,
-    USER_DOES_NOT_EXIST,
-    EMAIL_DOES_NOT_EXIST,
-    PASSWORD_INVALID,
-    LOGIN_FAILED,
-}
+import { ErrorCode } from "../@types/api/ErrorCode";
 
 /**
  * ErrorCode for server failing reason unknown
@@ -70,6 +57,14 @@ export const LOGIN_FAILED_ERROR_CODE: ErrorCode = {
 };
 
 /**
- * The valid codes
+ * Enumerations of the error codes
  */
-export type VALID_CODES = 0 | 1 | 2 | 3 | 4 | 5 | 6;
+export const ERROR_CODES = {
+    UNKNOWN_SERVER_FAILURE: UNKNOWN_SERVER_FAILURE_ERROR_CODE,
+    USER_ALREADY_EXISTS: USER_ALREADY_EXISTS_ERROR_CODE,
+    EMAIL_ALREADY_EXISTS: EMAIL_ALREADY_EXISTS_ERROR_CODE,
+    USER_DOES_NOT_EXIST: USER_DOES_NOT_EXIST_ERROR_CODE,
+    EMAIL_DOES_NOT_EXIST: EMAIL_DOES_NOT_EXIST_ERROR_CODE,
+    PASSWORD_INVALID: PASSWORD_INVALID_ERROR_CODE,
+    LOGIN_FAILED: LOGIN_FAILED_ERROR_CODE,
+};

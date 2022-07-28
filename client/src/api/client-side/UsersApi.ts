@@ -2,9 +2,13 @@ import type {
     ApiError,
     ApiSuccess,
     EmailValidationRequest,
+    ForgotEmailRequest,
+    ForgotPasswordRequest,
+    ForgotUsernameRequest,
     LoginRequest,
     LoginResponse,
     SignUpRequest,
+    TokenResponse,
     UsernameValidationRequest,
 } from "src/@types";
 
@@ -70,6 +74,54 @@ export class UsersApi extends ClientSideApi {
     ): Promise<ApiError | ApiSuccess> => {
         const result = await super.post<ApiError | ApiSuccess>(
             "/users/username/validate",
+            request,
+        );
+        return result;
+    };
+
+    /**
+     * Represents an forgot username flow, returns a token for the user to utilize when authenticating
+     *
+     * @param request The request, contains the email and the password
+     * @returns The api result, could either be a valid token or an empty string
+     */
+    public static forgotUsername = async (
+        request: ForgotUsernameRequest,
+    ): Promise<TokenResponse> => {
+        const result = await super.post<TokenResponse>(
+            "/forgot/username",
+            request,
+        );
+        return result;
+    };
+
+    /**
+     * Represents an forgot password flow, returns a token for the user to utilize when authenticating
+     *
+     * @param request The request, contains email and username
+     * @returns The api result, could either be an valid token or an empty string
+     */
+    public static forgotPassword = async (
+        request: ForgotPasswordRequest,
+    ): Promise<TokenResponse> => {
+        const result = await super.post<TokenResponse>(
+            "/forgot/password",
+            request,
+        );
+        return result;
+    };
+
+    /**
+     * Represents an forgot email flow, returns a token for the user to utilize when authenticating
+     *
+     * @param request The request, contains email and username
+     * @returns The api result, could either be an valid token or an empty string
+     */
+    public static forgotEmail = async (
+        request: ForgotEmailRequest,
+    ): Promise<TokenResponse> => {
+        const result = await super.post<TokenResponse>(
+            "/forgot/email",
             request,
         );
         return result;

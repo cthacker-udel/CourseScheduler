@@ -46,6 +46,6 @@
         "**/*.jsx",
         "**/*.json",
         "playground.tsx"
-    ],
+, "src/modules/Forgot/ForgotPassword"    ],
     "exclude": ["node_modules"]
 }

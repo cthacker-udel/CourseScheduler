@@ -7,6 +7,8 @@ import {
 } from "src/dto/user/create.user.dto";
 import { User } from "src/entities";
 import { CryptoService, type EncodingResult } from "../Crypto/crypto.service";
+import { ResetTokenQuery, ResetTokenType } from "src/@types";
+import { ResetToken } from "src/entities/SubEntities";
 
 /**
  * The users service, handling all operations involving the users collection
@@ -45,17 +47,66 @@ export class UserService {
     };
 
     /**
+     * Adds a reset token to the user when requested
+     *
+     * @param query The query to find the select user from the database
+     * @param token The token to add to the user entity
+     * @param validUntil When the token expires
+     */
+    addResetToken = async (
+        query: ResetTokenQuery,
+        token: string,
+        tokenType: ResetTokenType,
+        validUntil: Date,
+    ): Promise<void> => {
+        const { email, username } = query;
+        const updateToken = await this.getResetToken(username, email);
+        updateToken[tokenType] = {
+            token,
+            validUntil: validUntil.toUTCString(),
+        };
+        await this.usersRepository.update(
+            { ...query },
+            {
+                resetToken: { ...updateToken },
+            },
+        );
+        this.logger.log(
+            `Added reset token to ${
+                query.email ? `Email [${query.email}]` : ""
+            }, ${query.username ? `Username [${query.username}]` : ""}`,
+        );
+    };
+
+    /**
+     * Fetches the reset token from the given user if passed in proper credentials
+     *
+     * @param username - The username of the user to fetch
+     * @param email - The email of the user to fetch
+     * @returns The reset token of the user
+     */
+    getResetToken = async (
+        username?: string,
+        email?: string,
+    ): Promise<ResetToken> => {
+        const user: User = await this.usersRepository.findOne({
+            where: { ...(username && { username }), ...(email && { email }) },
+        });
+        return user.resetToken;
+    };
+
+    /**
      * Takes username, email, and returns saved password validation info
      * @param username The username of the user
      * @param email The email of the user
      * @returns The stored hash password for the user, salt, and iterations
      */
     getSavedPasswordValidationInfo = async (
-        username: string,
-        email: string,
+        username?: string,
+        email?: string,
     ): Promise<EncodingResult> => {
         const user: User = await this.usersRepository.findOne({
-            where: { username, email },
+            where: { ...(username && { username }), ...(email && { email }) },
         });
         return {
             hash: user.hash,

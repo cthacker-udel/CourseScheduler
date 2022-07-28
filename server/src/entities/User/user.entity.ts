@@ -1,3 +1,4 @@
+import { ResetToken } from "../SubEntities";
 import { Column, Entity, ObjectIdColumn } from "typeorm";
 
 @Entity({ name: "users" })
@@ -19,6 +20,9 @@ export class User {
 
     @Column()
     iterations: number;
+
+    @Column()
+    resetToken: ResetToken;
 
     @Column()
     lastLogin: Date;

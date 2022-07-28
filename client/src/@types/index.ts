@@ -1,5 +1,9 @@
 import type { ApiError } from "./api/ApiError";
 import type { ApiSuccess } from "./api/ApiSuccess";
+import type { ForgotEmailRequest } from "./api/Forgot/ForgotEmailRequest";
+import type { ForgotPasswordRequest } from "./api/Forgot/ForgotPasswordRequest";
+import type { ForgotUsernameRequest } from "./api/Forgot/ForgotUsernameRequest";
+import type { TokenResponse } from "./api/Forgot/TokenResponse";
 import type { LoginRequest } from "./api/Login/LoginRequest";
 import type { LoginResponse } from "./api/Login/LoginResponse";
 import type { EmailValidationRequest } from "./api/SignUp/EmailValidationRequest";
@@ -21,6 +25,9 @@ export type {
     ApiSuccess,
     Course,
     EmailValidationRequest,
+    ForgotEmailRequest,
+    ForgotPasswordRequest,
+    ForgotUsernameRequest,
     iNotificationContext,
     LoginPageReducerAction,
     LoginPageReducerActionType,
@@ -33,5 +40,6 @@ export type {
     Plan,
     Semester,
     SignUpRequest,
+    TokenResponse,
     UsernameValidationRequest,
 };
