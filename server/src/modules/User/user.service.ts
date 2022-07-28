@@ -8,6 +8,7 @@ import {
 import { User } from "src/entities";
 import { CryptoService, type EncodingResult } from "../Crypto/crypto.service";
 import { ResetTokenQuery, ResetTokenType } from "src/@types";
+import { ResetToken } from "src/entities/SubEntities";
 
 /**
  * The users service, handling all operations involving the users collection
@@ -57,13 +58,17 @@ export class UserService {
         token: string,
         tokenType: ResetTokenType,
         validUntil: Date,
-    ) => {
-        const updateToken = { resetToken: {} };
-        updateToken.resetToken[tokenType] = { token, validUntil };
+    ): Promise<void> => {
+        const { email, username } = query;
+        const updateToken = await this.getResetToken(username, email);
+        updateToken[tokenType] = {
+            token,
+            validUntil: validUntil.toUTCString(),
+        };
         await this.usersRepository.update(
             { ...query },
             {
-                ...updateToken,
+                resetToken: { ...updateToken },
             },
         );
         this.logger.log(
@@ -71,6 +76,23 @@ export class UserService {
                 query.email ? `Email [${query.email}]` : ""
             }, ${query.username ? `Username [${query.username}]` : ""}`,
         );
+    };
+
+    /**
+     * Fetches the reset token from the given user if passed in proper credentials
+     *
+     * @param username - The username of the user to fetch
+     * @param email - The email of the user to fetch
+     * @returns The reset token of the user
+     */
+    getResetToken = async (
+        username?: string,
+        email?: string,
+    ): Promise<ResetToken> => {
+        const user: User = await this.usersRepository.findOne({
+            where: { ...(username && { username }), ...(email && { email }) },
+        });
+        return user.resetToken;
     };
 
     /**
