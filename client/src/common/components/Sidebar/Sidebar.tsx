@@ -24,7 +24,7 @@ export const Sidebar = (): JSX.Element => {
                 placement="right"
             >
                 <div
-                    className={`rounded ${styles.sidebar_toggle}`}
+                    className={`rounded ${styles.sidebar_toggle} border border-dark border-opacity-10`}
                     onClick={(): void => {
                         setIsClosed((oldIsClosed) => !oldIsClosed);
                     }}

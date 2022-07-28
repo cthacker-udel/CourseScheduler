@@ -28,7 +28,6 @@
         animation-timing-function: ease-in-out;
         animation-duration: 3s;
         animation-fill-mode: forwards;
-    color: red;
 }
 
 .sidebar_open {
@@ -38,13 +37,12 @@
         animation-timing-function: ease-in-out;
         animation-duration: 3s;
         animation-fill-mode: forwards;
-    color: red;
 }
 
 .sidebar_toggle {
     width: 20px;
     height: 30px;
-    background-color: lightblue;
+    border-color: rgba(var(--bs-dark-rgb), .5) !important;
 }
 
 .sidebar_toggle_icon {
