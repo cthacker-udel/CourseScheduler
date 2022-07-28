@@ -3,19 +3,25 @@ import { ApiError } from "./api/ApiError";
 import { ApiSuccess } from "./api/ApiSuccess";
 import { ErrorCode } from "./api/ErrorCode";
 import { LoginResponse } from "./Login/LoginResponse";
-import { ForgotUsernameRequest } from "./ForgotUsername/ForgotUsernameRequest";
+import { ForgotUsernameRequest } from "./Forgot/ForgotUsernameRequest";
 import { ValidCodes } from "./api/ValidCodes";
-import { ForgotUsernameResponse } from "./ForgotUsername/ForgotUsernameResponse";
-import { AddResetTokenQuery } from "./ResetToken/AddResetTokenQuery";
+import { ResetTokenQuery } from "./ResetToken/ResetTokenQuery";
+import { ResetTokenType } from "./ResetToken/ResetTokenType";
+import { ResetToken } from "./ResetToken/ResetToken";
+import { ForgotTokenResponse } from "./Forgot/ForgotTokenResponse";
+import { ForgotPasswordRequest } from "./Forgot/ForgotPasswordRequest";
 
 export {
-    AddResetTokenQuery,
     ApiError,
     ApiSuccess,
     ErrorCode,
     ForgotUsernameRequest,
-    ForgotUsernameResponse,
+    ForgotPasswordRequest,
+    ForgotTokenResponse,
     LoginResponse,
+    ResetToken,
+    ResetTokenQuery,
+    ResetTokenType,
     SemesterTerm,
     ValidCodes,
 };

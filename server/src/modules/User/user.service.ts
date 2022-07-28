@@ -7,7 +7,7 @@ import {
 } from "src/dto/user/create.user.dto";
 import { User } from "src/entities";
 import { CryptoService, type EncodingResult } from "../Crypto/crypto.service";
-import { AddResetTokenQuery } from "src/@types";
+import { ResetTokenQuery, ResetTokenType } from "src/@types";
 
 /**
  * The users service, handling all operations involving the users collection
@@ -53,17 +53,17 @@ export class UserService {
      * @param validUntil When the token expires
      */
     addResetToken = async (
-        query: AddResetTokenQuery,
+        query: ResetTokenQuery,
         token: string,
+        tokenType: ResetTokenType,
         validUntil: Date,
     ) => {
+        const updateToken = { resetToken: {} };
+        updateToken.resetToken[tokenType] = { token, validUntil };
         await this.usersRepository.update(
             { ...query },
             {
-                resetToken: {
-                    token,
-                    validUntil: validUntil.toUTCString(),
-                },
+                ...updateToken,
             },
         );
         this.logger.log(

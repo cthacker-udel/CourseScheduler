@@ -1,4 +1,4 @@
-export type AddResetTokenQuery = {
+export type ResetTokenQuery = {
     email?: string;
     username?: string;
     _id?: string;

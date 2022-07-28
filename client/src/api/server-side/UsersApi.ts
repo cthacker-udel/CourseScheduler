@@ -3,10 +3,11 @@ import type {
     ApiError,
     ApiSuccess,
     EmailValidationRequest,
+    ForgotPasswordRequest,
     ForgotUsernameRequest,
-    ForgotUsernameResponse,
     LoginResponse,
     SignUpRequest,
+    TokenResponse,
     UsernameValidationRequest,
 } from "src/@types";
 
@@ -95,9 +96,26 @@ export class UsersApi extends ServerSideApi {
         request: NextApiRequest,
         response: NextApiResponse,
     ): Promise<void> => {
-        const result = await super.post<ForgotUsernameResponse>(
+        const result = await super.post<TokenResponse>(
             "/forgot/username",
             JSON.parse(request.body) as ForgotUsernameRequest,
+        );
+        response.json(result);
+    };
+
+    /**
+     * Server-side forgot password flow
+     *
+     * @param request The request containing in the body the full ForgotPasswordRequest type
+     * @param response The next/api response
+     */
+    public static forgotPassword = async (
+        request: NextApiRequest,
+        response: NextApiResponse,
+    ): Promise<void> => {
+        const result = await super.post<TokenResponse>(
+            "forgot/password",
+            JSON.parse(request.body) as ForgotPasswordRequest,
         );
         response.json(result);
     };

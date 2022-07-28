@@ -2,7 +2,8 @@ import { Body, Controller, HttpStatus, Logger, Post } from "@nestjs/common";
 import {
     ApiError,
     ForgotUsernameRequest,
-    ForgotUsernameResponse,
+    ForgotTokenResponse,
+    ForgotPasswordRequest,
 } from "src/@types";
 import { ERROR_CODES } from "src/ErrorCode";
 import { generateApiError } from "src/helpers";
@@ -16,9 +17,24 @@ export class ForgotController {
     @Post("username")
     async forgotUsername(
         @Body() request: ForgotUsernameRequest,
-    ): Promise<ApiError | ForgotUsernameResponse> {
+    ): Promise<ApiError | ForgotTokenResponse> {
         try {
             return await this.forgotService.forgotUsername(request);
+        } catch (error: unknown) {
+            Logger.error(error);
+            return generateApiError(
+                HttpStatus.SERVICE_UNAVAILABLE,
+                ERROR_CODES.UNKNOWN_SERVER_FAILURE,
+            );
+        }
+    }
+
+    @Post("password")
+    async forgotPassword(
+        @Body() request: ForgotPasswordRequest,
+    ): Promise<ApiError | ForgotTokenResponse> {
+        try {
+            return await this.forgotService.forgotPassword(request);
         } catch (error: unknown) {
             Logger.error(error);
             return generateApiError(
