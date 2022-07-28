@@ -13,29 +13,44 @@ import styles from "./Sidebar.module.css";
 export const Sidebar = (): JSX.Element => {
     const [isClosed, setIsClosed] = React.useState<boolean>(true);
     return (
-        <div className={isClosed ? styles.sidebar_closed : styles.sidebar_open}>
-            <OverlayTrigger
-                overlay={(props): JSX.Element =>
-                    generateTooltip(
-                        isClosed ? "Reveal Options" : "Close Options",
-                        props,
-                    )
-                }
-                placement="right"
+        <>
+            <span
+                className={`${
+                    isClosed ? styles.sidebar_closed : styles.sidebar_open
+                }`}
             >
-                <div
-                    className={`rounded ${styles.sidebar_toggle} border border-dark border-opacity-10`}
-                    onClick={(): void => {
-                        setIsClosed((oldIsClosed) => !oldIsClosed);
-                    }}
-                    role="button"
+                <OverlayTrigger
+                    overlay={(props): JSX.Element =>
+                        generateTooltip(
+                            isClosed ? "Reveal Options" : "Close Options",
+                            props,
+                        )
+                    }
+                    placement="right"
                 >
-                    <FontAwesomeIcon
-                        className={styles.sidebar_toggle_icon}
-                        icon={isClosed ? faCaretRight : faCaretLeft}
-                    />
-                </div>
-            </OverlayTrigger>
-        </div>
+                    <div
+                        className={`rounded ${styles.sidebar_toggle} border border-dark border-opacity-10`}
+                        onClick={(): void => {
+                            setIsClosed((oldIsClosed) => !oldIsClosed);
+                        }}
+                        role="button"
+                    >
+                        <FontAwesomeIcon
+                            className={styles.sidebar_toggle_icon}
+                            icon={isClosed ? faCaretRight : faCaretLeft}
+                        />
+                    </div>
+                </OverlayTrigger>
+            </span>
+            <div
+                className={
+                    isClosed
+                        ? styles.sidebar_content_closed
+                        : styles.sidebar_content_open
+                }
+            >
+                {"Sidebar here"}
+            </div>
+        </>
     );
 };

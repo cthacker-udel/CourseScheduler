@@ -21,6 +21,17 @@
         left: 0
     }
 }
+@keyframes sidebar_content_open_anim {
+    from {
+        display: none;
+        width: 0vw;
+    }
+
+    to {
+        display: block;
+        width: 10vw;
+    }
+}
 .sidebar_closed {
     position: absolute;
     top: 80px;
@@ -49,4 +60,24 @@
     position: relative;
     top: 3px;
     left: 5px;
+}
+.sidebar_content_closed {
+    display: none;
+    position: absolute;
+    height: 100vh;
+    width: 0vw;
+    top: 0;
+    background-color: aliceblue;
+}
+
+.sidebar_content_open {
+    animation-name: sidebar_content_open_anim;
+    animation-duration: 3s;
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: forwards;
+    position: absolute;
+    height: 100vh;
+    width: 10vw;
+    top: 0;
+    background-color: aliceblue;
 }
