@@ -1,3 +1,3 @@
-import { ForgotPassword } from "src/modules/Forgot/ForgotPassword/ForgotPassword";
+import { UsersApi } from "src/api/server-side/UsersApi";
 
-export default ForgotPassword;
+export default UsersApi.forgotPassword;

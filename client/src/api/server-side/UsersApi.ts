@@ -114,7 +114,7 @@ export class UsersApi extends ServerSideApi {
         response: NextApiResponse,
     ): Promise<void> => {
         const result = await super.post<TokenResponse>(
-            "forgot/password",
+            "/forgot/password",
             JSON.parse(request.body) as ForgotPasswordRequest,
         );
         response.json(result);

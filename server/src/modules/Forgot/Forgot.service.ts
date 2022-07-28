@@ -77,6 +77,7 @@ export class ForgotService {
                 "password",
                 validUntil,
             );
+            return { token, validUntil };
         }
         return generateApiError(
             HttpStatus.BAD_REQUEST,

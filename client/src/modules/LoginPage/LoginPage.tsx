@@ -1,4 +1,4 @@
-/* eslint-disable max-lines-per-function -- major file, intergral part of application should not be limited by line length */
+/* eslint-disable max-lines-per-function -- major file, integral part of application should not be limited by line length */
 /* eslint-disable no-undefined -- disabled to use react-hook-form properly */
 import {
     faEnvelope,
@@ -232,7 +232,7 @@ export const LoginPage = (): JSX.Element => {
                             id="password_help_block"
                         >
                             {loginFormDetails.password_form_help_text}{" "}
-                            <Link href="construction" passHref>
+                            <Link href="/forgot/password" passHref>
                                 <a className="text-decoration-none">
                                     {loginFormDetails.password_forgot_text}
                                 </a>

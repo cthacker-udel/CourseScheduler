@@ -104,7 +104,7 @@ export class UsersApi extends ClientSideApi {
         request: ForgotPasswordRequest,
     ): Promise<TokenResponse> => {
         const result = await super.post<TokenResponse>(
-            "forgot/password",
+            "/forgot/password",
             request,
         );
         return result;
