@@ -5,6 +5,10 @@ import {
     ForgotTokenResponse,
     ForgotPasswordRequest,
     ForgotEmailRequest,
+    ValidateUsernameTokenRequest,
+    ApiSuccess,
+    ValidateEmailTokenRequest,
+    ValidatePasswordTokenRequest,
 } from "src/@types";
 import { ERROR_CODES } from "src/ErrorCode";
 import { generateApiError } from "src/helpers";
@@ -51,6 +55,51 @@ export class ForgotController {
     ): Promise<ApiError | ForgotTokenResponse> {
         try {
             return await this.forgotService.forgotEmail(request);
+        } catch (error: unknown) {
+            Logger.error(error);
+            return generateApiError(
+                HttpStatus.SERVICE_UNAVAILABLE,
+                ERROR_CODES.UNKNOWN_SERVER_FAILURE,
+            );
+        }
+    }
+
+    @Post("token/username")
+    async validateUsernameToken(
+        @Body() request: ValidateUsernameTokenRequest,
+    ): Promise<ApiError | ApiSuccess> {
+        try {
+            return await this.forgotService.validateUsernameToken(request);
+        } catch (error: unknown) {
+            Logger.error(error);
+            return generateApiError(
+                HttpStatus.SERVICE_UNAVAILABLE,
+                ERROR_CODES.UNKNOWN_SERVER_FAILURE,
+            );
+        }
+    }
+
+    @Post("token/email")
+    async validateEmailToken(
+        @Body() request: ValidateEmailTokenRequest,
+    ): Promise<ApiError | ApiSuccess> {
+        try {
+            return await this.forgotService.validateEmailToken(request);
+        } catch (error: unknown) {
+            Logger.error(error);
+            return generateApiError(
+                HttpStatus.SERVICE_UNAVAILABLE,
+                ERROR_CODES.UNKNOWN_SERVER_FAILURE,
+            );
+        }
+    }
+
+    @Post("token/password")
+    async validatePasswordToken(
+        @Body() request: ValidatePasswordTokenRequest,
+    ): Promise<ApiError | ApiSuccess> {
+        try {
+            return await this.forgotService.validatePasswordToken(request);
         } catch (error: unknown) {
             Logger.error(error);
             return generateApiError(

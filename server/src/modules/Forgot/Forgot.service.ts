@@ -1,18 +1,25 @@
 import { HttpStatus, Injectable } from "@nestjs/common";
 import {
     ApiError,
+    ApiSuccess,
     ForgotEmailRequest,
     ForgotPasswordRequest,
     ForgotTokenResponse,
     ForgotUsernameRequest,
+    ValidateEmailTokenRequest,
+    ValidatePasswordTokenRequest,
+    ValidateUsernameTokenRequest,
 } from "src/@types";
+import { User } from "src/entities";
 import { ERROR_CODES } from "src/ErrorCode";
-import { generateApiError } from "src/helpers";
+import { generateApiError, generateApiSuccess } from "src/helpers";
 import { AuthService } from "../Auth/auth.service";
 import { CryptoService } from "../Crypto/crypto.service";
 import { UserService } from "../User/user.service";
 
 const FOUR_DAYS_MS = 345600000;
+
+type TokenType = "email" | "username" | "password";
 
 @Injectable()
 export class ForgotService {
@@ -113,6 +120,157 @@ export class ForgotService {
             return generateApiError(
                 HttpStatus.BAD_REQUEST,
                 ERROR_CODES.PASSWORD_INVALID,
+            );
+        }
+        return generateApiError(
+            HttpStatus.BAD_REQUEST,
+            ERROR_CODES.USER_DOES_NOT_EXIST,
+        );
+    };
+
+    validateToken = async (
+        user: User,
+        token: string,
+        type: TokenType,
+    ): Promise<boolean> => {
+        switch (type) {
+            case "email": {
+                return (
+                    user.resetToken.email.token === token &&
+                    new Date(user.resetToken.email.validUntil).getTime() <=
+                        Date.now()
+                );
+            }
+            case "username": {
+                return (
+                    user.resetToken.username.token === token &&
+                    new Date(user.resetToken.username.validUntil).getTime() <=
+                        Date.now()
+                );
+            }
+            case "password": {
+                return (
+                    user.resetToken.password.token === token &&
+                    new Date(user.resetToken.password.validUntil).getTime() <=
+                        Date.now()
+                );
+            }
+            default: {
+                return false;
+            }
+        }
+    };
+
+    validateUsernameToken = async (
+        request: ValidateUsernameTokenRequest,
+    ): Promise<ApiError | ApiSuccess> => {
+        const { email, password, token } = request;
+        if (await this.userService.doesEmailExist(email)) {
+            const passwordDetails =
+                await this.userService.getSavedPasswordValidationInfo(
+                    undefined,
+                    email,
+                );
+            const isPasswordValid = await this.cryptoService.validatePassword(
+                password,
+                passwordDetails.hash,
+                passwordDetails.salt,
+                passwordDetails.iterations,
+            );
+            if (isPasswordValid) {
+                return generateApiSuccess(HttpStatus.ACCEPTED, {
+                    accepted: await this.validateToken(
+                        await this.userService.findUserByEmail(request.email),
+                        token,
+                        "email",
+                    ),
+                });
+            }
+            return generateApiError(
+                HttpStatus.UNAUTHORIZED,
+                ERROR_CODES.PASSWORD_INVALID,
+            );
+        }
+        return generateApiError(
+            HttpStatus.BAD_REQUEST,
+            ERROR_CODES.EMAIL_DOES_NOT_EXIST,
+        );
+    };
+
+    validateEmailToken = async (
+        request: ValidateEmailTokenRequest,
+    ): Promise<ApiError | ApiSuccess> => {
+        const { password, username, token } = request;
+        if (await this.userService.doesUsernameExist(username)) {
+            const passwordDetails =
+                await this.userService.getSavedPasswordValidationInfo(
+                    username,
+                    undefined,
+                );
+            const isPasswordValid = await this.cryptoService.validatePassword(
+                password,
+                passwordDetails.hash,
+                passwordDetails.salt,
+                passwordDetails.iterations,
+            );
+            if (isPasswordValid) {
+                return generateApiSuccess(HttpStatus.ACCEPTED, {
+                    accepted: await this.validateToken(
+                        await this.userService.findUserByUsername(
+                            request.username,
+                        ),
+                        token,
+                        "email",
+                    ),
+                });
+            }
+            return generateApiError(
+                HttpStatus.BAD_REQUEST,
+                ERROR_CODES.PASSWORD_INVALID,
+            );
+        }
+        return generateApiError(
+            HttpStatus.BAD_REQUEST,
+            ERROR_CODES.USER_DOES_NOT_EXIST,
+        );
+    };
+
+    validatePasswordToken = async (
+        request: ValidatePasswordTokenRequest,
+    ): Promise<ApiError | ApiSuccess> => {
+        const { email, username, token } = request;
+        if (await this.userService.doesUsernameExist(username)) {
+            if (await this.userService.doesEmailExist(email)) {
+                const userEmail = await this.userService.findUserByEmail(email);
+                if (userEmail) {
+                    return generateApiSuccess(HttpStatus.ACCEPTED, {
+                        accepted: await this.validateToken(
+                            userEmail,
+                            token,
+                            "password",
+                        ),
+                    });
+                }
+                const userUsername = await this.userService.findUserByUsername(
+                    username,
+                );
+                if (userUsername) {
+                    return generateApiSuccess(HttpStatus.ACCEPTED, {
+                        accepted: await this.validateToken(
+                            userUsername,
+                            token,
+                            "password",
+                        ),
+                    });
+                }
+                return generateApiError(
+                    HttpStatus.BAD_REQUEST,
+                    ERROR_CODES.UNKNOWN_SERVER_FAILURE,
+                );
+            }
+            return generateApiError(
+                HttpStatus.BAD_REQUEST,
+                ERROR_CODES.EMAIL_DOES_NOT_EXIST,
             );
         }
         return generateApiError(

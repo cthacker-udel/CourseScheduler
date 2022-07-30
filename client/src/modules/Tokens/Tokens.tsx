@@ -1,8 +1,10 @@
 import { faEnvelope, faKey, faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useRouter } from "next/router";
 import React from "react";
 import { Alert, Button, Card, FloatingLabel, Form } from "react-bootstrap";
 import { useForm } from "react-hook-form";
+import { Logger } from "src/log/Logger";
 
 const TOKENS_CONSTANTS = {
     email: {
@@ -61,13 +63,31 @@ const TOKENS_VALIDATION_MESSAGES = {
  * @returns The token dashboard
  */
 export const Tokens = (): JSX.Element => {
-    const { formState, register } = useForm({
+    const { formState, register, watch } = useForm({
         defaultValues: { email: "", password: "", username: "" },
         mode: "all",
         reValidateMode: "onChange",
     });
 
+    const router = useRouter();
+
     const { errors, dirtyFields } = formState;
+
+    React.useEffect(() => {
+        /**
+         * Pre-fetches redeem page
+         */
+        const prefetch = async (): Promise<void> => {
+            await router.prefetch("/redeem");
+        };
+        prefetch()
+            .then(() => {
+                Logger.log("info", "Fetched redeem route");
+            })
+            .catch((err) => {
+                Logger.log("info", err);
+            });
+    }, [router]);
 
     return (
         <div className="h-100 d-flex flex-row justify-content-center align-items-center">
@@ -150,6 +170,13 @@ export const Tokens = (): JSX.Element => {
                                         errors.username) &&
                                     true
                                 }
+                                onClick={async (): Promise<void> => {
+                                    await router.push(
+                                        `/redeem?type=username&token=${
+                                            watch().username
+                                        }`,
+                                    );
+                                }}
                                 variant={
                                     !dirtyFields.username || errors.username
                                         ? "secondary"
@@ -219,6 +246,13 @@ export const Tokens = (): JSX.Element => {
                                 disabled={
                                     (!dirtyFields.email || errors.email) && true
                                 }
+                                onClick={async (): Promise<void> => {
+                                    await router.push(
+                                        `/redeem?type=email&token=${
+                                            watch().email
+                                        }`,
+                                    );
+                                }}
                                 variant={
                                     !dirtyFields.email || errors.email
                                         ? "secondary"
@@ -289,8 +323,17 @@ export const Tokens = (): JSX.Element => {
                             <Button
                                 className="mt-2"
                                 disabled={
-                                    (!dirtyFields.password || errors.password) && true
+                                    (!dirtyFields.password ||
+                                        errors.password) &&
+                                    true
                                 }
+                                onClick={async (): Promise<void> => {
+                                    await router.push(
+                                        `/redeem?type=password&token=${
+                                            watch().password
+                                        }`,
+                                    );
+                                }}
                                 variant={
                                     !dirtyFields.password || errors.password
                                         ? "secondary"

@@ -149,6 +149,24 @@ export class UserService {
         return existentEmail !== null;
     };
 
+    findUserByEmail = async (email: string): Promise<User | undefined> => {
+        const user = await this.usersRepository.findOneBy({ email });
+        this.logger.log(
+            `Found user with email ${email} : ${user !== undefined}`,
+        );
+        return user;
+    };
+
+    findUserByUsername = async (
+        username: string,
+    ): Promise<User | undefined> => {
+        const user = await this.usersRepository.findOneBy({ username });
+        this.logger.log(
+            `Found user with username ${username} : ${user !== undefined}`,
+        );
+        return user;
+    };
+
     /**
      * Creates a new user given the username and password, hashing the password and salting it in the backend
      * @param request The request from the front-end to create the new user
