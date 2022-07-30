@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/indent -- conflict with prettier */
+/* eslint-disable no-implicit-coercion -- for !! on isInvalid, error appears nowhere else */
 import { faEnvelope, faKey } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
@@ -34,6 +36,7 @@ const VALIDATION_MESSAGES = {
         valid: "Emails match",
     },
     email: {
+        invalid: "Email is invalid.",
         maxLength: "Email must be at most 70 characters.",
         minLength: "Email must be at least 1 character.",
         required: "Email is required",
@@ -56,7 +59,10 @@ const EMAIL_USEFORM_RULES = {
         message: VALIDATION_MESSAGES.email.minLength,
         value: VALIDATION_VALUES.email.minLength,
     },
-    pattern: EMAIL,
+    pattern: {
+        message: VALIDATION_MESSAGES.email.invalid,
+        value: EMAIL,
+    },
     required: {
         message: VALIDATION_MESSAGES.email.required,
         value: VALIDATION_VALUES.email.required,
@@ -101,6 +107,7 @@ export const TokenUsernameRedeemModal = ({
 
     console.log(errors);
     console.log(touchedFields);
+    console.log(dirtyFields);
 
     return (
         <>
@@ -114,28 +121,36 @@ export const TokenUsernameRedeemModal = ({
                         icon={faEnvelope}
                     />
                     <Form.Control
-                        isInvalid={touchedFields.email && errors.email}
-                        isValid={touchedFields.email && !errors.email}
+                        isInvalid={
+                            (touchedFields.email || dirtyFields.email) &&
+                            !!errors.email
+                        }
+                        isValid={
+                            (touchedFields.email || dirtyFields.email) &&
+                            !errors.email
+                        }
                         placeholder="Enter email here..."
                         type="text"
                         {...register("email", EMAIL_USEFORM_RULES)}
                     />
-                    {touchedFields.email && errors.email && (
-                        <Form.Control.Feedback
-                            className="text-center"
-                            type="invalid"
-                        >
-                            {errors.email.message}
-                        </Form.Control.Feedback>
-                    )}
-                    {touchedFields.email && !errors.email && (
-                        <Form.Control.Feedback
-                            className="text-center"
-                            type="valid"
-                        >
-                            {VALIDATION_MESSAGES.email.valid}
-                        </Form.Control.Feedback>
-                    )}
+                    {(touchedFields.email || dirtyFields.email) &&
+                        errors.email && (
+                            <Form.Control.Feedback
+                                className="text-center"
+                                type="invalid"
+                            >
+                                {errors.email.message}
+                            </Form.Control.Feedback>
+                        )}
+                    {(touchedFields.email || dirtyFields.email) &&
+                        !errors.email && (
+                            <Form.Control.Feedback
+                                className="text-center"
+                                type="valid"
+                            >
+                                {VALIDATION_MESSAGES.email.valid}
+                            </Form.Control.Feedback>
+                        )}
                 </InputGroup>
                 <InputGroup className="d-flex flex-row mb-3">
                     <FontAwesomeIcon
@@ -144,10 +159,14 @@ export const TokenUsernameRedeemModal = ({
                     />
                     <Form.Control
                         isInvalid={
-                            touchedFields.confirmEmail && errors.confirmEmail
+                            (touchedFields.confirmEmail ||
+                                dirtyFields.confirmEmail) &&
+                            !!errors.confirmEmail
                         }
                         isValid={
-                            touchedFields.confirmEmail && !errors.confirmEmail
+                            (touchedFields.confirmEmail ||
+                                dirtyFields.confirmEmail) &&
+                            !errors.confirmEmail
                         }
                         placeholder="Confirm email here..."
                         type="text"
@@ -158,49 +177,58 @@ export const TokenUsernameRedeemModal = ({
                                 VALIDATION_MESSAGES.confirmEmail.match,
                         })}
                     />
-                    {touchedFields.confirmEmail && errors.confirmEmail && (
-                        <Form.Control.Feedback
-                            className="text-center"
-                            type="invalid"
-                        >
-                            {errors.confirmEmail.message}
-                        </Form.Control.Feedback>
-                    )}
-                    {touchedFields.confirmEmail && !errors.confirmEmail && (
-                        <Form.Control.Feedback
-                            className="text-center"
-                            type="valid"
-                        >
-                            {VALIDATION_MESSAGES.confirmEmail.valid}
-                        </Form.Control.Feedback>
-                    )}
+                    {(touchedFields.confirmEmail || dirtyFields.confirmEmail) &&
+                        errors.confirmEmail && (
+                            <Form.Control.Feedback
+                                className="text-center"
+                                type="invalid"
+                            >
+                                {errors.confirmEmail.message}
+                            </Form.Control.Feedback>
+                        )}
+                    {(touchedFields.confirmEmail || dirtyFields.confirmEmail) &&
+                        !errors.confirmEmail && (
+                            <Form.Control.Feedback
+                                className="text-center"
+                                type="valid"
+                            >
+                                {VALIDATION_MESSAGES.confirmEmail.valid}
+                            </Form.Control.Feedback>
+                        )}
                 </InputGroup>
                 <InputGroup className="d-flex flex-row mb-4">
                     <FontAwesomeIcon className="pe-4 my-auto" icon={faKey} />
                     <Form.Control
-                        className="w-75"
-                        isInvalid={touchedFields.password && errors.password}
-                        isValid={touchedFields.password && !errors.password}
+                        isInvalid={
+                            (touchedFields.password || dirtyFields.password) &&
+                            !!errors.password
+                        }
+                        isValid={
+                            (touchedFields.password || dirtyFields.password) &&
+                            !errors.password
+                        }
                         placeholder="Enter password here..."
                         type="password"
                         {...register("password", PASSWORD_USEFORM_RULES)}
                     />
-                    {errors.password && touchedFields.password && (
-                        <Form.Control.Feedback
-                            className="text-center"
-                            type="invalid"
-                        >
-                            {errors.password.message}
-                        </Form.Control.Feedback>
-                    )}
-                    {!errors.password && touchedFields.password && (
-                        <Form.Control.Feedback
-                            className="text-center"
-                            type="valid"
-                        >
-                            {VALIDATION_MESSAGES.password.valid}
-                        </Form.Control.Feedback>
-                    )}
+                    {errors.password &&
+                        (touchedFields.password || dirtyFields.password) && (
+                            <Form.Control.Feedback
+                                className="text-center"
+                                type="invalid"
+                            >
+                                {errors.password.message}
+                            </Form.Control.Feedback>
+                        )}
+                    {!errors.password &&
+                        (touchedFields.password || dirtyFields.password) && (
+                            <Form.Control.Feedback
+                                className="text-center"
+                                type="valid"
+                            >
+                                {VALIDATION_MESSAGES.password.valid}
+                            </Form.Control.Feedback>
+                        )}
                 </InputGroup>
                 <Button
                     className="w-50 mx-auto"
