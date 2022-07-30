@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 import { UsersApi } from "src/api/client-side/UsersApi";
 import { EMAIL } from "src/common";
 import { validatePassword } from "src/helpers";
-import { TokenModal } from "src/modules/TokenModal/TokenModal";
+import { TokenModal } from "src/modules/Tokens/TokenModal/TokenModal";
 
 const FORGOT_USERNAME_CONSTANTS = {
     buttonText: "Request token",

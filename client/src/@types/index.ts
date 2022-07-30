@@ -2,8 +2,12 @@ import type { ApiError } from "./api/ApiError";
 import type { ApiSuccess } from "./api/ApiSuccess";
 import type { ForgotEmailRequest } from "./api/Forgot/ForgotEmailRequest";
 import type { ForgotPasswordRequest } from "./api/Forgot/ForgotPasswordRequest";
+import type { ForgotTokenEmailRequest } from "./api/Forgot/ForgotTokenEmailRequest";
+import type { ForgotTokenPasswordRequest } from "./api/Forgot/ForgotTokenPasswordRequest";
+import type { ForgotTokenUsernameRequest } from "./api/Forgot/ForgotTokenUsernameRequest";
 import type { ForgotUsernameRequest } from "./api/Forgot/ForgotUsernameRequest";
 import type { TokenResponse } from "./api/Forgot/TokenResponse";
+import type { TokenValidationResponse } from "./api/Forgot/TokenValidationResponse";
 import type { LoginRequest } from "./api/Login/LoginRequest";
 import type { LoginResponse } from "./api/Login/LoginResponse";
 import type { EmailValidationRequest } from "./api/SignUp/EmailValidationRequest";
@@ -11,6 +15,7 @@ import type { SignUpRequest } from "./api/SignUp/SignUpRequest";
 import type { UsernameValidationRequest } from "./api/SignUp/UsernameValidationRequest";
 import type { Course } from "./Course/Course";
 import type { MockCourse } from "./Course/MockCourse";
+import type { ForgotTokenType } from "./ForgotToken/ForgotTokenType";
 import type { LoginPageReducerAction } from "./Login/LoginPageReducerAction";
 import type { LoginPageReducerActionType } from "./Login/LoginPageReducerActionType";
 import type { LoginPageState } from "./Login/LoginPageState";
@@ -27,6 +32,10 @@ export type {
     EmailValidationRequest,
     ForgotEmailRequest,
     ForgotPasswordRequest,
+    ForgotTokenEmailRequest,
+    ForgotTokenPasswordRequest,
+    ForgotTokenType,
+    ForgotTokenUsernameRequest,
     ForgotUsernameRequest,
     iNotificationContext,
     LoginPageReducerAction,
@@ -41,5 +50,6 @@ export type {
     Semester,
     SignUpRequest,
     TokenResponse,
+    TokenValidationResponse,
     UsernameValidationRequest,
 };

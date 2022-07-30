@@ -5,10 +5,12 @@ import type {
     EmailValidationRequest,
     ForgotEmailRequest,
     ForgotPasswordRequest,
+    ForgotTokenUsernameRequest,
     ForgotUsernameRequest,
     LoginResponse,
     SignUpRequest,
     TokenResponse,
+    TokenValidationResponse,
     UsernameValidationRequest,
 } from "src/@types";
 
@@ -134,6 +136,23 @@ export class UsersApi extends ServerSideApi {
         const result = await super.post<TokenResponse>(
             "/forgot/email",
             JSON.parse(request.body) as ForgotEmailRequest,
+        );
+        response.json(result);
+    };
+
+    /**
+     * Server-side username token validation flow
+     *
+     * @param request The request containing the email and password in the body
+     * @param response The next/api response
+     */
+    public static validateUsernameToken = async (
+        request: NextApiRequest,
+        response: NextApiResponse,
+    ): Promise<void> => {
+        const result = await super.post<TokenValidationResponse>(
+            "/forgot/token/validate/username",
+            JSON.parse(request.body) as ForgotTokenUsernameRequest,
         );
         response.json(result);
     };

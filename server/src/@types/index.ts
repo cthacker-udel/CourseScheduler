@@ -11,6 +11,10 @@ import { ResetToken } from "./ResetToken/ResetToken";
 import { ForgotTokenResponse } from "./Forgot/ForgotTokenResponse";
 import { ForgotPasswordRequest } from "./Forgot/ForgotPasswordRequest";
 import { ForgotEmailRequest } from "./Forgot/ForgotEmailRequest";
+import { ValidateUsernameTokenRequest } from "./Forgot/ValidateToken/ValidateUsernameTokenRequest";
+import { ValidateEmailTokenRequest } from "./Forgot/ValidateToken/ValidateEmailTokenRequest";
+import { ValidatePasswordTokenRequest } from "./Forgot/ValidateToken/ValidatePasswordTokenRequest";
+import { ValidateTokenResponse } from "./Forgot/ValidateToken/ValidateTokenResponse";
 
 export {
     ApiError,
@@ -26,4 +30,8 @@ export {
     ResetTokenType,
     SemesterTerm,
     ValidCodes,
+    ValidateEmailTokenRequest,
+    ValidateUsernameTokenRequest,
+    ValidatePasswordTokenRequest,
+    ValidateTokenResponse,
 };

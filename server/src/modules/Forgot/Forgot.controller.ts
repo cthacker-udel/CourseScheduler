@@ -5,6 +5,11 @@ import {
     ForgotTokenResponse,
     ForgotPasswordRequest,
     ForgotEmailRequest,
+    ValidateUsernameTokenRequest,
+    ApiSuccess,
+    ValidateEmailTokenRequest,
+    ValidatePasswordTokenRequest,
+    ValidateTokenResponse,
 } from "src/@types";
 import { ERROR_CODES } from "src/ErrorCode";
 import { generateApiError } from "src/helpers";
@@ -57,6 +62,42 @@ export class ForgotController {
                 HttpStatus.SERVICE_UNAVAILABLE,
                 ERROR_CODES.UNKNOWN_SERVER_FAILURE,
             );
+        }
+    }
+
+    @Post("token/validate/username")
+    async validateUsernameToken(
+        @Body() request: ValidateUsernameTokenRequest,
+    ): Promise<ValidateTokenResponse> {
+        try {
+            return await this.forgotService.validateUsernameToken(request);
+        } catch (error: unknown) {
+            Logger.error(error);
+            return { accepted: false };
+        }
+    }
+
+    @Post("token/validate/email")
+    async validateEmailToken(
+        @Body() request: ValidateEmailTokenRequest,
+    ): Promise<ValidateTokenResponse> {
+        try {
+            return await this.forgotService.validateEmailToken(request);
+        } catch (error: unknown) {
+            Logger.error(error);
+            return { accepted: false };
+        }
+    }
+
+    @Post("token/validate/password")
+    async validatePasswordToken(
+        @Body() request: ValidatePasswordTokenRequest,
+    ): Promise<ValidateTokenResponse> {
+        try {
+            return await this.forgotService.validatePasswordToken(request);
+        } catch (error: unknown) {
+            Logger.error(error);
+            return { accepted: false };
         }
     }
 }
