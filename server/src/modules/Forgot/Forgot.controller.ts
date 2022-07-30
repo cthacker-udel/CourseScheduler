@@ -9,6 +9,7 @@ import {
     ApiSuccess,
     ValidateEmailTokenRequest,
     ValidatePasswordTokenRequest,
+    ValidateTokenResponse,
 } from "src/@types";
 import { ERROR_CODES } from "src/ErrorCode";
 import { generateApiError } from "src/helpers";
@@ -67,45 +68,36 @@ export class ForgotController {
     @Post("token/username")
     async validateUsernameToken(
         @Body() request: ValidateUsernameTokenRequest,
-    ): Promise<ApiError | ApiSuccess> {
+    ): Promise<ValidateTokenResponse> {
         try {
             return await this.forgotService.validateUsernameToken(request);
         } catch (error: unknown) {
             Logger.error(error);
-            return generateApiError(
-                HttpStatus.SERVICE_UNAVAILABLE,
-                ERROR_CODES.UNKNOWN_SERVER_FAILURE,
-            );
+            return { accepted: false };
         }
     }
 
     @Post("token/email")
     async validateEmailToken(
         @Body() request: ValidateEmailTokenRequest,
-    ): Promise<ApiError | ApiSuccess> {
+    ): Promise<ValidateTokenResponse> {
         try {
             return await this.forgotService.validateEmailToken(request);
         } catch (error: unknown) {
             Logger.error(error);
-            return generateApiError(
-                HttpStatus.SERVICE_UNAVAILABLE,
-                ERROR_CODES.UNKNOWN_SERVER_FAILURE,
-            );
+            return { accepted: false };
         }
     }
 
     @Post("token/password")
     async validatePasswordToken(
         @Body() request: ValidatePasswordTokenRequest,
-    ): Promise<ApiError | ApiSuccess> {
+    ): Promise<ValidateTokenResponse> {
         try {
             return await this.forgotService.validatePasswordToken(request);
         } catch (error: unknown) {
             Logger.error(error);
-            return generateApiError(
-                HttpStatus.SERVICE_UNAVAILABLE,
-                ERROR_CODES.UNKNOWN_SERVER_FAILURE,
-            );
+            return { accepted: false };
         }
     }
 }

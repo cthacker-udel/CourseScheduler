@@ -8,6 +8,7 @@ import {
     ForgotUsernameRequest,
     ValidateEmailTokenRequest,
     ValidatePasswordTokenRequest,
+    ValidateTokenResponse,
     ValidateUsernameTokenRequest,
 } from "src/@types";
 import { User } from "src/entities";
@@ -163,7 +164,7 @@ export class ForgotService {
 
     validateUsernameToken = async (
         request: ValidateUsernameTokenRequest,
-    ): Promise<ApiError | ApiSuccess> => {
+    ): Promise<ValidateTokenResponse> => {
         const { email, password, token } = request;
         if (await this.userService.doesEmailExist(email)) {
             const passwordDetails =
@@ -178,28 +179,22 @@ export class ForgotService {
                 passwordDetails.iterations,
             );
             if (isPasswordValid) {
-                return generateApiSuccess(HttpStatus.ACCEPTED, {
+                return {
                     accepted: await this.validateToken(
                         await this.userService.findUserByEmail(request.email),
                         token,
                         "email",
                     ),
-                });
+                };
             }
-            return generateApiError(
-                HttpStatus.UNAUTHORIZED,
-                ERROR_CODES.PASSWORD_INVALID,
-            );
+            return { accepted: false };
         }
-        return generateApiError(
-            HttpStatus.BAD_REQUEST,
-            ERROR_CODES.EMAIL_DOES_NOT_EXIST,
-        );
+        return { accepted: false };
     };
 
     validateEmailToken = async (
         request: ValidateEmailTokenRequest,
-    ): Promise<ApiError | ApiSuccess> => {
+    ): Promise<ValidateTokenResponse> => {
         const { password, username, token } = request;
         if (await this.userService.doesUsernameExist(username)) {
             const passwordDetails =
@@ -214,7 +209,7 @@ export class ForgotService {
                 passwordDetails.iterations,
             );
             if (isPasswordValid) {
-                return generateApiSuccess(HttpStatus.ACCEPTED, {
+                return {
                     accepted: await this.validateToken(
                         await this.userService.findUserByUsername(
                             request.username,
@@ -222,60 +217,45 @@ export class ForgotService {
                         token,
                         "email",
                     ),
-                });
+                };
             }
-            return generateApiError(
-                HttpStatus.BAD_REQUEST,
-                ERROR_CODES.PASSWORD_INVALID,
-            );
+            return { accepted: false };
         }
-        return generateApiError(
-            HttpStatus.BAD_REQUEST,
-            ERROR_CODES.USER_DOES_NOT_EXIST,
-        );
+        return { accepted: false };
     };
 
     validatePasswordToken = async (
         request: ValidatePasswordTokenRequest,
-    ): Promise<ApiError | ApiSuccess> => {
+    ): Promise<ValidateTokenResponse> => {
         const { email, username, token } = request;
         if (await this.userService.doesUsernameExist(username)) {
             if (await this.userService.doesEmailExist(email)) {
                 const userEmail = await this.userService.findUserByEmail(email);
                 if (userEmail) {
-                    return generateApiSuccess(HttpStatus.ACCEPTED, {
+                    return {
                         accepted: await this.validateToken(
                             userEmail,
                             token,
                             "password",
                         ),
-                    });
+                    };
                 }
                 const userUsername = await this.userService.findUserByUsername(
                     username,
                 );
                 if (userUsername) {
-                    return generateApiSuccess(HttpStatus.ACCEPTED, {
+                    return {
                         accepted: await this.validateToken(
                             userUsername,
                             token,
                             "password",
                         ),
-                    });
+                    };
                 }
-                return generateApiError(
-                    HttpStatus.BAD_REQUEST,
-                    ERROR_CODES.UNKNOWN_SERVER_FAILURE,
-                );
+                return { accepted: false };
             }
-            return generateApiError(
-                HttpStatus.BAD_REQUEST,
-                ERROR_CODES.EMAIL_DOES_NOT_EXIST,
-            );
+            return { accepted: false };
         }
-        return generateApiError(
-            HttpStatus.BAD_REQUEST,
-            ERROR_CODES.USER_DOES_NOT_EXIST,
-        );
+        return { accepted: false };
     };
 }

@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import { Button, Form, InputGroup, Modal } from "react-bootstrap";
 import { useForm } from "react-hook-form";
+import { UsersApi } from "src/api/client-side/UsersApi";
 import { EMAIL } from "src/common";
 
 type TokenModalProps = {
@@ -239,6 +240,9 @@ export const TokenUsernameRedeemModal = ({
                         !dirtyFields.confirmEmail ||
                         !dirtyFields.password
                     }
+                    onClick={async (): Promise<void> => {
+                        const isTokenValid = await UsersApi;
+                    }}
                     variant={
                         Object.keys(errors).length >
                         CONSTANTS.btnDisableErrorLimit
