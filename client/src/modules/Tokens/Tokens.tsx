@@ -1,10 +1,11 @@
 import { faEnvelope, faKey, faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useRouter } from "next/router";
 import React from "react";
 import { Alert, Button, Card, FloatingLabel, Form } from "react-bootstrap";
 import { useForm } from "react-hook-form";
-import { Logger } from "src/log/Logger";
+import type { ForgotTokenType } from "src/@types";
+
+import { TokenRedeemModal } from "./TokenRedeem/TokenRedeemModal";
 
 const TOKENS_CONSTANTS = {
     email: {
@@ -69,25 +70,11 @@ export const Tokens = (): JSX.Element => {
         reValidateMode: "onChange",
     });
 
-    const router = useRouter();
+    const [showTokenModal, setShowTokenModal] = React.useState<boolean>(false);
+    const [tokenModalType, setTokenModalType] =
+        React.useState<ForgotTokenType>();
 
     const { errors, dirtyFields } = formState;
-
-    React.useEffect(() => {
-        /**
-         * Pre-fetches redeem page
-         */
-        const prefetch = async (): Promise<void> => {
-            await router.prefetch("/redeem");
-        };
-        prefetch()
-            .then(() => {
-                Logger.log("info", "Fetched redeem route");
-            })
-            .catch((err) => {
-                Logger.log("info", err);
-            });
-    }, [router]);
 
     return (
         <div className="h-100 d-flex flex-row justify-content-center align-items-center">
@@ -170,12 +157,9 @@ export const Tokens = (): JSX.Element => {
                                         errors.username) &&
                                     true
                                 }
-                                onClick={async (): Promise<void> => {
-                                    await router.push(
-                                        `/redeem?type=username&token=${
-                                            watch().username
-                                        }`,
-                                    );
+                                onClick={(): void => {
+                                    setShowTokenModal(true);
+                                    setTokenModalType("username");
                                 }}
                                 variant={
                                     !dirtyFields.username || errors.username
@@ -246,12 +230,9 @@ export const Tokens = (): JSX.Element => {
                                 disabled={
                                     (!dirtyFields.email || errors.email) && true
                                 }
-                                onClick={async (): Promise<void> => {
-                                    await router.push(
-                                        `/redeem?type=email&token=${
-                                            watch().email
-                                        }`,
-                                    );
+                                onClick={(): void => {
+                                    setShowTokenModal(true);
+                                    setTokenModalType("email");
                                 }}
                                 variant={
                                     !dirtyFields.email || errors.email
@@ -327,12 +308,9 @@ export const Tokens = (): JSX.Element => {
                                         errors.password) &&
                                     true
                                 }
-                                onClick={async (): Promise<void> => {
-                                    await router.push(
-                                        `/redeem?type=password&token=${
-                                            watch().password
-                                        }`,
-                                    );
+                                onClick={(): void => {
+                                    setShowTokenModal(true);
+                                    setTokenModalType("password");
                                 }}
                                 variant={
                                     !dirtyFields.password || errors.password
@@ -346,6 +324,15 @@ export const Tokens = (): JSX.Element => {
                     </Card.Body>
                 </Card>
             </span>
+            {showTokenModal && tokenModalType && (
+                <TokenRedeemModal
+                    close={(): void => {
+                        setShowTokenModal(false);
+                    }}
+                    token={watch()[tokenModalType]}
+                    type={tokenModalType}
+                />
+            )}
         </div>
     );
 };
