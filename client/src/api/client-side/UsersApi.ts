@@ -135,11 +135,11 @@ export class UsersApi extends ClientSideApi {
      * @param request The request, contains email and password
      * @returns The api result, could either be the token is accepted or not
      */
-    public static forgotUsernameTokenRequest = async (
+    public static validateUsernameToken = async (
         request: ForgotTokenUsernameRequest,
     ): Promise<TokenValidationResponse> => {
         const result = await super.post<TokenValidationResponse>(
-            "/redeem/username",
+            "/forgot/username/validate",
             request,
         );
         return result;

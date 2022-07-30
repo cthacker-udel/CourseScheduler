@@ -65,7 +65,7 @@ export class ForgotController {
         }
     }
 
-    @Post("token/username")
+    @Post("token/validate/username")
     async validateUsernameToken(
         @Body() request: ValidateUsernameTokenRequest,
     ): Promise<ValidateTokenResponse> {
@@ -77,7 +77,7 @@ export class ForgotController {
         }
     }
 
-    @Post("token/email")
+    @Post("token/validate/email")
     async validateEmailToken(
         @Body() request: ValidateEmailTokenRequest,
     ): Promise<ValidateTokenResponse> {
@@ -89,7 +89,7 @@ export class ForgotController {
         }
     }
 
-    @Post("token/password")
+    @Post("token/validate/password")
     async validatePasswordToken(
         @Body() request: ValidatePasswordTokenRequest,
     ): Promise<ValidateTokenResponse> {

@@ -1,7 +1,6 @@
-import { HttpStatus, Injectable } from "@nestjs/common";
+import { HttpStatus, Injectable, Logger } from "@nestjs/common";
 import {
     ApiError,
-    ApiSuccess,
     ForgotEmailRequest,
     ForgotPasswordRequest,
     ForgotTokenResponse,
@@ -13,7 +12,7 @@ import {
 } from "src/@types";
 import { User } from "src/entities";
 import { ERROR_CODES } from "src/ErrorCode";
-import { generateApiError, generateApiSuccess } from "src/helpers";
+import { generateApiError } from "src/helpers";
 import { AuthService } from "../Auth/auth.service";
 import { CryptoService } from "../Crypto/crypto.service";
 import { UserService } from "../User/user.service";
@@ -24,6 +23,7 @@ type TokenType = "email" | "username" | "password";
 
 @Injectable()
 export class ForgotService {
+    private readonly logger: Logger;
     constructor(
         private readonly userService: UserService,
         private readonly authService: AuthService,
@@ -138,21 +138,21 @@ export class ForgotService {
             case "email": {
                 return (
                     user.resetToken.email.token === token &&
-                    new Date(user.resetToken.email.validUntil).getTime() <=
+                    new Date(user.resetToken.email.validUntil).getTime() >=
                         Date.now()
                 );
             }
             case "username": {
                 return (
                     user.resetToken.username.token === token &&
-                    new Date(user.resetToken.username.validUntil).getTime() <=
+                    new Date(user.resetToken.username.validUntil).getTime() >=
                         Date.now()
                 );
             }
             case "password": {
                 return (
                     user.resetToken.password.token === token &&
-                    new Date(user.resetToken.password.validUntil).getTime() <=
+                    new Date(user.resetToken.password.validUntil).getTime() >=
                         Date.now()
                 );
             }
@@ -179,16 +179,20 @@ export class ForgotService {
                 passwordDetails.iterations,
             );
             if (isPasswordValid) {
+                const accepted = await this.validateToken(
+                    await this.userService.findUserByEmail(request.email),
+                    token,
+                    "username",
+                );
+                Logger.log(`Token ${accepted ? "accepted" : "denied"}`);
                 return {
-                    accepted: await this.validateToken(
-                        await this.userService.findUserByEmail(request.email),
-                        token,
-                        "email",
-                    ),
+                    accepted,
                 };
             }
+            Logger.log("Token denied");
             return { accepted: false };
         }
+        Logger.log("Token denied");
         return { accepted: false };
     };
 
@@ -209,18 +213,20 @@ export class ForgotService {
                 passwordDetails.iterations,
             );
             if (isPasswordValid) {
+                const accepted = await this.validateToken(
+                    await this.userService.findUserByUsername(request.username),
+                    token,
+                    "email",
+                );
+                Logger.log(`Token ${accepted ? "accepted" : "denied"}`);
                 return {
-                    accepted: await this.validateToken(
-                        await this.userService.findUserByUsername(
-                            request.username,
-                        ),
-                        token,
-                        "email",
-                    ),
+                    accepted,
                 };
             }
+            Logger.log("Token denied");
             return { accepted: false };
         }
+        Logger.log("Token denied");
         return { accepted: false };
     };
 
@@ -231,31 +237,39 @@ export class ForgotService {
         if (await this.userService.doesUsernameExist(username)) {
             if (await this.userService.doesEmailExist(email)) {
                 const userEmail = await this.userService.findUserByEmail(email);
+                let accepted;
                 if (userEmail) {
+                    accepted = await this.validateToken(
+                        userEmail,
+                        token,
+                        "password",
+                    );
+                    Logger.log(`Token ${accepted ? "accepted" : "denied"}`);
                     return {
-                        accepted: await this.validateToken(
-                            userEmail,
-                            token,
-                            "password",
-                        ),
+                        accepted,
                     };
                 }
                 const userUsername = await this.userService.findUserByUsername(
                     username,
                 );
                 if (userUsername) {
+                    accepted = await this.validateToken(
+                        userUsername,
+                        token,
+                        "password",
+                    );
+                    Logger.log(`Token ${accepted ? "accepted" : "denied"}`);
                     return {
-                        accepted: await this.validateToken(
-                            userUsername,
-                            token,
-                            "password",
-                        ),
+                        accepted,
                     };
                 }
+                Logger.log("Token denied");
                 return { accepted: false };
             }
+            Logger.log("Token denied");
             return { accepted: false };
         }
+        Logger.log("Token denied");
         return { accepted: false };
     };
 }

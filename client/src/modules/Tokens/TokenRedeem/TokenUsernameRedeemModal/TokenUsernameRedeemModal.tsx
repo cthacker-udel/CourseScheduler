@@ -93,7 +93,7 @@ const PASSWORD_USEFORM_RULES = {
 export const TokenUsernameRedeemModal = ({
     token,
 }: TokenModalProps): JSX.Element => {
-    const { formState, register, watch } = useForm({
+    const { getValues, formState, register, watch } = useForm({
         defaultValues: {
             confirmEmail: "",
             email: "",
@@ -241,7 +241,17 @@ export const TokenUsernameRedeemModal = ({
                         !dirtyFields.password
                     }
                     onClick={async (): Promise<void> => {
-                        const isTokenValid = await UsersApi;
+                        const isTokenValid =
+                            await UsersApi.validateUsernameToken({
+                                email: getValues().email,
+                                password: getValues().password,
+                                token,
+                            });
+                        if (isTokenValid.accepted) {
+                            console.log("accepted");
+                        } else {
+                            console.log("denied");
+                        }
                     }}
                     variant={
                         Object.keys(errors).length >
