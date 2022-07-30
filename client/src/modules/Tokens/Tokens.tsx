@@ -151,7 +151,7 @@ export const Tokens = (): JSX.Element => {
                                 )}
                             </FloatingLabel>
                             <Button
-                                className="mt-2"
+                                className="mt-3"
                                 disabled={
                                     (!dirtyFields.username ||
                                         errors.username) &&
@@ -226,7 +226,7 @@ export const Tokens = (): JSX.Element => {
                                 )}
                             </FloatingLabel>
                             <Button
-                                className="mt-2"
+                                className="mt-3"
                                 disabled={
                                     (!dirtyFields.email || errors.email) && true
                                 }
@@ -302,7 +302,7 @@ export const Tokens = (): JSX.Element => {
                                 )}
                             </FloatingLabel>
                             <Button
-                                className="mt-2"
+                                className="mt-3"
                                 disabled={
                                     (!dirtyFields.password ||
                                         errors.password) &&
