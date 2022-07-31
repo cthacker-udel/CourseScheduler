@@ -8,19 +8,31 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    
+    strategy:
+            matrix:
+                node-version: [16.x]
+                # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v2
         with:
             node-version: ${{ matrix.node-version }}
             cache: "npm"
-
-      - name: Run a multi-line script
+      - id: get-repo-values
         run: |
-          git config --global user.name ${user_name}
-          git config --global user.email ${user_email}
-          npm run deploy-changes
+            url=https://$(echo "${{github.repository}}" | sed "s/\//.github.io\//")
+            echo "::set-output name=url::$url"
+
+      - name: Deploy
+        run: |
+            git config --global user.name ${user_name}
+            git config --global user.email ${user_email}
+            git remote set-url origin https://${github_token}@github.com/${repository}
+            npm run deploy-changes
         env:
-          user_name: "cthacker-udel"
-          user_email: "cthacker@udel.edu"
+            user_name: "github-actions[bot]"
+            user_email: "github-actions[bot]@users.noreply.github.com"
+            github_token: ${{ secrets.GH_TOKEN }}
+            repository: ${{ github.repository }}
