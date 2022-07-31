@@ -18,4 +18,6 @@ jobs:
 
       - name: Run a multi-line script
         run: |
+          git config --global user.name ${user_name}
+          git config --global user.email ${user_email}
           npm run deploy-changes
