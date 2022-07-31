@@ -39,7 +39,10 @@
         "lint": "eslint ./src --ext .tsx --ext .ts --max-warnings 0",
         "format": "prettier --config .prettierrc --write src/**/*.{ts,tsx}",
         "extract-messages": "set NODE_ENV=production && babel ./src >NUL",
-        "vercel-push": "git add -A && git commit -m \"Update\" && git push"
+        "vercel": "npm run vercel-pull && npm run vercel-commit && npm run vercel-push",
+        "vercel-pull": "git pull",
+        "vercel-commit": "git add -A && git commit -m \"Updating App\"",
+        "vercel-push": "git push"
     },
     "eslintConfig": {
         "extends": [
@@ -60,8 +63,8 @@
         ]
     },
     "devDependencies": {
-        "@babel/cli": "^7.17.10",
-        "@babel/core": "^7.18.2",
+        "@babel/cli": "^7.18.9",
+        "@babel/core": "^7.18.9",
         "@types/react": "^18.0.12",
         "@types/react-bootstrap": "^0.32.30",
         "@types/react-csv": "^1.1.2",
@@ -87,7 +90,7 @@
         "gh-pages": "^4.0.0",
         "prettier": "^2.6.2",
         "prettier-eslint": "^15.0.1",
-        "typescript": "^4.7.3"
+        "typescript": "^4.7.4"
     },
     "jest": {
         "collectCoverageFrom": [

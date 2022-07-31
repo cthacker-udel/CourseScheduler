@@ -10,7 +10,9 @@
     "module_clean": "rm -rf ./server/node_modules && rm -rf ./client/node_modules",
     "start": "npm run mass-setup && concurrently \"cd client && npm run start\" \"cd server && npm run start\"",
     "mass-setup": "npm i && concurrently \"cd client && npm i\" \"cd server && npm i\"",
-    "deploy": "cd server && git pull && npm run heroku && cd ../client && git pull && npm run vercel-push"
+    "deploy": "cd server && git pull && npm run heroku && cd ../client && npm run vercel",
+    "deploy-server": "cd server && npm run heroku",
+    "deploy-app": "cd client && npm run vercel"
   },
   "repository": {
     "type": "git",
@@ -22,12 +24,5 @@
   "bugs": {
     "url": "https://github.com/cthacker-udel/CourseSchedulerV2/issues"
   },
-  "homepage": "https://github.com/cthacker-udel/CourseSchedulerV2#readme",
-  "dependencies": {
-    "@types/react-dom": "^18.0.4",
-    "npm-check": "^5.9.2"
-  },
-  "devDependencies": {
-    "react-dom": "^18.1.0"
-  }
+  "homepage": "https://github.com/cthacker-udel/CourseSchedulerV2#readme"
 }

@@ -1,4 +1,4 @@
-import { Head, Html, Main, NextScript } from "next/Document";
+import { Head, Html, Main, NextScript } from "next/document";
 import React from "react";
 
 /**
