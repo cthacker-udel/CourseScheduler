@@ -10,7 +10,7 @@
     "module_clean": "rm -rf ./server/node_modules && rm -rf ./client/node_modules",
     "start": "npm run mass-setup && concurrently \"cd client && npm run start\" \"cd server && npm run start\"",
     "mass-setup": "npm i && concurrently \"cd client && npm i\" \"cd server && npm i\"",
-    "deploy-changes": "cd server && npm run heroku-push && cd client && npm run vercel-push"
+    "deploy": "cd server && git pull && npm run heroku && cd ../client && git pull && npm run vercel-push"
   },
   "repository": {
     "type": "git",
