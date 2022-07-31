@@ -10,7 +10,7 @@
     "module_clean": "rm -rf ./server/node_modules && rm -rf ./client/node_modules",
     "start": "npm run mass-setup && concurrently \"cd client && npm run start\" \"cd server && npm run start\"",
     "mass-setup": "npm i && concurrently \"cd client && npm i\" \"cd server && npm i\"",
-    "heroku-commit": "git push heroku main"
+    "deploy-changes": "cd server && npm run heroku-push && cd client && npm run vercel-push"
   },
   "repository": {
     "type": "git",
@@ -25,7 +25,6 @@
   "homepage": "https://github.com/cthacker-udel/CourseSchedulerV2#readme",
   "dependencies": {
     "@types/react-dom": "^18.0.4",
-    "concurrently": "^7.2.0",
     "npm-check": "^5.9.2"
   },
   "devDependencies": {
