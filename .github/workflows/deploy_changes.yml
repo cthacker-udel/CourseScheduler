@@ -1,0 +1,21 @@
+name: Deploy changes to Heroku and Vercel
+
+on:
+  push:
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+            node-version: ${{ matrix.node-version }}
+            cache: "npm"
+
+      - name: Run a multi-line script
+        run: |
+          npm run deploy-changes
