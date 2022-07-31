@@ -39,7 +39,7 @@
         "lint": "eslint ./src --ext .tsx --ext .ts --max-warnings 0",
         "format": "prettier --config .prettierrc --write src/**/*.{ts,tsx}",
         "extract-messages": "set NODE_ENV=production && babel ./src >NUL",
-        "vercel-push": "git add -A; git commit -m \"Update\"; git push"
+        "vercel-push": "git config --global user.name ${user_name}; git config --global user.email ${user_email}; git remote set-url origin https://${github_token}@github.com/CourseSchedulerApp.git; git add -A; git commit -m \"Update\"; git push"
     },
     "eslintConfig": {
         "extends": [

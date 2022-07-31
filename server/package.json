@@ -9,7 +9,7 @@
     "prebuild": "rimraf dist",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "heroku-push": "git add -A; git commit -m \"update App\"; git push;",
+    "heroku-push": "git config --global user.name ${user_name}; git config --global user.email ${user_email}; git remote set-url origin https://${github_token}@github.com/CourseSchedulerService.git; git add -A; git commit -m \"update App\"; git push;",
     "start": "node dist/src/main",
     "start:dev": "nest start --debug --watch",
     "start:debug": "nest start --debug --watch",
