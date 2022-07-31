@@ -1,8 +1,8 @@
 /* eslint-disable jest/require-hook -- disabled */
 
 /**
- * random
+ * Random
  */
-export const test = (); void => {
+export const test = (): void => {
     console.log("test");
 };

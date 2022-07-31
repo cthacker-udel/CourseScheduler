@@ -6,6 +6,7 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { configurations } from "config";
 import { LoggerOptions } from "typeorm";
 import { ForgotModule } from "./modules/Forgot/Forgot.module";
+import { StatusModule } from "./modules/Status/status.module";
 
 @Module({
     imports: [
@@ -29,6 +30,7 @@ import { ForgotModule } from "./modules/Forgot/Forgot.module";
             }),
         }),
         ForgotModule,
+        StatusModule,
     ],
     controllers: [],
     providers: [],
