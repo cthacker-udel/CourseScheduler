@@ -5,10 +5,12 @@ import type {
     EmailValidationRequest,
     ForgotEmailRequest,
     ForgotPasswordRequest,
+    ForgotTokenUsernameRedeemRequest,
     ForgotTokenUsernameRequest,
     ForgotUsernameRequest,
     LoginResponse,
     SignUpRequest,
+    TokenRedeemResponse,
     TokenResponse,
     TokenValidationResponse,
     UsernameValidationRequest,
@@ -153,6 +155,23 @@ export class UsersApi extends ServerSideApi {
         const result = await super.post<TokenValidationResponse>(
             "/forgot/token/validate/username",
             JSON.parse(request.body) as ForgotTokenUsernameRequest,
+        );
+        response.json(result);
+    };
+
+    /**
+     * Server-side username change token request flow
+     *
+     * @param request The request containing the email, password, and token in the body
+     * @param response The next/api response
+     */
+    public static changeUsername = async (
+        request: NextApiRequest,
+        response: NextApiResponse,
+    ): Promise<void> => {
+        const result = await super.post<TokenRedeemResponse>(
+            "/forgot/token/username/redeem",
+            JSON.parse(request.body) as ForgotTokenUsernameRedeemRequest,
         );
         response.json(result);
     };

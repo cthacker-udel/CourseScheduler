@@ -120,15 +120,20 @@ export class UserService {
      * @param username The username to search for
      * @returns If the username exists in the database
      */
-    doesUsernameExist = async (username: string): Promise<boolean> => {
+    doesUsernameExist = async (
+        username: string,
+        debug?: boolean,
+    ): Promise<boolean> => {
         const existentUser = await this.usersRepository.findOne({
             where: { username },
         });
-        this.logger.log(
-            `Username ${username} ${
-                existentUser !== null ? "exists" : "does not exist"
-            }`,
-        );
+        if (debug) {
+            this.logger.log(
+                `Username ${username} ${
+                    existentUser !== null ? "exists" : "does not exist"
+                }`,
+            );
+        }
         return existentUser !== null;
     };
 
@@ -137,15 +142,20 @@ export class UserService {
      * @param email The email to search for
      * @returns If the email exists in the database
      */
-    doesEmailExist = async (email: string): Promise<boolean> => {
+    doesEmailExist = async (
+        email: string,
+        debug?: boolean,
+    ): Promise<boolean> => {
         const existentEmail = await this.usersRepository.findOne({
             where: { email },
         });
-        this.logger.log(
-            `Email ${email} ${
-                existentEmail !== null ? "exists" : "does not exist"
-            }`,
-        );
+        if (debug) {
+            this.logger.log(
+                `Email ${email} ${
+                    existentEmail !== null ? "exists" : "does not exist"
+                }`,
+            );
+        }
         return existentEmail !== null;
     };
 
@@ -165,6 +175,53 @@ export class UserService {
             `Found user with username ${username} : ${user !== undefined}`,
         );
         return user;
+    };
+
+    /**
+     * Updates a user's username
+     *
+     * @param email The email used to find the user
+     * @param username The new username to set the user as
+     * @returns Whether the user entity was updated or not
+     */
+    updateUsername = async (
+        email: string,
+        username: string,
+    ): Promise<boolean> => {
+        try {
+            const user = await this.usersRepository.findOneBy({ email });
+            const result = await this.usersRepository.update(
+                { email },
+                { ...user, username },
+            );
+            return result.affected > 0;
+        } catch (error: unknown) {
+            this.logger.error(error);
+            return false;
+        }
+    };
+
+    /**
+     * Removes a user's username token
+     *
+     * @param email The email used to find the user instance
+     * @returns Whether the token was removed or not
+     */
+    removeUsernameToken = async (email: string): Promise<boolean> => {
+        try {
+            const user = await this.usersRepository.findOneBy({ email });
+            const result = await this.usersRepository.update(
+                { email },
+                {
+                    ...user,
+                    resetToken: { ...user.resetToken, username: {} },
+                },
+            );
+            return result.affected > 0;
+        } catch (error: unknown) {
+            this.logger.error(error);
+            return false;
+        }
     };
 
     /**

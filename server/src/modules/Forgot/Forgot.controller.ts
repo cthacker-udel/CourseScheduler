@@ -6,11 +6,12 @@ import {
     ForgotPasswordRequest,
     ForgotEmailRequest,
     ValidateUsernameTokenRequest,
-    ApiSuccess,
     ValidateEmailTokenRequest,
     ValidatePasswordTokenRequest,
     ValidateTokenResponse,
+    RedeemUsernameToken,
 } from "src/@types";
+import { RedeemTokenResponse } from "src/@types/Forgot/RedeemToken/RedeemTokenResponse";
 import { ERROR_CODES } from "src/ErrorCode";
 import { generateApiError } from "src/helpers";
 import { ForgotService } from "./Forgot.service";
@@ -98,6 +99,18 @@ export class ForgotController {
         } catch (error: unknown) {
             Logger.error(error);
             return { accepted: false };
+        }
+    }
+
+    @Post("token/username/redeem")
+    async redeemUsernameToken(
+        @Body() request: RedeemUsernameToken,
+    ): Promise<RedeemTokenResponse> {
+        try {
+            return await this.forgotService.redeemUsernameToken(request);
+        } catch (error: unknown) {
+            Logger.error(error);
+            return { changed: false };
         }
     }
 }
