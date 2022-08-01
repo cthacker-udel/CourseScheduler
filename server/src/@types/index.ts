@@ -16,6 +16,8 @@ import { ValidateEmailTokenRequest } from "./Forgot/ValidateToken/ValidateEmailT
 import { ValidatePasswordTokenRequest } from "./Forgot/ValidateToken/ValidatePasswordTokenRequest";
 import { ValidateTokenResponse } from "./Forgot/ValidateToken/ValidateTokenResponse";
 import { RedeemUsernameToken } from "./Forgot/RedeemToken/RedeemUsernameToken";
+import { RedeemEmailToken } from "./Forgot/RedeemToken/RedeemEmailToken";
+import { RedeemPasswordToken } from "./Forgot/RedeemToken/RedeemPasswordToken";
 
 export {
     ApiError,
@@ -26,6 +28,8 @@ export {
     ForgotPasswordRequest,
     ForgotTokenResponse,
     LoginResponse,
+    RedeemEmailToken,
+    RedeemPasswordToken,
     RedeemUsernameToken,
     ResetToken,
     ResetTokenQuery,

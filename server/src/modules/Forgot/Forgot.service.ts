@@ -5,6 +5,8 @@ import {
     ForgotPasswordRequest,
     ForgotTokenResponse,
     ForgotUsernameRequest,
+    RedeemEmailToken,
+    RedeemPasswordToken,
     RedeemUsernameToken,
     ValidateEmailTokenRequest,
     ValidatePasswordTokenRequest,
@@ -286,6 +288,40 @@ export class ForgotService {
             );
             if (result) {
                 await this.userService.removeUsernameToken(request.email);
+            }
+            return { changed: result };
+        }
+        return { changed: false };
+    };
+
+    redeemEmailToken = async (
+        request: RedeemEmailToken,
+    ): Promise<RedeemTokenResponse> => {
+        const isTokenValid = this.validateEmailToken(request);
+        if (isTokenValid) {
+            const result = await this.userService.updateEmail(
+                request.username,
+                request.newEmail,
+            );
+            if (result) {
+                await this.userService.removeEmailToken(request.username);
+            }
+            return { changed: result };
+        }
+        return { changed: false };
+    };
+
+    redeemPasswordToken = async (
+        request: RedeemPasswordToken,
+    ): Promise<RedeemTokenResponse> => {
+        const isTokenValid = this.validatePasswordToken(request);
+        if (isTokenValid) {
+            const result = await this.userService.updatePassword(
+                request.username,
+                request.newPassword,
+            );
+            if (result) {
+                await this.userService.removePasswordToken(request.username);
             }
             return { changed: result };
         }
