@@ -29,7 +29,7 @@ export class UserController {
                 doesUsernameExist ? HttpStatus.OK : HttpStatus.BAD_REQUEST,
             );
         } catch (error: unknown) {
-            this.logger.error(error);
+            this.logger.error(error, (error as Error).stack);
             return generateApiError(
                 HttpStatus.BAD_REQUEST,
                 ERROR_CODES.UNKNOWN_SERVER_FAILURE,
@@ -50,7 +50,7 @@ export class UserController {
                 doesEmailExist ? HttpStatus.OK : HttpStatus.BAD_REQUEST,
             );
         } catch (error: unknown) {
-            this.logger.error(error);
+            this.logger.error(error, (error as Error).stack);
             return generateApiError(
                 HttpStatus.BAD_REQUEST,
                 ERROR_CODES.UNKNOWN_SERVER_FAILURE,

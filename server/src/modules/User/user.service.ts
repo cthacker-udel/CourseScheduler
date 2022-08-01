@@ -196,7 +196,7 @@ export class UserService {
             );
             return result.affected > 0;
         } catch (error: unknown) {
-            this.logger.error(error);
+            this.logger.error(error, (error as Error).stack);
             return false;
         }
     };
@@ -210,7 +210,7 @@ export class UserService {
             );
             return result.affected > 0;
         } catch (error: unknown) {
-            this.logger.error(error);
+            this.logger.error(error, (error as Error).stack);
             return false;
         }
     };
@@ -229,7 +229,7 @@ export class UserService {
             );
             return result.affected > 0;
         } catch (error: unknown) {
-            this.logger.error(error);
+            this.logger.error(error, (error as Error).stack);
             return false;
         }
     };
@@ -252,7 +252,7 @@ export class UserService {
             );
             return result.affected > 0;
         } catch (error: unknown) {
-            this.logger.error(error);
+            this.logger.error(error, (error as Error).stack);
             return false;
         }
     };
@@ -266,7 +266,7 @@ export class UserService {
             );
             return result.affected > 0;
         } catch (error: unknown) {
-            this.logger.error(error);
+            this.logger.error(error, (error as Error).stack);
             return false;
         }
     };
@@ -280,7 +280,7 @@ export class UserService {
             );
             return result.affected > 0;
         } catch (error: unknown) {
-            this.logger.error(error);
+            this.logger.error(error, (error as Error).stack);
             return false;
         }
     };

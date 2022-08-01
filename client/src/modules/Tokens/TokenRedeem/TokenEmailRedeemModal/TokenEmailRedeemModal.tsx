@@ -209,7 +209,7 @@ export const TokenEmailRedeemModal = ({
                         placeholder="Confirm username here..."
                         type="text"
                         {...register("confirmUsername", {
-                            ...EMAIL_USEFORM_RULES,
+                            ...USERNAME_USEFORM_RULES,
                             validate: (confirmedUsername) =>
                                 confirmedUsername === watch().username ||
                                 VALIDATION_MESSAGES.confirmUsername.match,
@@ -329,7 +329,7 @@ export const TokenEmailRedeemModal = ({
                                 className="text-center"
                                 type="valid"
                             >
-                                {VALIDATION_MESSAGES.username.valid}
+                                {VALIDATION_MESSAGES.email.valid}
                             </Form.Control.Feedback>
                         )}
                 </InputGroup>

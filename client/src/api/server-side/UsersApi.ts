@@ -222,7 +222,7 @@ export class UsersApi extends ServerSideApi {
         response: NextApiResponse,
     ): Promise<void> => {
         const result = await super.post<TokenRedeemResponse>(
-            "/forgot/token/username/redeem",
+            "/forgot/token/email/redeem",
             JSON.parse(request.body) as ForgotTokenEmailRedeemRequest,
         );
         response.json(result);
@@ -239,7 +239,7 @@ export class UsersApi extends ServerSideApi {
         response: NextApiResponse,
     ): Promise<void> => {
         const result = await super.post<TokenRedeemResponse>(
-            "/forgot/token/username/redeem",
+            "/forgot/token/password/redeem",
             JSON.parse(request.body) as ForgotTokenEmailRedeemRequest,
         );
         response.json(result);

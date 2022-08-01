@@ -8,6 +8,7 @@
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
+    "dev": "nest start --debug --watch",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "heroku": "npm run heroku-commit && npm run heroku-push",
     "heroku-commit": "git add -A && git commit -m \"Updating Service\"",
