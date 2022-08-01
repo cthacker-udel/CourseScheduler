@@ -196,7 +196,40 @@ export class UserService {
             );
             return result.affected > 0;
         } catch (error: unknown) {
-            this.logger.error(error);
+            this.logger.error(error, (error as Error).stack);
+            return false;
+        }
+    };
+
+    updateEmail = async (username: string, email: string): Promise<boolean> => {
+        try {
+            const user = await this.usersRepository.findOneBy({ username });
+            const result = await this.usersRepository.update(
+                { username },
+                { ...user, email },
+            );
+            return result.affected > 0;
+        } catch (error: unknown) {
+            this.logger.error(error, (error as Error).stack);
+            return false;
+        }
+    };
+
+    updatePassword = async (
+        username: string,
+        password: string,
+    ): Promise<boolean> => {
+        try {
+            const user = await this.usersRepository.findOneBy({ username });
+            const encodingResult = await this.cryptoService.encode(password);
+            const { hash, iterations, salt } = encodingResult;
+            const result = await this.usersRepository.update(
+                { username },
+                { ...user, hash, iterations, salt },
+            );
+            return result.affected > 0;
+        } catch (error: unknown) {
+            this.logger.error(error, (error as Error).stack);
             return false;
         }
     };
@@ -219,7 +252,35 @@ export class UserService {
             );
             return result.affected > 0;
         } catch (error: unknown) {
-            this.logger.error(error);
+            this.logger.error(error, (error as Error).stack);
+            return false;
+        }
+    };
+
+    removeEmailToken = async (username: string): Promise<boolean> => {
+        try {
+            const user = await this.usersRepository.findOneBy({ username });
+            const result = await this.usersRepository.update(
+                { username },
+                { ...user, resetToken: { ...user.resetToken, email: {} } },
+            );
+            return result.affected > 0;
+        } catch (error: unknown) {
+            this.logger.error(error, (error as Error).stack);
+            return false;
+        }
+    };
+
+    removePasswordToken = async (username: string): Promise<boolean> => {
+        try {
+            const user = await this.usersRepository.findOneBy({ username });
+            const result = await this.usersRepository.update(
+                { username },
+                { ...user, resetToken: { ...user.resetToken, password: {} } },
+            );
+            return result.affected > 0;
+        } catch (error: unknown) {
+            this.logger.error(error, (error as Error).stack);
             return false;
         }
     };

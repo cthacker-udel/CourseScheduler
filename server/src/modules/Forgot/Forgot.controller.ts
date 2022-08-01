@@ -10,6 +10,8 @@ import {
     ValidatePasswordTokenRequest,
     ValidateTokenResponse,
     RedeemUsernameToken,
+    RedeemEmailToken,
+    RedeemPasswordToken,
 } from "src/@types";
 import { RedeemTokenResponse } from "src/@types/Forgot/RedeemToken/RedeemTokenResponse";
 import { ERROR_CODES } from "src/ErrorCode";
@@ -28,7 +30,7 @@ export class ForgotController {
         try {
             return await this.forgotService.forgotUsername(request);
         } catch (error: unknown) {
-            Logger.error(error);
+            Logger.error(error, (error as Error).stack);
             return generateApiError(
                 HttpStatus.SERVICE_UNAVAILABLE,
                 ERROR_CODES.UNKNOWN_SERVER_FAILURE,
@@ -43,7 +45,7 @@ export class ForgotController {
         try {
             return await this.forgotService.forgotPassword(request);
         } catch (error: unknown) {
-            Logger.error(error);
+            Logger.error(error, (error as Error).stack);
             return generateApiError(
                 HttpStatus.SERVICE_UNAVAILABLE,
                 ERROR_CODES.UNKNOWN_SERVER_FAILURE,
@@ -58,7 +60,7 @@ export class ForgotController {
         try {
             return await this.forgotService.forgotEmail(request);
         } catch (error: unknown) {
-            Logger.error(error);
+            Logger.error(error, (error as Error).stack);
             return generateApiError(
                 HttpStatus.SERVICE_UNAVAILABLE,
                 ERROR_CODES.UNKNOWN_SERVER_FAILURE,
@@ -73,7 +75,7 @@ export class ForgotController {
         try {
             return await this.forgotService.validateUsernameToken(request);
         } catch (error: unknown) {
-            Logger.error(error);
+            Logger.error(error, (error as Error).stack);
             return { accepted: false };
         }
     }
@@ -85,7 +87,7 @@ export class ForgotController {
         try {
             return await this.forgotService.validateEmailToken(request);
         } catch (error: unknown) {
-            Logger.error(error);
+            Logger.error(error, (error as Error).stack);
             return { accepted: false };
         }
     }
@@ -97,7 +99,7 @@ export class ForgotController {
         try {
             return await this.forgotService.validatePasswordToken(request);
         } catch (error: unknown) {
-            Logger.error(error);
+            Logger.error(error, (error as Error).stack);
             return { accepted: false };
         }
     }
@@ -109,7 +111,31 @@ export class ForgotController {
         try {
             return await this.forgotService.redeemUsernameToken(request);
         } catch (error: unknown) {
-            Logger.error(error);
+            Logger.error(error, (error as Error).stack);
+            return { changed: false };
+        }
+    }
+
+    @Post("token/email/redeem")
+    async redeemEmailToken(
+        @Body() request: RedeemEmailToken,
+    ): Promise<RedeemTokenResponse> {
+        try {
+            return await this.forgotService.redeemEmailToken(request);
+        } catch (error: unknown) {
+            Logger.error(error, (error as Error).stack);
+            return { changed: false };
+        }
+    }
+
+    @Post("token/password/redeem")
+    async redeemPasswordToken(
+        @Body() request: RedeemPasswordToken,
+    ): Promise<RedeemTokenResponse> {
+        try {
+            return await this.forgotService.redeemPasswordToken(request);
+        } catch (error: unknown) {
+            Logger.error(error, (error as Error).stack);
             return { changed: false };
         }
     }

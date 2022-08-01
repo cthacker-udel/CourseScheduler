@@ -2,6 +2,8 @@ import React from "react";
 import { Modal } from "react-bootstrap";
 import type { ForgotTokenType } from "src/@types";
 
+import { TokenEmailRedeemModal } from "./TokenEmailRedeemModal/TokenEmailRedeemModal";
+import { TokenPasswordRedeemModal } from "./TokenPasswordRedeemModal/TokenPasswordRedeemModal";
 import { TokenUsernameRedeemModal } from "./TokenUsernameRedeemModal/TokenUsernameRedeemModal";
 
 type CloseType = "email" | "password" | "username";
@@ -26,16 +28,16 @@ const generateTokenModal = (
 ): JSX.Element => {
     switch (type) {
         case "email": {
-            return <TokenUsernameRedeemModal close={close} token={token} />;
+            return <TokenEmailRedeemModal close={close} token={token} />;
         }
         case "username": {
             return <TokenUsernameRedeemModal close={close} token={token} />;
         }
         case "password": {
-            return <TokenUsernameRedeemModal close={close} token={token} />;
+            return <TokenPasswordRedeemModal close={close} token={token} />;
         }
         default: {
-            return <TokenUsernameRedeemModal close={close} token={token} />;
+            return <span />;
         }
     }
 };

@@ -5,6 +5,7 @@ import type {
     EmailValidationRequest,
     ForgotEmailRequest,
     ForgotPasswordRequest,
+    ForgotTokenEmailRedeemRequest,
     ForgotTokenUsernameRedeemRequest,
     ForgotTokenUsernameRequest,
     ForgotUsernameRequest,
@@ -160,6 +161,40 @@ export class UsersApi extends ServerSideApi {
     };
 
     /**
+     * Server-side email token validation flow
+     *
+     * @param request The request containing the username and password in the body
+     * @param response The next/api response
+     */
+    public static validateEmailToken = async (
+        request: NextApiRequest,
+        response: NextApiResponse,
+    ): Promise<void> => {
+        const result = await super.post<TokenValidationResponse>(
+            "/forgot/token/validate/email",
+            JSON.parse(request.body) as ForgotTokenUsernameRequest,
+        );
+        response.json(result);
+    };
+
+    /**
+     * Server-side password token validation flow
+     *
+     * @param request The request containing the username and email in the body
+     * @param response The next/api response
+     */
+    public static validatePasswordToken = async (
+        request: NextApiRequest,
+        response: NextApiResponse,
+    ): Promise<void> => {
+        const result = await super.post<TokenValidationResponse>(
+            "/forgot/token/validate/password",
+            JSON.parse(request.body) as ForgotTokenUsernameRequest,
+        );
+        response.json(result);
+    };
+
+    /**
      * Server-side username change token request flow
      *
      * @param request The request containing the email, password, and token in the body
@@ -172,6 +207,40 @@ export class UsersApi extends ServerSideApi {
         const result = await super.post<TokenRedeemResponse>(
             "/forgot/token/username/redeem",
             JSON.parse(request.body) as ForgotTokenUsernameRedeemRequest,
+        );
+        response.json(result);
+    };
+
+    /**
+     * Server-side email change token request flow
+     *
+     * @param request The request containing the username, password, and token in the body
+     * @param response The next/api response
+     */
+    public static changeEmail = async (
+        request: NextApiRequest,
+        response: NextApiResponse,
+    ): Promise<void> => {
+        const result = await super.post<TokenRedeemResponse>(
+            "/forgot/token/email/redeem",
+            JSON.parse(request.body) as ForgotTokenEmailRedeemRequest,
+        );
+        response.json(result);
+    };
+
+    /**
+     * Server-side email change token request flow
+     *
+     * @param request The request containing the username, password, and token in the body
+     * @param response The next/api response
+     */
+    public static changePassword = async (
+        request: NextApiRequest,
+        response: NextApiResponse,
+    ): Promise<void> => {
+        const result = await super.post<TokenRedeemResponse>(
+            "/forgot/token/password/redeem",
+            JSON.parse(request.body) as ForgotTokenEmailRedeemRequest,
         );
         response.json(result);
     };

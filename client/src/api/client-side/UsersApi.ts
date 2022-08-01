@@ -4,6 +4,10 @@ import type {
     EmailValidationRequest,
     ForgotEmailRequest,
     ForgotPasswordRequest,
+    ForgotTokenEmailRedeemRequest,
+    ForgotTokenEmailRequest,
+    ForgotTokenPasswordRedeemRequest,
+    ForgotTokenPasswordRequest,
     ForgotTokenUsernameRedeemRequest,
     ForgotTokenUsernameRequest,
     ForgotUsernameRequest,
@@ -148,6 +152,38 @@ export class UsersApi extends ClientSideApi {
     };
 
     /**
+     * Represents an forgot email token redemption flow for the user to validate their token before committing the edit
+     *
+     * @param request The request, contains username and password
+     * @returns The api result, could either be the token is accepted or not
+     */
+    public static validateEmailToken = async (
+        request: ForgotTokenEmailRequest,
+    ): Promise<TokenValidationResponse> => {
+        const result = await super.post<TokenValidationResponse>(
+            "/forgot/email/validate",
+            request,
+        );
+        return result;
+    };
+
+    /**
+     * Represents an forgot password token redemption flow for the user to validate their token before committing the edit
+     *
+     * @param request The request, contains username and password
+     * @returns The api result, could either be the token is accepted or not
+     */
+    public static validatePasswordToken = async (
+        request: ForgotTokenPasswordRequest,
+    ): Promise<TokenValidationResponse> => {
+        const result = await super.post<TokenValidationResponse>(
+            "/forgot/password/validate",
+            request,
+        );
+        return result;
+    };
+
+    /**
      * Represents an change username request, which is the result of the token request
      *
      * @param request The request to change the user's username
@@ -158,6 +194,38 @@ export class UsersApi extends ClientSideApi {
     ): Promise<TokenRedeemResponse> => {
         const result = await super.post<TokenRedeemResponse>(
             "/forgot/username/redeem",
+            request,
+        );
+        return result;
+    };
+
+    /**
+     * Represents an change email request, which is the result of the token request
+     *
+     * @param request The request to change the user's email
+     * @returns Whether the change was successful or not
+     */
+    public static changeEmailByToken = async (
+        request: ForgotTokenEmailRedeemRequest,
+    ): Promise<TokenRedeemResponse> => {
+        const result = await super.post<TokenRedeemResponse>(
+            "/forgot/email/redeem",
+            request,
+        );
+        return result;
+    };
+
+    /**
+     * Represents an change password request, which is the result of the token request
+     *
+     * @param request The request to change the user's password
+     * @returns Whether the change was successful or not
+     */
+    public static changePasswordByToken = async (
+        request: ForgotTokenPasswordRedeemRequest,
+    ): Promise<TokenRedeemResponse> => {
+        const result = await super.post<TokenRedeemResponse>(
+            "/forgot/password/redeem",
             request,
         );
         return result;
