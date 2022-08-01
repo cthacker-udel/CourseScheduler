@@ -7,6 +7,8 @@ import type { ForgotTokenType } from "src/@types";
 
 import { TokenRedeemModal } from "./TokenRedeem/TokenRedeemModal";
 
+type CloseType = "email" | "password" | "username";
+
 const TOKENS_CONSTANTS = {
     email: {
         label: "Email token",
@@ -64,7 +66,7 @@ const TOKENS_VALIDATION_MESSAGES = {
  * @returns The token dashboard
  */
 export const Tokens = (): JSX.Element => {
-    const { formState, register, watch } = useForm({
+    const { formState, register, setValue, watch } = useForm({
         defaultValues: { email: "", password: "", username: "" },
         mode: "all",
         reValidateMode: "onChange",
@@ -326,8 +328,11 @@ export const Tokens = (): JSX.Element => {
             </span>
             {showTokenModal && tokenModalType && (
                 <TokenRedeemModal
-                    close={(): void => {
+                    close={(type?: CloseType): void => {
                         setShowTokenModal(false);
+                        if (type) {
+                            setValue(type, "");
+                        }
                     }}
                     token={watch()[tokenModalType]}
                     type={tokenModalType}

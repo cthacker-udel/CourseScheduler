@@ -1,8 +1,3 @@
-/* eslint-disable jest/require-hook -- disabled */
+import { UsersApi } from "src/api/server-side/UsersApi";
 
-/**
- * Random
- */
-export const test = (): void => {
-    console.log("test");
-};
+export default UsersApi.changeUsername;

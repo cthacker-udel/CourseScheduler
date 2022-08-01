@@ -8,8 +8,12 @@ import { useForm } from "react-hook-form";
 import type { ApiSuccess } from "src/@types";
 import { UsersApi } from "src/api/client-side/UsersApi";
 import { EMAIL, USERNAME } from "src/common";
+import { useNotificationContext } from "src/context/NotificationContext/useNotificationContext";
+
+type CloseType = "email" | "password" | "username";
 
 type TokenModalProps = {
+    close: (_type?: CloseType) => void;
     token: string;
 };
 
@@ -124,8 +128,10 @@ const USERNAME_USEFORM_RULES = {
  * @param props The token to redeem
  */
 export const TokenUsernameRedeemModal = ({
+    close,
     token,
 }: TokenModalProps): JSX.Element => {
+    const { addNotification } = useNotificationContext();
     const {
         getValues,
         formState,
@@ -146,8 +152,6 @@ export const TokenUsernameRedeemModal = ({
     });
 
     const { errors, dirtyFields, touchedFields } = formState;
-
-    console.log(errors);
 
     return (
         <>
@@ -299,7 +303,6 @@ export const TokenUsernameRedeemModal = ({
                                             username: enteredUsername,
                                         },
                                     );
-                                    console.log("result = ", result);
                                     if (
                                         (result as ApiSuccess).status ===
                                         CONSTANTS.signUpUsernameErrorStatus
@@ -317,13 +320,19 @@ export const TokenUsernameRedeemModal = ({
                     />
                     {(touchedFields.newUsername || dirtyFields.newUsername) &&
                         errors.newUsername && (
-                            <Form.Control.Feedback className="text-center" type="invalid">
+                            <Form.Control.Feedback
+                                className="text-center"
+                                type="invalid"
+                            >
                                 {errors.newUsername.message}
                             </Form.Control.Feedback>
                         )}
                     {(touchedFields.newUsername || dirtyFields.newUsername) &&
                         !errors.newUsername && (
-                            <Form.Control.Feedback className="text-center" type="valid">
+                            <Form.Control.Feedback
+                                className="text-center"
+                                type="valid"
+                            >
                                 {VALIDATION_MESSAGES.username.valid}
                             </Form.Control.Feedback>
                         )}
@@ -345,9 +354,40 @@ export const TokenUsernameRedeemModal = ({
                                 token,
                             });
                         if (isTokenValid.accepted) {
-                            console.log("accepted");
+                            const response =
+                                await UsersApi.changeUsernameByToken({
+                                    email: getValues().email,
+                                    newUsername: getValues().newUsername,
+                                    password: getValues().password,
+                                    token,
+                                });
+                            if (response.changed) {
+                                addNotification({
+                                    message: {
+                                        body: "Your username has officially been changed!",
+                                        header: "Username token redemption success!",
+                                    },
+                                    variant: "success",
+                                });
+                            } else {
+                                addNotification({
+                                    message: {
+                                        body: "Your username has not been changed! Invalid Token or the operation failed.",
+                                        header: "Username token redemption failure!",
+                                    },
+                                    variant: "error",
+                                });
+                            }
+                            close("username");
                         } else {
-                            console.log("denied");
+                            addNotification({
+                                message: {
+                                    body: "Your username token was invalid or the operation failed, please try again.",
+                                    header: "Username token redemption failure!",
+                                },
+                                variant: "error",
+                            });
+                            close("username");
                         }
                     }}
                     variant={

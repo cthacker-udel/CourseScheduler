@@ -5,11 +5,13 @@ import {
     ForgotPasswordRequest,
     ForgotTokenResponse,
     ForgotUsernameRequest,
+    RedeemUsernameToken,
     ValidateEmailTokenRequest,
     ValidatePasswordTokenRequest,
     ValidateTokenResponse,
     ValidateUsernameTokenRequest,
 } from "src/@types";
+import { RedeemTokenResponse } from "src/@types/Forgot/RedeemToken/RedeemTokenResponse";
 import { User } from "src/entities";
 import { ERROR_CODES } from "src/ErrorCode";
 import { generateApiError } from "src/helpers";
@@ -271,5 +273,22 @@ export class ForgotService {
         }
         Logger.log("Token denied");
         return { accepted: false };
+    };
+
+    redeemUsernameToken = async (
+        request: RedeemUsernameToken,
+    ): Promise<RedeemTokenResponse> => {
+        const isTokenValid = this.validateUsernameToken(request);
+        if (isTokenValid) {
+            const result = await this.userService.updateUsername(
+                request.email,
+                request.newUsername,
+            );
+            if (result) {
+                await this.userService.removeUsernameToken(request.email);
+            }
+            return { changed: result };
+        }
+        return { changed: false };
     };
 }

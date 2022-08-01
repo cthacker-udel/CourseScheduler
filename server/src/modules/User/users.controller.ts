@@ -25,9 +25,6 @@ export class UserController {
             const doesUsernameExist = await this.usersService.doesUsernameExist(
                 req.username,
             );
-            this.logger.log(
-                `Username Validation on ${req.username}: ${doesUsernameExist}`,
-            );
             return generateApiSuccess(
                 doesUsernameExist ? HttpStatus.OK : HttpStatus.BAD_REQUEST,
             );

@@ -2,10 +2,14 @@ import type { ApiError } from "./api/ApiError";
 import type { ApiSuccess } from "./api/ApiSuccess";
 import type { ForgotEmailRequest } from "./api/Forgot/ForgotEmailRequest";
 import type { ForgotPasswordRequest } from "./api/Forgot/ForgotPasswordRequest";
+import type { ForgotTokenEmailRedeemRequest } from "./api/Forgot/ForgotTokenChangeRequest/ForgotTokenEmailRedeemRequest";
+import type { ForgotTokenPasswordRedeemRequest } from "./api/Forgot/ForgotTokenChangeRequest/ForgotTokenPasswordRedeemRequest";
+import type { ForgotTokenUsernameRedeemRequest } from "./api/Forgot/ForgotTokenChangeRequest/ForgotTokenUsernameRedeemRequest";
 import type { ForgotTokenEmailRequest } from "./api/Forgot/ForgotTokenEmailRequest";
 import type { ForgotTokenPasswordRequest } from "./api/Forgot/ForgotTokenPasswordRequest";
 import type { ForgotTokenUsernameRequest } from "./api/Forgot/ForgotTokenUsernameRequest";
 import type { ForgotUsernameRequest } from "./api/Forgot/ForgotUsernameRequest";
+import type { TokenRedeemResponse } from "./api/Forgot/TokenRedeemResponse";
 import type { TokenResponse } from "./api/Forgot/TokenResponse";
 import type { TokenValidationResponse } from "./api/Forgot/TokenValidationResponse";
 import type { LoginRequest } from "./api/Login/LoginRequest";
@@ -32,9 +36,12 @@ export type {
     EmailValidationRequest,
     ForgotEmailRequest,
     ForgotPasswordRequest,
+    ForgotTokenEmailRedeemRequest,
     ForgotTokenEmailRequest,
+    ForgotTokenPasswordRedeemRequest,
     ForgotTokenPasswordRequest,
     ForgotTokenType,
+    ForgotTokenUsernameRedeemRequest,
     ForgotTokenUsernameRequest,
     ForgotUsernameRequest,
     iNotificationContext,
@@ -49,6 +56,7 @@ export type {
     Plan,
     Semester,
     SignUpRequest,
+    TokenRedeemResponse,
     TokenResponse,
     TokenValidationResponse,
     UsernameValidationRequest,

@@ -65,6 +65,7 @@
     "devDependencies": {
         "@babel/cli": "^7.18.9",
         "@babel/core": "^7.18.9",
+        "@next/eslint-plugin-next": "^12.2.3",
         "@types/react": "^18.0.12",
         "@types/react-bootstrap": "^0.32.30",
         "@types/react-csv": "^1.1.2",

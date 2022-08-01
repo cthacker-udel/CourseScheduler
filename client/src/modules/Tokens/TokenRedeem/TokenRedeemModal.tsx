@@ -4,8 +4,10 @@ import type { ForgotTokenType } from "src/@types";
 
 import { TokenUsernameRedeemModal } from "./TokenUsernameRedeemModal/TokenUsernameRedeemModal";
 
+type CloseType = "email" | "password" | "username";
+
 type TokenRedeemModalProps = {
-    close: () => void;
+    close: (_type?: CloseType) => void;
     type: ForgotTokenType;
     token: string;
 };
@@ -20,19 +22,20 @@ type TokenRedeemModalProps = {
 const generateTokenModal = (
     type: ForgotTokenType,
     token: string,
+    close: (_type?: CloseType) => void,
 ): JSX.Element => {
     switch (type) {
         case "email": {
-            return <TokenUsernameRedeemModal token={token} />;
+            return <TokenUsernameRedeemModal close={close} token={token} />;
         }
         case "username": {
-            return <TokenUsernameRedeemModal token={token} />;
+            return <TokenUsernameRedeemModal close={close} token={token} />;
         }
         case "password": {
-            return <TokenUsernameRedeemModal token={token} />;
+            return <TokenUsernameRedeemModal close={close} token={token} />;
         }
         default: {
-            return <TokenUsernameRedeemModal token={token} />;
+            return <TokenUsernameRedeemModal close={close} token={token} />;
         }
     }
 };
@@ -53,6 +56,6 @@ export const TokenRedeemModal = ({
         }}
         show
     >
-        {generateTokenModal(type, token)}
+        {generateTokenModal(type, token, close)}
     </Modal>
 );
