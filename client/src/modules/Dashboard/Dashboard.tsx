@@ -10,7 +10,6 @@ import React from "react";
 import { OverlayTrigger } from "react-bootstrap";
 import type { OverlayInjectedProps } from "react-bootstrap/esm/Overlay";
 import { generateTooltip } from "src/helpers";
-import { Logger } from "src/log/Logger";
 
 import styles from "./Dashboard.module.css";
 
@@ -22,25 +21,6 @@ import styles from "./Dashboard.module.css";
 export const Dashboard = (): JSX.Element => {
     const router = useRouter();
 
-    React.useEffect(() => {
-        /**
-         * Prefetches all the routes
-         */
-        const preFetch = async (): Promise<void> => {
-            await router.prefetch("/courses");
-            await router.prefetch("/semesters");
-            await router.prefetch("/plans");
-            await router.prefetch("course-list");
-        };
-        preFetch()
-            .then((): void => {
-                Logger.log("info", "Fetched all routes for Dashboard.tsx");
-            })
-            .catch((error: unknown): void => {
-                Logger.log("error", error as string);
-            });
-    }, [router]);
-
     return (
         <div className="h-100 mx-auto w-50 d-flex flex-column align-items-center justify-content-center">
             <div className="fs-3 fw-bolder text-center mb-4 text-wrap border-bottom pb-1">
@@ -48,7 +28,12 @@ export const Dashboard = (): JSX.Element => {
             </div>
             <div>
                 <div className="d-flex flex-row">
-                    <span className="p-3">
+                    <span
+                        className="p-3"
+                        onClick={async (): Promise<void> => {
+                            await router.push("/dashboard/course");
+                        }}
+                    >
                         <OverlayTrigger
                             delay={{ hide: 100, show: 500 }}
                             overlay={(

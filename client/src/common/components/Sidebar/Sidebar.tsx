@@ -19,6 +19,7 @@ import { generateTooltip } from "src/helpers";
 import styles from "./Sidebar.module.css";
 
 const SIDEBAR_CONSTANTS = {
+    DISPLAY_TIMEOUT: 2750,
     HEADER: "Options",
 };
 
@@ -29,9 +30,17 @@ const SIDEBAR_CONSTANTS = {
  */
 export const Sidebar = (): JSX.Element => {
     const [isClosed, setIsClosed] = React.useState<boolean>(true);
+    const [display, setDisplay] = React.useState<boolean>(false);
     const router = useRouter();
+
+    React.useEffect(() => {
+        setTimeout(() => {
+            setDisplay(true);
+        }, SIDEBAR_CONSTANTS.DISPLAY_TIMEOUT);
+    }, []);
+
     return (
-        <>
+        <span className={`${display ? "" : "invisible"}`}>
             <span
                 className={`${
                     isClosed ? styles.sidebar_closed : styles.sidebar_open
@@ -71,7 +80,11 @@ export const Sidebar = (): JSX.Element => {
                     {SIDEBAR_CONSTANTS.HEADER}
                 </span>
                 <span
-                    className={`${styles.sidebar_individual_content} d-flex flex-row justify-content-center pt-2 border-bottom pb-2`}
+                    className={`${styles.sidebar_individual_content} ${
+                        isClosed
+                            ? styles.sidebar_content_closed_inner
+                            : styles.sidebar_content_open_inner
+                    } justify-content-center pt-2 border-bottom pb-2`}
                     onClick={async (): Promise<void> => {
                         await router.push("/");
                     }}
@@ -81,7 +94,11 @@ export const Sidebar = (): JSX.Element => {
                     <span className="fw-bold">{"Home"}</span>
                 </span>
                 <span
-                    className={`${styles.sidebar_individual_content} d-flex flex-row justify-content-center pt-2 border-bottom pb-2`}
+                    className={`${styles.sidebar_individual_content}  ${
+                        isClosed
+                            ? styles.sidebar_content_closed_inner
+                            : styles.sidebar_content_open_inner
+                    } justify-content-center pt-2 border-bottom pb-2`}
                     onClick={async (): Promise<void> => {
                         await router.push("/courses");
                     }}
@@ -91,7 +108,11 @@ export const Sidebar = (): JSX.Element => {
                     <span className="fw-bold">{"Courses"}</span>
                 </span>
                 <span
-                    className={`${styles.sidebar_individual_content} d-flex flex-row justify-content-center pt-2 border-bottom pb-2`}
+                    className={`${styles.sidebar_individual_content}  ${
+                        isClosed
+                            ? styles.sidebar_content_closed_inner
+                            : styles.sidebar_content_open_inner
+                    } justify-content-center pt-2 border-bottom pb-2`}
                     onClick={async (): Promise<void> => {
                         await router.push("/semesters");
                     }}
@@ -104,7 +125,11 @@ export const Sidebar = (): JSX.Element => {
                     <span className="fw-bold">{"Semesters"}</span>
                 </span>
                 <span
-                    className={`${styles.sidebar_individual_content} d-flex flex-row justify-content-center pt-2 border-bottom pb-2`}
+                    className={`${styles.sidebar_individual_content}  ${
+                        isClosed
+                            ? styles.sidebar_content_closed_inner
+                            : styles.sidebar_content_open_inner
+                    } justify-content-center pt-2 border-bottom pb-2`}
                     onClick={async (): Promise<void> => {
                         await router.push("/plans");
                     }}
@@ -117,7 +142,11 @@ export const Sidebar = (): JSX.Element => {
                     <span className="fw-bold">{"Plans"}</span>
                 </span>
                 <span
-                    className={`${styles.sidebar_individual_content} d-flex flex-row justify-content-center pt-2 border-bottom pb-2`}
+                    className={`${styles.sidebar_individual_content}  ${
+                        isClosed
+                            ? styles.sidebar_content_closed_inner
+                            : styles.sidebar_content_open_inner
+                    } justify-content-center pt-2 border-bottom pb-2`}
                     onClick={async (): Promise<void> => {
                         await router.push("/imports");
                     }}
@@ -130,7 +159,11 @@ export const Sidebar = (): JSX.Element => {
                     <span className="fw-bold">{"Downloads"}</span>
                 </span>
                 <span
-                    className={`${styles.sidebar_individual_content} d-flex flex-row justify-content-center pt-2 border-bottom pb-2`}
+                    className={`${styles.sidebar_individual_content}  ${
+                        isClosed
+                            ? styles.sidebar_content_closed_inner
+                            : styles.sidebar_content_open_inner
+                    } justify-content-center pt-2 border-bottom pb-2`}
                     onClick={async (): Promise<void> => {
                         await router.push("/exports");
                     }}
@@ -143,7 +176,11 @@ export const Sidebar = (): JSX.Element => {
                     <span className="fw-bold">{"Exports"}</span>
                 </span>
                 <span
-                    className={`${styles.sidebar_individual_content} d-flex flex-row justify-content-center pt-2 border-bottom pb-2`}
+                    className={`${styles.sidebar_individual_content}  ${
+                        isClosed
+                            ? styles.sidebar_content_closed_inner
+                            : styles.sidebar_content_open_inner
+                    } justify-content-center pt-2 border-bottom pb-2`}
                     onClick={async (): Promise<void> => {
                         await router.push("/tokens");
                     }}
@@ -153,7 +190,11 @@ export const Sidebar = (): JSX.Element => {
                     <span className="fw-bold">{"Tokens"}</span>
                 </span>
                 <span
-                    className={`${styles.sidebar_individual_content} d-flex flex-row justify-content-center pt-2 border-bottom pb-2`}
+                    className={`${styles.sidebar_individual_content}  ${
+                        isClosed
+                            ? styles.sidebar_content_closed_inner
+                            : styles.sidebar_content_open_inner
+                    } justify-content-center pt-2 border-bottom pb-2`}
                     onClick={async (): Promise<void> => {
                         await router.push("/login");
                     }}
@@ -166,6 +207,6 @@ export const Sidebar = (): JSX.Element => {
                     <span className="fw-bold">{"Login"}</span>
                 </span>
             </div>
-        </>
+        </span>
     );
 };
