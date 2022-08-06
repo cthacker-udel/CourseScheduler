@@ -37,16 +37,16 @@ export const Dashboard = (): JSX.Element => {
                 Logger.log("info", "Fetched all routes for Dashboard.tsx");
             })
             .catch((error: unknown): void => {
-                Logger.log("error", error);
+                Logger.log("error", error as string);
             });
     }, [router]);
 
     return (
-        <div className="d-flex flex-column h-100 justify-content-center align-items-center">
-            <div className="fs-3 fw-bolder text-center mb-4 text-wrap">
+        <div className="h-100 mx-auto w-50 d-flex flex-column align-items-center justify-content-center">
+            <div className="fs-3 fw-bolder text-center mb-4 text-wrap border-bottom pb-1">
                 {"Course Scheduler Dashboard"}
             </div>
-            <div className="d-flex flex-column">
+            <div>
                 <div className="d-flex flex-row">
                     <span className="p-3">
                         <OverlayTrigger
