@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/indent -- prettier - eslint errors */
 import chunk from "lodash.chunk";
 import React, { ElementType } from "react";
-import { Pagination, Placeholder, Table } from "react-bootstrap";
+import { ListGroup, Pagination, Placeholder, Table } from "react-bootstrap";
 import type { Course } from "src/@types";
 import { truncateCourseDescription } from "src/helpers";
 import { useCourses } from "src/hooks/useCourses";
@@ -31,7 +31,7 @@ export const Read = (): JSX.Element => {
     );
 
     return (
-        <div className="h-100 d-flex flex-column justify-content-center align-items-center">
+        <>
             <Table
                 bordered
                 className={`${styles.course_table} w-75 mx-auto`}
@@ -77,40 +77,72 @@ export const Read = (): JSX.Element => {
                                 )}
                             </td>
                             <td className="align-middle">
-                                {eachCourse.prereqs ? (
-                                    eachCourse.prereqs
-                                ) : (
+                                {eachCourse.prereqs === "" ? (
                                     <span className="fw-light">
                                         {"No Pre-Requisites"}
                                     </span>
+                                ) : (
+                                    eachCourse.prereqs
                                 )}
                             </td>
                             <td className="align-middle">
-                                {eachCourse.ubreadth ? (
-                                    eachCourse.ubreadth
-                                ) : (
+                                {eachCourse.ubreadth === "" ? (
                                     <span className="fw-light">
                                         {"No Breadth Satisfaction"}
                                     </span>
+                                ) : (
+                                    eachCourse.ubreadth
                                 )}
                             </td>
                         </tr>
                     ))}
                     {segmentedCourses[page].length < pageSize &&
-                        new Array(pageSize - segmentedCourses[page].length).map(
-                            (_, i) => (
-                                <Placeholder
-                                    animation="glow"
-                                    xs={7}
-                                    key={`placeholder-${i}`}
-                                >
-                                    <Placeholder animation="glow" xs={7} />
-                                </Placeholder>
-                            ),
-                        )}
+                        new Array(pageSize - segmentedCourses[page].length)
+                            // eslint-disable-next-line no-magic-numbers -- disabled
+                            .fill(0)
+                            .map((_, i) => (
+                                <tr key={`placeholder-row-${i}`}>
+                                    <Placeholder
+                                        animation="wave"
+                                        as="td"
+                                        bg="secondary"
+                                        className="opacity-75"
+                                    />
+                                    <Placeholder
+                                        animation="wave"
+                                        as="td"
+                                        bg="secondary"
+                                        className="opacity-75"
+                                    />{" "}
+                                    <Placeholder
+                                        animation="wave"
+                                        as="td"
+                                        bg="secondary"
+                                        className="opacity-75"
+                                    />{" "}
+                                    <Placeholder
+                                        animation="wave"
+                                        as="td"
+                                        bg="secondary"
+                                        className="opacity-75"
+                                    />{" "}
+                                    <Placeholder
+                                        animation="wave"
+                                        as="td"
+                                        bg="secondary"
+                                        className="opacity-75"
+                                    />{" "}
+                                    <Placeholder
+                                        animation="wave"
+                                        as="td"
+                                        bg="secondary"
+                                        className="opacity-75"
+                                    />
+                                </tr>
+                            ))}
                 </tbody>
             </Table>
-            <Pagination>
+            <Pagination className="w-50 mx-auto d-flex flex-row justify-content-center">
                 {segmentedCourses.map((_, i) => (
                     <Pagination.Item
                         active={page === i}
@@ -124,6 +156,6 @@ export const Read = (): JSX.Element => {
                     </Pagination.Item>
                 ))}
             </Pagination>
-        </div>
+        </>
     );
 };
