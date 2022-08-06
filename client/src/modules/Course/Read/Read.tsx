@@ -1,15 +1,17 @@
 /* eslint-disable @typescript-eslint/indent -- prettier - eslint errors */
 import chunk from "lodash.chunk";
-import React from "react";
-import { Pagination, Table } from "react-bootstrap";
+import React, { ElementType } from "react";
+import { Pagination, Placeholder, Table } from "react-bootstrap";
 import type { Course } from "src/@types";
 import { truncateCourseDescription } from "src/helpers";
 import { useCourses } from "src/hooks/useCourses";
 
+import styles from "./Read.module.css";
+
 const CONSTANTS = {
-    DESCRIPTION_LENGTH: 75,
     DEFAULT_PAGE: 0,
     DEFAULT_PAGE_SIZE: 10,
+    DESCRIPTION_LENGTH: 75,
     ID_INDEX: 1,
     NAME_INDEX: 1,
 };
@@ -30,7 +32,12 @@ export const Read = (): JSX.Element => {
 
     return (
         <div className="h-100 d-flex flex-column justify-content-center align-items-center">
-            <Table bordered className="w-75 mx-auto" hover striped>
+            <Table
+                bordered
+                className={`${styles.course_table} w-75 mx-auto`}
+                hover
+                striped
+            >
                 <thead>
                     <tr>
                         <th>{"ID"}</th>
@@ -89,6 +96,18 @@ export const Read = (): JSX.Element => {
                             </td>
                         </tr>
                     ))}
+                    {segmentedCourses[page].length < pageSize &&
+                        new Array(pageSize - segmentedCourses[page].length).map(
+                            (_, i) => (
+                                <Placeholder
+                                    animation="glow"
+                                    xs={7}
+                                    key={`placeholder-${i}`}
+                                >
+                                    <Placeholder animation="glow" xs={7} />
+                                </Placeholder>
+                            ),
+                        )}
                 </tbody>
             </Table>
             <Pagination>
