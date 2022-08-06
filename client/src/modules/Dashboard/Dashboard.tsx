@@ -10,7 +10,6 @@ import React from "react";
 import { OverlayTrigger } from "react-bootstrap";
 import type { OverlayInjectedProps } from "react-bootstrap/esm/Overlay";
 import { generateTooltip } from "src/helpers";
-import { Logger } from "src/log/Logger";
 
 import styles from "./Dashboard.module.css";
 
