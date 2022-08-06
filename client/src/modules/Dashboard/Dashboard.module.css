@@ -1,0 +1,21 @@
+@keyframes dashboard_icon_anim {
+    from {
+        background-color: transparent;
+    }
+    to {
+        background-color: lightblue;
+        border-color: black;
+    }
+}
+
+.dashboard_icon {
+    cursor: pointer;
+}
+
+.dashboard_icon:hover {
+    animation-name: dashboard_icon_anim;
+    animation-duration: 2s;
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: forwards;
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+}
