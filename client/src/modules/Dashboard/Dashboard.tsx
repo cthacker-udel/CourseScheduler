@@ -20,26 +20,7 @@ import styles from "./Dashboard.module.css";
  * @returns The dashboard component
  */
 export const Dashboard = (): JSX.Element => {
-    const router = useRouter();
-
-    React.useEffect(() => {
-        /**
-         * Prefetches all the routes
-         */
-        const preFetch = async (): Promise<void> => {
-            await router.prefetch("/courses");
-            await router.prefetch("/semesters");
-            await router.prefetch("/plans");
-            await router.prefetch("course-list");
-        };
-        preFetch()
-            .then((): void => {
-                Logger.log("info", "Fetched all routes for Dashboard.tsx");
-            })
-            .catch((error: unknown): void => {
-                Logger.log("error", error as string);
-            });
-    }, [router]);
+    const _router = useRouter();
 
     return (
         <div className="h-100 mx-auto w-50 d-flex flex-column align-items-center justify-content-center">
