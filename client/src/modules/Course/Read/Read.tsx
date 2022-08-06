@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/indent -- prettier - eslint errors */
 import chunk from "lodash.chunk";
 import React from "react";
-import { Table } from "react-bootstrap";
+import { Pagination, Table } from "react-bootstrap";
 import type { Course } from "src/@types";
 import { truncateCourseDescription } from "src/helpers";
 import { useCourses } from "src/hooks/useCourses";
@@ -91,6 +91,20 @@ export const Read = (): JSX.Element => {
                     ))}
                 </tbody>
             </Table>
+            <Pagination>
+                {segmentedCourses.map((_, i) => (
+                    <Pagination.Item
+                        active={page === i}
+                        // eslint-disable-next-line react/no-array-index-key -- fine for pagination
+                        key={`pagination-${i}`}
+                        onClick={(): void => {
+                            setPage(i);
+                        }}
+                    >
+                        {i}
+                    </Pagination.Item>
+                ))}
+            </Pagination>
         </div>
     );
 };
