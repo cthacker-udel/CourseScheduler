@@ -19,7 +19,7 @@ import styles from "./Dashboard.module.css";
  * @returns The dashboard component
  */
 export const Dashboard = (): JSX.Element => {
-    const _router = useRouter();
+    const router = useRouter();
 
     return (
         <div className="h-100 mx-auto w-50 d-flex flex-column align-items-center justify-content-center">
@@ -28,7 +28,12 @@ export const Dashboard = (): JSX.Element => {
             </div>
             <div>
                 <div className="d-flex flex-row">
-                    <span className="p-3">
+                    <span
+                        className="p-3"
+                        onClick={async (): Promise<void> => {
+                            await router.push("/dashboard/course");
+                        }}
+                    >
                         <OverlayTrigger
                             delay={{ hide: 100, show: 500 }}
                             overlay={(
