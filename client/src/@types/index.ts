@@ -19,6 +19,9 @@ import type { SignUpRequest } from "./api/SignUp/SignUpRequest";
 import type { UsernameValidationRequest } from "./api/SignUp/UsernameValidationRequest";
 import type { Course } from "./Course/Course";
 import type { MockCourse } from "./Course/MockCourse";
+import type { CourseFieldSort, CourseSort } from "./CourseSort/CourseSort";
+import type { CourseSortingAction } from "./CourseSorting/CourseSortingAction";
+import type { CourseSortingState } from "./CourseSorting/CourseSortingState";
 import type { ForgotTokenType } from "./ForgotToken/ForgotTokenType";
 import type { LoginPageReducerAction } from "./Login/LoginPageReducerAction";
 import type { LoginPageReducerActionType } from "./Login/LoginPageReducerActionType";
@@ -33,6 +36,10 @@ export type {
     ApiError,
     ApiSuccess,
     Course,
+    CourseFieldSort,
+    CourseSort,
+    CourseSortingAction,
+    CourseSortingState,
     EmailValidationRequest,
     ForgotEmailRequest,
     ForgotPasswordRequest,

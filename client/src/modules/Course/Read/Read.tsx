@@ -1,8 +1,10 @@
 /* eslint-disable @typescript-eslint/indent -- prettier - eslint errors */
+
 import chunk from "lodash.chunk";
-import React, { ElementType } from "react";
-import { ListGroup, Pagination, Placeholder, Table } from "react-bootstrap";
-import type { Course } from "src/@types";
+import React from "react";
+import { Pagination, Placeholder, Table } from "react-bootstrap";
+import type { Course, CourseSort } from "src/@types";
+import { SORTING } from "src/enums";
 import { truncateCourseDescription } from "src/helpers";
 import { useCourses } from "src/hooks/useCourses";
 
@@ -31,6 +33,14 @@ export const Read = (): JSX.Element => {
         () => chunk(courses, pageSize),
         [pageSize, courses],
     );
+    const [sorting, setSorting] = React.useState<CourseSort>({
+        breadthRequirements: SORTING.NEUTRAL,
+        credits: SORTING.NEUTRAL,
+        description: SORTING.NEUTRAL,
+        id: SORTING.NEUTRAL,
+        name: SORTING.NEUTRAL,
+        preRequisites: SORTING.NEUTRAL,
+    });
 
     return (
         <>
