@@ -61,6 +61,7 @@ export const Read = (): JSX.Element => {
     React.useEffect(() => {
         if (sortingState !== undefined) {
             const generatedSort = generateSortingOrderBy(sortingState);
+            console.log("generatedSort = ", generatedSort);
             if (generatedSort.commenceSort && isSorting) {
                 sortCourses(
                     generatedSort.sortingFields,
@@ -89,89 +90,107 @@ export const Read = (): JSX.Element => {
             >
                 <thead>
                     <tr>
-                        <th className="d-flex flex-row">
-                            {"ID"}
-                            <FontAwesomeIcon
-                                className="my-auto ps-2"
-                                icon={generateSortingIcon(sortingState.id.sort)}
-                                onClick={(): void => {
-                                    setIsSorting(true);
-                                    sortingDispatch({ type: "id" });
-                                }}
-                                role="button"
-                            />
+                        <th>
+                            <div className="d-flex flex-row">
+                                <span>{"ID"}</span>
+                                <FontAwesomeIcon
+                                    className="my-auto ps-2"
+                                    icon={generateSortingIcon(
+                                        sortingState.id.sort,
+                                    )}
+                                    onClick={(): void => {
+                                        setIsSorting(true);
+                                        sortingDispatch({ type: "id" });
+                                    }}
+                                    role="button"
+                                />
+                            </div>
                         </th>
                         <th>
-                            {"Name"}
-                            <FontAwesomeIcon
-                                className="my-auto ps-2"
-                                icon={generateSortingIcon(
-                                    sortingState.name.sort,
-                                )}
-                                onClick={(): void => {
-                                    setIsSorting(true);
-                                    sortingDispatch({ type: "name" });
-                                }}
-                                role="button"
-                            />
-                        </th>
-                        <th className="d-flex flex-row">
-                            {"Credits"}
-                            <FontAwesomeIcon
-                                className="my-auto ps-2"
-                                icon={generateSortingIcon(
-                                    sortingState.credits.sort,
-                                )}
-                                onClick={(): void => {
-                                    setIsSorting(true);
-                                    sortingDispatch({ type: "credits" });
-                                }}
-                                role="button"
-                            />
+                            <div className="d-flex flex-row">
+                                <span>{"Name"}</span>
+                                <FontAwesomeIcon
+                                    className="my-auto ps-2"
+                                    icon={generateSortingIcon(
+                                        sortingState.name.sort,
+                                    )}
+                                    onClick={(): void => {
+                                        setIsSorting(true);
+                                        sortingDispatch({ type: "name" });
+                                    }}
+                                    role="button"
+                                />
+                            </div>
                         </th>
                         <th>
-                            {"Description"}
-                            <FontAwesomeIcon
-                                className="my-auto ps-2"
-                                icon={generateSortingIcon(
-                                    sortingState.description.sort,
-                                )}
-                                onClick={(): void => {
-                                    setIsSorting(true);
-                                    sortingDispatch({ type: "description" });
-                                }}
-                                role="button"
-                            />
+                            <div className="d-flex flex-row">
+                                <span>{"Credits"}</span>
+                                <FontAwesomeIcon
+                                    className="my-auto ps-2"
+                                    icon={generateSortingIcon(
+                                        sortingState.credits.sort,
+                                    )}
+                                    onClick={(): void => {
+                                        setIsSorting(true);
+                                        sortingDispatch({ type: "credits" });
+                                    }}
+                                    role="button"
+                                />
+                            </div>
                         </th>
                         <th>
-                            {"Pre Requisites"}
-                            <FontAwesomeIcon
-                                className="my-auto ps-2"
-                                icon={generateSortingIcon(
-                                    sortingState.preRequisites.sort,
-                                )}
-                                onClick={(): void => {
-                                    setIsSorting(true);
-                                    sortingDispatch({ type: "preRequisites" });
-                                }}
-                                role="button"
-                            />
+                            <div className="d-flex flex-row">
+                                <span>{"Description"}</span>
+                                <FontAwesomeIcon
+                                    className="my-auto ps-2"
+                                    icon={generateSortingIcon(
+                                        sortingState.description.sort,
+                                    )}
+                                    onClick={(): void => {
+                                        setIsSorting(true);
+                                        sortingDispatch({
+                                            type: "description",
+                                        });
+                                    }}
+                                    role="button"
+                                />
+                            </div>
                         </th>
                         <th>
-                            {"Breadth Requirements"}
-                            <FontAwesomeIcon
-                                className="my-auto ps-2"
-                                icon={generateSortingIcon(
-                                    sortingState.breadthRequirements.sort,
-                                )}
-                                onClick={(): void => {
-                                    setIsSorting(true);
-                                    sortingDispatch({
-                                        type: "breadthRequirements",
-                                    });
-                                }}
-                                role="button"
-                            />
+                            <div className="d-flex flex-row">
+                                <span>{"Pre Requisites"}</span>
+                                <FontAwesomeIcon
+                                    className="my-auto ps-2"
+                                    icon={generateSortingIcon(
+                                        sortingState.preRequisites.sort,
+                                    )}
+                                    onClick={(): void => {
+                                        setIsSorting(true);
+                                        sortingDispatch({
+                                            type: "preRequisites",
+                                        });
+                                    }}
+                                    role="button"
+                                />
+                            </div>
+                        </th>
+                        <th>
+                            <div className="d-flex flex-row">
+                                <span>{"Breadth Requirements"}</span>
+                                <FontAwesomeIcon
+                                    className="my-auto ps-2"
+                                    icon={generateSortingIcon(
+                                        sortingState.breadthRequirements.sort,
+                                    )}
+                                    onClick={(): void => {
+                                        setIsSorting(true);
+                                        sortingDispatch({
+                                            type: "breadthRequirements",
+                                        });
+                                    }}
+                                    role="button"
+                                />
+                            </div>
                         </th>
                     </tr>
                 </thead>
