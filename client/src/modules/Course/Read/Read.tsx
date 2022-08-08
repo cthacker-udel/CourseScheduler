@@ -3,16 +3,18 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import chunk from "lodash.chunk";
 import React from "react";
-import { Pagination, Placeholder, Table } from "react-bootstrap";
+import { ListGroup, Pagination } from "react-bootstrap";
 import type {
     Course,
     CourseSortingReducerSignature,
     CourseSortingState,
+    CourseTable,
 } from "src/@types";
-import { initialCourseSortState } from "src/data";
+import { initialCourseSortState, initialCourseTableState } from "src/data";
 import {
     generateSortingIcon,
     generateSortingOrderBy,
+    generateTableColumns,
     truncateCourseDescription,
 } from "src/helpers";
 import { useCourses } from "src/hooks/useCourses";
@@ -27,7 +29,9 @@ const CONSTANTS = {
     DEFAULT_PAGE: 0,
     DEFAULT_PAGE_SIZE: 10,
     DESCRIPTION_LENGTH: 75,
+    EVEN_DIVISIBLE: 2,
     ID_INDEX: 1,
+    MOD_EVEN: 0,
     NAME_INDEX: 1,
     PLACEHOLDER_FILL: 0,
     PLACEHOLDER_FILL_SIZE: 6,
@@ -40,15 +44,24 @@ export const Read = (): JSX.Element => {
     const { courses, resetCourses, sortCourses } = useCourses({
         section: "CISC",
     });
+
     const [isSorting, setIsSorting] = React.useState<boolean>(false);
+
     const [pageSize, setPageSize] = React.useState<number>(
         CONSTANTS.DEFAULT_PAGE_SIZE,
     );
+
     const [page, setPage] = React.useState<number>(CONSTANTS.DEFAULT_PAGE);
+
     const segmentedCourses = React.useMemo(
         () => chunk(courses, pageSize),
         [pageSize, courses],
     );
+
+    const [tableColumns, setTableColumns] = React.useState<CourseTable>(
+        initialCourseTableState,
+    );
+
     const [sortingState, sortingDispatch] = React.useReducer<
         CourseSortingReducerSignature,
         CourseSortingState
@@ -59,9 +72,17 @@ export const Read = (): JSX.Element => {
     );
 
     React.useEffect(() => {
+        console.log("segmentedCourses changed");
+        setTableColumns(generateTableColumns(segmentedCourses[page]));
+    }, [page, segmentedCourses]);
+
+    React.useEffect(() => {
+        console.log(tableColumns);
+    }, [tableColumns]);
+
+    React.useEffect(() => {
         if (sortingState !== undefined) {
             const generatedSort = generateSortingOrderBy(sortingState);
-            console.log("generatedSort = ", generatedSort);
             if (generatedSort.commenceSort && isSorting) {
                 sortCourses(
                     generatedSort.sortingFields,
@@ -82,189 +103,218 @@ export const Read = (): JSX.Element => {
             >
                 {"Course List"}
             </div>
-            <Table
-                bordered
-                className={`${styles.course_table} w-75 mx-auto`}
-                hover
-                striped
+            <ListGroup
+                className={`mx-auto ${styles.course_sort_row}`}
+                horizontal
             >
-                <thead>
-                    <tr>
-                        <th>
-                            <div className="d-flex flex-row">
-                                <span>{"ID"}</span>
-                                <FontAwesomeIcon
-                                    className="my-auto ps-2"
-                                    icon={generateSortingIcon(
-                                        sortingState.id.sort,
-                                    )}
-                                    onClick={(): void => {
-                                        setIsSorting(true);
-                                        sortingDispatch({ type: "id" });
-                                    }}
-                                    role="button"
-                                />
-                            </div>
-                        </th>
-                        <th>
-                            <div className="d-flex flex-row">
-                                <span>{"Name"}</span>
-                                <FontAwesomeIcon
-                                    className="my-auto ps-2"
-                                    icon={generateSortingIcon(
-                                        sortingState.name.sort,
-                                    )}
-                                    onClick={(): void => {
-                                        setIsSorting(true);
-                                        sortingDispatch({ type: "name" });
-                                    }}
-                                    role="button"
-                                />
-                            </div>
-                        </th>
-                        <th>
-                            <div className="d-flex flex-row">
-                                <span>{"Credits"}</span>
-                                <FontAwesomeIcon
-                                    className="my-auto ps-2"
-                                    icon={generateSortingIcon(
-                                        sortingState.credits.sort,
-                                    )}
-                                    onClick={(): void => {
-                                        setIsSorting(true);
-                                        sortingDispatch({ type: "credits" });
-                                    }}
-                                    role="button"
-                                />
-                            </div>
-                        </th>
-                        <th>
-                            <div className="d-flex flex-row">
-                                <span>{"Description"}</span>
-                                <FontAwesomeIcon
-                                    className="my-auto ps-2"
-                                    icon={generateSortingIcon(
-                                        sortingState.description.sort,
-                                    )}
-                                    onClick={(): void => {
-                                        setIsSorting(true);
-                                        sortingDispatch({
-                                            type: "description",
-                                        });
-                                    }}
-                                    role="button"
-                                />
-                            </div>
-                        </th>
-                        <th>
-                            <div className="d-flex flex-row">
-                                <span>{"Pre Requisites"}</span>
-                                <FontAwesomeIcon
-                                    className="my-auto ps-2"
-                                    icon={generateSortingIcon(
-                                        sortingState.preRequisites.sort,
-                                    )}
-                                    onClick={(): void => {
-                                        setIsSorting(true);
-                                        sortingDispatch({
-                                            type: "preRequisites",
-                                        });
-                                    }}
-                                    role="button"
-                                />
-                            </div>
-                        </th>
-                        <th>
-                            <div className="d-flex flex-row">
-                                <span>{"Breadth Requirements"}</span>
-                                <FontAwesomeIcon
-                                    className="my-auto ps-2"
-                                    icon={generateSortingIcon(
-                                        sortingState.breadthRequirements.sort,
-                                    )}
-                                    onClick={(): void => {
-                                        setIsSorting(true);
-                                        sortingDispatch({
-                                            type: "breadthRequirements",
-                                        });
-                                    }}
-                                    role="button"
-                                />
-                            </div>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {segmentedCourses[page].map((eachCourse: Course) => (
-                        <tr key={`course-${eachCourse.id}`}>
-                            <td className="align-middle">
-                                {eachCourse.id.split(" ")[CONSTANTS.ID_INDEX]}
-                            </td>
-                            <td className="align-middle">
-                                {
-                                    eachCourse.name.split(" - ")[
-                                        CONSTANTS.NAME_INDEX
-                                    ]
-                                }
-                            </td>
-                            <td className="text-center align-middle">
-                                {eachCourse.credits}
-                            </td>
-                            <td className="align-middle">
-                                {eachCourse.description ? (
-                                    truncateCourseDescription(
-                                        eachCourse.description,
-                                        CONSTANTS.DESCRIPTION_LENGTH,
-                                    )
-                                ) : (
-                                    <span className="fw-light">
-                                        {"No Description"}
-                                    </span>
-                                )}
-                            </td>
-                            <td className="align-middle">
-                                {eachCourse.preRequisites === "" ? (
-                                    <span className="fw-light">
-                                        {"No Pre-Requisites"}
-                                    </span>
-                                ) : (
-                                    eachCourse.preRequisites
-                                )}
-                            </td>
-                            <td className="align-middle">
-                                {eachCourse.breadthRequirements === "" ? (
-                                    <span className="fw-light">
-                                        {"No Breadth Satisfaction"}
-                                    </span>
-                                ) : (
-                                    eachCourse.breadthRequirements
-                                )}
-                            </td>
-                        </tr>
-                    ))}
-                    {segmentedCourses[page].length < pageSize &&
-                        new Array(pageSize - segmentedCourses[page].length)
-                            // eslint-disable-next-line no-magic-numbers -- disabled
-                            .fill(0)
-                            .map((_, i) => (
-                                // eslint-disable-next-line react/no-array-index-key -- key not necessary for placeholder
-                                <tr key={`placeholder-row-${i}`}>
-                                    {new Array(CONSTANTS.PLACEHOLDER_FILL_SIZE)
-                                        .fill(CONSTANTS.PLACEHOLDER_FILL)
-                                        .map((__, j) => (
-                                            <Placeholder
-                                                animation="wave"
-                                                as="td"
-                                                bg="secondary"
-                                                className="opacity-25"
-                                                // eslint-disable-next-line react/no-array-index-key -- key not necessary for placeholder
-                                                key={`placeholder-course-${j}`}
-                                            />
-                                        ))}
-                                </tr>
-                            ))}
-                </tbody>
-            </Table>
+                <ListGroup.Item
+                    className={`${styles.course_data_table_header_id}`}
+                >
+                    <div className="d-flex flex-row">
+                        <span>{"ID"}</span>
+                        <FontAwesomeIcon
+                            className="my-auto ps-2"
+                            icon={generateSortingIcon(sortingState.id.sort)}
+                            onClick={(): void => {
+                                setIsSorting(true);
+                                sortingDispatch({ type: "id" });
+                            }}
+                            role="button"
+                        />
+                    </div>
+                </ListGroup.Item>
+                <ListGroup.Item
+                    className={`${styles.course_data_table_header_name}`}
+                >
+                    <div className="d-flex flex-row">
+                        <span>{"Name"}</span>
+                        <FontAwesomeIcon
+                            className="my-auto ps-2"
+                            icon={generateSortingIcon(sortingState.name.sort)}
+                            onClick={(): void => {
+                                setIsSorting(true);
+                                sortingDispatch({ type: "name" });
+                            }}
+                            role="button"
+                        />
+                    </div>
+                </ListGroup.Item>
+                <ListGroup.Item
+                    className={`${styles.course_data_table_header_credits}`}
+                >
+                    <div className="d-flex flex-row">
+                        <span>{"Credits"}</span>
+                        <FontAwesomeIcon
+                            className="my-auto ps-2"
+                            icon={generateSortingIcon(
+                                sortingState.credits.sort,
+                            )}
+                            onClick={(): void => {
+                                setIsSorting(true);
+                                sortingDispatch({ type: "credits" });
+                            }}
+                            role="button"
+                        />
+                    </div>
+                </ListGroup.Item>
+                <ListGroup.Item
+                    className={`${styles.course_data_table_header_description}`}
+                >
+                    <div className="d-flex flex-row">
+                        <span>{"Description"}</span>
+                        <FontAwesomeIcon
+                            className="my-auto ps-2"
+                            icon={generateSortingIcon(
+                                sortingState.description.sort,
+                            )}
+                            onClick={(): void => {
+                                setIsSorting(true);
+                                sortingDispatch({
+                                    type: "description",
+                                });
+                            }}
+                            role="button"
+                        />
+                    </div>
+                </ListGroup.Item>
+                <ListGroup.Item
+                    className={`${styles.course_data_table_header_pre_requisites}`}
+                >
+                    <div className="d-flex flex-row">
+                        <span>{"Pre Requisites"}</span>
+                        <FontAwesomeIcon
+                            className="my-auto ps-2"
+                            icon={generateSortingIcon(
+                                sortingState.preRequisites.sort,
+                            )}
+                            onClick={(): void => {
+                                setIsSorting(true);
+                                sortingDispatch({
+                                    type: "preRequisites",
+                                });
+                            }}
+                            role="button"
+                        />
+                    </div>
+                </ListGroup.Item>
+                <ListGroup.Item
+                    className={`${styles.course_data_table_header_breadth_requirements}`}
+                >
+                    <div className="d-flex flex-row">
+                        <span>{"Breadth Requirements"}</span>
+                        <FontAwesomeIcon
+                            className="my-auto ps-2"
+                            icon={generateSortingIcon(
+                                sortingState.breadthRequirements.sort,
+                            )}
+                            onClick={(): void => {
+                                setIsSorting(true);
+                                sortingDispatch({
+                                    type: "breadthRequirements",
+                                });
+                            }}
+                            role="button"
+                        />
+                    </div>
+                </ListGroup.Item>
+            </ListGroup>
+            <div className={`border mx-auto ${styles.course_data_table}`}>
+                {segmentedCourses[page].map((eachCourse: Course, _ind) => (
+                    <ListGroup
+                        className={styles.course_data_table_row}
+                        horizontal
+                        key={`course-${eachCourse.id}`}
+                    >
+                        <ListGroup.Item
+                            className={`${styles.course_data_table_id}`}
+                            variant={
+                                _ind % CONSTANTS.EVEN_DIVISIBLE ===
+                                CONSTANTS.MOD_EVEN
+                                    ? "light"
+                                    : "dark"
+                            }
+                        >
+                            {eachCourse.id.split(" ")[CONSTANTS.ID_INDEX]}
+                        </ListGroup.Item>
+                        <ListGroup.Item
+                            className={`${styles.course_data_table_name}`}
+                            variant={
+                                _ind % CONSTANTS.EVEN_DIVISIBLE ===
+                                CONSTANTS.MOD_EVEN
+                                    ? "light"
+                                    : "dark"
+                            }
+                        >
+                            {eachCourse.name.split(" - ")[CONSTANTS.NAME_INDEX]}
+                        </ListGroup.Item>
+                        <ListGroup.Item
+                            className={`${styles.course_data_table_credits}`}
+                            variant={
+                                _ind % CONSTANTS.EVEN_DIVISIBLE ===
+                                CONSTANTS.MOD_EVEN
+                                    ? "light"
+                                    : "dark"
+                            }
+                        >
+                            {eachCourse.credits}
+                        </ListGroup.Item>
+                        <ListGroup.Item
+                            className={`${styles.course_data_table_description}`}
+                            variant={
+                                _ind % CONSTANTS.EVEN_DIVISIBLE ===
+                                CONSTANTS.MOD_EVEN
+                                    ? "light"
+                                    : "dark"
+                            }
+                        >
+                            {eachCourse.description ? (
+                                truncateCourseDescription(
+                                    eachCourse.description,
+                                    CONSTANTS.DESCRIPTION_LENGTH,
+                                )
+                            ) : (
+                                <span className="fw-light">
+                                    {"No Description"}
+                                </span>
+                            )}
+                        </ListGroup.Item>
+                        <ListGroup.Item
+                            className={`${styles.course_data_table_pre_requisites}`}
+                            variant={
+                                _ind % CONSTANTS.EVEN_DIVISIBLE ===
+                                CONSTANTS.MOD_EVEN
+                                    ? "light"
+                                    : "dark"
+                            }
+                        >
+                            {eachCourse.preRequisites === "" ? (
+                                <span className="fw-light">
+                                    {"No Pre-Requisites"}
+                                </span>
+                            ) : (
+                                eachCourse.preRequisites
+                            )}
+                        </ListGroup.Item>
+                        <ListGroup.Item
+                            className={`${styles.course_data_table_breadth_requirements}`}
+                            variant={
+                                _ind % CONSTANTS.EVEN_DIVISIBLE ===
+                                CONSTANTS.MOD_EVEN
+                                    ? "light"
+                                    : "dark"
+                            }
+                        >
+                            {eachCourse.breadthRequirements === "" ? (
+                                <span className="fw-light">
+                                    {"No Breadth Satisfaction"}
+                                </span>
+                            ) : (
+                                eachCourse.breadthRequirements
+                            )}
+                        </ListGroup.Item>
+                    </ListGroup>
+                ))}
+            </div>
             <Pagination className="w-50 mx-auto d-flex flex-row justify-content-center">
                 {segmentedCourses.map((_, i) => (
                     <Pagination.Item

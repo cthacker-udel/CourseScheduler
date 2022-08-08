@@ -25,6 +25,7 @@ import type { CourseSortingFields } from "./CourseSorting/CourseSortingFields";
 import type { CourseSortingOrder } from "./CourseSorting/CourseSortingOrder";
 import type { CourseSortingReducerSignature } from "./CourseSorting/CourseSortingReducerSignature";
 import type { CourseSortingState } from "./CourseSorting/CourseSortingState";
+import type { CourseTable } from "./CourseTable/CourseTable";
 import type { ForgotTokenType } from "./ForgotToken/ForgotTokenType";
 import type { LoginPageReducerAction } from "./Login/LoginPageReducerAction";
 import type { LoginPageReducerActionType } from "./Login/LoginPageReducerActionType";
@@ -46,6 +47,7 @@ export type {
     CourseSortingOrder,
     CourseSortingReducerSignature,
     CourseSortingState,
+    CourseTable,
     EmailValidationRequest,
     ForgotEmailRequest,
     ForgotPasswordRequest,

@@ -1,9 +1,76 @@
-.course_table {
-    height: 78vh;
-    max-height: 78vh;
-    min-height: 78vh;
+.course_sort_row {
+    width: 75%;
 }
 
-.course_table_header {
-    font-family: 'Georgia, serif'
+.course_data_table {
+    width: 75%;
+}
+
+/*
+
+TABLE HEADER
+
+*/
+
+.course_data_table_header_id {
+    width: 4rem;
+}
+
+.course_data_table_header_name {
+    width: 10.55rem;
+}
+
+.course_data_table_header_credits {
+    width: 6rem;
+}
+
+.course_data_table_header_description {
+    width: 14.3rem;
+}
+
+.course_data_table_header_pre_requisites {
+    width: 16.15rem;
+}
+
+.course_data_table_header_breadth_requirements {
+    width: 16.5rem;
+}
+
+/*
+
+TABLE
+
+*/
+
+.course_data_table_id {
+    width: 7rem;
+}
+
+.course_data_table_name {
+    width: 25rem;
+    max-width: 25rem;
+}
+
+.course_data_table_credits {
+    width: 9rem;
+    max-width: 9rem;
+}
+
+.course_data_table_description {
+    width: 35rem;
+    max-width: 35rem;
+}
+
+.course_data_table_pre_requisites {
+    width: 40rem;
+    max-width: 40rem;
+}
+
+.course_data_table_breadth_requirements {
+    width: 40rem;
+    max-width: 40rem;
+}
+
+.course_data_table_row {
+    max-height: 5.5rem;
 }

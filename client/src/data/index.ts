@@ -1,3 +1,4 @@
-import { initialCourseSortState } from "./initialCourseSortState";
+import { initialCourseSortState } from "./CourseSort/initialCourseSortState";
+import { initialCourseTableState } from "./CourseTable/initialCourseTableState";
 
-export { initialCourseSortState };
+export { initialCourseSortState, initialCourseTableState };
