@@ -34,7 +34,9 @@ export const Read = (): JSX.Element => {
 
     return (
         <>
-            <div className="my-3 w-25 mx-auto rounded border border-left border-right border-bottom-0 border-top-0 bg-secondary bg-opacity-25 fw-bold fs-5 text-center py-4 text-decoration-underline">
+            <div
+                className={`${styles.course_table_header} my-3 w-25 mx-auto rounded border border-left border-right border-bottom-0 border-top-0 bg-secondary bg-opacity-25 fw-bold fs-4 text-center py-4`}
+            >
                 {"Course List"}
             </div>
             <Table

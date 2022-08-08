@@ -3,3 +3,7 @@
     max-height: 78vh;
     min-height: 78vh;
 }
+
+.course_table_header {
+    font-family: 'Georgia, serif'
+}
