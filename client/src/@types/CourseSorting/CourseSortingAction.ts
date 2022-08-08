@@ -12,5 +12,5 @@ type CourseSortingPayload = CourseSortingState;
 
 export type CourseSortingAction = {
     type: CourseSortingActionType;
-    payload: CourseSortingPayload;
+    payload?: CourseSortingPayload;
 };

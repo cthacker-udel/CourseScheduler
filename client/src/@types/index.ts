@@ -21,6 +21,9 @@ import type { Course } from "./Course/Course";
 import type { MockCourse } from "./Course/MockCourse";
 import type { CourseFieldSort, CourseSort } from "./CourseSort/CourseSort";
 import type { CourseSortingAction } from "./CourseSorting/CourseSortingAction";
+import type { CourseSortingFields } from "./CourseSorting/CourseSortingFields";
+import type { CourseSortingOrder } from "./CourseSorting/CourseSortingOrder";
+import type { CourseSortingReducerSignature } from "./CourseSorting/CourseSortingReducerSignature";
 import type { CourseSortingState } from "./CourseSorting/CourseSortingState";
 import type { ForgotTokenType } from "./ForgotToken/ForgotTokenType";
 import type { LoginPageReducerAction } from "./Login/LoginPageReducerAction";
@@ -39,6 +42,9 @@ export type {
     CourseFieldSort,
     CourseSort,
     CourseSortingAction,
+    CourseSortingFields,
+    CourseSortingOrder,
+    CourseSortingReducerSignature,
     CourseSortingState,
     EmailValidationRequest,
     ForgotEmailRequest,

@@ -1,6 +1,11 @@
 /* eslint-disable no-unexpected-multiline -- 1 error due to prettier */
+import orderBy from "lodash.orderby";
 import React from "react";
-import type { Course } from "src/@types";
+import type {
+    Course,
+    CourseSortingFields,
+    CourseSortingOrder,
+} from "src/@types";
 import COURSES from "src/data/catalog.json";
 
 const CONSTANTS = {
@@ -48,6 +53,20 @@ type useCourseReturn = {
      * Will always return an array, whether it's singular or not
      */
     courses: Course[];
+
+    /**
+     * Resets all the courses to the original parsed courses
+     */
+    resetCourses: () => void;
+
+    /**
+     * Function for sorting courses via lodash's orderBy function, passing in fields to sort and order to sort them by
+     * @see https://lodash.com/docs/4.17.15#orderBy
+     */
+    sortCourses: (
+        _fields: CourseSortingFields[],
+        _orders: CourseSortingOrder[],
+    ) => void;
 };
 
 /**
@@ -67,8 +86,28 @@ export const useCourses = ({
         CONSTANTS.parsedCourses,
     );
 
-    React.useEffect(() => {
-        setCourses((oldCourses) => {
+    /**
+     * Utility for sorting the courses via the lodash orderBy function
+     *
+     * @param fields The fields to sort the courses by
+     * @param orders The order to order the courses by, ascending or descending
+     * @see https://lodash.com/docs/4.17.15#orderBy
+     */
+    const sortCourses = (
+        fields: CourseSortingFields[],
+        orders: CourseSortingOrder[],
+    ): void => {
+        const sortedCourses = orderBy(courses, fields, orders);
+        setCourses(sortedCourses);
+    };
+
+    /**
+     * Utility function for sorting courses by filters provided by the user
+     * @param oldCourses The old courses, previous state
+     * @returns The filtered courses
+     */
+    const filterCourses = React.useCallback(
+        (oldCourses: Course[]): Course[] => {
             let oldCoursesClone = [...oldCourses];
             if (id) {
                 oldCoursesClone = oldCourses.filter((eachCourse: Course) =>
@@ -87,7 +126,7 @@ export const useCourses = ({
             }
             if (prereqs) {
                 oldCoursesClone = oldCourses.filter((eachCourse: Course) =>
-                    eachCourse.prereqs.includes(prereqs),
+                    eachCourse.preRequisites.includes(prereqs),
                 );
             }
             if (section) {
@@ -117,9 +156,24 @@ export const useCourses = ({
                 });
             }
             return oldCoursesClone;
-        });
-    }, [id, name, credits, prereqs, section, sectionRange]);
+        },
+        [credits, id, name, prereqs, section, sectionRange],
+    );
+
+    React.useEffect(() => {
+        setCourses((oldCourses) => filterCourses(oldCourses));
+    }, [credits, filterCourses, id, name, prereqs, section, sectionRange]);
+
+    /**
+     * If no sort is specified, and the sorting is triggered, then that means all sorting was neutralized, so therefore we should refresh the courses back to the original
+     */
+    const resetCourses = (): void => {
+        setCourses(filterCourses(CONSTANTS.parsedCourses));
+    };
+
     return {
         courses,
+        resetCourses,
+        sortCourses,
     };
 };

@@ -52,7 +52,7 @@ const generateNextSortingState = (
  * @param state The current state of the course sorting
  * @param action The action the user is attempting to
  */
-export const CourseReadSortingReducer = (
+export const CourseSortingReducer = (
     state: CourseSortingState,
     action: CourseSortingAction,
 ): CourseSortingState => {

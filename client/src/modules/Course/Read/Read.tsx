@@ -1,15 +1,28 @@
 /* eslint-disable @typescript-eslint/indent -- prettier - eslint errors */
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import chunk from "lodash.chunk";
 import React from "react";
 import { Pagination, Placeholder, Table } from "react-bootstrap";
-import type { Course, CourseSort } from "src/@types";
-import { SORTING } from "src/enums";
-import { truncateCourseDescription } from "src/helpers";
+import type {
+    Course,
+    CourseSortingReducerSignature,
+    CourseSortingState,
+} from "src/@types";
+import { initialCourseSortState } from "src/data";
+import {
+    generateSortingIcon,
+    generateSortingOrderBy,
+    truncateCourseDescription,
+} from "src/helpers";
 import { useCourses } from "src/hooks/useCourses";
+import { CourseSortingReducer } from "src/reducer";
 
 import styles from "./Read.module.css";
 
+/**
+ * Constants for the Read component
+ */
 const CONSTANTS = {
     DEFAULT_PAGE: 0,
     DEFAULT_PAGE_SIZE: 10,
@@ -24,7 +37,10 @@ const CONSTANTS = {
  * General component for viewing courses
  */
 export const Read = (): JSX.Element => {
-    const { courses } = useCourses({ section: "CISC" });
+    const { courses, resetCourses, sortCourses } = useCourses({
+        section: "CISC",
+    });
+    const [isSorting, setIsSorting] = React.useState<boolean>(false);
     const [pageSize, setPageSize] = React.useState<number>(
         CONSTANTS.DEFAULT_PAGE_SIZE,
     );
@@ -33,14 +49,30 @@ export const Read = (): JSX.Element => {
         () => chunk(courses, pageSize),
         [pageSize, courses],
     );
-    const [sorting, setSorting] = React.useState<CourseSort>({
-        breadthRequirements: SORTING.NEUTRAL,
-        credits: SORTING.NEUTRAL,
-        description: SORTING.NEUTRAL,
-        id: SORTING.NEUTRAL,
-        name: SORTING.NEUTRAL,
-        preRequisites: SORTING.NEUTRAL,
-    });
+    const [sortingState, sortingDispatch] = React.useReducer<
+        CourseSortingReducerSignature,
+        CourseSortingState
+    >(
+        CourseSortingReducer,
+        initialCourseSortState,
+        () => initialCourseSortState,
+    );
+
+    React.useEffect(() => {
+        if (sortingState !== undefined) {
+            const generatedSort = generateSortingOrderBy(sortingState);
+            if (generatedSort.commenceSort && isSorting) {
+                sortCourses(
+                    generatedSort.sortingFields,
+                    generatedSort.sortingOrder,
+                );
+                setIsSorting(false);
+            } else if (isSorting) {
+                resetCourses();
+                setIsSorting(false);
+            }
+        }
+    }, [isSorting, resetCourses, sortCourses, sortingState]);
 
     return (
         <>
@@ -57,12 +89,90 @@ export const Read = (): JSX.Element => {
             >
                 <thead>
                     <tr>
-                        <th>{"ID"}</th>
-                        <th>{"Name"}</th>
-                        <th>{"Credits"}</th>
-                        <th>{"Description"}</th>
-                        <th>{"Pre Requisites"}</th>
-                        <th>{"Breadth Requirements"}</th>
+                        <th className="d-flex flex-row">
+                            {"ID"}
+                            <FontAwesomeIcon
+                                className="my-auto ps-2"
+                                icon={generateSortingIcon(sortingState.id.sort)}
+                                onClick={(): void => {
+                                    setIsSorting(true);
+                                    sortingDispatch({ type: "id" });
+                                }}
+                                role="button"
+                            />
+                        </th>
+                        <th>
+                            {"Name"}
+                            <FontAwesomeIcon
+                                className="my-auto ps-2"
+                                icon={generateSortingIcon(
+                                    sortingState.name.sort,
+                                )}
+                                onClick={(): void => {
+                                    setIsSorting(true);
+                                    sortingDispatch({ type: "name" });
+                                }}
+                                role="button"
+                            />
+                        </th>
+                        <th className="d-flex flex-row">
+                            {"Credits"}
+                            <FontAwesomeIcon
+                                className="my-auto ps-2"
+                                icon={generateSortingIcon(
+                                    sortingState.credits.sort,
+                                )}
+                                onClick={(): void => {
+                                    setIsSorting(true);
+                                    sortingDispatch({ type: "credits" });
+                                }}
+                                role="button"
+                            />
+                        </th>
+                        <th>
+                            {"Description"}
+                            <FontAwesomeIcon
+                                className="my-auto ps-2"
+                                icon={generateSortingIcon(
+                                    sortingState.description.sort,
+                                )}
+                                onClick={(): void => {
+                                    setIsSorting(true);
+                                    sortingDispatch({ type: "description" });
+                                }}
+                                role="button"
+                            />
+                        </th>
+                        <th>
+                            {"Pre Requisites"}
+                            <FontAwesomeIcon
+                                className="my-auto ps-2"
+                                icon={generateSortingIcon(
+                                    sortingState.preRequisites.sort,
+                                )}
+                                onClick={(): void => {
+                                    setIsSorting(true);
+                                    sortingDispatch({ type: "preRequisites" });
+                                }}
+                                role="button"
+                            />
+                        </th>
+                        <th>
+                            {"Breadth Requirements"}
+                            <FontAwesomeIcon
+                                className="my-auto ps-2"
+                                icon={generateSortingIcon(
+                                    sortingState.breadthRequirements.sort,
+                                )}
+                                onClick={(): void => {
+                                    setIsSorting(true);
+                                    sortingDispatch({
+                                        type: "breadthRequirements",
+                                    });
+                                }}
+                                role="button"
+                            />
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -94,21 +204,21 @@ export const Read = (): JSX.Element => {
                                 )}
                             </td>
                             <td className="align-middle">
-                                {eachCourse.prereqs === "" ? (
+                                {eachCourse.preRequisites === "" ? (
                                     <span className="fw-light">
                                         {"No Pre-Requisites"}
                                     </span>
                                 ) : (
-                                    eachCourse.prereqs
+                                    eachCourse.preRequisites
                                 )}
                             </td>
                             <td className="align-middle">
-                                {eachCourse.ubreadth === "" ? (
+                                {eachCourse.breadthRequirements === "" ? (
                                     <span className="fw-light">
                                         {"No Breadth Satisfaction"}
                                     </span>
                                 ) : (
-                                    eachCourse.ubreadth
+                                    eachCourse.breadthRequirements
                                 )}
                             </td>
                         </tr>
