@@ -72,13 +72,8 @@ export const Read = (): JSX.Element => {
     );
 
     React.useEffect(() => {
-        console.log("segmentedCourses changed");
         setTableColumns(generateTableColumns(segmentedCourses[page]));
     }, [page, segmentedCourses]);
-
-    React.useEffect(() => {
-        console.log(tableColumns);
-    }, [tableColumns]);
 
     React.useEffect(() => {
         if (sortingState !== undefined) {
@@ -103,14 +98,9 @@ export const Read = (): JSX.Element => {
             >
                 {"Course List"}
             </div>
-            <ListGroup
-                className={`mx-auto ${styles.course_sort_row}`}
-                horizontal
-            >
-                <ListGroup.Item
-                    className={`${styles.course_data_table_header_id}`}
-                >
-                    <div className="d-flex flex-row">
+            <div className={"mx-auto d-flex flex-row"}>
+                <div className={"d-flex flex-column"}>
+                    <div className="d-flex flex-row border-bottom mb-2">
                         <span>{"ID"}</span>
                         <FontAwesomeIcon
                             className="my-auto ps-2"
@@ -122,10 +112,21 @@ export const Read = (): JSX.Element => {
                             role="button"
                         />
                     </div>
-                </ListGroup.Item>
-                <ListGroup.Item
-                    className={`${styles.course_data_table_header_name}`}
-                >
+                    {tableColumns.ids.map((eachId, _ind) => (
+                        <div
+                            className={
+                                _ind % CONSTANTS.EVEN_DIVISIBLE ===
+                                CONSTANTS.MOD_EVEN
+                                    ? "bg-light"
+                                    : "bg-secondary bg-opacity-25"
+                            }
+                            key={`id-entry-${eachId}`}
+                        >
+                            {eachId}
+                        </div>
+                    ))}
+                </div>
+                <div>
                     <div className="d-flex flex-row">
                         <span>{"Name"}</span>
                         <FontAwesomeIcon
@@ -138,10 +139,21 @@ export const Read = (): JSX.Element => {
                             role="button"
                         />
                     </div>
-                </ListGroup.Item>
-                <ListGroup.Item
-                    className={`${styles.course_data_table_header_credits}`}
-                >
+                    {tableColumns.names.map((eachName, _ind) => (
+                        <div
+                            className={
+                                _ind % CONSTANTS.EVEN_DIVISIBLE ===
+                                CONSTANTS.MOD_EVEN
+                                    ? "bg-light"
+                                    : "bg-secondary bg-opacity-25"
+                            }
+                            key={`id-entry-${eachName}`}
+                        >
+                            {eachName}
+                        </div>
+                    ))}
+                </div>
+                <div>
                     <div className="d-flex flex-row">
                         <span>{"Credits"}</span>
                         <FontAwesomeIcon
@@ -156,10 +168,21 @@ export const Read = (): JSX.Element => {
                             role="button"
                         />
                     </div>
-                </ListGroup.Item>
-                <ListGroup.Item
-                    className={`${styles.course_data_table_header_description}`}
-                >
+                    {tableColumns.credits.map((eachCredit, _ind) => (
+                        <div
+                            className={
+                                _ind % CONSTANTS.EVEN_DIVISIBLE ===
+                                CONSTANTS.MOD_EVEN
+                                    ? "bg-light"
+                                    : "bg-secondary bg-opacity-25"
+                            }
+                            key={`id-entry-${eachCredit}`}
+                        >
+                            {eachCredit}
+                        </div>
+                    ))}
+                </div>
+                <div>
                     <div className="d-flex flex-row">
                         <span>{"Description"}</span>
                         <FontAwesomeIcon
@@ -176,10 +199,30 @@ export const Read = (): JSX.Element => {
                             role="button"
                         />
                     </div>
-                </ListGroup.Item>
-                <ListGroup.Item
-                    className={`${styles.course_data_table_header_pre_requisites}`}
-                >
+                    {tableColumns.descriptions.map((eachDescription, _ind) => (
+                        <div
+                            className={
+                                _ind % CONSTANTS.EVEN_DIVISIBLE ===
+                                CONSTANTS.MOD_EVEN
+                                    ? "bg-light"
+                                    : "bg-secondary bg-opacity-25"
+                            }
+                            key={`id-entry-${eachDescription}`}
+                        >
+                            {eachDescription ? (
+                                truncateCourseDescription(
+                                    eachDescription,
+                                    CONSTANTS.DESCRIPTION_LENGTH,
+                                )
+                            ) : (
+                                <span className="fw-light">
+                                    {"No Description"}
+                                </span>
+                            )}
+                        </div>
+                    ))}
+                </div>
+                <div>
                     <div className="d-flex flex-row">
                         <span>{"Pre Requisites"}</span>
                         <FontAwesomeIcon
@@ -196,10 +239,29 @@ export const Read = (): JSX.Element => {
                             role="button"
                         />
                     </div>
-                </ListGroup.Item>
-                <ListGroup.Item
-                    className={`${styles.course_data_table_header_breadth_requirements}`}
-                >
+                    {tableColumns.preRequisites.map(
+                        (eachPreRequisite, _ind) => (
+                            <div
+                                className={
+                                    _ind % CONSTANTS.EVEN_DIVISIBLE ===
+                                    CONSTANTS.MOD_EVEN
+                                        ? "bg-light"
+                                        : "bg-secondary bg-opacity-25"
+                                }
+                                key={`id-entry-${eachPreRequisite}`}
+                            >
+                                {eachPreRequisite === "" ? (
+                                    <span className="fw-light">
+                                        {"No Pre-Requisites"}
+                                    </span>
+                                ) : (
+                                    eachPreRequisite
+                                )}
+                            </div>
+                        ),
+                    )}
+                </div>
+                <div>
                     <div className="d-flex flex-row">
                         <span>{"Breadth Requirements"}</span>
                         <FontAwesomeIcon
@@ -216,104 +278,28 @@ export const Read = (): JSX.Element => {
                             role="button"
                         />
                     </div>
-                </ListGroup.Item>
-            </ListGroup>
-            <div className={`border mx-auto ${styles.course_data_table}`}>
-                {segmentedCourses[page].map((eachCourse: Course, _ind) => (
-                    <ListGroup
-                        className={styles.course_data_table_row}
-                        horizontal
-                        key={`course-${eachCourse.id}`}
-                    >
-                        <ListGroup.Item
-                            className={`${styles.course_data_table_id}`}
-                            variant={
-                                _ind % CONSTANTS.EVEN_DIVISIBLE ===
-                                CONSTANTS.MOD_EVEN
-                                    ? "light"
-                                    : "dark"
-                            }
-                        >
-                            {eachCourse.id.split(" ")[CONSTANTS.ID_INDEX]}
-                        </ListGroup.Item>
-                        <ListGroup.Item
-                            className={`${styles.course_data_table_name}`}
-                            variant={
-                                _ind % CONSTANTS.EVEN_DIVISIBLE ===
-                                CONSTANTS.MOD_EVEN
-                                    ? "light"
-                                    : "dark"
-                            }
-                        >
-                            {eachCourse.name.split(" - ")[CONSTANTS.NAME_INDEX]}
-                        </ListGroup.Item>
-                        <ListGroup.Item
-                            className={`${styles.course_data_table_credits}`}
-                            variant={
-                                _ind % CONSTANTS.EVEN_DIVISIBLE ===
-                                CONSTANTS.MOD_EVEN
-                                    ? "light"
-                                    : "dark"
-                            }
-                        >
-                            {eachCourse.credits}
-                        </ListGroup.Item>
-                        <ListGroup.Item
-                            className={`${styles.course_data_table_description}`}
-                            variant={
-                                _ind % CONSTANTS.EVEN_DIVISIBLE ===
-                                CONSTANTS.MOD_EVEN
-                                    ? "light"
-                                    : "dark"
-                            }
-                        >
-                            {eachCourse.description ? (
-                                truncateCourseDescription(
-                                    eachCourse.description,
-                                    CONSTANTS.DESCRIPTION_LENGTH,
-                                )
-                            ) : (
-                                <span className="fw-light">
-                                    {"No Description"}
-                                </span>
-                            )}
-                        </ListGroup.Item>
-                        <ListGroup.Item
-                            className={`${styles.course_data_table_pre_requisites}`}
-                            variant={
-                                _ind % CONSTANTS.EVEN_DIVISIBLE ===
-                                CONSTANTS.MOD_EVEN
-                                    ? "light"
-                                    : "dark"
-                            }
-                        >
-                            {eachCourse.preRequisites === "" ? (
-                                <span className="fw-light">
-                                    {"No Pre-Requisites"}
-                                </span>
-                            ) : (
-                                eachCourse.preRequisites
-                            )}
-                        </ListGroup.Item>
-                        <ListGroup.Item
-                            className={`${styles.course_data_table_breadth_requirements}`}
-                            variant={
-                                _ind % CONSTANTS.EVEN_DIVISIBLE ===
-                                CONSTANTS.MOD_EVEN
-                                    ? "light"
-                                    : "dark"
-                            }
-                        >
-                            {eachCourse.breadthRequirements === "" ? (
-                                <span className="fw-light">
-                                    {"No Breadth Satisfaction"}
-                                </span>
-                            ) : (
-                                eachCourse.breadthRequirements
-                            )}
-                        </ListGroup.Item>
-                    </ListGroup>
-                ))}
+                    {tableColumns.breadthRequirements.map(
+                        (eachBreadthRequirement, _ind) => (
+                            <div
+                                className={
+                                    _ind % CONSTANTS.EVEN_DIVISIBLE ===
+                                    CONSTANTS.MOD_EVEN
+                                        ? "bg-light"
+                                        : "bg-secondary bg-opacity-25"
+                                }
+                                key={`id-entry-${eachBreadthRequirement}`}
+                            >
+                                {eachBreadthRequirement === "" ? (
+                                    <span className="fw-light">
+                                        {"No Breadth Satisfaction"}
+                                    </span>
+                                ) : (
+                                    eachBreadthRequirement
+                                )}
+                            </div>
+                        ),
+                    )}
+                </div>
             </div>
             <Pagination className="w-50 mx-auto d-flex flex-row justify-content-center">
                 {segmentedCourses.map((_, i) => (
