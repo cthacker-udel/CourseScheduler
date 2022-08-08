@@ -14,6 +14,8 @@ const CONSTANTS = {
     DESCRIPTION_LENGTH: 75,
     ID_INDEX: 1,
     NAME_INDEX: 1,
+    PLACEHOLDER_FILL: 0,
+    PLACEHOLDER_FILL_SIZE: 6,
 };
 
 /**
@@ -32,6 +34,9 @@ export const Read = (): JSX.Element => {
 
     return (
         <>
+            <div className="my-3 w-25 mx-auto rounded border border-left border-right border-bottom-0 border-top-0 bg-secondary bg-opacity-25 fw-bold fs-5 text-center py-4 text-decoration-underline">
+                {"Course List"}
+            </div>
             <Table
                 bordered
                 className={`${styles.course_table} w-75 mx-auto`}
@@ -101,43 +106,20 @@ export const Read = (): JSX.Element => {
                             // eslint-disable-next-line no-magic-numbers -- disabled
                             .fill(0)
                             .map((_, i) => (
+                                // eslint-disable-next-line react/no-array-index-key -- key not necessary for placeholder
                                 <tr key={`placeholder-row-${i}`}>
-                                    <Placeholder
-                                        animation="wave"
-                                        as="td"
-                                        bg="secondary"
-                                        className="opacity-75"
-                                    />
-                                    <Placeholder
-                                        animation="wave"
-                                        as="td"
-                                        bg="secondary"
-                                        className="opacity-75"
-                                    />{" "}
-                                    <Placeholder
-                                        animation="wave"
-                                        as="td"
-                                        bg="secondary"
-                                        className="opacity-75"
-                                    />{" "}
-                                    <Placeholder
-                                        animation="wave"
-                                        as="td"
-                                        bg="secondary"
-                                        className="opacity-75"
-                                    />{" "}
-                                    <Placeholder
-                                        animation="wave"
-                                        as="td"
-                                        bg="secondary"
-                                        className="opacity-75"
-                                    />{" "}
-                                    <Placeholder
-                                        animation="wave"
-                                        as="td"
-                                        bg="secondary"
-                                        className="opacity-75"
-                                    />
+                                    {new Array(CONSTANTS.PLACEHOLDER_FILL_SIZE)
+                                        .fill(CONSTANTS.PLACEHOLDER_FILL)
+                                        .map((__, j) => (
+                                            <Placeholder
+                                                animation="wave"
+                                                as="td"
+                                                bg="secondary"
+                                                className="opacity-25"
+                                                // eslint-disable-next-line react/no-array-index-key -- key not necessary for placeholder
+                                                key={`placeholder-course-${j}`}
+                                            />
+                                        ))}
                                 </tr>
                             ))}
                 </tbody>
