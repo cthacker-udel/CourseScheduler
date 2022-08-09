@@ -21,9 +21,9 @@ export type Course = {
     /**
      * The Pre-Requisites of the course
      */
-    preRequisites: string;
+    prereqs: string;
     /**
      * The university of breadth requirements that class fulfills
      */
-    breadthRequirements: string;
+    ubreadth: string;
 };
