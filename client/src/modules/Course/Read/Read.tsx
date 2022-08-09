@@ -3,18 +3,16 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import chunk from "lodash.chunk";
 import React from "react";
-import { ListGroup, Pagination } from "react-bootstrap";
+import { Pagination, Placeholder, Table } from "react-bootstrap";
 import type {
     Course,
     CourseSortingReducerSignature,
     CourseSortingState,
-    CourseTable,
 } from "src/@types";
-import { initialCourseSortState, initialCourseTableState } from "src/data";
+import { initialCourseSortState } from "src/data";
 import {
     generateSortingIcon,
     generateSortingOrderBy,
-    generateTableColumns,
     truncateCourseDescription,
 } from "src/helpers";
 import { useCourses } from "src/hooks/useCourses";
@@ -58,10 +56,6 @@ export const Read = (): JSX.Element => {
         [pageSize, courses],
     );
 
-    const [tableColumns, setTableColumns] = React.useState<CourseTable>(
-        initialCourseTableState,
-    );
-
     const [sortingState, sortingDispatch] = React.useReducer<
         CourseSortingReducerSignature,
         CourseSortingState
@@ -70,10 +64,6 @@ export const Read = (): JSX.Element => {
         initialCourseSortState,
         () => initialCourseSortState,
     );
-
-    React.useEffect(() => {
-        setTableColumns(generateTableColumns(segmentedCourses[page]));
-    }, [page, segmentedCourses]);
 
     React.useEffect(() => {
         if (sortingState !== undefined) {
@@ -93,215 +83,187 @@ export const Read = (): JSX.Element => {
 
     return (
         <>
-            <div
-                className={`${styles.course_table_header} my-3 w-25 mx-auto rounded border border-left border-right border-bottom-0 border-top-0 bg-secondary bg-opacity-25 fw-bold fs-4 text-center py-4`}
-            >
+            <div className="rounded border border-left border-right border-bottom-0 border-top-0 bg-secondary bg-opacity-25 fw-bold fs-4 text-center position-absolute top-0 start-50 translate-middle-x mt-3 p-2">
                 {"Course List"}
             </div>
-            <div className={"mx-auto d-flex flex-row"}>
-                <div className={"d-flex flex-column"}>
-                    <div className="d-flex flex-row border-bottom mb-2">
-                        <span>{"ID"}</span>
-                        <FontAwesomeIcon
-                            className="my-auto ps-2"
-                            icon={generateSortingIcon(sortingState.id.sort)}
-                            onClick={(): void => {
-                                setIsSorting(true);
-                                sortingDispatch({ type: "id" });
-                            }}
-                            role="button"
-                        />
-                    </div>
-                    {tableColumns.ids.map((eachId, _ind) => (
-                        <div
-                            className={
-                                _ind % CONSTANTS.EVEN_DIVISIBLE ===
-                                CONSTANTS.MOD_EVEN
-                                    ? "bg-light"
-                                    : "bg-secondary bg-opacity-25"
-                            }
-                            key={`id-entry-${eachId}`}
-                        >
-                            {eachId}
-                        </div>
-                    ))}
-                </div>
-                <div>
-                    <div className="d-flex flex-row">
-                        <span>{"Name"}</span>
-                        <FontAwesomeIcon
-                            className="my-auto ps-2"
-                            icon={generateSortingIcon(sortingState.name.sort)}
-                            onClick={(): void => {
-                                setIsSorting(true);
-                                sortingDispatch({ type: "name" });
-                            }}
-                            role="button"
-                        />
-                    </div>
-                    {tableColumns.names.map((eachName, _ind) => (
-                        <div
-                            className={
-                                _ind % CONSTANTS.EVEN_DIVISIBLE ===
-                                CONSTANTS.MOD_EVEN
-                                    ? "bg-light"
-                                    : "bg-secondary bg-opacity-25"
-                            }
-                            key={`id-entry-${eachName}`}
-                        >
-                            {eachName}
-                        </div>
-                    ))}
-                </div>
-                <div>
-                    <div className="d-flex flex-row">
-                        <span>{"Credits"}</span>
-                        <FontAwesomeIcon
-                            className="my-auto ps-2"
-                            icon={generateSortingIcon(
-                                sortingState.credits.sort,
-                            )}
-                            onClick={(): void => {
-                                setIsSorting(true);
-                                sortingDispatch({ type: "credits" });
-                            }}
-                            role="button"
-                        />
-                    </div>
-                    {tableColumns.credits.map((eachCredit, _ind) => (
-                        <div
-                            className={
-                                _ind % CONSTANTS.EVEN_DIVISIBLE ===
-                                CONSTANTS.MOD_EVEN
-                                    ? "bg-light"
-                                    : "bg-secondary bg-opacity-25"
-                            }
-                            key={`id-entry-${eachCredit}`}
-                        >
-                            {eachCredit}
-                        </div>
-                    ))}
-                </div>
-                <div>
-                    <div className="d-flex flex-row">
-                        <span>{"Description"}</span>
-                        <FontAwesomeIcon
-                            className="my-auto ps-2"
-                            icon={generateSortingIcon(
-                                sortingState.description.sort,
-                            )}
-                            onClick={(): void => {
-                                setIsSorting(true);
-                                sortingDispatch({
-                                    type: "description",
-                                });
-                            }}
-                            role="button"
-                        />
-                    </div>
-                    {tableColumns.descriptions.map((eachDescription, _ind) => (
-                        <div
-                            className={
-                                _ind % CONSTANTS.EVEN_DIVISIBLE ===
-                                CONSTANTS.MOD_EVEN
-                                    ? "bg-light"
-                                    : "bg-secondary bg-opacity-25"
-                            }
-                            key={`id-entry-${eachDescription}`}
-                        >
-                            {eachDescription ? (
-                                truncateCourseDescription(
-                                    eachDescription,
-                                    CONSTANTS.DESCRIPTION_LENGTH,
-                                )
-                            ) : (
-                                <span className="fw-light">
-                                    {"No Description"}
-                                </span>
-                            )}
-                        </div>
-                    ))}
-                </div>
-                <div>
-                    <div className="d-flex flex-row">
-                        <span>{"Pre Requisites"}</span>
-                        <FontAwesomeIcon
-                            className="my-auto ps-2"
-                            icon={generateSortingIcon(
-                                sortingState.preRequisites.sort,
-                            )}
-                            onClick={(): void => {
-                                setIsSorting(true);
-                                sortingDispatch({
-                                    type: "preRequisites",
-                                });
-                            }}
-                            role="button"
-                        />
-                    </div>
-                    {tableColumns.preRequisites.map(
-                        (eachPreRequisite, _ind) => (
-                            <div
-                                className={
-                                    _ind % CONSTANTS.EVEN_DIVISIBLE ===
-                                    CONSTANTS.MOD_EVEN
-                                        ? "bg-light"
-                                        : "bg-secondary bg-opacity-25"
-                                }
-                                key={`id-entry-${eachPreRequisite}`}
-                            >
-                                {eachPreRequisite === "" ? (
-                                    <span className="fw-light">
-                                        {"No Pre-Requisites"}
-                                    </span>
-                                ) : (
-                                    eachPreRequisite
-                                )}
-                            </div>
-                        ),
-                    )}
-                </div>
-                <div>
-                    <div className="d-flex flex-row">
-                        <span>{"Breadth Requirements"}</span>
-                        <FontAwesomeIcon
-                            className="my-auto ps-2"
-                            icon={generateSortingIcon(
-                                sortingState.breadthRequirements.sort,
-                            )}
-                            onClick={(): void => {
-                                setIsSorting(true);
-                                sortingDispatch({
-                                    type: "breadthRequirements",
-                                });
-                            }}
-                            role="button"
-                        />
-                    </div>
-                    {tableColumns.breadthRequirements.map(
-                        (eachBreadthRequirement, _ind) => (
-                            <div
-                                className={
-                                    _ind % CONSTANTS.EVEN_DIVISIBLE ===
-                                    CONSTANTS.MOD_EVEN
-                                        ? "bg-light"
-                                        : "bg-secondary bg-opacity-25"
-                                }
-                                key={`id-entry-${eachBreadthRequirement}`}
-                            >
-                                {eachBreadthRequirement === "" ? (
-                                    <span className="fw-light">
-                                        {"No Breadth Satisfaction"}
-                                    </span>
-                                ) : (
-                                    eachBreadthRequirement
-                                )}
-                            </div>
-                        ),
-                    )}
-                </div>
+            <div>
+                <Table
+                    bordered
+                    className={
+                        "position-absolute top-50 translate-middle start-50 w-75 mx-auto"
+                    }
+                    hover
+                    responsive
+                    striped
+                >
+                    <thead>
+                        <tr>
+                            <th className="d-table-cell align-middle">
+                                <div>
+                                    <span>{"ID"}</span>
+                                    <FontAwesomeIcon
+                                        className="my-auto ps-2"
+                                        icon={generateSortingIcon(
+                                            sortingState.id.sort,
+                                        )}
+                                        onClick={(): void => {
+                                            setIsSorting(true);
+                                            sortingDispatch({ type: "id" });
+                                        }}
+                                        role="button"
+                                    />
+                                </div>
+                            </th>
+                            <th className="d-table-cell align-middle">
+                                <div className="d-flex flex-row">
+                                    <span>{"Name"}</span>
+                                    <FontAwesomeIcon
+                                        className="my-auto ps-2"
+                                        icon={generateSortingIcon(
+                                            sortingState.name.sort,
+                                        )}
+                                        onClick={(): void => {
+                                            setIsSorting(true);
+                                            sortingDispatch({ type: "name" });
+                                        }}
+                                        role="button"
+                                    />
+                                </div>
+                            </th>
+                            <th className="d-table-cell align-middle">
+                                <div className="d-flex flex-row">
+                                    <span>{"Credits"}</span>
+                                    <FontAwesomeIcon
+                                        className="my-auto ps-2"
+                                        icon={generateSortingIcon(
+                                            sortingState.credits.sort,
+                                        )}
+                                        onClick={(): void => {
+                                            setIsSorting(true);
+                                            sortingDispatch({
+                                                type: "credits",
+                                            });
+                                        }}
+                                        role="button"
+                                    />
+                                </div>
+                            </th>
+                            <th className="d-table-cell align-middle">
+                                <div className="d-flex flex-row">
+                                    <span>{"Description"}</span>
+                                    <FontAwesomeIcon
+                                        className="my-auto ps-2"
+                                        icon={generateSortingIcon(
+                                            sortingState.description.sort,
+                                        )}
+                                        onClick={(): void => {
+                                            setIsSorting(true);
+                                            sortingDispatch({
+                                                type: "description",
+                                            });
+                                        }}
+                                        role="button"
+                                    />
+                                </div>
+                            </th>
+                            <th className="d-table-cell align-middle">
+                                <div className="d-flex flex-row">
+                                    <span>{"Pre Requisites"}</span>
+                                    <FontAwesomeIcon
+                                        className="my-auto ps-2"
+                                        icon={generateSortingIcon(
+                                            sortingState.preRequisites.sort,
+                                        )}
+                                        onClick={(): void => {
+                                            setIsSorting(true);
+                                            sortingDispatch({
+                                                type: "preRequisites",
+                                            });
+                                        }}
+                                        role="button"
+                                    />
+                                </div>
+                            </th>
+                            <th className="d-table-cell align-middle">
+                                <div className="d-flex flex-row">
+                                    <span>{"Breadth Requirements"}</span>
+                                    <FontAwesomeIcon
+                                        className="my-auto ps-2"
+                                        icon={generateSortingIcon(
+                                            sortingState.breadthRequirements
+                                                .sort,
+                                        )}
+                                        onClick={(): void => {
+                                            setIsSorting(true);
+                                            sortingDispatch({
+                                                type: "breadthRequirements",
+                                            });
+                                        }}
+                                        role="button"
+                                    />
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {segmentedCourses?.[page].map((eachCourse: Course) => (
+                            <tr key={`course-${eachCourse.id}`}>
+                                <td>{eachCourse.id}</td>
+                                <td>{eachCourse?.name ?? "No Name"}</td>
+                                <td>{eachCourse.credits}</td>
+                                <td>
+                                    {eachCourse?.description === ""
+                                        ? "No Description"
+                                        : truncateCourseDescription(
+                                              eachCourse.description,
+                                              CONSTANTS.DESCRIPTION_LENGTH,
+                                          )}
+                                </td>
+                                <td>
+                                    {eachCourse?.preRequisites === ""
+                                        ? eachCourse.preRequisites
+                                        : "No Pre-Requisites"}
+                                </td>
+                                <td>
+                                    {eachCourse?.breadthRequirements ??
+                                        "No Breadth Requirements"}
+                                </td>
+                            </tr>
+                        ))}
+                        {segmentedCourses?.[page].length < pageSize &&
+                            new Array(
+                                pageSize - segmentedCourses?.[page].length,
+                            )
+                                .fill(CONSTANTS.PLACEHOLDER_FILL)
+                                .map((_, placeholderRowIndex) => (
+                                    <tr
+                                        // eslint-disable-next-line react/no-array-index-key -- not needed for placeholder
+                                        key={`placeholder-row-${placeholderRowIndex}`}
+                                    >
+                                        {new Array(
+                                            CONSTANTS.PLACEHOLDER_FILL_SIZE,
+                                        )
+                                            .fill(CONSTANTS.PLACEHOLDER_FILL)
+                                            .map(
+                                                (
+                                                    __,
+                                                    placeholderRowDataIndex,
+                                                ) => (
+                                                    <Placeholder
+                                                        animation="wave"
+                                                        as="td"
+                                                        // eslint-disable-next-line react/no-array-index-key -- not needed for placeholder
+                                                        key={`placeholder-row-cell-${placeholderRowDataIndex}`}
+                                                        xs={12}
+                                                    />
+                                                ),
+                                            )}
+                                    </tr>
+                                ))}
+                    </tbody>
+                </Table>
             </div>
-            <Pagination className="w-50 mx-auto d-flex flex-row justify-content-center">
+            <Pagination className="position-absolute bottom-0 start-50 translate-middle-x">
                 {segmentedCourses.map((_, i) => (
                     <Pagination.Item
                         active={page === i}
