@@ -81,17 +81,17 @@ export const Read = (): JSX.Element => {
         }
     }, [isSorting, resetCourses, sortCourses, sortingState]);
 
+    console.log(segmentedCourses[page]);
+
     return (
         <>
-            <div className="rounded border border-left border-right border-bottom-0 border-top-0 bg-secondary bg-opacity-25 fw-bold fs-4 text-center position-absolute top-0 start-50 translate-middle-x mt-3 p-2">
+            <div className="rounded border border-left border-right border-bottom-0 border-top-0 bg-secondary bg-opacity-25 fw-bold fs-4 text-center my-3 p-2 w-50 mx-auto">
                 {"Course List"}
             </div>
             <div>
                 <Table
                     bordered
-                    className={
-                        "position-absolute top-50 translate-middle start-50 w-75 mx-auto"
-                    }
+                    className={"w-75 mx-auto"}
                     hover
                     responsive
                     striped
@@ -221,12 +221,13 @@ export const Read = (): JSX.Element => {
                                 </td>
                                 <td>
                                     {eachCourse?.preRequisites === ""
-                                        ? eachCourse.preRequisites
-                                        : "No Pre-Requisites"}
+                                        ? "No Pre-Requisites"
+                                        : eachCourse.preRequisites}
                                 </td>
                                 <td>
-                                    {eachCourse?.breadthRequirements ??
-                                        "No Breadth Requirements"}
+                                    {eachCourse?.breadthRequirements === ""
+                                        ? "No Breadth Requirements"
+                                        : eachCourse.breadthRequirements}
                                 </td>
                             </tr>
                         ))}
@@ -263,7 +264,7 @@ export const Read = (): JSX.Element => {
                     </tbody>
                 </Table>
             </div>
-            <Pagination className="position-absolute bottom-0 start-50 translate-middle-x">
+            <Pagination className="d-flex flex-row w-25 justify-content-center mx-auto">
                 {segmentedCourses.map((_, i) => (
                     <Pagination.Item
                         active={page === i}

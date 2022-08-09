@@ -3,7 +3,8 @@
 }
 
 .course_data_table {
-    width: 75%;
+    max-height: 25vh;
+    height: 10vh;
 }
 
 /*
