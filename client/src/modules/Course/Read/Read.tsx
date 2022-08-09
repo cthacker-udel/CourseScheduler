@@ -31,6 +31,7 @@ const CONSTANTS = {
     ID_INDEX: 1,
     MOD_EVEN: 0,
     NAME_INDEX: 1,
+    PAGINATION_INC: 1,
     PLACEHOLDER_FILL: 0,
     PLACEHOLDER_FILL_SIZE: 6,
 };
@@ -274,7 +275,7 @@ export const Read = (): JSX.Element => {
                             setPage(i);
                         }}
                     >
-                        {i}
+                        {i + CONSTANTS.PAGINATION_INC}
                     </Pagination.Item>
                 ))}
             </Pagination>
