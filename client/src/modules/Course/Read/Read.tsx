@@ -86,7 +86,7 @@ export const Read = (): JSX.Element => {
 
     return (
         <>
-            <div className="rounded border border-left border-right border-bottom-0 border-top-0 bg-secondary bg-opacity-25 fw-bold fs-4 text-center my-3 p-2 w-50 mx-auto">
+            <div className="rounded border border-left border-right border-bottom-0 border-top-0 bg-primary bg-gradient bg-opacity-25 fw-bold fs-4 text-center my-3 p-2 w-50 mx-auto">
                 {"Course List"}
             </div>
             <div>
