@@ -1,4 +1,6 @@
 export { copyTextToClipboard } from "./copyTextToClipboard/copyTextToClipboard";
+export * from "./generateDataGridColumns";
+export * from "./generateDataGridRows";
 export { generateSortingIcon } from "./generateSortingIcon/generateSortingIcon";
 export { generateSortingOrderBy } from "./generateSortingOrderBy/generateSortingOrderBy";
 export { generateTableColumns } from "./generateTableColumns/generateTableColumns";

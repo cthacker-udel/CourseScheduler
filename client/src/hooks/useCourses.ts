@@ -8,13 +8,18 @@ import type {
 } from "src/@types";
 import COURSES from "src/data/catalog.json";
 
+const NAME_INDEX_SPLIT = 1;
+
 const CONSTANTS = {
     ID_INDEX: 1,
     SECTION_IND: 0,
     SECTION_RANGE_LENGTH: 2,
     SECTION_RANGE_MAX_IND: 1,
     SECTION_RANGE_MIN_IND: 0,
-    parsedCourses: COURSES as Course[],
+    parsedCourses: (COURSES as Course[]).map((eachCourse) => ({
+        ...eachCourse,
+        name: eachCourse.name.split(" - ")[NAME_INDEX_SPLIT],
+    })),
 };
 
 type useCoursesProperties = {

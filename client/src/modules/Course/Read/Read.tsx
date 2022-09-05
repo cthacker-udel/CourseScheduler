@@ -1,23 +1,11 @@
 /* eslint-disable no-unused-vars -- disabled for now */
 /* eslint-disable @typescript-eslint/indent -- prettier - eslint errors */
 
-import {
-    faSort,
-    faSortDown,
-    faSortUp,
-} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Table from "@mui/material/Table";
+import { type GridCallbackDetails, DataGrid } from "@mui/x-data-grid";
 import chunk from "lodash.chunk";
 import React from "react";
-import {
-    Button,
-    FloatingLabel,
-    Form,
-    ListGroup,
-    Pagination,
-    Placeholder,
-    Table,
-} from "react-bootstrap";
 import type {
     Course,
     CourseSortingReducerSignature,
@@ -25,8 +13,9 @@ import type {
 } from "src/@types";
 import { CoursePagination } from "src/common";
 import { initialCourseSortState } from "src/data";
-import { SORTING } from "src/enums";
 import {
+    generateDataGridColumnsCourse,
+    generateDataGridRows,
     generateSortingIcon,
     generateSortingOrderBy,
     renderPreRequisites,
@@ -110,195 +99,24 @@ export const Read = (): JSX.Element => {
         }
     }, [isSorting, resetCourses, sortCourses, sortingState]);
 
-    console.log(segmentedCourses);
-
     return (
-        <>
-            <div className="text-center mt-3 w-75 mx-auto">
-                <div className="fs-4 mb-3 text-decoration-underline">
-                    {"Course Viewer"}
-                </div>
-                <Table
-                    bordered
-                    className={_styles.course_table}
-                    hover
-                    responsive
-                    striped
-                >
-                    <thead className={_styles.course_table_header}>
-                        <tr>
-                            <th
-                                onClick={(): void => {
-                                    setIsSorting(true);
-                                    sortingDispatch({
-                                        type: "breadthRequirements",
-                                    });
-                                }}
-                                role="button"
-                            >
-                                <div className="d-flex flex-row align-items-center justify-content-center">
-                                    <span>{"Breadth Requirements "}</span>
-                                    <FontAwesomeIcon
-                                        className="ps-1"
-                                        icon={generateSortingIcon(
-                                            sortingState.breadthRequirements
-                                                .sort,
-                                        )}
-                                    />
-                                </div>
-                            </th>
-                            <th
-                                onClick={(): void => {
-                                    setIsSorting(true);
-                                    sortingDispatch({ type: "credits" });
-                                }}
-                                role="button"
-                            >
-                                <div className="d-flex flex-row align-items-center justify-content-center">
-                                    <span>{"Credits "}</span>
-                                    <FontAwesomeIcon
-                                        className="ps-1"
-                                        icon={generateSortingIcon(
-                                            sortingState.credits.sort,
-                                        )}
-                                    />
-                                </div>
-                            </th>
-                            <th
-                                onClick={(): void => {
-                                    setIsSorting(true);
-                                    sortingDispatch({ type: "description" });
-                                }}
-                                role="button"
-                            >
-                                <div className="d-flex flex-row align-items-center justify-content-center">
-                                    <span>{"Description "}</span>
-                                    <FontAwesomeIcon
-                                        className="ps-1"
-                                        icon={generateSortingIcon(
-                                            sortingState.description.sort,
-                                        )}
-                                    />
-                                </div>
-                            </th>
-                            <th
-                                onClick={(): void => {
-                                    setIsSorting(true);
-                                    sortingDispatch({ type: "id" });
-                                }}
-                                role="button"
-                            >
-                                <div className="d-flex flex-row align-items-center justify-content-center">
-                                    <span>{"Id "}</span>
-                                    <FontAwesomeIcon
-                                        className="ps-1"
-                                        icon={generateSortingIcon(
-                                            sortingState.id.sort,
-                                        )}
-                                    />
-                                </div>
-                            </th>
-                            <th
-                                onClick={(): void => {
-                                    setIsSorting(true);
-                                    sortingDispatch({ type: "name" });
-                                }}
-                                role="button"
-                            >
-                                <div className="d-flex flex-row align-items-center justify-content-center">
-                                    <span>{"Name "}</span>
-                                    <FontAwesomeIcon
-                                        className="ps-1"
-                                        icon={generateSortingIcon(
-                                            sortingState.name.sort,
-                                        )}
-                                    />
-                                </div>
-                            </th>
-                            <th
-                                onClick={(): void => {
-                                    setIsSorting(true);
-                                    sortingDispatch({ type: "preRequisites" });
-                                }}
-                                role="button"
-                            >
-                                <div className="d-flex flex-row align-items-center justify-content-center">
-                                    <span>{"Pre-Reqs"}</span>
-                                    <FontAwesomeIcon
-                                        className="ps-1"
-                                        icon={generateSortingIcon(
-                                            sortingState.preRequisites.sort,
-                                        )}
-                                    />
-                                </div>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {segmentedCourses[page].map((eachCourse: Course) => (
-                            <tr
-                                className={_styles.course_info}
-                                key={eachCourse.id}
-                            >
-                                <td className="align-middle">
-                                    {eachCourse.breadthRequirements || (
-                                        <span className="text-muted fw-light">
-                                            {
-                                                TEXT_CONSTANTS.INVALID_BREADTH_REQUIREMENTS
-                                            }
-                                        </span>
-                                    )}
-                                </td>
-                                <td className="align-middle fw-bold">
-                                    {eachCourse.credits || (
-                                        <span className="text-muted fw-light">
-                                            {TEXT_CONSTANTS.INVALID_CREDITS}
-                                        </span>
-                                    )}
-                                </td>
-                                <td className="align-middle">
-                                    {truncateCourseDescription(
-                                        eachCourse.description,
-                                    ) || (
-                                        <span className="text-muted fw-light">
-                                            {TEXT_CONSTANTS.INVALID_DESCRIPTION}
-                                        </span>
-                                    )}
-                                </td>
-                                <td className="align-middle">
-                                    {eachCourse.id}
-                                </td>
-                                <td className="align-middle">
-                                    {
-                                        eachCourse.name.split(" - ")[
-                                            CONSTANTS.NAME_INDEX
-                                        ]
-                                    }
-                                </td>
-                                <td className="align-middle">
-                                    {renderPreRequisites(
-                                        eachCourse.preRequisites,
-                                    ) ?? (
-                                        <span className="text-muted fw-light">
-                                            {
-                                                TEXT_CONSTANTS.INVALID_PREREQUISITES
-                                            }
-                                        </span>
-                                    )}
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </Table>
+        <div className="text-center mt-3 w-75 mx-auto h-75">
+            <div className="fs-4 mb-3 text-decoration-underline">
+                {"Course Viewer"}
             </div>
-            <CoursePagination
-                currentPage={page}
-                moveToPage={(pageNumber: number): void => {
-                    setPage(pageNumber);
+            <DataGrid
+                checkboxSelection
+                columns={generateDataGridColumnsCourse()}
+                onPageSizeChange={(
+                    newPageSize: number,
+                    _details: GridCallbackDetails,
+                ): void => {
+                    setPageSize(newPageSize);
                 }}
-                pagesCount={segmentedCourses?.length}
-                paginationSize="sm"
+                pageSize={pageSize}
+                rows={generateDataGridRows(courses)}
+                rowsPerPageOptions={CONSTANTS.COURSE_AMOUNT_SELECTIONS}
             />
-        </>
+        </div>
     );
 };
