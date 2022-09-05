@@ -41,19 +41,28 @@ export const CoursePagination = ({
     const [lastPage, setLastPage] = React.useState<boolean>(false);
 
     const generatePaginationContent = React.useCallback(
-        (length: number, clickFunction: (_pageNumber: number) => void) =>
+        (
+            totalLength: number,
+            length: number,
+            clickFunction: (_pageNumber: number) => void,
+        ) =>
             Array.from<number>({ length })
                 .fill(0)
                 .map<number>((_, _ind) => _ind + currentPageStart)
-                .map<JSX.Element>((eachElement) => (
-                    <Pagination.Item
-                        active={eachElement === currentPage}
-                        key={`page-${eachElement + currentPage}`}
-                        onClick={(): void => clickFunction(eachElement)}
-                    >
-                        {eachElement + 1}
-                    </Pagination.Item>
-                )),
+                .map<JSX.Element>((eachElement) => {
+                    if (eachElement + 1 <= totalLength) {
+                        return (
+                            <Pagination.Item
+                                active={eachElement === currentPage}
+                                key={`page-${eachElement + currentPage}`}
+                                onClick={(): void => clickFunction(eachElement)}
+                            >
+                                {eachElement + 1}
+                            </Pagination.Item>
+                        );
+                    }
+                    return <div key={`page-${eachElement + currentPage}`} />;
+                }),
         [currentPage, currentPageStart],
     );
 
@@ -63,15 +72,11 @@ export const CoursePagination = ({
             setCurrentPageStart(currentPage);
             setLastPage(false);
         } else if (pageDifference <= 5 && !lastPage) {
-            if (pageDifference === 1) {
-                let temporaryCurrentPage = currentPage;
-                while (Math.abs(temporaryCurrentPage - pagesCount) !== 5) {
-                    temporaryCurrentPage -= 1;
-                }
-                setCurrentPageStart(temporaryCurrentPage);
-            } else {
-                setCurrentPageStart(currentPage);
+            let temporaryCurrentPage = currentPage;
+            while (Math.abs(temporaryCurrentPage - pagesCount) !== 5) {
+                temporaryCurrentPage -= 1;
             }
+            setCurrentPageStart(temporaryCurrentPage);
             setLastPage(true);
         } else if (pageDifference > 5 && lastPage) {
             let temporaryCurrentPage = currentPage;
@@ -97,6 +102,7 @@ export const CoursePagination = ({
                             onClick={(): void => moveToPage(currentPage - 1)}
                         />
                         {generatePaginationContent(
+                            pagesCount,
                             CONSTANTS.BASE_PAGINATION_LENGTH,
                             (pageNumber: number) => moveToPage(pageNumber),
                         )}
