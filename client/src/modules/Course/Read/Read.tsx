@@ -118,8 +118,14 @@ export const Read = (): JSX.Element => {
                 <div className="fs-4 mb-3 text-decoration-underline">
                     {"Course Viewer"}
                 </div>
-                <Table bordered hover responsive striped>
-                    <thead>
+                <Table
+                    bordered
+                    className={_styles.course_table}
+                    hover
+                    responsive
+                    striped
+                >
+                    <thead className={_styles.course_table_header}>
                         <tr>
                             <th
                                 onClick={(): void => {
