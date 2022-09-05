@@ -103,7 +103,13 @@ export const CoursePagination = ({
                         {!lastPage && (
                             <>
                                 <Pagination.Ellipsis disabled />
-                                <Pagination.Item>{pagesCount}</Pagination.Item>
+                                <Pagination.Item
+                                    onClick={(): void =>
+                                        moveToPage(pagesCount - 1)
+                                    }
+                                >
+                                    {pagesCount}
+                                </Pagination.Item>
                             </>
                         )}
                         <Pagination.Next
