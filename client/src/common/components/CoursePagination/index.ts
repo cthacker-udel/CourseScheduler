@@ -1,0 +1,1 @@
+export { CoursePagination } from "./CoursePagination";
