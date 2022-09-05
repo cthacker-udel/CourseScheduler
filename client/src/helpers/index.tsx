@@ -4,5 +4,6 @@ export { generateSortingOrderBy } from "./generateSortingOrderBy/generateSorting
 export { generateTableColumns } from "./generateTableColumns/generateTableColumns";
 export { generateTooltip } from "./generateTooltip/generateTooltip";
 export { generateTooltipIntl } from "./generateTooltipIntl/generateTooltipIntl";
+export { renderPreRequisites } from "./renderPreRequisites";
 export { truncateCourseDescription } from "./truncateCourseDescription/truncateCourseDescription";
 export { validatePassword } from "./validatePassword/validatePassword";

@@ -29,6 +29,7 @@ import { SORTING } from "src/enums";
 import {
     generateSortingIcon,
     generateSortingOrderBy,
+    renderPreRequisites,
     truncateCourseDescription,
 } from "src/helpers";
 import { useCourses } from "src/hooks/useCourses";
@@ -59,6 +60,7 @@ const TEXT_CONSTANTS = {
     INVALID_CREDITS: "No Credits",
     INVALID_DESCRIPTION: "No Description",
     INVALID_E_BREADTH: "No Elective Breadth",
+    INVALID_PREREQUISITES: "No Pre-Requisites",
     NUMBER_OF_COURSES: "# of Courses",
 };
 
@@ -116,7 +118,7 @@ export const Read = (): JSX.Element => {
                 <div className="fs-4 mb-3 text-decoration-underline">
                     {"Course Viewer"}
                 </div>
-                <Table bordered hover responsive size="sm">
+                <Table bordered hover responsive striped>
                     <thead>
                         <tr>
                             <th
@@ -128,8 +130,8 @@ export const Read = (): JSX.Element => {
                                 }}
                                 role="button"
                             >
-                                {"Breadth Requirements "}
-                                {
+                                <div className="d-flex flex-row align-items-center justify-content-center">
+                                    <span>{"Breadth Requirements "}</span>
                                     <FontAwesomeIcon
                                         className="ps-1"
                                         icon={generateSortingIcon(
@@ -137,7 +139,7 @@ export const Read = (): JSX.Element => {
                                                 .sort,
                                         )}
                                     />
-                                }
+                                </div>
                             </th>
                             <th
                                 onClick={(): void => {
@@ -146,15 +148,15 @@ export const Read = (): JSX.Element => {
                                 }}
                                 role="button"
                             >
-                                {"Credits "}
-                                {
+                                <div className="d-flex flex-row align-items-center justify-content-center">
+                                    <span>{"Credits "}</span>
                                     <FontAwesomeIcon
                                         className="ps-1"
                                         icon={generateSortingIcon(
                                             sortingState.credits.sort,
                                         )}
                                     />
-                                }
+                                </div>
                             </th>
                             <th
                                 onClick={(): void => {
@@ -163,31 +165,32 @@ export const Read = (): JSX.Element => {
                                 }}
                                 role="button"
                             >
-                                {"Description "}
-                                {
+                                <div className="d-flex flex-row align-items-center justify-content-center">
+                                    <span>{"Description "}</span>
                                     <FontAwesomeIcon
                                         className="ps-1"
                                         icon={generateSortingIcon(
                                             sortingState.description.sort,
                                         )}
                                     />
-                                }
+                                </div>
                             </th>
                             <th
-                                className="d-flex flex-row align-items-center justify-content-center"
                                 onClick={(): void => {
                                     setIsSorting(true);
                                     sortingDispatch({ type: "id" });
                                 }}
                                 role="button"
                             >
-                                <span>{"Id "}</span>
-                                <FontAwesomeIcon
-                                    className="ps-1"
-                                    icon={generateSortingIcon(
-                                        sortingState.id.sort,
-                                    )}
-                                />
+                                <div className="d-flex flex-row align-items-center justify-content-center">
+                                    <span>{"Id "}</span>
+                                    <FontAwesomeIcon
+                                        className="ps-1"
+                                        icon={generateSortingIcon(
+                                            sortingState.id.sort,
+                                        )}
+                                    />
+                                </div>
                             </th>
                             <th
                                 onClick={(): void => {
@@ -196,15 +199,15 @@ export const Read = (): JSX.Element => {
                                 }}
                                 role="button"
                             >
-                                {"Name "}
-                                {
+                                <div className="d-flex flex-row align-items-center justify-content-center">
+                                    <span>{"Name "}</span>
                                     <FontAwesomeIcon
                                         className="ps-1"
                                         icon={generateSortingIcon(
                                             sortingState.name.sort,
                                         )}
                                     />
-                                }
+                                </div>
                             </th>
                             <th
                                 onClick={(): void => {
@@ -213,15 +216,15 @@ export const Read = (): JSX.Element => {
                                 }}
                                 role="button"
                             >
-                                {"Pre-Requisites"}{" "}
-                                {
+                                <div className="d-flex flex-row align-items-center justify-content-center">
+                                    <span>{"Pre-Requisites"}</span>
                                     <FontAwesomeIcon
                                         className="ps-1"
                                         icon={generateSortingIcon(
                                             sortingState.preRequisites.sort,
                                         )}
                                     />
-                                }
+                                </div>
                             </th>
                         </tr>
                     </thead>
@@ -232,21 +235,33 @@ export const Read = (): JSX.Element => {
                                 key={eachCourse.id}
                             >
                                 <td>
-                                    {eachCourse.breadthRequirements ??
+                                    {eachCourse.breadthRequirements ||
                                         TEXT_CONSTANTS.INVALID_BREADTH_REQUIREMENTS}
                                 </td>
                                 <td>
-                                    {eachCourse.credits ??
+                                    {eachCourse.credits ||
                                         TEXT_CONSTANTS.INVALID_CREDITS}
                                 </td>
                                 <td>
                                     {truncateCourseDescription(
                                         eachCourse.description,
-                                    ) ?? TEXT_CONSTANTS.INVALID_DESCRIPTION}
+                                    ) || TEXT_CONSTANTS.INVALID_DESCRIPTION}
                                 </td>
-                                <td>{eachCourse.id}</td>
-                                <td>{eachCourse.name}</td>
-                                <td>{eachCourse.preRequisites}</td>
+                                <td className="align-middle">
+                                    {eachCourse.id}
+                                </td>
+                                <td>
+                                    {
+                                        eachCourse.name.split(" - ")[
+                                            CONSTANTS.NAME_INDEX
+                                        ]
+                                    }
+                                </td>
+                                <td>
+                                    {renderPreRequisites(
+                                        eachCourse.preRequisites,
+                                    ) ?? TEXT_CONSTANTS.INVALID_PREREQUISITES}
+                                </td>
                             </tr>
                         ))}
                     </tbody>
