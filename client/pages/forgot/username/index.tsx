@@ -1,3 +1,1 @@
-import { ForgotUsername } from "src/modules/Forgot/ForgotUsername/ForgotUsername";
-
-export default ForgotUsername;
+export { ForgotUsername as default } from "src/modules/Forgot/ForgotUsername/ForgotUsername";

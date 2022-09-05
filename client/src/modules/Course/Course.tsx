@@ -29,7 +29,7 @@ const Course = (): JSX.Element => {
     const data: MockCourse = useMockData()[MOCK_COURSE_INDEX];
     const { credits } = data;
     const parsedCredits = Number.parseInt(credits, 10);
-    const { description, id, prereqs } = data;
+    const { description, id, preRequisites } = data;
     return (
         <Container fluid>
             <Card className={`w-50 mx-auto mt-5 ${styles.course_block}`}>
@@ -53,8 +53,8 @@ const Course = (): JSX.Element => {
                             </span>
                             <span className="p-1 text-wrap">
                                 {`${CONSTANT_STRINGS.prereq}: ${
-                                    prereqs.length > DATA_LENGTH_CHECK
-                                        ? prereqs
+                                    preRequisites.length > DATA_LENGTH_CHECK
+                                        ? preRequisites
                                         : "No Pre-Requisites for course"
                                 }`}
                             </span>

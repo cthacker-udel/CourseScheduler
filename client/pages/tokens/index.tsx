@@ -1,3 +1,1 @@
-import { Tokens } from "src/modules/Tokens/Tokens";
-
-export default Tokens;
+export { Tokens as default } from "src/modules/Tokens/Tokens";

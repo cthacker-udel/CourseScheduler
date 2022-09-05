@@ -1,3 +1,1 @@
-import HomePage from "src/modules/Home/HomePage";
-
-export default HomePage;
+export { default } from "src/modules/Home/HomePage";

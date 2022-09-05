@@ -1,3 +1,1 @@
-import { ForgotPassword } from "src/modules/Forgot/ForgotPassword/ForgotPassword";
-
-export default ForgotPassword;
+export { ForgotPassword as default } from "src/modules/Forgot/ForgotPassword/ForgotPassword";

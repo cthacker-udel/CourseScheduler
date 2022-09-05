@@ -1,3 +1,1 @@
-import { Construction } from "src/common/components/Construction/Construction";
-
-export default Construction;
+export { Construction as default } from "src/common/components/Construction/Construction";

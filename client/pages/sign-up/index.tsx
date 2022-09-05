@@ -1,3 +1,1 @@
-import { SignUp } from "src/modules/SignUp/SignUp";
-
-export default SignUp;
+export { SignUp as default } from "src/modules/SignUp/SignUp";

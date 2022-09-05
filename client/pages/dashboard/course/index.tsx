@@ -1,3 +1,1 @@
-import { CourseDashboard } from "src/modules/Dashboard/CourseDashboard/CourseDashboard";
-
-export default CourseDashboard;
+export { CourseDashboard as default } from "src/modules/Dashboard/CourseDashboard/CourseDashboard";

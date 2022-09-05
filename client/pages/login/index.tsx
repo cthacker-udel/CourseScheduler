@@ -1,3 +1,1 @@
-import { LoginPage } from "src/modules/LoginPage/LoginPage";
-
-export default LoginPage;
+export { LoginPage as default } from "src/modules/LoginPage/LoginPage";
