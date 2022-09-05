@@ -217,7 +217,7 @@ export const Read = (): JSX.Element => {
                                 role="button"
                             >
                                 <div className="d-flex flex-row align-items-center justify-content-center">
-                                    <span>{"Pre-Requisites"}</span>
+                                    <span>{"Pre-Reqs"}</span>
                                     <FontAwesomeIcon
                                         className="ps-1"
                                         icon={generateSortingIcon(
@@ -234,33 +234,51 @@ export const Read = (): JSX.Element => {
                                 className={_styles.course_info}
                                 key={eachCourse.id}
                             >
-                                <td>
-                                    {eachCourse.breadthRequirements ||
-                                        TEXT_CONSTANTS.INVALID_BREADTH_REQUIREMENTS}
+                                <td className="align-middle">
+                                    {eachCourse.breadthRequirements || (
+                                        <span className="text-muted fw-light">
+                                            {
+                                                TEXT_CONSTANTS.INVALID_BREADTH_REQUIREMENTS
+                                            }
+                                        </span>
+                                    )}
                                 </td>
-                                <td>
-                                    {eachCourse.credits ||
-                                        TEXT_CONSTANTS.INVALID_CREDITS}
+                                <td className="align-middle fw-bold">
+                                    {eachCourse.credits || (
+                                        <span className="text-muted fw-light">
+                                            {TEXT_CONSTANTS.INVALID_CREDITS}
+                                        </span>
+                                    )}
                                 </td>
-                                <td>
+                                <td className="align-middle">
                                     {truncateCourseDescription(
                                         eachCourse.description,
-                                    ) || TEXT_CONSTANTS.INVALID_DESCRIPTION}
+                                    ) || (
+                                        <span className="text-muted fw-light">
+                                            {TEXT_CONSTANTS.INVALID_DESCRIPTION}
+                                        </span>
+                                    )}
                                 </td>
                                 <td className="align-middle">
                                     {eachCourse.id}
                                 </td>
-                                <td>
+                                <td className="align-middle">
                                     {
                                         eachCourse.name.split(" - ")[
                                             CONSTANTS.NAME_INDEX
                                         ]
                                     }
                                 </td>
-                                <td>
+                                <td className="align-middle">
                                     {renderPreRequisites(
                                         eachCourse.preRequisites,
-                                    ) ?? TEXT_CONSTANTS.INVALID_PREREQUISITES}
+                                    ) ?? (
+                                        <span className="text-muted fw-light">
+                                            {
+                                                TEXT_CONSTANTS.INVALID_PREREQUISITES
+                                            }
+                                        </span>
+                                    )}
                                 </td>
                             </tr>
                         ))}
