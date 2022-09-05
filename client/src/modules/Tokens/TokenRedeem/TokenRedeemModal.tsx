@@ -8,7 +8,7 @@ import { TokenUsernameRedeemModal } from "./TokenUsernameRedeemModal/TokenUserna
 
 type CloseType = "email" | "password" | "username";
 
-type TokenRedeemModalProps = {
+type TokenRedeemModalProperties = {
     close: (_type?: CloseType) => void;
     type: ForgotTokenType;
     token: string;
@@ -45,13 +45,13 @@ const generateTokenModal = (
 /**
  * This modal serves as the update hub for changing the user's values if they use a token redemption.
  *
- * @param {TokenRedeemModalProps} props The type of token and the token itself
+ * @param {TokenRedeemModalProperties} props The type of token and the token itself
  */
 export const TokenRedeemModal = ({
     close,
     type,
     token,
-}: TokenRedeemModalProps): JSX.Element => (
+}: TokenRedeemModalProperties): JSX.Element => (
     <Modal
         onHide={(): void => {
             close();

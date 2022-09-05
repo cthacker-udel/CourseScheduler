@@ -1,3 +1,1 @@
-import { Course } from "./Course";
-
-export default Course;
+export { default } from "./Course";

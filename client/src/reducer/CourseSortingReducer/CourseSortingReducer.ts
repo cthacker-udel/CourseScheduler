@@ -17,33 +17,43 @@ const generateNextSortingState = (
     oldSort: SORTING,
     oldTrajectory: TRAJECTORY,
 ): generateSortingOutput => {
-    if (oldSort === SORTING.INCREMENTING) {
-        return {
-            sort: SORTING.NEUTRAL,
-            trajectory: TRAJECTORY.DECREMENTING,
-        };
-    } else if (oldSort === SORTING.DECREMENTING) {
-        return {
-            sort: SORTING.NEUTRAL,
-            trajectory: TRAJECTORY.INCREMENTING,
-        };
-    } else if (oldSort === SORTING.NEUTRAL) {
-        if (oldTrajectory === TRAJECTORY.INCREMENTING) {
+    switch (oldSort) {
+        case SORTING.INCREMENTING: {
             return {
-                sort: SORTING.INCREMENTING,
+                sort: SORTING.NEUTRAL,
                 trajectory: TRAJECTORY.DECREMENTING,
             };
-        } else if (oldTrajectory === TRAJECTORY.DECREMENTING) {
+        }
+        case SORTING.DECREMENTING: {
             return {
-                sort: SORTING.DECREMENTING,
+                sort: SORTING.NEUTRAL,
                 trajectory: TRAJECTORY.INCREMENTING,
             };
         }
+        case SORTING.NEUTRAL: {
+            if (oldTrajectory === TRAJECTORY.INCREMENTING) {
+                return {
+                    sort: SORTING.INCREMENTING,
+                    trajectory: TRAJECTORY.DECREMENTING,
+                };
+            } else if (oldTrajectory === TRAJECTORY.DECREMENTING) {
+                return {
+                    sort: SORTING.DECREMENTING,
+                    trajectory: TRAJECTORY.INCREMENTING,
+                };
+            }
+            return {
+                sort: oldSort,
+                trajectory: oldTrajectory,
+            };
+        }
+        default: {
+            return {
+                sort: oldSort,
+                trajectory: oldTrajectory,
+            };
+        }
     }
-    return {
-        sort: oldSort,
-        trajectory: oldTrajectory,
-    };
 };
 
 /**

@@ -12,7 +12,7 @@ import { useNotificationContext } from "src/context/NotificationContext/useNotif
 
 type CloseType = "email" | "password" | "username";
 
-type TokenModalProps = {
+type TokenModalProperties = {
     close: (_type?: CloseType) => void;
     token: string;
 };
@@ -130,7 +130,7 @@ const USERNAME_USEFORM_RULES = {
 export const TokenUsernameRedeemModal = ({
     close,
     token,
-}: TokenModalProps): JSX.Element => {
+}: TokenModalProperties): JSX.Element => {
     const { addNotification } = useNotificationContext();
     const {
         getValues,

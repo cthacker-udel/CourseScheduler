@@ -1,4 +1,2 @@
-import { CourseSortingReducer } from "./CourseSortingReducer/CourseSortingReducer";
-import { LoginPageReducer } from "./LoginPageReducer/LoginPageReducer";
-
-export { CourseSortingReducer, LoginPageReducer };
+export { CourseSortingReducer } from "./CourseSortingReducer/CourseSortingReducer";
+export { LoginPageReducer } from "./LoginPageReducer/LoginPageReducer";

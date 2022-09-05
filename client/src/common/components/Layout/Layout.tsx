@@ -6,7 +6,7 @@ import { Notifications } from "../Notifications/Notifications";
 import { Sidebar } from "../Sidebar/Sidebar";
 import styles from "./Layout.module.css";
 
-type LayoutProps = {
+type LayoutProperties = {
     children: JSX.Element | ReactNode;
 };
 
@@ -22,7 +22,7 @@ const NOTIFICATION_CONSTANTS = {
  * @summary The Layout component, takes in no props and renders the overall layout of the application
  * @returns {JSX.Element} Layout component
  */
-export const Layout = ({ children }: LayoutProps): JSX.Element => {
+export const Layout = ({ children }: LayoutProperties): JSX.Element => {
     const [notifications, setNotifications] = React.useState<Notification[]>(
         [],
     );

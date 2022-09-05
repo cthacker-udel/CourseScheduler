@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions -- disabled for this specific use case */
 import React from "react";
 
-type DividerProps = {
+type DividerProperties = {
     borderType?: string;
     opacity?: string;
     shadow?: string;
@@ -23,7 +23,7 @@ const Divider = ({
     width,
     marginX,
     marginY,
-}: DividerProps): JSX.Element => (
+}: DividerProperties): JSX.Element => (
     <div
         className={`border ${borderType ?? "border-secondary"} ${
             opacity ?? "opacity-50"

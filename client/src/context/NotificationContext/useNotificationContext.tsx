@@ -9,7 +9,7 @@ import { NotificationContext } from "./NotificationContext";
 export const useNotificationContext = (): iNotificationContext => {
     const notificationContextValue = React.useContext(NotificationContext);
     if (!notificationContextValue) {
-        throw Error("Invalid usage of notification context");
+        throw new Error("Invalid usage of notification context");
     }
     return notificationContextValue;
 };

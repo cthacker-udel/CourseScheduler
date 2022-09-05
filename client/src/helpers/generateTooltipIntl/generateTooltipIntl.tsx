@@ -14,11 +14,11 @@ import styles from "./generateTooltipIntl.module.css";
  */
 export const generateTooltipIntl = (
     fmtMessageId: string,
-    props: OverlayInjectedProps,
+    properties: OverlayInjectedProps,
     values: { [key: string]: string },
 ): JSX.Element => (
     <Tooltip
-        {...props}
+        {...properties}
         className={styles.custom_tooltip_override}
         id={`${fmtMessageId}-${JSON.stringify(values)}`}
     >

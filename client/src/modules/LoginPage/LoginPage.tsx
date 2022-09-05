@@ -68,8 +68,8 @@ export const LoginPage = (): JSX.Element => {
             .then(() => {
                 Logger.log("info", "routes prefetched");
             })
-            .catch((err) => {
-                Logger.log("error", err);
+            .catch((error) => {
+                Logger.log("error", error);
             });
     }, [router]);
 
@@ -244,8 +244,8 @@ export const LoginPage = (): JSX.Element => {
             <div className="w-25 mx-auto pb-3">
                 <OverlayTrigger
                     delay={{ hide: 100, show: 100 }}
-                    overlay={(props: OverlayInjectedProps): ReactNode =>
-                        generateTooltip(loginFormDetails.login, props)
+                    overlay={(properties: OverlayInjectedProps): ReactNode =>
+                        generateTooltip(loginFormDetails.login, properties)
                     }
                     placement="left"
                 >
@@ -266,8 +266,8 @@ export const LoginPage = (): JSX.Element => {
                 </OverlayTrigger>
                 <OverlayTrigger
                     delay={{ hide: 100, show: 100 }}
-                    overlay={(props: OverlayInjectedProps): ReactNode =>
-                        generateTooltip(loginFormDetails.sign_up, props)
+                    overlay={(properties: OverlayInjectedProps): ReactNode =>
+                        generateTooltip(loginFormDetails.sign_up, properties)
                     }
                     placement="right"
                 >

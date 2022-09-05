@@ -47,10 +47,10 @@ export const Sidebar = (): JSX.Element => {
                 }`}
             >
                 <OverlayTrigger
-                    overlay={(props): JSX.Element =>
+                    overlay={(properties): JSX.Element =>
                         generateTooltip(
                             isClosed ? "Reveal Options" : "Close Options",
-                            props,
+                            properties,
                         )
                     }
                     placement="right"

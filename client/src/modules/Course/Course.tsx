@@ -25,17 +25,18 @@ const CONSTANT_STRINGS = {
  * The course component, which will render each individual course
  * @returns {JSX.Element} The singular course
  */
-export const Course = (): JSX.Element => {
+const Course = (): JSX.Element => {
     const data: MockCourse = useMockData()[MOCK_COURSE_INDEX];
     const { credits } = data;
-    const parsedCredits = parseInt(credits, 10);
+    const parsedCredits = Number.parseInt(credits, 10);
+    const { description, id, prereqs } = data;
     return (
         <Container fluid>
             <Card className={`w-50 mx-auto mt-5 ${styles.course_block}`}>
                 <Card.Body>
                     <Card.Title className="d-flex flex-row justify-content-around">
                         <span className="fw-bold fs-6 d-flex flex-column justify-content-around h-100">
-                            <span className="p-1 text-wrap">{`${CONSTANT_STRINGS.title}: ${data.id}`}</span>
+                            <span className="p-1 text-wrap">{`${CONSTANT_STRINGS.title}: ${id}`}</span>
                             <span className="p-1 text-wrap">
                                 {`${CONSTANT_STRINGS.name}: ${
                                     data.name.split(" - ")[
@@ -45,15 +46,15 @@ export const Course = (): JSX.Element => {
                             </span>
                             <span className="p-1 text-wrap">
                                 {`${CONSTANT_STRINGS.description}: ${
-                                    data.description.length > DATA_LENGTH_CHECK
-                                        ? data.description
+                                    description.length > DATA_LENGTH_CHECK
+                                        ? description
                                         : "No description available"
                                 }`}
                             </span>
                             <span className="p-1 text-wrap">
                                 {`${CONSTANT_STRINGS.prereq}: ${
-                                    data.prereqs.length > DATA_LENGTH_CHECK
-                                        ? data.prereqs
+                                    prereqs.length > DATA_LENGTH_CHECK
+                                        ? prereqs
                                         : "No Pre-Requisites for course"
                                 }`}
                             </span>
@@ -80,3 +81,5 @@ export const Course = (): JSX.Element => {
         </Container>
     );
 };
+
+export default Course;

@@ -1,4 +1,2 @@
-import { Layout } from "./components/Layout/Layout";
-import { EMAIL, USERNAME } from "./regex/expressions";
-
-export { EMAIL, Layout, USERNAME };
+export { Layout } from "./components/Layout/Layout";
+export { EMAIL, USERNAME } from "./regex/expressions";

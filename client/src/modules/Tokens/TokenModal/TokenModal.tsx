@@ -10,7 +10,7 @@ import styles from "./TokenModal.module.css";
 
 type TokenModalHeaderTypes = "email" | "password" | "username";
 
-type TokenModalProps = {
+type TokenModalProperties = {
     currentDate: Date;
     reset: () => void;
     token: string;
@@ -48,7 +48,7 @@ export const TokenModal = ({
     token,
     type,
     validUntil,
-}: TokenModalProps): JSX.Element => {
+}: TokenModalProperties): JSX.Element => {
     const { addNotification } = useNotificationContext();
     const [show, setShow] = React.useState<boolean>(true);
     const [displayToken, setDisplayToken] = React.useState<boolean>(false);
@@ -83,7 +83,7 @@ export const TokenModal = ({
                             {displayToken ? (
                                 <span className="d-flex flex-row">
                                     <code className="font-monospace bg-secondary bg-gradient bg-opacity-25">
-                                        {`${token.substring(
+                                        {`${token.slice(
                                             TOKEN_MODAL_CONSTANTS.TOKEN_SUBSTRING_START,
                                             TOKEN_MODAL_CONSTANTS.TOKEN_SUBSTRING_END,
                                         )}...`}
