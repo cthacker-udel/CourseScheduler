@@ -5,7 +5,6 @@ import React from "react";
 import { Pagination } from "react-bootstrap";
 
 const CONSTANTS = {
-    BASE_ITEMS_PER_PAGE: 5,
     BASE_PAGE: 0,
     BASE_PAGINATION_LENGTH: 5,
     ITEMS_PER_PAGE: [5, 10, 20, 30, 50],
@@ -34,9 +33,6 @@ export const CoursePagination = ({
     pagesCount,
     paginationSize,
 }: CoursePaginationProperties): JSX.Element => {
-    const [itemsPerPage, setItemsPerPage] = React.useState(
-        CONSTANTS.BASE_ITEMS_PER_PAGE,
-    );
     const [currentPageStart, setCurrentPageStart] = React.useState(0);
     const [lastPage, setLastPage] = React.useState<boolean>(false);
 

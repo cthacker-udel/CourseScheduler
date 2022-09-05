@@ -75,3 +75,14 @@ TABLE
 .course_data_table_row {
     max-height: 5.5rem;
 }
+
+
+/*
+
+Table data
+
+*/
+
+.course_info {
+    font-size: .785em;
+}

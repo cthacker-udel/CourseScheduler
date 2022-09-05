@@ -13,6 +13,7 @@ import {
     Button,
     FloatingLabel,
     Form,
+    ListGroup,
     Pagination,
     Placeholder,
     Table,
@@ -54,6 +55,10 @@ const CONSTANTS = {
 };
 
 const TEXT_CONSTANTS = {
+    INVALID_BREADTH_REQUIREMENTS: "No Breadth Requirements",
+    INVALID_CREDITS: "No Credits",
+    INVALID_DESCRIPTION: "No Description",
+    INVALID_E_BREADTH: "No Elective Breadth",
     NUMBER_OF_COURSES: "# of Courses",
 };
 
@@ -103,78 +108,149 @@ export const Read = (): JSX.Element => {
         }
     }, [isSorting, resetCourses, sortCourses, sortingState]);
 
+    console.log(segmentedCourses);
+
     return (
         <>
             <div className="text-center mt-3 w-75 mx-auto">
                 <div className="fs-4 mb-3 text-decoration-underline">
                     {"Course Viewer"}
                 </div>
-                <div className="border-bottom border-2 border-dark d-flex flex-row justify-content-around">
-                    <span role="button">
-                        {"Breadth Requirements "}
-                        {
-                            <FontAwesomeIcon
-                                className="ps-1"
-                                icon={generateSortingIcon(
-                                    sortingState.breadthRequirements.sort,
-                                )}
-                            />
-                        }
-                    </span>
-                    <span role="button">
-                        {"Credits "}
-                        {
-                            <FontAwesomeIcon
-                                className="ps-1"
-                                icon={generateSortingIcon(
-                                    sortingState.credits.sort,
-                                )}
-                            />
-                        }
-                    </span>
-                    <span role="button">
-                        {"Description "}
-                        {
-                            <FontAwesomeIcon
-                                className="ps-1"
-                                icon={generateSortingIcon(
-                                    sortingState.description.sort,
-                                )}
-                            />
-                        }
-                    </span>
-                    <span role="button">
-                        {"Id "}
-                        {
-                            <FontAwesomeIcon
-                                className="ps-1"
-                                icon={generateSortingIcon(sortingState.id.sort)}
-                            />
-                        }
-                    </span>
-                    <span role="button">
-                        {"Name "}
-                        {
-                            <FontAwesomeIcon
-                                className="ps-1"
-                                icon={generateSortingIcon(
-                                    sortingState.name.sort,
-                                )}
-                            />
-                        }
-                    </span>
-                    <span role="button">
-                        {"Pre-Requisites"}{" "}
-                        {
-                            <FontAwesomeIcon
-                                className="ps-1"
-                                icon={generateSortingIcon(
-                                    sortingState.credits.sort,
-                                )}
-                            />
-                        }
-                    </span>
-                </div>
+                <Table bordered hover responsive size="sm">
+                    <thead>
+                        <tr>
+                            <th
+                                onClick={(): void => {
+                                    setIsSorting(true);
+                                    sortingDispatch({
+                                        type: "breadthRequirements",
+                                    });
+                                }}
+                                role="button"
+                            >
+                                {"Breadth Requirements "}
+                                {
+                                    <FontAwesomeIcon
+                                        className="ps-1"
+                                        icon={generateSortingIcon(
+                                            sortingState.breadthRequirements
+                                                .sort,
+                                        )}
+                                    />
+                                }
+                            </th>
+                            <th
+                                onClick={(): void => {
+                                    setIsSorting(true);
+                                    sortingDispatch({ type: "credits" });
+                                }}
+                                role="button"
+                            >
+                                {"Credits "}
+                                {
+                                    <FontAwesomeIcon
+                                        className="ps-1"
+                                        icon={generateSortingIcon(
+                                            sortingState.credits.sort,
+                                        )}
+                                    />
+                                }
+                            </th>
+                            <th
+                                onClick={(): void => {
+                                    setIsSorting(true);
+                                    sortingDispatch({ type: "description" });
+                                }}
+                                role="button"
+                            >
+                                {"Description "}
+                                {
+                                    <FontAwesomeIcon
+                                        className="ps-1"
+                                        icon={generateSortingIcon(
+                                            sortingState.description.sort,
+                                        )}
+                                    />
+                                }
+                            </th>
+                            <th
+                                className="d-flex flex-row align-items-center justify-content-center"
+                                onClick={(): void => {
+                                    setIsSorting(true);
+                                    sortingDispatch({ type: "id" });
+                                }}
+                                role="button"
+                            >
+                                <span>{"Id "}</span>
+                                <FontAwesomeIcon
+                                    className="ps-1"
+                                    icon={generateSortingIcon(
+                                        sortingState.id.sort,
+                                    )}
+                                />
+                            </th>
+                            <th
+                                onClick={(): void => {
+                                    setIsSorting(true);
+                                    sortingDispatch({ type: "name" });
+                                }}
+                                role="button"
+                            >
+                                {"Name "}
+                                {
+                                    <FontAwesomeIcon
+                                        className="ps-1"
+                                        icon={generateSortingIcon(
+                                            sortingState.name.sort,
+                                        )}
+                                    />
+                                }
+                            </th>
+                            <th
+                                onClick={(): void => {
+                                    setIsSorting(true);
+                                    sortingDispatch({ type: "preRequisites" });
+                                }}
+                                role="button"
+                            >
+                                {"Pre-Requisites"}{" "}
+                                {
+                                    <FontAwesomeIcon
+                                        className="ps-1"
+                                        icon={generateSortingIcon(
+                                            sortingState.preRequisites.sort,
+                                        )}
+                                    />
+                                }
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {segmentedCourses[page].map((eachCourse: Course) => (
+                            <tr
+                                className={_styles.course_info}
+                                key={eachCourse.id}
+                            >
+                                <td>
+                                    {eachCourse.breadthRequirements ??
+                                        TEXT_CONSTANTS.INVALID_BREADTH_REQUIREMENTS}
+                                </td>
+                                <td>
+                                    {eachCourse.credits ??
+                                        TEXT_CONSTANTS.INVALID_CREDITS}
+                                </td>
+                                <td>
+                                    {truncateCourseDescription(
+                                        eachCourse.description,
+                                    ) ?? TEXT_CONSTANTS.INVALID_DESCRIPTION}
+                                </td>
+                                <td>{eachCourse.id}</td>
+                                <td>{eachCourse.name}</td>
+                                <td>{eachCourse.preRequisites}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </Table>
             </div>
             <CoursePagination
                 currentPage={page}

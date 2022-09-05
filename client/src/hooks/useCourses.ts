@@ -93,13 +93,13 @@ export const useCourses = ({
      * @param orders The order to order the courses by, ascending or descending
      * @see https://lodash.com/docs/4.17.15#orderBy
      */
-    const sortCourses = (
-        fields: CourseSortingFields[],
-        orders: CourseSortingOrder[],
-    ): void => {
-        const sortedCourses = orderBy(courses, fields, orders);
-        setCourses(sortedCourses);
-    };
+    const sortCourses = React.useCallback(
+        (fields: CourseSortingFields[], orders: CourseSortingOrder[]): void => {
+            const sortedCourses = orderBy(courses, fields, orders);
+            setCourses(sortedCourses);
+        },
+        [courses],
+    );
 
     /**
      * Utility function for sorting courses by filters provided by the user
