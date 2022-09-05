@@ -63,6 +63,33 @@ const FORGOT_EMAIL_VALIDATION_PASSWORD_MESSAGES = {
 };
 
 /**
+ * Validates the password entered in by the user
+ *
+ * @param password The password to verify
+ * @returns Boolean if the password is valid, or string if the password is not valid
+ */
+const validatePass = (password: string): boolean | string => {
+    const matches = validatePassword(password);
+    if (
+        matches.lowercaseMatch &&
+        matches.uppercaseMatch &&
+        matches.symbolMatch
+    ) {
+        return true;
+    }
+    if (!matches.lowercaseMatch) {
+        return FORGOT_EMAIL_VALIDATION_PASSWORD_MESSAGES.passwordLowercase;
+    }
+    if (!matches.uppercaseMatch) {
+        return FORGOT_EMAIL_VALIDATION_PASSWORD_MESSAGES.passwordUppercase;
+    }
+    if (!matches.symbolMatch) {
+        return FORGOT_EMAIL_VALIDATION_PASSWORD_MESSAGES.passwordSymbol;
+    }
+    return "Server Error";
+};
+
+/**
  * When the user forgot their username, form to retrieve a token and then enter it into a prompt to reset it
  */
 export const ForgotEmail = (): JSX.Element => {
@@ -82,33 +109,6 @@ export const ForgotEmail = (): JSX.Element => {
         React.useState<number>();
 
     const { errors, dirtyFields, isDirty, isValid, isValidating } = formState;
-
-    /**
-     * Validates the password entered in by the user
-     *
-     * @param password The password to verify
-     * @returns Boolean if the password is valid, or string if the password is not valid
-     */
-    const validatePass = (password: string): boolean | string => {
-        const matches = validatePassword(password);
-        if (
-            matches.lowercaseMatch &&
-            matches.uppercaseMatch &&
-            matches.symbolMatch
-        ) {
-            return true;
-        }
-        if (!matches.lowercaseMatch) {
-            return FORGOT_EMAIL_VALIDATION_PASSWORD_MESSAGES.passwordLowercase;
-        }
-        if (!matches.uppercaseMatch) {
-            return FORGOT_EMAIL_VALIDATION_PASSWORD_MESSAGES.passwordUppercase;
-        }
-        if (!matches.symbolMatch) {
-            return FORGOT_EMAIL_VALIDATION_PASSWORD_MESSAGES.passwordSymbol;
-        }
-        return "Server Error";
-    };
 
     return (
         <>
@@ -318,9 +318,10 @@ export const ForgotEmail = (): JSX.Element => {
                             });
                             const { token } = response;
                             if (token) {
+                                const { validUntil } = response;
                                 setEmailToken(token);
                                 setEmailTokenValidUntil(
-                                    new Date(response.validUntil).getTime(),
+                                    new Date(validUntil).getTime(),
                                 );
                             }
                         }}

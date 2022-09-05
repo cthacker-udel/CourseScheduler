@@ -1,3 +1,1 @@
-import { SORTING, TRAJECTORY } from "./Sorting/Sorting";
-
-export { SORTING, TRAJECTORY };
+export { SORTING, TRAJECTORY } from "./Sorting/Sorting";

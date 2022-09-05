@@ -17,7 +17,7 @@ const CONSTANTS = {
     parsedCourses: COURSES as Course[],
 };
 
-type useCoursesProps = {
+type useCoursesProperties = {
     /**
      * The id of the course to specifically lookup
      */
@@ -81,7 +81,7 @@ export const useCourses = ({
     prereqs,
     section,
     sectionRange,
-}: useCoursesProps): useCourseReturn => {
+}: useCoursesProperties): useCourseReturn => {
     const [courses, setCourses] = React.useState<Course[]>(
         CONSTANTS.parsedCourses,
     );
@@ -141,7 +141,7 @@ export const useCourses = ({
                 sectionRange.length === CONSTANTS.SECTION_RANGE_LENGTH
             ) {
                 oldCoursesClone = oldCourses.filter((eachCourse: Course) => {
-                    const sectionNumber = parseInt(
+                    const sectionNumber = Number.parseInt(
                         eachCourse.id.split(" ")[CONSTANTS.ID_INDEX],
                         10,
                     );

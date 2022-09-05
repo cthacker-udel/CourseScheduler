@@ -108,8 +108,8 @@ export const SignUp = (): JSX.Element => {
             .then(() => {
                 Logger.log("info", "routes prefetched");
             })
-            .catch((err) => {
-                Logger.log("error", err);
+            .catch((error) => {
+                Logger.log("error", error);
             });
     }, [router]);
 
@@ -241,7 +241,7 @@ export const SignUp = (): JSX.Element => {
                                     autoComplete="off"
                                     className="shadow"
                                     id="sign-up-form"
-                                    isInvalid={errors.email && true}
+                                    isInvalid={!!errors.email}
                                     isValid={
                                         !errors.email &&
                                         emailWatch.length >=
@@ -335,7 +335,7 @@ export const SignUp = (): JSX.Element => {
                                     autoComplete="username"
                                     className="shadow"
                                     id="username-form"
-                                    isInvalid={errors.username && true}
+                                    isInvalid={!!errors.username}
                                     isValid={
                                         !errors.username &&
                                         userNameWatch.length >=
@@ -419,7 +419,7 @@ export const SignUp = (): JSX.Element => {
                                         autoComplete="new-password"
                                         className="shadow"
                                         id="password-form"
-                                        isInvalid={errors.password && true}
+                                        isInvalid={!!errors.password}
                                         isValid={
                                             !errors.password &&
                                             passwordWatch.length >=
@@ -483,8 +483,8 @@ export const SignUp = (): JSX.Element => {
                                 </InputGroup>
                             </span>
                             <OverlayTrigger
-                                overlay={(props): JSX.Element =>
-                                    generateTooltipIntl("tooltip", props, {
+                                overlay={(properties): JSX.Element =>
+                                    generateTooltipIntl("tooltip", properties, {
                                         type: showPassword
                                             ? "Hide Password"
                                             : "Show Password",

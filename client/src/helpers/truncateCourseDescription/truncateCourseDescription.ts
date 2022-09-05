@@ -17,5 +17,5 @@ export const truncateCourseDescription = (
     limit = CONSTANTS.BASE_LIMIT,
 ): string =>
     description.length > limit
-        ? `${description.substring(CONSTANTS.SUBSTRING_START, limit)}...`
+        ? `${description.slice(CONSTANTS.SUBSTRING_START, limit)}...`
         : description;

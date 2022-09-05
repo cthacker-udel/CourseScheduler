@@ -10,15 +10,11 @@ export const LoginPageReducer = (
     state: LoginPageState,
     action: LoginPageReducerAction,
 ): LoginPageState => {
-    switch (action.type) {
-        case "setShowPassword": {
-            return {
-                ...state,
-                showPassword: !state.showPassword,
-            };
-        }
-        default: {
-            return { ...state };
-        }
+    if (action.type === "setShowPassword") {
+        return {
+            ...state,
+            showPassword: !state.showPassword,
+        };
     }
+    return { ...state };
 };

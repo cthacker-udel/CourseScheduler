@@ -13,10 +13,10 @@ import styles from "./generateTooltip.module.css";
  */
 export const generateTooltip = (
     message: string,
-    props: OverlayInjectedProps,
+    properties: OverlayInjectedProps,
 ): JSX.Element => (
     <Tooltip
-        {...props}
+        {...properties}
         className={styles.custom_tooltip_override}
         id={`tooltip-${message}`}
     >

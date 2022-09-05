@@ -110,13 +110,10 @@ export const Tokens = (): JSX.Element => {
                                 <Form.Control
                                     isInvalid={
                                         dirtyFields.username &&
-                                        errors.username &&
-                                        true
+                                        !!errors.username
                                     }
                                     isValid={
-                                        dirtyFields.username &&
-                                        !errors.username &&
-                                        true
+                                        dirtyFields.username && !errors.username
                                     }
                                     {...register("username", {
                                         maxLength: {
@@ -155,9 +152,7 @@ export const Tokens = (): JSX.Element => {
                             <Button
                                 className="mt-3"
                                 disabled={
-                                    (!dirtyFields.username ||
-                                        errors.username) &&
-                                    true
+                                    !dirtyFields.username || !!errors.username
                                 }
                                 onClick={(): void => {
                                     setShowTokenModal(true);
@@ -187,15 +182,9 @@ export const Tokens = (): JSX.Element => {
                             >
                                 <Form.Control
                                     isInvalid={
-                                        dirtyFields.email &&
-                                        errors.email &&
-                                        true
+                                        dirtyFields.email && !!errors.email
                                     }
-                                    isValid={
-                                        dirtyFields.email &&
-                                        !errors.email &&
-                                        true
-                                    }
+                                    isValid={dirtyFields.email && !errors.email}
                                     {...register("email", {
                                         maxLength: {
                                             message:
@@ -229,9 +218,7 @@ export const Tokens = (): JSX.Element => {
                             </FloatingLabel>
                             <Button
                                 className="mt-3"
-                                disabled={
-                                    (!dirtyFields.email || errors.email) && true
-                                }
+                                disabled={!dirtyFields.email || !!errors.email}
                                 onClick={(): void => {
                                     setShowTokenModal(true);
                                     setTokenModalType("email");
@@ -260,14 +247,10 @@ export const Tokens = (): JSX.Element => {
                             >
                                 <Form.Control
                                     isInvalid={
-                                        dirtyFields.password &&
-                                        errors.password &&
-                                        true
+                                        dirtyFields.password && !errors.password
                                     }
                                     isValid={
-                                        dirtyFields.password &&
-                                        !errors.password &&
-                                        true
+                                        dirtyFields.password && !errors.password
                                     }
                                     {...register("password", {
                                         maxLength: {
@@ -306,9 +289,7 @@ export const Tokens = (): JSX.Element => {
                             <Button
                                 className="mt-3"
                                 disabled={
-                                    (!dirtyFields.password ||
-                                        errors.password) &&
-                                    true
+                                    !dirtyFields.password || !!errors.password
                                 }
                                 onClick={(): void => {
                                     setShowTokenModal(true);

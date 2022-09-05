@@ -37,8 +37,10 @@ export const Dashboard = (): JSX.Element => {
                         <OverlayTrigger
                             delay={{ hide: 100, show: 500 }}
                             overlay={(
-                                props: OverlayInjectedProps,
-                            ): JSX.Element => generateTooltip("Courses", props)}
+                                properties: OverlayInjectedProps,
+                            ): JSX.Element =>
+                                generateTooltip("Courses", properties)
+                            }
                             placement="left"
                         >
                             <FontAwesomeIcon
@@ -52,9 +54,9 @@ export const Dashboard = (): JSX.Element => {
                         <OverlayTrigger
                             delay={{ hide: 100, show: 500 }}
                             overlay={(
-                                props: OverlayInjectedProps,
+                                properties: OverlayInjectedProps,
                             ): JSX.Element =>
-                                generateTooltip("Semesters", props)
+                                generateTooltip("Semesters", properties)
                             }
                             placement="right"
                         >
@@ -71,8 +73,10 @@ export const Dashboard = (): JSX.Element => {
                         <OverlayTrigger
                             delay={{ hide: 100, show: 500 }}
                             overlay={(
-                                props: OverlayInjectedProps,
-                            ): JSX.Element => generateTooltip("Plans", props)}
+                                properties: OverlayInjectedProps,
+                            ): JSX.Element =>
+                                generateTooltip("Plans", properties)
+                            }
                             placement="left"
                         >
                             <FontAwesomeIcon
@@ -86,9 +90,9 @@ export const Dashboard = (): JSX.Element => {
                         <OverlayTrigger
                             delay={{ hide: 100, show: 500 }}
                             overlay={(
-                                props: OverlayInjectedProps,
+                                properties: OverlayInjectedProps,
                             ): JSX.Element =>
-                                generateTooltip("Courses List", props)
+                                generateTooltip("Courses List", properties)
                             }
                             placement="right"
                         >

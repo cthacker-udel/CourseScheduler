@@ -1,6 +1,6 @@
 import React from "react";
 
-type ErrorProps = {
+type ErrorProperties = {
     statusCode: number;
 };
 
@@ -10,7 +10,7 @@ type ErrorProps = {
  * @param props The status code
  * @returns The default error page
  */
-const Error = ({ statusCode }: ErrorProps): JSX.Element => (
+const Error = ({ statusCode }: ErrorProperties): JSX.Element => (
     <p>
         {statusCode
             ? `An error ${statusCode} occurred on server`

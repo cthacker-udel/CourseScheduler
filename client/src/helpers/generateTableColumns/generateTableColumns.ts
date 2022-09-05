@@ -13,14 +13,14 @@ export const generateTableColumns = (courses: Course[]): CourseTable => {
     const descriptions: string[] = [];
     const preRequisites: string[] = [];
     const breadthRequirements: string[] = [];
-    courses.forEach((eachCourse) => {
+    for (const eachCourse of courses) {
         ids.push(eachCourse.id);
         names.push(eachCourse.name);
         credits.push(eachCourse.credits);
         descriptions.push(eachCourse.description);
         preRequisites.push(eachCourse.preRequisites);
         breadthRequirements.push(eachCourse.breadthRequirements);
-    });
+    }
     return {
         breadthRequirements,
         credits,

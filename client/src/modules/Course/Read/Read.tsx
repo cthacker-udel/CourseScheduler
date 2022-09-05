@@ -3,7 +3,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import chunk from "lodash.chunk";
 import React from "react";
-import { Pagination, Placeholder, Table } from "react-bootstrap";
+import { Form, Pagination, Placeholder, Table } from "react-bootstrap";
 import type {
     Course,
     CourseSortingReducerSignature,
@@ -18,12 +18,14 @@ import {
 import { useCourses } from "src/hooks/useCourses";
 import { CourseSortingReducer } from "src/reducer";
 
-import styles from "./Read.module.css";
+import _styles from "./Read.module.css";
 
 /**
  * Constants for the Read component
  */
 const CONSTANTS = {
+    // eslint-disable-next-line no-magic-numbers -- no need
+    COURSE_AMOUNT_SELECTIONS: [5, 10, 30, 60],
     DEFAULT_PAGE: 0,
     DEFAULT_PAGE_SIZE: 10,
     DESCRIPTION_LENGTH: 75,
@@ -82,12 +84,37 @@ export const Read = (): JSX.Element => {
         }
     }, [isSorting, resetCourses, sortCourses, sortingState]);
 
-    console.log(segmentedCourses[page]);
-
     return (
         <>
-            <div className="rounded border border-left border-right border-bottom-0 border-top-0 bg-primary bg-gradient bg-opacity-25 fw-bold fs-4 text-center my-3 p-2 w-50 mx-auto">
-                {"Course List"}
+            <div className="rounded border border-left border-right border-bottom-0 border-top-0 bg-primary bg-gradient bg-opacity-25 fw-bold fs-4 text-center my-3 p-2 w-50 mx-auto d-flex flex-row justify-content-between">
+                <Form.Group>
+                    <Form.Label className="fs-6 fw-light">
+                        {"# of courses"}
+                    </Form.Label>
+                    <Form.Select
+                        aria-label="Course-number-select"
+                        onChange={(
+                            event: React.ChangeEvent<HTMLSelectElement>,
+                        ): void => {
+                            setPageSize(
+                                Number.parseInt(event.target.value, 10),
+                            );
+                        }}
+                    >
+                        {CONSTANTS.COURSE_AMOUNT_SELECTIONS.map(
+                            (eachCourseAmount) => (
+                                <option
+                                    key={`course-no-${eachCourseAmount}`}
+                                    value={eachCourseAmount}
+                                >
+                                    {eachCourseAmount}
+                                </option>
+                            ),
+                        )}
+                    </Form.Select>
+                </Form.Group>
+                <span>{"Course List"}</span>
+                <div />
             </div>
             <div>
                 <Table
@@ -233,18 +260,19 @@ export const Read = (): JSX.Element => {
                             </tr>
                         ))}
                         {segmentedCourses?.[page].length < pageSize &&
-                            new Array(
-                                pageSize - segmentedCourses?.[page].length,
-                            )
+                            Array.from({
+                                length:
+                                    pageSize - segmentedCourses?.[page].length,
+                            })
                                 .fill(CONSTANTS.PLACEHOLDER_FILL)
                                 .map((_, placeholderRowIndex) => (
                                     <tr
                                         // eslint-disable-next-line react/no-array-index-key -- not needed for placeholder
                                         key={`placeholder-row-${placeholderRowIndex}`}
                                     >
-                                        {new Array(
-                                            CONSTANTS.PLACEHOLDER_FILL_SIZE,
-                                        )
+                                        {Array.from({
+                                            length: CONSTANTS.PLACEHOLDER_FILL_SIZE,
+                                        })
                                             .fill(CONSTANTS.PLACEHOLDER_FILL)
                                             .map(
                                                 (
@@ -266,16 +294,16 @@ export const Read = (): JSX.Element => {
                 </Table>
             </div>
             <Pagination className="d-flex flex-row w-25 justify-content-center mx-auto">
-                {segmentedCourses.map((_, i) => (
+                {segmentedCourses.map((_, index) => (
                     <Pagination.Item
-                        active={page === i}
+                        active={page === index}
                         // eslint-disable-next-line react/no-array-index-key -- fine for pagination
-                        key={`pagination-${i}`}
+                        key={`pagination-${index}`}
                         onClick={(): void => {
-                            setPage(i);
+                            setPage(index);
                         }}
                     >
-                        {i + CONSTANTS.PAGINATION_INC}
+                        {index + CONSTANTS.PAGINATION_INC}
                     </Pagination.Item>
                 ))}
             </Pagination>

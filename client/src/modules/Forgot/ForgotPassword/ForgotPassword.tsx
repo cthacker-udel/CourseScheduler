@@ -293,9 +293,10 @@ export const ForgotPassword = (): JSX.Element => {
                             });
                             const { token } = response;
                             if (token) {
+                                const { validUntil } = response;
                                 setPasswordToken(token);
                                 setPasswordTokenValidUntil(
-                                    new Date(response.validUntil).getTime(),
+                                    new Date(validUntil).getTime(),
                                 );
                             }
                         }}

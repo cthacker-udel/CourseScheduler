@@ -22,9 +22,9 @@ import styles from "./HomePage.module.css";
  * @summary Home Page component, comprises of the page the user sees when they first log in
  * @returns {JSX.Element} Home Page component
  */
-export const HomePage = (): JSX.Element => {
-    const loginRef = React.useRef(null);
-    const signUpRef = React.useRef(null);
+const HomePage = (): JSX.Element => {
+    const loginReference = React.useRef(null);
+    const signUpReference = React.useRef(null);
     const router = useRouter();
     const intl = useIntl();
     const accordionOptions = intl
@@ -58,8 +58,8 @@ export const HomePage = (): JSX.Element => {
             .then(() => {
                 Logger.log("info", "routes prefetched");
             })
-            .catch((err) => {
-                Logger.log("info", err);
+            .catch((error) => {
+                Logger.log("info", error);
             });
     }, [router]);
 
@@ -96,8 +96,8 @@ export const HomePage = (): JSX.Element => {
                 <Card.Footer className="text-center">
                     <OverlayTrigger
                         key="login-trigger"
-                        overlay={(props): JSX.Element =>
-                            generateTooltipIntl("tooltip", props, {
+                        overlay={(properties): JSX.Element =>
+                            generateTooltipIntl("tooltip", properties, {
                                 type: "Log In",
                             })
                         }
@@ -108,7 +108,7 @@ export const HomePage = (): JSX.Element => {
                             onClick={async (): Promise<void> => {
                                 await router.push("/login");
                             }}
-                            ref={loginRef}
+                            ref={loginReference}
                             variant="outline-primary"
                         >
                             <FontAwesomeIcon icon={faRightToBracket} />
@@ -116,8 +116,8 @@ export const HomePage = (): JSX.Element => {
                     </OverlayTrigger>
                     <OverlayTrigger
                         key="sign-up-overlaytrigger"
-                        overlay={(props): JSX.Element =>
-                            generateTooltipIntl("tooltip", props, {
+                        overlay={(properties): JSX.Element =>
+                            generateTooltipIntl("tooltip", properties, {
                                 type: "Sign Up",
                             })
                         }
@@ -128,7 +128,7 @@ export const HomePage = (): JSX.Element => {
                             onClick={async (): Promise<void> => {
                                 await router.push("/sign-up");
                             }}
-                            ref={signUpRef}
+                            ref={signUpReference}
                             variant="outline-primary"
                         >
                             <FontAwesomeIcon icon={faUserPlus} />
@@ -139,3 +139,5 @@ export const HomePage = (): JSX.Element => {
         </Container>
     );
 };
+
+export default HomePage;

@@ -1,3 +1,1 @@
-import { ForgotEmail } from "src/modules/Forgot/ForgotEmail/ForgotEmail";
-
-export default ForgotEmail;
+export { ForgotEmail as default } from "src/modules/Forgot/ForgotEmail/ForgotEmail";

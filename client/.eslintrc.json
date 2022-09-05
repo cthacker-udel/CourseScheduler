@@ -6,6 +6,7 @@
         "jest/globals": true,
         "node": true
     },
+    "extends": ["plugin:sonarjs/recommended", "plugin:unicorn/recommended"],
     "globals": {
         "JSX": true
     },
@@ -28,7 +29,9 @@
         "import",
         "jest",
         "jest-formatting",
-        "simple-import-sort"
+        "simple-import-sort",
+        "sonarjs",
+        "unicorn"
     ],
     "overrides": [
         {
@@ -143,7 +146,7 @@
         "no-fallthrough": "error",
         "no-floating-decimal": "error",
         "no-global-assign": "error",
-        "no-implicit-coercion": "error",
+        "no-implicit-coercion": ["error", { "boolean": false }],
         "no-implicit-globals": "error",
         "no-implied-eval": "error",
         "no-invalid-this": "error",
@@ -945,7 +948,15 @@
         "node/prefer-global/url": "error",
         "node/prefer-global/url-search-params": "error",
         "node/prefer-promises/dns": "error",
-        "node/prefer-promises/fs": "error"
+        "node/prefer-promises/fs": "error",
+        "sonarjs/prefer-immediate-return": "off",
+        "sonarjs/cognitive-complexity": "off",
+        "unicorn/filename-case": [
+            "error",
+            { "cases": { "pascalCase": true, "camelCase": true } }
+        ],
+        "unicorn/no-nested-ternary": "off",
+        "unicorn/no-useless-undefined": "off"
     },
     "settings": {
         "react": {

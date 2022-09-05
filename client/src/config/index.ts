@@ -1,4 +1,2 @@
-import { configuration } from "./configuration";
-import { localConfiguration } from "./configuration.local";
-
-export { configuration, localConfiguration };
+export { configuration } from "./configuration";
+export { localConfiguration } from "./configuration.local";

@@ -35,9 +35,9 @@ export class ClientSideApi {
         try {
             return await fetch(`${ClientSideApi.BASE_URL}${url}`, {
                 headers: headers ?? {},
-            }).then(async (res) => {
+            }).then(async (response) => {
                 try {
-                    return await res.json();
+                    return await response.json();
                 } catch (error: unknown) {
                     Logger.log(
                         "error",

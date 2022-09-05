@@ -1,3 +1,4 @@
+/* eslint-disable unicorn/no-object-as-default-parameter -- not required */
 /* eslint-disable no-magic-numbers -- disabled to avoid errors when logging the line number */
 /* eslint-disable @typescript-eslint/no-extraneous-class -- will fix later */
 import { configuration } from "src/config/configuration";
@@ -35,9 +36,9 @@ export class ServerSideApi {
         try {
             return await fetch(`${ServerSideApi.BASE_URL}${url}`, {
                 headers: headers ?? {},
-            }).then(async (res) => {
+            }).then(async (response) => {
                 try {
-                    return await res.json();
+                    return await response.json();
                 } catch (error: unknown) {
                     Logger.log(
                         "error",

@@ -1,19 +1,8 @@
-import { copyTextToClipboard } from "./copyTextToClipboard/copyTextToClipboard";
-import { generateSortingIcon } from "./generateSortingIcon/generateSortingIcon";
-import { generateSortingOrderBy } from "./generateSortingOrderBy/generateSortingOrderBy";
-import { generateTableColumns } from "./generateTableColumns/generateTableColumns";
-import { generateTooltip } from "./generateTooltip/generateTooltip";
-import { generateTooltipIntl } from "./generateTooltipIntl/generateTooltipIntl";
-import { truncateCourseDescription } from "./truncateCourseDescription/truncateCourseDescription";
-import { validatePassword } from "./validatePassword/validatePassword";
-
-export {
-    copyTextToClipboard,
-    generateSortingIcon,
-    generateSortingOrderBy,
-    generateTableColumns,
-    generateTooltip,
-    generateTooltipIntl,
-    truncateCourseDescription,
-    validatePassword,
-};
+export { copyTextToClipboard } from "./copyTextToClipboard/copyTextToClipboard";
+export { generateSortingIcon } from "./generateSortingIcon/generateSortingIcon";
+export { generateSortingOrderBy } from "./generateSortingOrderBy/generateSortingOrderBy";
+export { generateTableColumns } from "./generateTableColumns/generateTableColumns";
+export { generateTooltip } from "./generateTooltip/generateTooltip";
+export { generateTooltipIntl } from "./generateTooltipIntl/generateTooltipIntl";
+export { truncateCourseDescription } from "./truncateCourseDescription/truncateCourseDescription";
+export { validatePassword } from "./validatePassword/validatePassword";
