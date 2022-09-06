@@ -188,7 +188,7 @@ export const Read = (): JSX.Element => {
                     setPage(newPage);
                 }}
                 pagesCount={segmentedCourses.length}
-                paginationSize="lg"
+                paginationSize="sm"
             />
         </div>
     );
