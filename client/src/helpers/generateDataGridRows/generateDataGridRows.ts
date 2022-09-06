@@ -27,6 +27,7 @@ const generateDataGridRow = (
         breadthRequirements:
             rest.breadthRequirements ||
             TEXT_CONSTANTS.INVALID_BREADTH_REQUIREMENTS,
+        courseSection: rest.courseSection,
         credits: rest.credits || TEXT_CONSTANTS.INVALID_CREDITS,
         description: rest.description || TEXT_CONSTANTS.INVALID_DESCRIPTION,
         id,

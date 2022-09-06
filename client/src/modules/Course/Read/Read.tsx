@@ -5,14 +5,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Table from "@mui/material/Table";
 import { type GridCallbackDetails, DataGrid } from "@mui/x-data-grid";
 import chunk from "lodash.chunk";
-import React from "react";
+import React, { type ChangeEventHandler } from "react";
+import { Form } from "react-bootstrap";
 import type {
     Course,
     CourseSortingReducerSignature,
     CourseSortingState,
 } from "src/@types";
 import { CoursePagination } from "src/common";
-import { initialCourseSortState } from "src/data";
+import { initialCourseSortState, titleAbbreviationsToTitles } from "src/data";
 import {
     generateDataGridColumnsCourse,
     generateDataGridRows,
@@ -57,8 +58,9 @@ const TEXT_CONSTANTS = {
  * General component for viewing courses
  */
 export const Read = (): JSX.Element => {
-    const { courses, resetCourses, sortCourses } = useCourses({
-        section: "CISC",
+    const [section, setSection] = React.useState<string>("CISC");
+    const { courses, resetCourses, sections, sortCourses } = useCourses({
+        section,
     });
 
     const [isSorting, setIsSorting] = React.useState<boolean>(false);
@@ -69,40 +71,27 @@ export const Read = (): JSX.Element => {
 
     const [page, setPage] = React.useState<number>(CONSTANTS.DEFAULT_PAGE);
 
-    const segmentedCourses = React.useMemo(
-        () => chunk(courses, pageSize),
-        [pageSize, courses],
-    );
-
-    const [sortingState, sortingDispatch] = React.useReducer<
-        CourseSortingReducerSignature,
-        CourseSortingState
-    >(
-        CourseSortingReducer,
-        initialCourseSortState,
-        () => initialCourseSortState,
-    );
-
-    React.useEffect(() => {
-        if (sortingState !== undefined) {
-            const generatedSort = generateSortingOrderBy(sortingState);
-            if (generatedSort.commenceSort && isSorting) {
-                sortCourses(
-                    generatedSort.sortingFields,
-                    generatedSort.sortingOrder,
-                );
-                setIsSorting(false);
-            } else if (isSorting) {
-                resetCourses();
-                setIsSorting(false);
-            }
-        }
-    }, [isSorting, resetCourses, sortCourses, sortingState]);
-
     return (
         <div className="text-center mt-3 w-75 mx-auto h-75">
-            <div className="fs-4 mb-3 text-decoration-underline">
-                {"Course Viewer"}
+            <div className="mb-3 p-2 w-50 mx-auto shadow d-flex flex-row justify-content-between">
+                <span className="fw-bold fs-5">{"Course Viewer"}</span>
+                <Form.Select
+                    aria-label="Course Section Selector"
+                    className="h-50 my-auto w-50"
+                    onChange={(
+                        event: React.ChangeEvent<HTMLSelectElement>,
+                    ): void => {
+                        console.log(event.target.value);
+                        setSection(event.target.value);
+                    }}
+                    value={section}
+                >
+                    {sections.map((eachSection) => (
+                        <option key={`${eachSection}`} value={eachSection}>
+                            {titleAbbreviationsToTitles[eachSection]}
+                        </option>
+                    ))}
+                </Form.Select>
             </div>
             <DataGrid
                 checkboxSelection
@@ -116,6 +105,7 @@ export const Read = (): JSX.Element => {
                 pageSize={pageSize}
                 rows={generateDataGridRows(courses)}
                 rowsPerPageOptions={CONSTANTS.COURSE_AMOUNT_SELECTIONS}
+                showCellRightBorder
             />
         </div>
     );

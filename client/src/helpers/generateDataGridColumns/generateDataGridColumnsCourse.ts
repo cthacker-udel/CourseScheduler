@@ -11,6 +11,7 @@ export const generateDataGridColumnsCourse = (): GridColDef[] => [
         headerName: "Breadth Requirements",
         width: 260,
     },
+    { field: "courseSection", headerName: "Title", width: 100 },
     { field: "credits", headerName: "Credits", type: "number", width: 100 },
     { field: "description", headerName: "Description", width: 500 },
     { field: "name", headerName: "Name", width: 260 },

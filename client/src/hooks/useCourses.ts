@@ -9,6 +9,7 @@ import type {
 import COURSES from "src/data/catalog.json";
 
 const NAME_INDEX_SPLIT = 1;
+const COURSE_NAME_SPLIT = 0;
 
 const CONSTANTS = {
     ID_INDEX: 1,
@@ -18,6 +19,7 @@ const CONSTANTS = {
     SECTION_RANGE_MIN_IND: 0,
     parsedCourses: (COURSES as Course[]).map((eachCourse) => ({
         ...eachCourse,
+        courseSection: eachCourse.name.split(" - ")[COURSE_NAME_SPLIT],
         name: eachCourse.name.split(" - ")[NAME_INDEX_SPLIT],
     })),
 };
@@ -60,6 +62,11 @@ type useCourseReturn = {
     courses: Course[];
 
     /**
+     * All the sections for all the current courses, memoized to avoid recomputation
+     */
+    sections: string[];
+
+    /**
      * Resets all the courses to the original parsed courses
      */
     resetCourses: () => void;
@@ -80,15 +87,23 @@ type useCourseReturn = {
  * @param props The props to filter the search by
  */
 export const useCourses = ({
-    id,
-    name,
-    credits,
-    prereqs,
     section,
     sectionRange,
-}: useCoursesProperties): useCourseReturn => {
+}: useCoursesProperties = {}): useCourseReturn => {
     const [courses, setCourses] = React.useState<Course[]>(
         CONSTANTS.parsedCourses,
+    );
+
+    const sections = React.useMemo(
+        () => [
+            ...new Set(
+                CONSTANTS.parsedCourses.map(
+                    (eachCourse) =>
+                        eachCourse.id.split(" ")[CONSTANTS.SECTION_IND],
+                ),
+            ),
+        ],
+        [],
     );
 
     /**
@@ -114,26 +129,6 @@ export const useCourses = ({
     const filterCourses = React.useCallback(
         (oldCourses: Course[]): Course[] => {
             let oldCoursesClone = [...oldCourses];
-            if (id) {
-                oldCoursesClone = oldCourses.filter((eachCourse: Course) =>
-                    eachCourse.id.includes(id),
-                );
-            }
-            if (name) {
-                oldCoursesClone = oldCourses.filter((eachCourse: Course) =>
-                    eachCourse.name.includes(name),
-                );
-            }
-            if (credits) {
-                oldCoursesClone = oldCourses.filter(
-                    (eachCourse: Course) => eachCourse.credits === credits,
-                );
-            }
-            if (prereqs) {
-                oldCoursesClone = oldCourses.filter((eachCourse: Course) =>
-                    eachCourse.preRequisites.includes(prereqs),
-                );
-            }
             if (section) {
                 oldCoursesClone = oldCourses.filter((eachCourse: Course) =>
                     eachCourse.id
@@ -162,12 +157,12 @@ export const useCourses = ({
             }
             return oldCoursesClone;
         },
-        [credits, id, name, prereqs, section, sectionRange],
+        [section, sectionRange],
     );
 
     React.useEffect(() => {
-        setCourses((oldCourses) => filterCourses(oldCourses));
-    }, [credits, filterCourses, id, name, prereqs, section, sectionRange]);
+        setCourses(() => filterCourses(CONSTANTS.parsedCourses));
+    }, [filterCourses]);
 
     /**
      * If no sort is specified, and the sorting is triggered, then that means all sorting was neutralized, so therefore we should refresh the courses back to the original
@@ -179,6 +174,7 @@ export const useCourses = ({
     return {
         courses,
         resetCourses,
+        sections,
         sortCourses,
     };
 };
