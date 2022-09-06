@@ -108,7 +108,6 @@ export const Read = (): JSX.Element => {
                     onChange={(
                         event: React.ChangeEvent<HTMLSelectElement>,
                     ): void => {
-                        console.log(event.target.value);
                         setSection(event.target.value);
                     }}
                     value={section}
