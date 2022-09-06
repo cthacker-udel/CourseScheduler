@@ -119,12 +119,22 @@ export const Read = (): JSX.Element => {
                     ))}
                 </Form.Select>
             </div>
-            <div className="w-100 mb-3">
+            <div className="w-100 mb-3 shadow">
                 <div className="d-flex flex-row justify-content-around border">
                     {TEXT_CONSTANTS.TABLE_HEADERS.map((eachHeader, _ind) => (
                         <div
                             className="border border-bottom-0 border-top-0 p-3 w-100"
                             key={`${eachHeader}-table-header`}
+                            onClick={(): void => {
+                                setIsSorting(true);
+                                sortingDispatch({
+                                    type: TEXT_CONSTANTS
+                                        .TABLE_SORTING_ICON_FIELDS[
+                                        _ind
+                                    ] as CourseSortingActionType,
+                                });
+                            }}
+                            role="button"
                         >
                             <div className="d-flex flex-row justify-content-center">
                                 <span>{eachHeader}</span>
@@ -136,15 +146,6 @@ export const Read = (): JSX.Element => {
                                                 .TABLE_SORTING_ICON_FIELDS[_ind]
                                         ]?.sort,
                                     )}
-                                    onClick={(): void => {
-                                        setIsSorting(true);
-                                        sortingDispatch({
-                                            type: TEXT_CONSTANTS
-                                                .TABLE_SORTING_ICON_FIELDS[
-                                                _ind
-                                            ] as CourseSortingActionType,
-                                        });
-                                    }}
                                 />
                             </div>
                         </div>
@@ -171,6 +172,10 @@ export const Read = (): JSX.Element => {
                             >
                                 {truncateCourseDescription(
                                     eachCourse.description,
+                                ) || (
+                                    <span className="text-muted fw-light">
+                                        {TEXT_CONSTANTS.INVALID_DESCRIPTION}
+                                    </span>
                                 )}
                             </div>
                             <div
