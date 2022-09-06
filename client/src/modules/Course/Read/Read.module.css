@@ -21,4 +21,11 @@ Table styling
 .course_table_header {
     max-height: 5vh !important;
     min-height: 5vh !important;
+    min-width: 5vw !important;
+    max-width: 10vw !important;
+}
+
+.course_table_cell {
+    max-width: 10vw !important;
+    min-width: 5vw !important;
 }

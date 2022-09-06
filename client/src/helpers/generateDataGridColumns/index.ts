@@ -1,1 +1,0 @@
-export { generateDataGridColumnsCourse } from "./generateDataGridColumnsCourse";

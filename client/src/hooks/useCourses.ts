@@ -19,8 +19,8 @@ const CONSTANTS = {
     SECTION_RANGE_MIN_IND: 0,
     parsedCourses: (COURSES as Course[]).map((eachCourse) => ({
         ...eachCourse,
-        courseSection: eachCourse.name.split(" - ")[COURSE_NAME_SPLIT],
         name: eachCourse.name.split(" - ")[NAME_INDEX_SPLIT],
+        section: eachCourse.name.split(" - ")[COURSE_NAME_SPLIT],
     })),
 };
 

@@ -2,8 +2,6 @@
 /* eslint-disable @typescript-eslint/indent -- prettier - eslint errors */
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Table from "@mui/material/Table";
-import { type GridCallbackDetails, DataGrid } from "@mui/x-data-grid";
 import chunk from "lodash.chunk";
 import React, { type ChangeEventHandler } from "react";
 import { Form } from "react-bootstrap";
@@ -12,11 +10,10 @@ import type {
     CourseSortingReducerSignature,
     CourseSortingState,
 } from "src/@types";
+import type { CourseSortingActionType } from "src/@types/CourseSorting/CourseSortingAction";
 import { CoursePagination } from "src/common";
 import { initialCourseSortState, titleAbbreviationsToTitles } from "src/data";
 import {
-    generateDataGridColumnsCourse,
-    generateDataGridRows,
     generateSortingIcon,
     generateSortingOrderBy,
     renderPreRequisites,
@@ -52,6 +49,9 @@ const TEXT_CONSTANTS = {
     INVALID_E_BREADTH: "No Elective Breadth",
     INVALID_PREREQUISITES: "No Pre-Requisites",
     NUMBER_OF_COURSES: "# of Courses",
+    TABLE_CELL_CLASS_NAME: "w-100 p-3 border",
+    TABLE_HEADERS: ["Section", "Credits", "Description", "Name"],
+    TABLE_SORTING_ICON_FIELDS: ["section", "credits", "description", "name"],
 };
 
 /**
@@ -59,17 +59,44 @@ const TEXT_CONSTANTS = {
  */
 export const Read = (): JSX.Element => {
     const [section, setSection] = React.useState<string>("CISC");
+    const [page, setPage] = React.useState<number>(CONSTANTS.DEFAULT_PAGE);
+    const [isSorting, setIsSorting] = React.useState<boolean>(false);
+    const [pageSize, setPageSize] = React.useState<number>(
+        CONSTANTS.DEFAULT_PAGE_SIZE,
+    );
     const { courses, resetCourses, sections, sortCourses } = useCourses({
         section,
     });
 
-    const [isSorting, setIsSorting] = React.useState<boolean>(false);
-
-    const [pageSize, setPageSize] = React.useState<number>(
-        CONSTANTS.DEFAULT_PAGE_SIZE,
+    const segmentedCourses = React.useMemo(
+        () => chunk(courses, pageSize),
+        [pageSize, courses],
     );
 
-    const [page, setPage] = React.useState<number>(CONSTANTS.DEFAULT_PAGE);
+    const [sortingState, sortingDispatch] = React.useReducer<
+        CourseSortingReducerSignature,
+        CourseSortingState
+    >(
+        CourseSortingReducer,
+        initialCourseSortState,
+        () => initialCourseSortState,
+    );
+
+    React.useEffect(() => {
+        if (sortingState !== undefined) {
+            const generatedSort = generateSortingOrderBy(sortingState);
+            if (generatedSort.commenceSort && isSorting) {
+                sortCourses(
+                    generatedSort.sortingFields,
+                    generatedSort.sortingOrder,
+                );
+                setIsSorting(false);
+            } else if (isSorting) {
+                resetCourses();
+                setIsSorting(false);
+            }
+        }
+    }, [isSorting, resetCourses, sortCourses, sortingState]);
 
     return (
         <div className="text-center mt-3 w-75 mx-auto h-75">
@@ -93,19 +120,76 @@ export const Read = (): JSX.Element => {
                     ))}
                 </Form.Select>
             </div>
-            <DataGrid
-                checkboxSelection
-                columns={generateDataGridColumnsCourse()}
-                onPageSizeChange={(
-                    newPageSize: number,
-                    _details: GridCallbackDetails,
-                ): void => {
-                    setPageSize(newPageSize);
+            <div className="w-100 mb-3">
+                <div className="d-flex flex-row justify-content-around border">
+                    {TEXT_CONSTANTS.TABLE_HEADERS.map((eachHeader, _ind) => (
+                        <div
+                            className="border border-bottom-0 border-top-0 p-3 w-100"
+                            key={`${eachHeader}-table-header`}
+                        >
+                            <div className="d-flex flex-row justify-content-center">
+                                <span>{eachHeader}</span>
+                                <FontAwesomeIcon
+                                    className="ps-2 my-auto"
+                                    icon={generateSortingIcon(
+                                        sortingState[
+                                            TEXT_CONSTANTS
+                                                .TABLE_SORTING_ICON_FIELDS[_ind]
+                                        ]?.sort,
+                                    )}
+                                    onClick={(): void => {
+                                        setIsSorting(true);
+                                        sortingDispatch({
+                                            type: TEXT_CONSTANTS
+                                                .TABLE_SORTING_ICON_FIELDS[
+                                                _ind
+                                            ] as CourseSortingActionType,
+                                        });
+                                    }}
+                                />
+                            </div>
+                        </div>
+                    ))}
+                </div>
+                <div className="d-flex flex-column">
+                    {segmentedCourses[page].map((eachCourse, _ind) => (
+                        <div
+                            className="border d-flex flex-row justify-content-around"
+                            key={`${eachCourse.id}-${eachCourse.section}`}
+                        >
+                            <div
+                                className={TEXT_CONSTANTS.TABLE_CELL_CLASS_NAME}
+                            >
+                                {eachCourse.section}
+                            </div>
+                            <div
+                                className={TEXT_CONSTANTS.TABLE_CELL_CLASS_NAME}
+                            >
+                                {eachCourse.credits}
+                            </div>
+                            <div
+                                className={TEXT_CONSTANTS.TABLE_CELL_CLASS_NAME}
+                            >
+                                {truncateCourseDescription(
+                                    eachCourse.description,
+                                )}
+                            </div>
+                            <div
+                                className={TEXT_CONSTANTS.TABLE_CELL_CLASS_NAME}
+                            >
+                                {eachCourse.name}
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+            <CoursePagination
+                currentPage={page}
+                moveToPage={(newPage: number): void => {
+                    setPage(newPage);
                 }}
-                pageSize={pageSize}
-                rows={generateDataGridRows(courses)}
-                rowsPerPageOptions={CONSTANTS.COURSE_AMOUNT_SELECTIONS}
-                showCellRightBorder
+                pagesCount={segmentedCourses.length}
+                paginationSize="lg"
             />
         </div>
     );

@@ -1,1 +1,0 @@
-export { generateDataGridRows } from "./generateDataGridRows";

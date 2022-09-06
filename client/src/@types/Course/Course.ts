@@ -5,7 +5,7 @@ export type Course = {
     /**
      * The section of the course, something like CISC 100 for example
      */
-    courseSection?: string;
+    section?: string;
     /**
      * The name of the course, contains the ID and the text name of the course.
      */
