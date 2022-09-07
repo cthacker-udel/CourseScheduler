@@ -162,19 +162,19 @@ export const Read = (): JSX.Element => {
                             key={`${eachCourse.id}-${eachCourse.section}`}
                         >
                             <div
-                                className={TEXT_CONSTANTS.TABLE_CELL_CLASS_NAME}
+                                className={`${TEXT_CONSTANTS.TABLE_CELL_CLASS_NAME} ${_styles.course_table_cell}`}
                             >
                                 {eachCourse.section}
                             </div>
                             <div
-                                className={TEXT_CONSTANTS.TABLE_CELL_CLASS_NAME}
+                                className={`${TEXT_CONSTANTS.TABLE_CELL_CLASS_NAME} ${_styles.course_table_cell}`}
                             >
                                 <span className="fw-bold text-danger">
                                     {eachCourse.credits}
                                 </span>
                             </div>
                             <div
-                                className={TEXT_CONSTANTS.TABLE_CELL_CLASS_NAME}
+                                className={`${TEXT_CONSTANTS.TABLE_CELL_CLASS_NAME} ${_styles.course_table_cell}`}
                             >
                                 {eachCourse.description ? (
                                     <OverlayTrigger
@@ -202,7 +202,7 @@ export const Read = (): JSX.Element => {
                                 )}
                             </div>
                             <div
-                                className={TEXT_CONSTANTS.TABLE_CELL_CLASS_NAME}
+                                className={`${TEXT_CONSTANTS.TABLE_CELL_CLASS_NAME} ${_styles.course_table_cell}`}
                             >
                                 {truncateText(eachCourse.name) ===
                                 eachCourse.name ? (

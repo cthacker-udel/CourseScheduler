@@ -25,7 +25,20 @@ Table styling
     max-width: 10vw !important;
 }
 
-.course_table_cell {
-    max-width: 10vw !important;
-    min-width: 5vw !important;
+@keyframes course_table_cell_anim {
+
+    from {
+        background-color: transparent;
+    }
+    to {
+        background-color: rgb(211, 249, 255);
+    }
+
+}
+
+.course_table_cell:hover {
+    animation-name: course_table_cell_anim;
+    animation-timing-function: ease-in-out;
+    animation-duration: .25s;
+    animation-fill-mode: forwards;
 }
