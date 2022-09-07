@@ -11,47 +11,47 @@ import { Alert, Button, OverlayTrigger } from "react-bootstrap";
 import type { OverlayInjectedProps } from "react-bootstrap/esm/Overlay";
 import { generateTooltip } from "src/helpers";
 
-import styles from "./SemesterDashboard.module.css";
+import styles from "./PlanDashboard.module.css";
 
 const TEXT_CONSTANTS = {
     CREATE_DESCRIPTION:
-        "This is where you can create a semester, and add in all the details before creation to tailor your requirements for the semester.",
-    CREATE_TOOLTIP: "Create Semester(s)",
-    DASHBOARD_TITLE: "Semester Dashboard",
+        "This is where you can create a plan, and add in all the details before creation to tailor your requirements for the plan.",
+    CREATE_TOOLTIP: "Create Plan(s)",
+    DASHBOARD_TITLE: "Plan Dashboard",
     DASHBOARD_TITLE_DESCRIPTION: (
         <span>
             <span>
                 {
-                    "Welcome to the Semester Dashboard! This contains all the options you can utilize. You are able to "
+                    "Welcome to the Plan Dashboard! This contains all the options you can utilize. You are able to "
                 }
             </span>
-            <span className="fw-bold">{"Create a Semester"}</span>
+            <span className="fw-bold">{"Create a Plan"}</span>
             <span>{", "}</span>
-            <span className="fw-bold">{"Edit a Semester"}</span>
+            <span className="fw-bold">{"Edit a Plan"}</span>
             <span>{", "}</span>
-            <span className="fw-bold">{"View a Semester"}</span>
+            <span className="fw-bold">{"View a Plan"}</span>
             <span>{", and "}</span>
-            <span className="fw-bold">{"Delete a Semester"}</span>
+            <span className="fw-bold">{"Delete a Plan"}</span>
             <span>{"."}</span>
         </span>
     ),
     DELETE_DESCRIPTION:
-        "This is where you can delete a semester or semesters, all of the semesters you currently have registered are listed on this page",
-    DELETE_TOOLTIP: "Delete Semester(s)",
+        "This is where you can delete a plan or plans, all of the plans you currently have registered are listed on this page",
+    DELETE_TOOLTIP: "Delete Plan(s)",
     EDIT_DESCRIPTION:
-        "This is where you can edit a semester, change all the details to your requirements, the changes are reflected immediately",
-    EDIT_TOOLTIP: "Edit Semester(s)",
+        "This is where you can edit a plan, change all the details to your requirements, the changes are reflected immediately",
+    EDIT_TOOLTIP: "Edit Plan(s)",
     VIEW_DESCRIPTION:
-        "This is where you can view semesters, all of the semesters you currently have registered under your account",
-    VIEW_TOOLTIP: "View Semester(s)",
+        "This is where you can view plans, all of the plans you currently have registered under your account",
+    VIEW_TOOLTIP: "View Plan(s)",
 };
 
 /**
- * The semester dashboard, which houses all the options for semesters, mostly the CRUD operations, which are create, read, update, and delete
+ * The plan dashboard, which houses all the options for plans, mostly the CRUD operations, which are create, read, update, and delete
  *
- * @returns The semester dashboard
+ * @returns The plan dashboard
  */
-export const SemesterDashboard = (): JSX.Element => (
+export const PlanDashboard = (): JSX.Element => (
     <div className="mx-auto w-75 d-flex flex-column justify-content-center h-100 align-items-center">
         <Alert className="d-flex flex-column text-center" variant="primary">
             <span className="fs-5 fw-bold border-2 border-primary border-opacity-75 border-start-0 border-end-0 border-top-0 border-bottom mb-2 pb-1 w-25 mx-auto">
