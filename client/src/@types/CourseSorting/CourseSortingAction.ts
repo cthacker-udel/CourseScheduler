@@ -6,11 +6,14 @@ type CourseSortingActionType =
     | "description"
     | "id"
     | "name"
-    | "preRequisites";
+    | "preRequisites"
+    | "section";
 
 type CourseSortingPayload = CourseSortingState;
 
-export type CourseSortingAction = {
+type CourseSortingAction = {
     type: CourseSortingActionType;
     payload?: CourseSortingPayload;
 };
+
+export type { CourseSortingAction, CourseSortingActionType };

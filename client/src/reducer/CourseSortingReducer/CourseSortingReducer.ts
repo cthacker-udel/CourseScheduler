@@ -145,6 +145,19 @@ export const CourseSortingReducer = (
                 },
             };
         }
+        case "section": {
+            const { sort, trajectory } = generateNextSortingState(
+                state.section.sort,
+                state.section.trajectory,
+            );
+            return {
+                ...state,
+                section: {
+                    sort,
+                    trajectory,
+                },
+            };
+        }
         default: {
             return state;
         }

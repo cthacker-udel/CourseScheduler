@@ -1,77 +1,44 @@
-.course_sort_row {
-    width: 75%;
-}
+/*
 
-.course_data_table {
-    max-height: 25vh;
-    height: 10vh;
+Table cell styling
+
+*/
+
+.course_info {
+    font-size: .785em;
 }
 
 /*
 
-TABLE HEADER
+Table styling
 
 */
 
-.course_data_table_header_id {
-    width: 4rem;
+.course_table {
+    height: 75vh !important;
 }
 
-.course_data_table_header_name {
-    width: 10.55rem;
+.course_table_header {
+    max-height: 5vh !important;
+    min-height: 5vh !important;
+    min-width: 5vw !important;
+    max-width: 10vw !important;
 }
 
-.course_data_table_header_credits {
-    width: 6rem;
+@keyframes course_table_cell_anim {
+
+    from {
+        background-color: transparent;
+    }
+    to {
+        background-color: rgb(211, 249, 255);
+    }
+
 }
 
-.course_data_table_header_description {
-    width: 14.3rem;
-}
-
-.course_data_table_header_pre_requisites {
-    width: 16.15rem;
-}
-
-.course_data_table_header_breadth_requirements {
-    width: 16.5rem;
-}
-
-/*
-
-TABLE
-
-*/
-
-.course_data_table_id {
-    width: 7rem;
-}
-
-.course_data_table_name {
-    width: 25rem;
-    max-width: 25rem;
-}
-
-.course_data_table_credits {
-    width: 9rem;
-    max-width: 9rem;
-}
-
-.course_data_table_description {
-    width: 35rem;
-    max-width: 35rem;
-}
-
-.course_data_table_pre_requisites {
-    width: 40rem;
-    max-width: 40rem;
-}
-
-.course_data_table_breadth_requirements {
-    width: 40rem;
-    max-width: 40rem;
-}
-
-.course_data_table_row {
-    max-height: 5.5rem;
+.course_table_cell:hover {
+    animation-name: course_table_cell_anim;
+    animation-timing-function: ease-in-out;
+    animation-duration: .25s;
+    animation-fill-mode: forwards;
 }

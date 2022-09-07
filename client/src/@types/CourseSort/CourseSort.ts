@@ -14,6 +14,7 @@ type CourseSort = {
     id: CourseFieldSort;
     name: CourseFieldSort;
     preRequisites: CourseFieldSort;
+    section: CourseFieldSort;
 };
 
 export type { CourseFieldSort, CourseSort };

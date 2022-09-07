@@ -29,4 +29,8 @@ export const initialCourseSortState: CourseSortingState = {
         sort: SORTING.NEUTRAL,
         trajectory: TRAJECTORY.INCREMENTING,
     },
+    section: {
+        sort: SORTING.NEUTRAL,
+        trajectory: TRAJECTORY.INCREMENTING,
+    },
 };

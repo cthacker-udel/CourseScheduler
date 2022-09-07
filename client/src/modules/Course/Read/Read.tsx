@@ -1,19 +1,25 @@
+/* eslint-disable no-unused-vars -- disabled for now */
 /* eslint-disable @typescript-eslint/indent -- prettier - eslint errors */
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import chunk from "lodash.chunk";
-import React from "react";
-import { Form, Pagination, Placeholder, Table } from "react-bootstrap";
+import React, { type ChangeEventHandler } from "react";
+import { Form, OverlayTrigger } from "react-bootstrap";
+import type { OverlayInjectedProps } from "react-bootstrap/esm/Overlay";
 import type {
     Course,
     CourseSortingReducerSignature,
     CourseSortingState,
 } from "src/@types";
-import { initialCourseSortState } from "src/data";
+import type { CourseSortingActionType } from "src/@types/CourseSorting/CourseSortingAction";
+import { CoursePagination } from "src/common";
+import { initialCourseSortState, titleAbbreviationsToTitles } from "src/data";
 import {
     generateSortingIcon,
     generateSortingOrderBy,
-    truncateCourseDescription,
+    generateTooltip,
+    renderPreRequisites,
+    truncateText,
 } from "src/helpers";
 import { useCourses } from "src/hooks/useCourses";
 import { CourseSortingReducer } from "src/reducer";
@@ -38,21 +44,31 @@ const CONSTANTS = {
     PLACEHOLDER_FILL_SIZE: 6,
 };
 
+const TEXT_CONSTANTS = {
+    INVALID_BREADTH_REQUIREMENTS: "No Breadth Requirements",
+    INVALID_CREDITS: "No Credits",
+    INVALID_DESCRIPTION: "No Description",
+    INVALID_E_BREADTH: "No Elective Breadth",
+    INVALID_PREREQUISITES: "No Pre-Requisites",
+    NUMBER_OF_COURSES: "# of Courses",
+    TABLE_CELL_CLASS_NAME: "w-100 p-3 border",
+    TABLE_HEADERS: ["Section", "Credits", "Description", "Name"],
+    TABLE_SORTING_ICON_FIELDS: ["section", "credits", "description", "name"],
+};
+
 /**
  * General component for viewing courses
  */
 export const Read = (): JSX.Element => {
-    const { courses, resetCourses, sortCourses } = useCourses({
-        section: "CISC",
-    });
-
+    const [section, setSection] = React.useState<string>("CISC");
+    const [page, setPage] = React.useState<number>(CONSTANTS.DEFAULT_PAGE);
     const [isSorting, setIsSorting] = React.useState<boolean>(false);
-
     const [pageSize, setPageSize] = React.useState<number>(
         CONSTANTS.DEFAULT_PAGE_SIZE,
     );
-
-    const [page, setPage] = React.useState<number>(CONSTANTS.DEFAULT_PAGE);
+    const { courses, resetCourses, sections, sortCourses } = useCourses({
+        section,
+    });
 
     const segmentedCourses = React.useMemo(
         () => chunk(courses, pageSize),
@@ -85,228 +101,145 @@ export const Read = (): JSX.Element => {
     }, [isSorting, resetCourses, sortCourses, sortingState]);
 
     return (
-        <>
-            <div className="rounded border border-left border-right border-bottom-0 border-top-0 bg-primary bg-gradient bg-opacity-25 fw-bold fs-4 text-center my-3 p-2 w-50 mx-auto d-flex flex-row justify-content-between">
-                <Form.Group>
-                    <Form.Label className="fs-6 fw-light">
-                        {"# of courses"}
-                    </Form.Label>
-                    <Form.Select
-                        aria-label="Course-number-select"
-                        onChange={(
-                            event: React.ChangeEvent<HTMLSelectElement>,
-                        ): void => {
-                            setPageSize(
-                                Number.parseInt(event.target.value, 10),
-                            );
-                        }}
-                    >
-                        {CONSTANTS.COURSE_AMOUNT_SELECTIONS.map(
-                            (eachCourseAmount) => (
-                                <option
-                                    key={`course-no-${eachCourseAmount}`}
-                                    value={eachCourseAmount}
-                                >
-                                    {eachCourseAmount}
-                                </option>
-                            ),
-                        )}
-                    </Form.Select>
-                </Form.Group>
-                <span>{"Course List"}</span>
-                <div />
-            </div>
-            <div>
-                <Table
-                    bordered
-                    className={"w-75 mx-auto"}
-                    hover
-                    responsive
-                    striped
+        <div className="text-center mt-3 w-75 mx-auto h-75">
+            <div className="mb-3 p-2 w-50 mx-auto shadow d-flex flex-row justify-content-center">
+                <span className="fw-bold fs-5 border-end border-secondary border-opacity-25 pe-4">
+                    {"Course Viewer"}
+                </span>
+                <Form.Select
+                    aria-label="Course Section Selector"
+                    className="h-50 my-auto w-50 ms-4"
+                    onChange={(
+                        event: React.ChangeEvent<HTMLSelectElement>,
+                    ): void => {
+                        setSection(event.target.value);
+                        setPage(0);
+                    }}
+                    value={section}
                 >
-                    <thead>
-                        <tr>
-                            <th className="d-table-cell align-middle">
-                                <div>
-                                    <span>{"ID"}</span>
-                                    <FontAwesomeIcon
-                                        className="my-auto ps-2"
-                                        icon={generateSortingIcon(
-                                            sortingState.id.sort,
-                                        )}
-                                        onClick={(): void => {
-                                            setIsSorting(true);
-                                            sortingDispatch({ type: "id" });
-                                        }}
-                                        role="button"
-                                    />
-                                </div>
-                            </th>
-                            <th className="d-table-cell align-middle">
-                                <div className="d-flex flex-row">
-                                    <span>{"Name"}</span>
-                                    <FontAwesomeIcon
-                                        className="my-auto ps-2"
-                                        icon={generateSortingIcon(
-                                            sortingState.name.sort,
-                                        )}
-                                        onClick={(): void => {
-                                            setIsSorting(true);
-                                            sortingDispatch({ type: "name" });
-                                        }}
-                                        role="button"
-                                    />
-                                </div>
-                            </th>
-                            <th className="d-table-cell align-middle">
-                                <div className="d-flex flex-row">
-                                    <span>{"Credits"}</span>
-                                    <FontAwesomeIcon
-                                        className="my-auto ps-2"
-                                        icon={generateSortingIcon(
-                                            sortingState.credits.sort,
-                                        )}
-                                        onClick={(): void => {
-                                            setIsSorting(true);
-                                            sortingDispatch({
-                                                type: "credits",
-                                            });
-                                        }}
-                                        role="button"
-                                    />
-                                </div>
-                            </th>
-                            <th className="d-table-cell align-middle">
-                                <div className="d-flex flex-row">
-                                    <span>{"Description"}</span>
-                                    <FontAwesomeIcon
-                                        className="my-auto ps-2"
-                                        icon={generateSortingIcon(
-                                            sortingState.description.sort,
-                                        )}
-                                        onClick={(): void => {
-                                            setIsSorting(true);
-                                            sortingDispatch({
-                                                type: "description",
-                                            });
-                                        }}
-                                        role="button"
-                                    />
-                                </div>
-                            </th>
-                            <th className="d-table-cell align-middle">
-                                <div className="d-flex flex-row">
-                                    <span>{"Pre Requisites"}</span>
-                                    <FontAwesomeIcon
-                                        className="my-auto ps-2"
-                                        icon={generateSortingIcon(
-                                            sortingState.preRequisites.sort,
-                                        )}
-                                        onClick={(): void => {
-                                            setIsSorting(true);
-                                            sortingDispatch({
-                                                type: "preRequisites",
-                                            });
-                                        }}
-                                        role="button"
-                                    />
-                                </div>
-                            </th>
-                            <th className="d-table-cell align-middle">
-                                <div className="d-flex flex-row">
-                                    <span>{"Breadth Requirements"}</span>
-                                    <FontAwesomeIcon
-                                        className="my-auto ps-2"
-                                        icon={generateSortingIcon(
-                                            sortingState.breadthRequirements
-                                                .sort,
-                                        )}
-                                        onClick={(): void => {
-                                            setIsSorting(true);
-                                            sortingDispatch({
-                                                type: "breadthRequirements",
-                                            });
-                                        }}
-                                        role="button"
-                                    />
-                                </div>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {segmentedCourses?.[page].map((eachCourse: Course) => (
-                            <tr key={`course-${eachCourse.id}`}>
-                                <td>{eachCourse.id}</td>
-                                <td>{eachCourse?.name ?? "No Name"}</td>
-                                <td>{eachCourse.credits}</td>
-                                <td>
-                                    {eachCourse?.description === ""
-                                        ? "No Description"
-                                        : truncateCourseDescription(
-                                              eachCourse.description,
-                                              CONSTANTS.DESCRIPTION_LENGTH,
-                                          )}
-                                </td>
-                                <td>
-                                    {eachCourse?.preRequisites === ""
-                                        ? "No Pre-Requisites"
-                                        : eachCourse.preRequisites}
-                                </td>
-                                <td>
-                                    {eachCourse?.breadthRequirements === ""
-                                        ? "No Breadth Requirements"
-                                        : eachCourse.breadthRequirements}
-                                </td>
-                            </tr>
-                        ))}
-                        {segmentedCourses?.[page].length < pageSize &&
-                            Array.from({
-                                length:
-                                    pageSize - segmentedCourses?.[page].length,
-                            })
-                                .fill(CONSTANTS.PLACEHOLDER_FILL)
-                                .map((_, placeholderRowIndex) => (
-                                    <tr
-                                        // eslint-disable-next-line react/no-array-index-key -- not needed for placeholder
-                                        key={`placeholder-row-${placeholderRowIndex}`}
-                                    >
-                                        {Array.from({
-                                            length: CONSTANTS.PLACEHOLDER_FILL_SIZE,
-                                        })
-                                            .fill(CONSTANTS.PLACEHOLDER_FILL)
-                                            .map(
-                                                (
-                                                    __,
-                                                    placeholderRowDataIndex,
-                                                ) => (
-                                                    <Placeholder
-                                                        animation="wave"
-                                                        as="td"
-                                                        // eslint-disable-next-line react/no-array-index-key -- not needed for placeholder
-                                                        key={`placeholder-row-cell-${placeholderRowDataIndex}`}
-                                                        xs={12}
-                                                    />
-                                                ),
-                                            )}
-                                    </tr>
-                                ))}
-                    </tbody>
-                </Table>
+                    {sections.map((eachSection) => (
+                        <option key={`${eachSection}`} value={eachSection}>
+                            {titleAbbreviationsToTitles[eachSection]}
+                        </option>
+                    ))}
+                </Form.Select>
             </div>
-            <Pagination className="d-flex flex-row w-25 justify-content-center mx-auto">
-                {segmentedCourses.map((_, index) => (
-                    <Pagination.Item
-                        active={page === index}
-                        // eslint-disable-next-line react/no-array-index-key -- fine for pagination
-                        key={`pagination-${index}`}
-                        onClick={(): void => {
-                            setPage(index);
-                        }}
-                    >
-                        {index + CONSTANTS.PAGINATION_INC}
-                    </Pagination.Item>
-                ))}
-            </Pagination>
-        </>
+            <div className="w-100 border border border-primary border-opacity-25 rounded-5 mb-4 shadow">
+                <div className="d-flex flex-row justify-content-around border">
+                    {TEXT_CONSTANTS.TABLE_HEADERS.map((eachHeader, _ind) => (
+                        <div
+                            className="border border-bottom-0 border-top-0 p-3 w-100 bg-secondary bg-opacity-25"
+                            key={`${eachHeader}-table-header`}
+                        >
+                            <div className="d-flex flex-row justify-content-center">
+                                <span>{eachHeader}</span>
+                                <FontAwesomeIcon
+                                    className="p-1 ms-2 border border-secondary rounded my-auto"
+                                    icon={generateSortingIcon(
+                                        sortingState[
+                                            TEXT_CONSTANTS
+                                                .TABLE_SORTING_ICON_FIELDS[_ind]
+                                        ]?.sort,
+                                    )}
+                                    onClick={(): void => {
+                                        setIsSorting(true);
+                                        sortingDispatch({
+                                            type: TEXT_CONSTANTS
+                                                .TABLE_SORTING_ICON_FIELDS[
+                                                _ind
+                                            ] as CourseSortingActionType,
+                                        });
+                                    }}
+                                    role="button"
+                                />
+                            </div>
+                        </div>
+                    ))}
+                </div>
+                <div className="d-flex flex-column">
+                    {segmentedCourses[page].map((eachCourse, _ind) => (
+                        <div
+                            className="border d-flex flex-row justify-content-around"
+                            key={`${eachCourse.id}-${eachCourse.section}`}
+                        >
+                            <div
+                                className={`${TEXT_CONSTANTS.TABLE_CELL_CLASS_NAME} ${_styles.course_table_cell}`}
+                            >
+                                {eachCourse.section}
+                            </div>
+                            <div
+                                className={`${TEXT_CONSTANTS.TABLE_CELL_CLASS_NAME} ${_styles.course_table_cell}`}
+                            >
+                                <span className="fw-bold text-danger">
+                                    {eachCourse.credits}
+                                </span>
+                            </div>
+                            <div
+                                className={`${TEXT_CONSTANTS.TABLE_CELL_CLASS_NAME} ${_styles.course_table_cell}`}
+                            >
+                                {eachCourse.description ? (
+                                    <OverlayTrigger
+                                        delay={{ hide: 250, show: 250 }}
+                                        overlay={(
+                                            properties: OverlayInjectedProps,
+                                        ): JSX.Element =>
+                                            generateTooltip(
+                                                eachCourse.description,
+                                                properties,
+                                            )
+                                        }
+                                        placement="left"
+                                    >
+                                        <div>
+                                            {truncateText(
+                                                eachCourse.description,
+                                            )}
+                                        </div>
+                                    </OverlayTrigger>
+                                ) : (
+                                    <span className="text-muted fw-light">
+                                        {TEXT_CONSTANTS.INVALID_DESCRIPTION}
+                                    </span>
+                                )}
+                            </div>
+                            <div
+                                className={`${TEXT_CONSTANTS.TABLE_CELL_CLASS_NAME} ${_styles.course_table_cell}`}
+                            >
+                                {truncateText(eachCourse.name) ===
+                                eachCourse.name ? (
+                                    <div>{eachCourse.name}</div>
+                                ) : (
+                                    <OverlayTrigger
+                                        delay={{ hide: 250, show: 250 }}
+                                        overlay={(
+                                            properties: OverlayInjectedProps,
+                                        ): JSX.Element =>
+                                            generateTooltip(
+                                                eachCourse.name,
+                                                properties,
+                                            )
+                                        }
+                                        placement="left"
+                                    >
+                                        <div>
+                                            {truncateText(eachCourse.name)}
+                                        </div>
+                                    </OverlayTrigger>
+                                )}
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+            <CoursePagination
+                currentPage={page}
+                customItemStyle="course"
+                moveToPage={(newPage: number): void => {
+                    setPage(newPage);
+                }}
+                pagesCount={segmentedCourses.length}
+                paginationSize="sm"
+            />
+        </div>
     );
 };
