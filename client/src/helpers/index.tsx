@@ -5,5 +5,5 @@ export { generateTableColumns } from "./generateTableColumns/generateTableColumn
 export { generateTooltip } from "./generateTooltip/generateTooltip";
 export { generateTooltipIntl } from "./generateTooltipIntl/generateTooltipIntl";
 export { renderPreRequisites } from "./renderPreRequisites";
-export { truncateCourseDescription } from "./truncateCourseDescription/truncateCourseDescription";
+export { truncateText } from "./truncateText/truncateText";
 export { validatePassword } from "./validatePassword/validatePassword";

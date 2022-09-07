@@ -6,13 +6,13 @@ const CONSTANTS = {
 };
 
 /**
- * Utility function to truncate the course description
+ * Utility function to truncate text
  *
- * @param description The Course Description to truncate
- * @param limit The character limit on the description, defaults to 25
- * @returns The truncated description
+ * @param text The text to truncate
+ * @param limit The character limit on the text, defaults to 25
+ * @returns The truncated text
  */
-export const truncateCourseDescription = (
+export const truncateText = (
     description: string,
     limit = CONSTANTS.BASE_LIMIT,
 ): string =>

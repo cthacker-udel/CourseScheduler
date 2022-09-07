@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import chunk from "lodash.chunk";
 import React, { type ChangeEventHandler } from "react";
 import { Form, OverlayTrigger } from "react-bootstrap";
-import { OverlayInjectedProps } from "react-bootstrap/esm/Overlay";
+import type { OverlayInjectedProps } from "react-bootstrap/esm/Overlay";
 import type {
     Course,
     CourseSortingReducerSignature,
@@ -19,7 +19,7 @@ import {
     generateSortingOrderBy,
     generateTooltip,
     renderPreRequisites,
-    truncateCourseDescription,
+    truncateText,
 } from "src/helpers";
 import { useCourses } from "src/hooks/useCourses";
 import { CourseSortingReducer } from "src/reducer";
@@ -123,7 +123,7 @@ export const Read = (): JSX.Element => {
                     ))}
                 </Form.Select>
             </div>
-            <div className="w-100 m-5 shadow">
+            <div className="w-100 border border border-primary border-opacity-25 rounded-5 mb-4 shadow">
                 <div className="d-flex flex-row justify-content-around border">
                     {TEXT_CONSTANTS.TABLE_HEADERS.map((eachHeader, _ind) => (
                         <div
@@ -190,7 +190,7 @@ export const Read = (): JSX.Element => {
                                         placement="left"
                                     >
                                         <div>
-                                            {truncateCourseDescription(
+                                            {truncateText(
                                                 eachCourse.description,
                                             )}
                                         </div>
@@ -204,7 +204,27 @@ export const Read = (): JSX.Element => {
                             <div
                                 className={TEXT_CONSTANTS.TABLE_CELL_CLASS_NAME}
                             >
-                                {eachCourse.name}
+                                {truncateText(eachCourse.name) ===
+                                eachCourse.name ? (
+                                    <div>{eachCourse.name}</div>
+                                ) : (
+                                    <OverlayTrigger
+                                        delay={{ hide: 250, show: 250 }}
+                                        overlay={(
+                                            properties: OverlayInjectedProps,
+                                        ): JSX.Element =>
+                                            generateTooltip(
+                                                eachCourse.name,
+                                                properties,
+                                            )
+                                        }
+                                        placement="left"
+                                    >
+                                        <div>
+                                            {truncateText(eachCourse.name)}
+                                        </div>
+                                    </OverlayTrigger>
+                                )}
                             </div>
                         </div>
                     ))}

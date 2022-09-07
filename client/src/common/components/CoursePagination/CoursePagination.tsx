@@ -177,7 +177,9 @@ export const CoursePagination = ({
                         />
                     </>
                 ) : (
-                    <div>{"No Items to Display"}</div>
+                    <div className="bg-primary bg-opacity-25 rounded-3 p-3 fw-bold">
+                        {"No Pages Available"}
+                    </div>
                 )}
             </Pagination>{" "}
         </div>
