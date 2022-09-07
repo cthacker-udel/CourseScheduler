@@ -26,6 +26,7 @@ export type { CourseSortingOrder } from "./CourseSorting/CourseSortingOrder";
 export type { CourseSortingReducerSignature } from "./CourseSorting/CourseSortingReducerSignature";
 export type { CourseSortingState } from "./CourseSorting/CourseSortingState";
 export type { CourseTable } from "./CourseTable/CourseTable";
+export type { SessionToken } from "./Encryption/SessionToken";
 export type { ForgotTokenType } from "./ForgotToken/ForgotTokenType";
 export type { LoginPageReducerAction } from "./Login/LoginPageReducerAction";
 export type { LoginPageReducerActionType } from "./Login/LoginPageReducerActionType";
