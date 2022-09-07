@@ -1,0 +1,7 @@
+.item_course {
+    width: 4vw;
+}
+
+.item_course > * {
+    font-size: .95em !important;
+}

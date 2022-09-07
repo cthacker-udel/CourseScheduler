@@ -102,11 +102,13 @@ export const Read = (): JSX.Element => {
 
     return (
         <div className="text-center mt-3 w-75 mx-auto h-75">
-            <div className="mb-3 p-2 w-50 mx-auto shadow d-flex flex-row justify-content-between">
-                <span className="fw-bold fs-5">{"Course Viewer"}</span>
+            <div className="mb-3 p-2 w-50 mx-auto shadow d-flex flex-row justify-content-center">
+                <span className="fw-bold fs-5 border-end border-secondary border-opacity-25 pe-4">
+                    {"Course Viewer"}
+                </span>
                 <Form.Select
                     aria-label="Course Section Selector"
-                    className="h-50 my-auto w-50"
+                    className="h-50 my-auto w-50 ms-4"
                     onChange={(
                         event: React.ChangeEvent<HTMLSelectElement>,
                     ): void => {
@@ -121,7 +123,7 @@ export const Read = (): JSX.Element => {
                     ))}
                 </Form.Select>
             </div>
-            <div className="w-100 mb-3 shadow">
+            <div className="w-100 m-5 shadow">
                 <div className="d-flex flex-row justify-content-around border">
                     {TEXT_CONSTANTS.TABLE_HEADERS.map((eachHeader, _ind) => (
                         <div
@@ -210,6 +212,7 @@ export const Read = (): JSX.Element => {
             </div>
             <CoursePagination
                 currentPage={page}
+                customItemStyle="course"
                 moveToPage={(newPage: number): void => {
                     setPage(newPage);
                 }}

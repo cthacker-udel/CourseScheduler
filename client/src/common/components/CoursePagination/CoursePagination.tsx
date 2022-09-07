@@ -4,6 +4,8 @@
 import React from "react";
 import { Pagination } from "react-bootstrap";
 
+import styles from "./CoursePagination.module.css";
+
 const CONSTANTS = {
     BASE_PAGE: 0,
     BASE_PAGINATION_LENGTH: 5,
@@ -12,8 +14,11 @@ const CONSTANTS = {
     PAGINATION_GEN_ARRAY: [-2, -1, 0, 1, 2],
 };
 
+type CustomPaginationItemStyles = "course";
+
 type CoursePaginationProperties = {
     currentPage: number;
+    customItemStyle?: CustomPaginationItemStyles;
     moveToPage: (_pageNumber: number) => void;
     pagesCount: number;
     paginationSize: "lg" | "sm";
@@ -29,6 +34,7 @@ type CoursePaginationProperties = {
  */
 export const CoursePagination = ({
     currentPage,
+    customItemStyle,
     moveToPage,
     pagesCount,
     paginationSize,
@@ -50,6 +56,11 @@ export const CoursePagination = ({
                         return (
                             <Pagination.Item
                                 active={eachElement === currentPage}
+                                className={`${
+                                    customItemStyle
+                                        ? styles[`item_${customItemStyle}`]
+                                        : ""
+                                }`}
                                 key={`page-${eachElement + currentPage}`}
                                 onClick={(): void => clickFunction(eachElement)}
                             >
@@ -59,7 +70,7 @@ export const CoursePagination = ({
                     }
                     return <div key={`page-${eachElement + currentPage}`} />;
                 }),
-        [currentPage, currentPageStart],
+        [currentPage, currentPageStart, customItemStyle],
     );
 
     React.useEffect(() => {
@@ -90,10 +101,20 @@ export const CoursePagination = ({
                 {pagesCount >= 3 ? (
                     <>
                         <Pagination.First
+                            className={`${
+                                customItemStyle
+                                    ? styles[`item_${customItemStyle}`]
+                                    : ""
+                            }`}
                             disabled={currentPage === 0}
                             onClick={(): void => moveToPage(0)}
                         />
                         <Pagination.Prev
+                            className={`${
+                                customItemStyle
+                                    ? styles[`item_${customItemStyle}`]
+                                    : ""
+                            }`}
                             disabled={currentPage === 0}
                             onClick={(): void => moveToPage(currentPage - 1)}
                         />
@@ -104,8 +125,20 @@ export const CoursePagination = ({
                         )}
                         {!lastPage && (
                             <>
-                                <Pagination.Ellipsis disabled />
+                                <Pagination.Ellipsis
+                                    className={`${
+                                        customItemStyle
+                                            ? styles[`item_${customItemStyle}`]
+                                            : ""
+                                    }`}
+                                    disabled
+                                />
                                 <Pagination.Item
+                                    className={`${
+                                        customItemStyle
+                                            ? styles[`item_${customItemStyle}`]
+                                            : ""
+                                    }`}
                                     onClick={(): void =>
                                         moveToPage(pagesCount - 1)
                                     }
@@ -115,10 +148,20 @@ export const CoursePagination = ({
                             </>
                         )}
                         <Pagination.Next
+                            className={`${
+                                customItemStyle
+                                    ? styles[`item_${customItemStyle}`]
+                                    : ""
+                            }`}
                             disabled={currentPage + 1 >= pagesCount}
                             onClick={(): void => moveToPage(currentPage + 1)}
                         />
                         <Pagination.Last
+                            className={`${
+                                customItemStyle
+                                    ? styles[`item_${customItemStyle}`]
+                                    : ""
+                            }`}
                             disabled={currentPage + 1 >= pagesCount}
                             onClick={(): void => moveToPage(pagesCount - 1)}
                         />
