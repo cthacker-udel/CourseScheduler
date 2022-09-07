@@ -50,7 +50,12 @@ export const Dashboard = (): JSX.Element => {
                             />
                         </OverlayTrigger>
                     </span>
-                    <span className="p-3">
+                    <span
+                        className="p-3"
+                        onClick={async (): Promise<void> => {
+                            await router.push("/dashboard/semester");
+                        }}
+                    >
                         <OverlayTrigger
                             delay={{ hide: 100, show: 500 }}
                             overlay={(
