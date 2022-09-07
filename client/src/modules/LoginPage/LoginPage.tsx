@@ -22,12 +22,7 @@ import { UsersApi } from "src/api/client-side/UsersApi";
 import { useNotificationContext } from "src/context/NotificationContext/useNotificationContext";
 import { generateTooltip } from "src/helpers";
 import loginFormDetails from "src/locale/en/login.json";
-import { Logger } from "src/log/Logger";
 import { LoginPageReducer } from "src/reducer";
-
-const CONSTANTS = {
-    LOGIN_PAGE_SUCCESSFUL_LOGIN_TIMEOUT: 5000,
-};
 
 /**
  * @summary Login Page component
@@ -56,23 +51,6 @@ export const LoginPage = (): JSX.Element => {
 
     const { dirtyFields } = formState;
 
-    React.useEffect(() => {
-        /**
-         * Pre fetches routes to make loading times significantly faster
-         */
-        const preFetchRoutes = async (): Promise<void> => {
-            await router.prefetch("/courses");
-            await router.prefetch("/sign-up");
-        };
-        preFetchRoutes()
-            .then(() => {
-                Logger.log("info", "routes prefetched");
-            })
-            .catch((error) => {
-                Logger.log("error", error);
-            });
-    }, [router]);
-
     /**
      * Handles login logic in regards to the component state
      *
@@ -81,16 +59,8 @@ export const LoginPage = (): JSX.Element => {
     const validateLogin = async (data: LoginRequest): Promise<void> => {
         const result: LoginResponse = await UsersApi.login(data);
         if (result.canLogin) {
-            addNotification({
-                message: {
-                    body: "Login successful, redirecting to the courses page",
-                },
-                variant: "success",
-            });
             reset();
-            setTimeout(async () => {
-                await router.push("/courses");
-            }, CONSTANTS.LOGIN_PAGE_SUCCESSFUL_LOGIN_TIMEOUT);
+            await router.push("/dashboard");
         } else {
             addNotification({
                 message: { body: "Login failed" },
