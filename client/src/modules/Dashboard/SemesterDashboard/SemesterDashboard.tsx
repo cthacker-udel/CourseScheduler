@@ -53,7 +53,10 @@ const TEXT_CONSTANTS = {
  */
 export const SemesterDashboard = (): JSX.Element => (
     <div className="mx-auto w-75 d-flex flex-column justify-content-center h-100 align-items-center">
-        <Alert className="d-flex flex-column text-center" variant="primary">
+        <Alert
+            className="d-flex flex-column text-center mb-5"
+            variant="primary"
+        >
             <span className="fs-5 fw-bold border-2 border-primary border-opacity-75 border-start-0 border-end-0 border-top-0 border-bottom mb-2 pb-1 w-25 mx-auto">
                 {TEXT_CONSTANTS.DASHBOARD_TITLE}
             </span>
