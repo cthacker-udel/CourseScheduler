@@ -4,7 +4,8 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import chunk from "lodash.chunk";
 import React, { type ChangeEventHandler } from "react";
-import { Form } from "react-bootstrap";
+import { Form, OverlayTrigger } from "react-bootstrap";
+import { OverlayInjectedProps } from "react-bootstrap/esm/Overlay";
 import type {
     Course,
     CourseSortingReducerSignature,
@@ -16,6 +17,7 @@ import { initialCourseSortState, titleAbbreviationsToTitles } from "src/data";
 import {
     generateSortingIcon,
     generateSortingOrderBy,
+    generateTooltip,
     renderPreRequisites,
     truncateCourseDescription,
 } from "src/helpers";
@@ -123,29 +125,29 @@ export const Read = (): JSX.Element => {
                 <div className="d-flex flex-row justify-content-around border">
                     {TEXT_CONSTANTS.TABLE_HEADERS.map((eachHeader, _ind) => (
                         <div
-                            className="border border-bottom-0 border-top-0 p-3 w-100"
+                            className="border border-bottom-0 border-top-0 p-3 w-100 bg-secondary bg-opacity-25"
                             key={`${eachHeader}-table-header`}
-                            onClick={(): void => {
-                                setIsSorting(true);
-                                sortingDispatch({
-                                    type: TEXT_CONSTANTS
-                                        .TABLE_SORTING_ICON_FIELDS[
-                                        _ind
-                                    ] as CourseSortingActionType,
-                                });
-                            }}
-                            role="button"
                         >
                             <div className="d-flex flex-row justify-content-center">
                                 <span>{eachHeader}</span>
                                 <FontAwesomeIcon
-                                    className="ps-2 my-auto"
+                                    className="p-1 ms-2 border border-secondary rounded my-auto"
                                     icon={generateSortingIcon(
                                         sortingState[
                                             TEXT_CONSTANTS
                                                 .TABLE_SORTING_ICON_FIELDS[_ind]
                                         ]?.sort,
                                     )}
+                                    onClick={(): void => {
+                                        setIsSorting(true);
+                                        sortingDispatch({
+                                            type: TEXT_CONSTANTS
+                                                .TABLE_SORTING_ICON_FIELDS[
+                                                _ind
+                                            ] as CourseSortingActionType,
+                                        });
+                                    }}
+                                    role="button"
                                 />
                             </div>
                         </div>
@@ -165,14 +167,33 @@ export const Read = (): JSX.Element => {
                             <div
                                 className={TEXT_CONSTANTS.TABLE_CELL_CLASS_NAME}
                             >
-                                {eachCourse.credits}
+                                <span className="fw-bold text-danger">
+                                    {eachCourse.credits}
+                                </span>
                             </div>
                             <div
                                 className={TEXT_CONSTANTS.TABLE_CELL_CLASS_NAME}
                             >
-                                {truncateCourseDescription(
-                                    eachCourse.description,
-                                ) || (
+                                {eachCourse.description ? (
+                                    <OverlayTrigger
+                                        delay={{ hide: 250, show: 250 }}
+                                        overlay={(
+                                            properties: OverlayInjectedProps,
+                                        ): JSX.Element =>
+                                            generateTooltip(
+                                                eachCourse.description,
+                                                properties,
+                                            )
+                                        }
+                                        placement="left"
+                                    >
+                                        <div>
+                                            {truncateCourseDescription(
+                                                eachCourse.description,
+                                            )}
+                                        </div>
+                                    </OverlayTrigger>
+                                ) : (
                                     <span className="text-muted fw-light">
                                         {TEXT_CONSTANTS.INVALID_DESCRIPTION}
                                     </span>
