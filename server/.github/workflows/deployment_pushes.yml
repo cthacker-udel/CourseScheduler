@@ -15,7 +15,3 @@ jobs:
         with:
             node-version: ${{ matrix.node-version }}
             cache: "npm"
-
-      - name: Run a multi-line script
-        run: |
-          npm run deploy-changes
