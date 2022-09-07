@@ -42,6 +42,10 @@ export const CoursePagination = ({
     const [currentPageStart, setCurrentPageStart] = React.useState(0);
     const [lastPage, setLastPage] = React.useState<boolean>(false);
 
+    React.useEffect(() => {
+        console.log(currentPageStart);
+    }, [currentPageStart]);
+
     const generatePaginationContent = React.useCallback(
         (
             totalLength: number,
@@ -80,14 +84,20 @@ export const CoursePagination = ({
             setLastPage(false);
         } else if (pageDifference <= 5 && !lastPage) {
             let temporaryCurrentPage = currentPage;
-            while (Math.abs(temporaryCurrentPage - pagesCount) !== 5) {
+            while (
+                Math.abs(temporaryCurrentPage - pagesCount) !== 5 &&
+                temporaryCurrentPage >= 1
+            ) {
                 temporaryCurrentPage -= 1;
             }
             setCurrentPageStart(temporaryCurrentPage);
             setLastPage(true);
         } else if (pageDifference > 5 && lastPage) {
             let temporaryCurrentPage = currentPage;
-            while (temporaryCurrentPage % 5 !== 0) {
+            while (
+                temporaryCurrentPage % 5 !== 0 &&
+                temporaryCurrentPage >= 1
+            ) {
                 temporaryCurrentPage -= 1;
             }
             setCurrentPageStart(temporaryCurrentPage);
