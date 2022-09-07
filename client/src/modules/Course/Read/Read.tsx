@@ -113,6 +113,7 @@ export const Read = (): JSX.Element => {
                         event: React.ChangeEvent<HTMLSelectElement>,
                     ): void => {
                         setSection(event.target.value);
+                        setPage(0);
                     }}
                     value={section}
                 >
