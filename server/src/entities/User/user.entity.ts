@@ -50,4 +50,10 @@ export class User {
      * The last time the user logged in
      */
     lastLogin: Date;
+
+    @Column()
+    /**
+     * The session token that the user currently has
+     */
+    sessionToken: string;
 }

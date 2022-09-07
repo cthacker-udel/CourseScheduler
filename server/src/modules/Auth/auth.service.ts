@@ -80,6 +80,7 @@ export class AuthService {
                     return generateLoginResponse(false);
                 }
                 const token = this.cryptoService.generateToken();
+                await this.userService.updateLastLogin(username);
                 return generateLoginResponse(passwordValidationResult, token);
             } else {
                 this.logger.error(

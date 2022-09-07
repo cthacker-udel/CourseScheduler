@@ -9,6 +9,7 @@ import { User } from "src/entities";
 import { CryptoService, type EncodingResult } from "../Crypto/crypto.service";
 import { ResetTokenQuery, ResetTokenType } from "src/@types";
 import { ResetToken } from "src/entities/SubEntities";
+import { validateUpdateResult } from "src/helpers/validateUpdateResult";
 
 /**
  * The users service, handling all operations involving the users collection
@@ -44,6 +45,36 @@ export class UserService {
             encodingResult.salt,
             encodingResult.iterations,
         );
+    };
+
+    /**
+     * Adds a session token to the user, logs if any errors occur or the session token is not added
+     *
+     * @param sessionToken - The session token to add to the user
+     * @param username - The username upon which the session token is being added
+     */
+    addSessionToken = async (
+        sessionToken: string,
+        username: string,
+    ): Promise<boolean> => {
+        try {
+            const result = await this.usersRepository.update(
+                { username },
+                { sessionToken },
+            );
+            const { updated } = validateUpdateResult(result);
+            if (updated) {
+                this.logger.log("Added session token to user");
+            } else {
+                this.logger.log("Failed updating user with session token");
+            }
+            return updated;
+        } catch (error: unknown) {
+            this.logger.error(
+                "Failed adding session token",
+                (error as Error).stack,
+            );
+        }
     };
 
     /**
@@ -231,6 +262,33 @@ export class UserService {
         } catch (error: unknown) {
             this.logger.error(error, (error as Error).stack);
             return false;
+        }
+    };
+
+    /**
+     * Update's the user's last login specifically to the user whom's username matches that which was passed in
+     *
+     * @param username - The username to query for the user with in the collection
+     * @returns Whether we updated the user's last login or not
+     */
+    updateLastLogin = async (username: string): Promise<boolean> => {
+        try {
+            const result = await this.usersRepository.update(
+                { username },
+                { lastLogin: new Date(Date.now()).toUTCString() },
+            );
+            const { updated } = validateUpdateResult(result);
+            if (updated) {
+                this.logger.log("Updated last login of user");
+            } else {
+                this.logger.log("Failed to update last login of user");
+            }
+            return updated;
+        } catch (error: unknown) {
+            this.logger.error(
+                "Failed updating last login",
+                (error as Error).stack,
+            );
         }
     };
 

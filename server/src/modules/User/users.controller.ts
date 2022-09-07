@@ -57,4 +57,7 @@ export class UserController {
             );
         }
     }
+
+    // TODO: @Post("users/sessionToken/add")
+    // async addSessionToken(@Body() req: )
 }
