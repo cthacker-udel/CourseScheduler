@@ -19,6 +19,7 @@ import { useForm } from "react-hook-form";
 import { FormattedMessage } from "react-intl";
 import type { LoginRequest, LoginResponse } from "src/@types";
 import { UsersApi } from "src/api/client-side/UsersApi";
+import { hashLoginInformation } from "src/config/encryption/hashLoginInformation";
 import { useNotificationContext } from "src/context/NotificationContext/useNotificationContext";
 import { generateTooltip } from "src/helpers";
 import loginFormDetails from "src/locale/en/login.json";
@@ -60,6 +61,7 @@ export const LoginPage = (): JSX.Element => {
         const result: LoginResponse = await UsersApi.login(data);
         if (result.canLogin) {
             reset();
+            hashLoginInformation(data);
             await router.push("/dashboard");
         } else {
             addNotification({

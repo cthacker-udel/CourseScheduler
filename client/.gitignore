@@ -25,3 +25,5 @@ yarn-error.log*
 # nextjs cache
 
 /.next
+
+/src/config/encryption/keys.ts
