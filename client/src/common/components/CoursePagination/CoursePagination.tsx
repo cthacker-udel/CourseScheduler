@@ -42,10 +42,6 @@ export const CoursePagination = ({
     const [currentPageStart, setCurrentPageStart] = React.useState(0);
     const [lastPage, setLastPage] = React.useState<boolean>(false);
 
-    React.useEffect(() => {
-        console.log(currentPageStart);
-    }, [currentPageStart]);
-
     const generatePaginationContent = React.useCallback(
         (
             totalLength: number,
