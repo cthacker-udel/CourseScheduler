@@ -1,0 +1,50 @@
+[
+    {
+        "id": 10,
+        "term": 0,
+        "year": 1997,
+        "title": "Semester 1",
+        "description": "Random description for Semester 3",
+        "courses": []
+    },
+    {
+        "id": 11,
+        "term": 1,
+        "year": 2000,
+        "title": "Semester 2",
+        "description": "Random description for Semester 2",
+        "courses": []
+    },
+    {
+        "id": 12,
+        "term": 2,
+        "year": 2001,
+        "title": "Semester 3",
+        "description": "Random description for Semester 3",
+        "courses": []
+    },
+    {
+        "id": 13,
+        "term": 3,
+        "year": 2002,
+        "title": "Semester 4",
+        "description": "Random description for Semester 4",
+        "courses": []
+    },
+    {
+        "id": 14,
+        "term": 4,
+        "year": 2003,
+        "title": "Semester 5",
+        "description": "Random description for Semester 5",
+        "courses": []
+    },
+    {
+        "id": 15,
+        "term": 0,
+        "year": 2004,
+        "title": "Semester 6",
+        "description": "Random description for Semester 6",
+        "courses": []
+    }
+]

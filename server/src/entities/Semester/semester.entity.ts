@@ -17,4 +17,7 @@ export class Semester {
 
     @Column()
     description: string;
+
+    @Column()
+    courses: string[];
 }

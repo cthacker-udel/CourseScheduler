@@ -1,0 +1,19 @@
+.select_container:hover {
+    box-shadow: 0 .07rem .14rem rgba(0,0,0,.15)!important;
+}
+
+.select_dropdown {
+    z-index: 2;
+    max-height: 20vh;
+    overflow-y: scroll;
+    scrollbar-color: lightgray transparent;
+    scrollbar-width: thin;
+}
+
+.select_dropdown::-webkit-scrollbar-button {
+    display: none;
+}
+
+.select_dropdown_item:hover {
+    font-weight: 700;
+}
