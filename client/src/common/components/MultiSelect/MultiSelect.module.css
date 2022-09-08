@@ -17,3 +17,7 @@
 .select_dropdown_item:hover {
     font-weight: 700;
 }
+
+.select_dropdown_item:focus {
+    background-color: red;
+}
