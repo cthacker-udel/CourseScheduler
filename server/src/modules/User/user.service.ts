@@ -8,7 +8,7 @@ import {
 import { User } from "src/entities";
 import { CryptoService, type EncodingResult } from "../Crypto/crypto.service";
 import { ResetTokenQuery, ResetTokenType } from "src/@types";
-import { ResetToken } from "src/entities/SubEntities";
+import { ResetToken } from "src/entities/Common";
 import { validateUpdateResult } from "src/helpers/validateUpdateResult";
 
 /**

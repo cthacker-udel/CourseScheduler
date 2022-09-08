@@ -1,4 +1,4 @@
-import { ResetToken } from "../SubEntities";
+import { ResetToken } from "../Common";
 import { Column, Entity, ObjectIdColumn } from "typeorm";
 
 @Entity({ name: "users" })
