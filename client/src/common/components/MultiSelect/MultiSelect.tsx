@@ -38,6 +38,18 @@ export const MultiSelect = ({
     const [displaySelect, setDisplaySelect] = React.useState<boolean>(false);
     const dropdownReference = React.createRef<HTMLDivElement>();
 
+    const markItem = React.useCallback((index: number) => {
+        const selectedItemToMark = document.querySelector(`#item-${index}`);
+        if (selectedItemToMark) {
+            if (!selectedItemToMark.className.includes(" selected")) {
+                selectedItemToMark.className = `${selectedItemToMark.className} selected`;
+            } else if (selectedItemToMark.className.includes(" selected")) {
+                selectedItemToMark.className =
+                    selectedItemToMark.className.replace(" selected", "");
+            }
+        }
+    }, []);
+
     React.useEffect(() => {
         if (
             displaySelect &&
@@ -46,13 +58,13 @@ export const MultiSelect = ({
             selectedItem < items.length
         ) {
             const semesterOption = document.querySelector(
-                `#semester-${selectedItem}`,
+                `#item-${selectedItem}`,
             );
             const semesterDivElementAbove = document.querySelector(
-                `#semester-${selectedItem - 1}`,
+                `#item-${selectedItem - 1}`,
             );
             const semesterDivElementBelow = document.querySelector(
-                `#semester-${selectedItem + 1}`,
+                `#item-${selectedItem + 1}`,
             );
             if (semesterDivElementAbove) {
                 semesterDivElementAbove.className =
@@ -128,7 +140,7 @@ export const MultiSelect = ({
                             <ListGroup.Item
                                 action
                                 className={styles.select_dropdown_item}
-                                id={`semester-${_ind}`}
+                                id={`item-${_ind}`}
                                 key={
                                     displayItemField
                                         ? eachItem[displayItemField]
