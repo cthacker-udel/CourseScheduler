@@ -1,6 +1,6 @@
 /* eslint-disable no-magic-numbers -- unnecessary for custom component */
 /* eslint-disable @typescript-eslint/no-explicit-any -- generic component takes any as items */
-import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
+import { faCaretDown, faX } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import { Card, ListGroup } from "react-bootstrap";
@@ -30,8 +30,7 @@ export const MultiSelect = ({
     items,
     parentClassName,
 }: MultiSelectProperties): JSX.Element => {
-    const [selectedItems, setSelectedItems] = React.useState([]);
-    const [availableItems, setAvailableItems] = React.useState(items);
+    const [selectedItems, setSelectedItems] = React.useState<number[]>([]);
     const [selectedItem, setSelectedItem] = React.useState<number | undefined>(
         0,
     );
@@ -43,12 +42,23 @@ export const MultiSelect = ({
         if (selectedItemToMark) {
             if (!selectedItemToMark.className.includes(" selected")) {
                 selectedItemToMark.className = `${selectedItemToMark.className} selected`;
+                setSelectedItems((oldSelectedItems: number[]) => [
+                    ...oldSelectedItems,
+                    index,
+                ]);
             } else if (selectedItemToMark.className.includes(" selected")) {
                 selectedItemToMark.className =
                     selectedItemToMark.className.replace(" selected", "");
+                setSelectedItems((oldSelectedItems: number[]) =>
+                    oldSelectedItems.filter((element) => element !== index),
+                );
             }
         }
     }, []);
+
+    React.useEffect(() => {
+        console.log("items = ", selectedItems);
+    }, [selectedItems]);
 
     React.useEffect(() => {
         if (
@@ -104,6 +114,7 @@ export const MultiSelect = ({
             }}
             onKeyDown={(event_: React.KeyboardEvent<HTMLDivElement>): void => {
                 const { key } = event_;
+                console.log("key = ", key);
                 switch (key) {
                     case "ArrowUp": {
                         if (selectedItem !== undefined && selectedItem > 0) {
@@ -117,6 +128,12 @@ export const MultiSelect = ({
                             selectedItem < items.length - 1
                         ) {
                             setSelectedItem(selectedItem + 1);
+                        }
+                        break;
+                    }
+                    case "Enter": {
+                        if (selectedItem !== undefined) {
+                            markItem(selectedItem);
                         }
                         break;
                     }
@@ -150,6 +167,9 @@ export const MultiSelect = ({
                                 {displayItemField
                                     ? eachItem[displayItemField]
                                     : eachItem}
+                                {selectedItems.includes(_ind) && (
+                                    <span className="float-end">{"X"}</span>
+                                )}
                             </ListGroup.Item>
                         ))}
                     </ListGroup>
