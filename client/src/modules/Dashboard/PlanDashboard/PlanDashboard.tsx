@@ -1,199 +1,143 @@
 import {
     faBookOpenReader,
     faCirclePlus,
-    faPencil,
-    faPlus,
-    faTrash,
+    faPen,
+    faTrashCan,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useRouter } from "next/router";
 import React from "react";
-import { Alert, Button, OverlayTrigger } from "react-bootstrap";
-import type { OverlayInjectedProps } from "react-bootstrap/esm/Overlay";
-import { generateTooltip } from "src/helpers";
+import { Alert, Button } from "react-bootstrap";
 
 import styles from "./PlanDashboard.module.css";
 
-const TEXT_CONSTANTS = {
-    CREATE_DESCRIPTION:
-        "This is where you can create a plan, and add in all the details before creation to tailor your requirements for the plan.",
-    CREATE_TOOLTIP: "Create Plan(s)",
-    DASHBOARD_TITLE: "Plan Dashboard",
-    DASHBOARD_TITLE_DESCRIPTION: (
-        <span>
-            <span>
-                {
-                    "Welcome to the Plan Dashboard! This contains all the options you can utilize. You are able to "
-                }
-            </span>
-            <span className="fw-bold">{"Create a Plan"}</span>
-            <span>{", "}</span>
-            <span className="fw-bold">{"Edit a Plan"}</span>
-            <span>{", "}</span>
-            <span className="fw-bold">{"View a Plan"}</span>
-            <span>{", and "}</span>
-            <span className="fw-bold">{"Delete a Plan"}</span>
-            <span>{"."}</span>
-        </span>
-    ),
-    DELETE_DESCRIPTION:
-        "This is where you can delete a plan or plans, all of the plans you currently have registered are listed on this page",
-    DELETE_TOOLTIP: "Delete Plan(s)",
-    EDIT_DESCRIPTION:
-        "This is where you can edit a plan, change all the details to your requirements, the changes are reflected immediately",
-    EDIT_TOOLTIP: "Edit Plan(s)",
-    VIEW_DESCRIPTION:
-        "This is where you can view plans, all of the plans you currently have registered under your account",
-    VIEW_TOOLTIP: "View Plan(s)",
-};
-
 /**
- * The plan dashboard, which houses all the options for plans, mostly the CRUD operations, which are create, read, update, and delete
+ * This is the plan dashboard which houses all the actions a user can take upon plans
  *
- * @returns The plan dashboard
+ * @returns The dashboard for managing plans
  */
-export const PlanDashboard = (): JSX.Element => (
-    <div className="mx-auto w-75 d-flex flex-column justify-content-center h-100 align-items-center">
-        <Alert className="d-flex flex-column text-center" variant="primary">
-            <span className="fs-5 fw-bold border-2 border-primary border-opacity-75 border-start-0 border-end-0 border-top-0 border-bottom mb-2 pb-1 w-25 mx-auto">
-                {TEXT_CONSTANTS.DASHBOARD_TITLE}
-            </span>
-            <span className="fw-light">
-                {TEXT_CONSTANTS.DASHBOARD_TITLE_DESCRIPTION}
-            </span>
-        </Alert>
-        <div className="d-flex flex-row w-100 justify-content-around">
-            <Alert
-                className="d-flex flex-column mx-3 justify-content-between"
-                variant="success"
-            >
-                <Alert.Heading className="fw-bold text-center fs-5">
-                    <span className="mb-1">{"Create"}</span>
-                    <FontAwesomeIcon
-                        className="my-auto ms-1"
-                        icon={faCirclePlus}
-                    />
-                    <hr />
+export const PlanDashboard = (): JSX.Element => {
+    const router = useRouter();
+    return (
+        <div className="h-75 d-flex flex-column justify-content-center align-items-center">
+            <Alert className="text-center p-4" variant="info">
+                <Alert.Heading className="text-decoration-underline fs-4 fw-bold">
+                    {"Plan Dashboard"}
                 </Alert.Heading>
-                <div className="text-wrap fw-light">
-                    {TEXT_CONSTANTS.CREATE_DESCRIPTION}
-                </div>
-                <OverlayTrigger
-                    delay={{ hide: 250, show: 250 }}
-                    overlay={(properties: OverlayInjectedProps): JSX.Element =>
-                        generateTooltip(
-                            TEXT_CONSTANTS.CREATE_TOOLTIP,
-                            properties,
-                        )
+                <span>
+                    {
+                        "This houses the general management of plans, the user can create, read, update existing plans, and delete plans from the options listed below"
                     }
-                    placement="bottom"
+                </span>
+            </Alert>
+            <div className="w-75 mx-auto mt-5 d-flex flex-row justify-content-around">
+                <Alert
+                    className={`${styles.option_card} my-auto me-3 d-flex flex-column`}
+                    variant="success"
                 >
+                    <Alert.Heading className="text-center">
+                        {"Create"}
+                        <FontAwesomeIcon
+                            className="my-auto ms-2"
+                            icon={faCirclePlus}
+                        />
+                    </Alert.Heading>
+                    <hr />
+                    <span className="text-wrap">
+                        {
+                            "This is where you can create a custom plan. The plan is added to the collection after successfully adding it."
+                        }
+                    </span>
                     <Button
-                        className={`d-flex flex-row mx-auto mt-4 ${styles.alert_button} w-25 rounded`}
+                        className={`mt-4 w-75 mx-auto ${styles.alert_button}`}
+                        onClick={async (): Promise<void> => {
+                            await router.push("/plans/create");
+                        }}
                         variant="outline-success"
                     >
-                        <FontAwesomeIcon
-                            className="my-auto mx-auto"
-                            icon={faPlus}
-                        />
+                        {"Create Plans"}
                     </Button>
-                </OverlayTrigger>
-            </Alert>
-            <Alert
-                className="d-flex flex-column mx-3 justify-content-between"
-                variant="warning"
-            >
-                <Alert.Heading className="fw-bold text-center fs-5">
-                    <span className="mb-1">{"Edit"}</span>
-                    <FontAwesomeIcon className="my-auto ms-1" icon={faPencil} />
-                    <hr />
-                </Alert.Heading>
-                <div className="text-wrap fw-light">
-                    {TEXT_CONSTANTS.EDIT_DESCRIPTION}
-                </div>
-                <OverlayTrigger
-                    delay={{ hide: 250, show: 250 }}
-                    overlay={(properties: OverlayInjectedProps): JSX.Element =>
-                        generateTooltip(TEXT_CONSTANTS.EDIT_TOOLTIP, properties)
-                    }
-                    placement="bottom"
+                </Alert>
+                <Alert
+                    className={`${styles.option_card} my-auto mx-3 d-flex flex-column`}
+                    variant="secondary"
                 >
-                    <Button
-                        className={`d-flex flex-row mx-auto mt-4 ${styles.alert_button} w-25 rounded`}
-                        variant="outline-warning"
-                    >
+                    <Alert.Heading className="text-center">
+                        {"View"}
                         <FontAwesomeIcon
-                            className="my-auto mx-auto"
-                            icon={faPencil}
-                        />
-                    </Button>
-                </OverlayTrigger>
-            </Alert>
-            <Alert
-                className="d-flex flex-column mx-3 justify-content-between"
-                variant="primary"
-            >
-                <Alert.Heading className="fw-bold text-center fs-5">
-                    <span className="mb-1">{"View"}</span>
-                    <FontAwesomeIcon
-                        className="my-auto ms-1"
-                        icon={faBookOpenReader}
-                    />
-                    <hr />
-                </Alert.Heading>
-                <div className="text-wrap fw-light">
-                    {TEXT_CONSTANTS.VIEW_DESCRIPTION}
-                </div>
-                <OverlayTrigger
-                    delay={{ hide: 250, show: 250 }}
-                    overlay={(properties: OverlayInjectedProps): JSX.Element =>
-                        generateTooltip(TEXT_CONSTANTS.VIEW_TOOLTIP, properties)
-                    }
-                    placement="bottom"
-                >
-                    <Button
-                        className={`d-flex flex-row mx-auto mt-4 ${styles.alert_button} w-25 rounded`}
-                        variant="outline-primary"
-                    >
-                        <FontAwesomeIcon
-                            className="my-auto mx-auto"
+                            className="ms-2 my-auto"
                             icon={faBookOpenReader}
                         />
-                    </Button>
-                </OverlayTrigger>
-            </Alert>
-            <Alert
-                className="d-flex flex-column mx-3 justify-content-between"
-                variant="danger"
-            >
-                <Alert.Heading className="fw-bold text-center fs-5">
-                    <span className="mb-1">{"View"}</span>
-                    <FontAwesomeIcon className="my-auto ms-1" icon={faTrash} />
+                    </Alert.Heading>
                     <hr />
-                </Alert.Heading>
-                <div className="text-wrap fw-light">
-                    {TEXT_CONSTANTS.DELETE_DESCRIPTION}
-                </div>
-                <OverlayTrigger
-                    delay={{ hide: 250, show: 250 }}
-                    overlay={(properties: OverlayInjectedProps): JSX.Element =>
-                        generateTooltip(
-                            TEXT_CONSTANTS.DELETE_TOOLTIP,
-                            properties,
-                        )
-                    }
-                    placement="bottom"
-                >
+                    <span className="text-wrap">
+                        {
+                            "This is where you can view about the details of a plan, it's courses, semesters, etc."
+                        }
+                    </span>
                     <Button
-                        className={`d-flex flex-row mx-auto mt-4 ${styles.alert_button} w-25 rounded`}
-                        variant="outline-danger"
+                        className={`mt-4 w-75 mx-auto ${styles.alert_button}`}
+                        onClick={async (): Promise<void> => {
+                            await router.push("/plans/read");
+                        }}
+                        variant="outline-secondary"
                     >
-                        <FontAwesomeIcon
-                            className="my-auto mx-auto"
-                            icon={faTrash}
-                        />
+                        {"View Plans"}
                     </Button>
-                </OverlayTrigger>
-            </Alert>
+                </Alert>
+                <Alert
+                    className={`${styles.option_card} my-auto mx-3 d-flex flex-column`}
+                    variant="primary"
+                >
+                    <Alert.Heading className="text-center">
+                        {"Update"}
+                        <FontAwesomeIcon
+                            className="ms-2 my-auto"
+                            icon={faPen}
+                        />
+                    </Alert.Heading>
+                    <hr />
+                    <span className="text-wrap">
+                        {
+                            "This is where you can edit a plan you created or already existing plans, allowing you to change anything about the plans, ranging from the courses to the semesters."
+                        }
+                    </span>
+                    <Button
+                        className={`mt-4 w-75 mx-auto ${styles.alert_button}`}
+                        onClick={async (): Promise<void> => {
+                            await router.push("/plans/update");
+                        }}
+                        variant="outline-primary"
+                    >
+                        {"Update Plans"}
+                    </Button>
+                </Alert>
+                <Alert
+                    className={`${styles.option_card} my-auto ms-3 d-flex flex-column`}
+                    variant="warning"
+                >
+                    <Alert.Heading className="text-center">
+                        {"Delete"}
+                        <FontAwesomeIcon
+                            className="ms-2 my-auto"
+                            icon={faTrashCan}
+                        />
+                    </Alert.Heading>
+                    <hr />
+                    <span className="text-wrap">
+                        {"This is where you can delete plans."}
+                    </span>
+                    <Button
+                        className={`mt-4 w-75 mx-auto ${styles.alert_button}`}
+                        onClick={async (): Promise<void> => {
+                            await router.push("/plans/delete");
+                        }}
+                        variant="outline-warning"
+                    >
+                        {"Delete Plans"}
+                    </Button>
+                </Alert>
+            </div>
         </div>
-    </div>
-);
+    );
+};
