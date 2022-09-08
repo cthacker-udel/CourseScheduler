@@ -1,9 +1,9 @@
 /* eslint-disable no-magic-numbers -- unnecessary for custom component */
 /* eslint-disable @typescript-eslint/no-explicit-any -- generic component takes any as items */
-import { faCaretDown, faX } from "@fortawesome/free-solid-svg-icons";
+import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
-import { Card, ListGroup } from "react-bootstrap";
+import { ListGroup } from "react-bootstrap";
 
 import styles from "./MultiSelect.module.css";
 
@@ -40,15 +40,14 @@ export const MultiSelect = ({
     const markItem = React.useCallback((index: number) => {
         const selectedItemToMark = document.querySelector(`#item-${index}`);
         if (selectedItemToMark) {
-            if (!selectedItemToMark.className.includes(" selected")) {
-                selectedItemToMark.className = `${selectedItemToMark.className} selected`;
+            if (!selectedItemToMark.className.includes(` ${styles.selected}`)) {
                 setSelectedItems((oldSelectedItems: number[]) => [
                     ...oldSelectedItems,
                     index,
                 ]);
-            } else if (selectedItemToMark.className.includes(" selected")) {
-                selectedItemToMark.className =
-                    selectedItemToMark.className.replace(" selected", "");
+            } else if (
+                selectedItemToMark.className.includes(` ${styles.selected}`)
+            ) {
                 setSelectedItems((oldSelectedItems: number[]) =>
                     oldSelectedItems.filter((element) => element !== index),
                 );
@@ -102,7 +101,7 @@ export const MultiSelect = ({
     return (
         <div
             className={`${parentClassName} d-flex flex-row justify-content-end p-2 border border-2 rounded position-relative ${styles.select_container}`}
-            onBlurCapture={(): void => {
+            onBlur={(): void => {
                 setDisplaySelect(false);
                 setSelectedItem(0);
             }}
@@ -114,7 +113,6 @@ export const MultiSelect = ({
             }}
             onKeyDown={(event_: React.KeyboardEvent<HTMLDivElement>): void => {
                 const { key } = event_;
-                console.log("key = ", key);
                 switch (key) {
                     case "ArrowUp": {
                         if (selectedItem !== undefined && selectedItem > 0) {
@@ -156,13 +154,21 @@ export const MultiSelect = ({
                         {items.map((eachItem, _ind) => (
                             <ListGroup.Item
                                 action
-                                className={styles.select_dropdown_item}
+                                className={`${styles.select_dropdown_item} ${
+                                    selectedItems.includes(_ind)
+                                        ? styles.selected
+                                        : ""
+                                }`}
                                 id={`item-${_ind}`}
                                 key={
                                     displayItemField
                                         ? eachItem[displayItemField]
                                         : eachItem
                                 }
+                                onClick={(): void => {
+                                    console.log("clicking");
+                                    markItem(_ind);
+                                }}
                             >
                                 {displayItemField
                                     ? eachItem[displayItemField]

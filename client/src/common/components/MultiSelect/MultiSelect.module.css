@@ -21,3 +21,7 @@
 .select_dropdown_item:focus {
     background-color: red;
 }
+
+.selected {
+    background-color: #cff4fc;
+}
