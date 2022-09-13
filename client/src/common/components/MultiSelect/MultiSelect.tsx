@@ -194,7 +194,7 @@ export const MultiSelect = ({
                         if (displayItemField) {
                             return (
                                 <div
-                                    className={`d-inline-block p-3 bg-secondary bg-opacity-25 rounded-pill m-1 text-nowrap ${styles.select_selected_item}`}
+                                    className={`d-inline-block p-2 bg-secondary bg-opacity-25 rounded-pill m-1 text-nowrap ${styles.select_selected_item}`}
                                     key={`${items[eachSelectedItem][displayItemField]}-display-item`}
                                     onClick={(): void => {
                                         setSelectedItems((oldSelectedItems) => {
@@ -219,7 +219,7 @@ export const MultiSelect = ({
                         }
                         return (
                             <div
-                                className={`d-inline-block p-3 bg-secondary bg-opacity-25 rounded-pill m-1 text-nowrap ${styles.select_selected_item}`}
+                                className={`d-inline-block p-2 bg-secondary bg-opacity-25 rounded-pill m-1 text-nowrap ${styles.select_selected_item}`}
                                 key={`${items[eachSelectedItem]}-display-item`}
                                 onClick={(): void => {
                                     setSelectedItems((oldSelectedItems) => {
