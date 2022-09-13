@@ -1,6 +1,6 @@
 /* eslint-disable no-magic-numbers -- unnecessary for custom component */
 /* eslint-disable @typescript-eslint/no-explicit-any -- generic component takes any as items */
-import { faCaretDown, faX } from "@fortawesome/free-solid-svg-icons";
+import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import { ListGroup } from "react-bootstrap";
@@ -40,15 +40,14 @@ export const MultiSelect = ({
     const markItem = React.useCallback((index: number) => {
         const selectedItemToMark = document.querySelector(`#item-${index}`);
         if (selectedItemToMark) {
-            if (!selectedItemToMark.className.includes(" selected")) {
-                selectedItemToMark.className = `${selectedItemToMark.className} selected`;
+            if (!selectedItemToMark.className.includes(` ${styles.selected}`)) {
                 setSelectedItems((oldSelectedItems: number[]) => [
                     ...oldSelectedItems,
                     index,
                 ]);
-            } else if (selectedItemToMark.className.includes(" selected")) {
-                selectedItemToMark.className =
-                    selectedItemToMark.className.replace(" selected", "");
+            } else if (
+                selectedItemToMark.className.includes(` ${styles.selected}`)
+            ) {
                 setSelectedItems((oldSelectedItems: number[]) =>
                     oldSelectedItems.filter((element) => element !== index),
                 );
