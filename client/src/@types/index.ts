@@ -35,4 +35,5 @@ export type { iNotificationContext } from "./Notification/iNotificationContext";
 export type { Notification } from "./Notification/Notification";
 export type { NotificationMessage } from "./Notification/NotificationMessage";
 export type { Plan } from "./Plan/Plan";
+export type { MultiSelectProviderFunctionalProperties } from "./provider/multiselect/MultiSelectProviderFunctionalProperties";
 export type { Semester } from "./Semester/Semester";

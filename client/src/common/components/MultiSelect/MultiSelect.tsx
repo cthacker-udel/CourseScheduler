@@ -7,6 +7,10 @@ import { ListGroup } from "react-bootstrap";
 
 import styles from "./MultiSelect.module.css";
 
+const CONSTANTS = {
+    LISTGROUP_DARK_ITEM: "list-group-item-dark",
+};
+
 type MultiSelectProperties = {
     caret?: boolean;
     customSort?: (_a: unknown, _b: unknown) => number;
@@ -40,8 +44,9 @@ export const MultiSelect = ({
     const markItem = React.useCallback((index: number) => {
         const selectedItemToMark = document.querySelector(`#item-${index}`);
         if (selectedItemToMark) {
+            const selectedDivElement = selectedItemToMark as HTMLDivElement;
             if (
-                !selectedItemToMark.className.includes(
+                !selectedDivElement.className.includes(
                     ` ${styles.select_list_selected_item}`,
                 )
             ) {
@@ -50,7 +55,7 @@ export const MultiSelect = ({
                     index,
                 ]);
             } else if (
-                selectedItemToMark.className.includes(
+                selectedDivElement.className.includes(
                     ` ${styles.select_list_selected_item}`,
                 )
             ) {
@@ -58,11 +63,13 @@ export const MultiSelect = ({
                 setSelectedItems((oldSelectedItems: number[]) =>
                     oldSelectedItems.filter((element) => element !== index),
                 );
+                selectedDivElement.className = `${selectedDivElement.className} ${CONSTANTS.LISTGROUP_DARK_ITEM}`;
             }
         }
     }, []);
 
     React.useEffect(() => {
+        console.log("in useeffect");
         if (
             displaySelect &&
             selectedItem !== undefined &&
@@ -78,20 +85,20 @@ export const MultiSelect = ({
             );
             if (itemOptionAbove) {
                 itemOptionAbove.className = itemOptionAbove.className.replace(
-                    "list-group-item-dark",
+                    CONSTANTS.LISTGROUP_DARK_ITEM,
                     "",
                 );
             }
             if (itemOptionBelow) {
                 itemOptionBelow.className = itemOptionBelow.className.replace(
-                    "list-group-item-dark",
+                    CONSTANTS.LISTGROUP_DARK_ITEM,
                     "",
                 );
             }
             if (itemOption) {
                 const itemDivElement: HTMLDivElement =
                     itemOption as HTMLDivElement;
-                itemDivElement.className = `${itemDivElement.className} list-group-item-dark`;
+                itemDivElement.className = `${itemDivElement.className} ${CONSTANTS.LISTGROUP_DARK_ITEM}`;
                 itemDivElement?.scrollIntoView({ behavior: "smooth" });
             }
         }
@@ -157,7 +164,7 @@ export const MultiSelect = ({
                 <div
                     className={`position-absolute top-100 start-0 w-100 ${styles.select_dropdown}`}
                 >
-                    {displaySelect && (
+                    {!displaySelect && (
                         <ListGroup ref={dropdownReference}>
                             {items.map((eachItem, _ind) => (
                                 <ListGroup.Item
