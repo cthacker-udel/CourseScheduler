@@ -40,24 +40,27 @@ export const MultiSelect = ({
     const markItem = React.useCallback((index: number) => {
         const selectedItemToMark = document.querySelector(`#item-${index}`);
         if (selectedItemToMark) {
-            if (!selectedItemToMark.className.includes(` ${styles.selected}`)) {
+            if (
+                !selectedItemToMark.className.includes(
+                    ` ${styles.select_list_selected_item}`,
+                )
+            ) {
                 setSelectedItems((oldSelectedItems: number[]) => [
                     ...oldSelectedItems,
                     index,
                 ]);
             } else if (
-                selectedItemToMark.className.includes(` ${styles.selected}`)
+                selectedItemToMark.className.includes(
+                    ` ${styles.select_list_selected_item}`,
+                )
             ) {
+                console.log("in else if");
                 setSelectedItems((oldSelectedItems: number[]) =>
                     oldSelectedItems.filter((element) => element !== index),
                 );
             }
         }
     }, []);
-
-    React.useEffect(() => {
-        console.log("items = ", selectedItems);
-    }, [selectedItems]);
 
     React.useEffect(() => {
         if (
@@ -159,7 +162,13 @@ export const MultiSelect = ({
                             {items.map((eachItem, _ind) => (
                                 <ListGroup.Item
                                     action
-                                    className={styles.select_dropdown_item}
+                                    className={`${
+                                        styles.select_dropdown_item
+                                    } ${
+                                        selectedItems.includes(_ind)
+                                            ? ` ${styles.select_list_selected_item}`
+                                            : ""
+                                    }`}
                                     id={`item-${_ind}`}
                                     key={
                                         displayItemField
