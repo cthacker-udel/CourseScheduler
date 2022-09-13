@@ -165,9 +165,8 @@ export const MultiSelect = ({
                                     className={`${
                                         styles.select_dropdown_item
                                     } ${
-                                        selectedItems.includes(_ind)
-                                            ? ` ${styles.select_list_selected_item}`
-                                            : ""
+                                        selectedItems.includes(_ind) &&
+                                        ` ${styles.select_list_selected_item}`
                                     }`}
                                     id={`item-${_ind}`}
                                     key={
@@ -190,58 +189,35 @@ export const MultiSelect = ({
             </div>
             {!displaySelect && (
                 <div className={`text-wrap ${styles.select_selected_display}`}>
-                    {selectedItems.map((eachSelectedItem) => {
-                        if (displayItemField) {
-                            return (
-                                <div
-                                    className={`d-inline-block p-2 bg-secondary bg-opacity-25 rounded-pill m-1 text-nowrap ${styles.select_selected_item}`}
-                                    key={`${items[eachSelectedItem][displayItemField]}-display-item`}
-                                    onClick={(): void => {
-                                        setSelectedItems((oldSelectedItems) => {
-                                            if (oldSelectedItems?.length) {
-                                                return oldSelectedItems.filter(
-                                                    (eachItem) =>
-                                                        eachItem !==
-                                                        eachSelectedItem,
-                                                );
-                                            }
-                                            return oldSelectedItems;
-                                        });
-                                    }}
-                                    role="button"
-                                >
-                                    {items[eachSelectedItem][displayItemField]}
-                                    <span className="ms-2 fw-bold text-danger">
-                                        {"X"}
-                                    </span>
-                                </div>
-                            );
-                        }
-                        return (
-                            <div
-                                className={`d-inline-block p-2 bg-secondary bg-opacity-25 rounded-pill m-1 text-nowrap ${styles.select_selected_item}`}
-                                key={`${items[eachSelectedItem]}-display-item`}
-                                onClick={(): void => {
-                                    setSelectedItems((oldSelectedItems) => {
-                                        if (oldSelectedItems?.length) {
-                                            return oldSelectedItems.filter(
-                                                (eachItem) =>
-                                                    eachItem !==
-                                                    eachSelectedItem,
-                                            );
-                                        }
-                                        return oldSelectedItems;
-                                    });
-                                }}
-                                role="button"
-                            >
-                                {items[eachSelectedItem]}
-                                <span className="ms-2 fw-bold text-danger">
-                                    {"X"}
-                                </span>
-                            </div>
-                        );
-                    })}
+                    {selectedItems.map((eachSelectedItem) => (
+                        <div
+                            className={`d-inline-block p-2 bg-secondary bg-opacity-25 rounded-pill m-1 text-nowrap ${styles.select_selected_item}`}
+                            key={`${
+                                displayItemField
+                                    ? items[eachSelectedItem][displayItemField]
+                                    : items[eachSelectedItem]
+                            }-display-item`}
+                            onClick={(): void => {
+                                setSelectedItems((oldSelectedItems) => {
+                                    if (oldSelectedItems?.length) {
+                                        return oldSelectedItems.filter(
+                                            (eachItem) =>
+                                                eachItem !== eachSelectedItem,
+                                        );
+                                    }
+                                    return oldSelectedItems;
+                                });
+                            }}
+                            role="button"
+                        >
+                            {displayItemField
+                                ? items[eachSelectedItem][displayItemField]
+                                : items[eachSelectedItem]}
+                            <span className="ms-2 fw-bold text-danger">
+                                {"X"}
+                            </span>
+                        </div>
+                    ))}
                 </div>
             )}
         </div>
