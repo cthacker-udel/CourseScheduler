@@ -3,7 +3,7 @@
 import { faCaretDown, faX } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
-import { Card, ListGroup } from "react-bootstrap";
+import { ListGroup } from "react-bootstrap";
 
 import styles from "./MultiSelect.module.css";
 
@@ -67,114 +67,175 @@ export const MultiSelect = ({
             selectedItem >= 0 &&
             selectedItem < items.length
         ) {
-            const semesterOption = document.querySelector(
-                `#item-${selectedItem}`,
-            );
-            const semesterDivElementAbove = document.querySelector(
+            const itemOption = document.querySelector(`#item-${selectedItem}`);
+            const itemOptionAbove = document.querySelector(
                 `#item-${selectedItem - 1}`,
             );
-            const semesterDivElementBelow = document.querySelector(
+            const itemOptionBelow = document.querySelector(
                 `#item-${selectedItem + 1}`,
             );
-            if (semesterDivElementAbove) {
-                semesterDivElementAbove.className =
-                    semesterDivElementAbove.className.replace(
-                        "list-group-item-dark",
-                        "",
-                    );
+            if (itemOptionAbove) {
+                itemOptionAbove.className = itemOptionAbove.className.replace(
+                    "list-group-item-dark",
+                    "",
+                );
             }
-            if (semesterDivElementBelow) {
-                semesterDivElementBelow.className =
-                    semesterDivElementBelow.className.replace(
-                        "list-group-item-dark",
-                        "",
-                    );
+            if (itemOptionBelow) {
+                itemOptionBelow.className = itemOptionBelow.className.replace(
+                    "list-group-item-dark",
+                    "",
+                );
             }
-            if (semesterOption) {
-                const semesterDivElement: HTMLDivElement =
-                    semesterOption as HTMLDivElement;
-                semesterDivElement.className = `${semesterDivElement.className} list-group-item-dark`;
-                semesterDivElement?.scrollIntoView({ behavior: "smooth" });
+            if (itemOption) {
+                const itemDivElement: HTMLDivElement =
+                    itemOption as HTMLDivElement;
+                itemDivElement.className = `${itemDivElement.className} list-group-item-dark`;
+                itemDivElement?.scrollIntoView({ behavior: "smooth" });
             }
         }
     }, [displaySelect, selectedItem, items.length]);
 
     return (
-        <div
-            className={`${parentClassName} d-flex flex-row justify-content-end p-2 border border-2 rounded position-relative ${styles.select_container}`}
-            onBlurCapture={(): void => {
-                setDisplaySelect(false);
-                setSelectedItem(0);
-            }}
-            onClick={(): void => {
-                setDisplaySelect(!displaySelect);
-                if (dropdownReference?.current) {
-                    dropdownReference.current.focus();
-                }
-            }}
-            onKeyDown={(event_: React.KeyboardEvent<HTMLDivElement>): void => {
-                const { key } = event_;
-                console.log("key = ", key);
-                switch (key) {
-                    case "ArrowUp": {
-                        if (selectedItem !== undefined && selectedItem > 0) {
-                            setSelectedItem(selectedItem - 1);
-                        }
-                        break;
-                    }
-                    case "ArrowDown": {
-                        if (
-                            selectedItem !== undefined &&
-                            selectedItem < items.length - 1
-                        ) {
-                            setSelectedItem(selectedItem + 1);
-                        }
-                        break;
-                    }
-                    case "Enter": {
-                        if (selectedItem !== undefined) {
-                            markItem(selectedItem);
-                        }
-                        break;
-                    }
-                    default: {
-                        break;
-                    }
-                }
-            }}
-            role="button"
-            tabIndex={1}
-        >
-            {caret && (
-                <FontAwesomeIcon className="pe-2 my-auto" icon={faCaretDown} />
-            )}
+        <div>
             <div
-                className={`position-absolute top-100 start-0 w-100 ${styles.select_dropdown}`}
+                className={`${parentClassName} d-flex flex-row justify-content-end p-2 border border-2 rounded position-relative ${styles.select_container}`}
+                onBlurCapture={(): void => {
+                    setDisplaySelect(false);
+                    setSelectedItem(0);
+                }}
+                onClick={(): void => {
+                    setDisplaySelect(!displaySelect);
+                    if (dropdownReference?.current) {
+                        dropdownReference.current.focus();
+                    }
+                }}
+                onKeyDown={(
+                    event_: React.KeyboardEvent<HTMLDivElement>,
+                ): void => {
+                    const { key } = event_;
+                    switch (key) {
+                        case "ArrowUp": {
+                            if (
+                                selectedItem !== undefined &&
+                                selectedItem > 0
+                            ) {
+                                setSelectedItem(selectedItem - 1);
+                            }
+                            break;
+                        }
+                        case "ArrowDown": {
+                            if (
+                                selectedItem !== undefined &&
+                                selectedItem < items.length - 1
+                            ) {
+                                setSelectedItem(selectedItem + 1);
+                            }
+                            break;
+                        }
+                        case "Enter": {
+                            if (selectedItem !== undefined) {
+                                markItem(selectedItem);
+                            }
+                            break;
+                        }
+                        default: {
+                            break;
+                        }
+                    }
+                }}
+                role="button"
+                tabIndex={1}
             >
-                {displaySelect && (
-                    <ListGroup ref={dropdownReference}>
-                        {items.map((eachItem, _ind) => (
-                            <ListGroup.Item
-                                action
-                                className={styles.select_dropdown_item}
-                                id={`item-${_ind}`}
-                                key={
-                                    displayItemField
-                                        ? eachItem[displayItemField]
-                                        : eachItem
-                                }
-                            >
-                                {displayItemField
-                                    ? eachItem[displayItemField]
-                                    : eachItem}
-                                {selectedItems.includes(_ind) && (
-                                    <span className="float-end">{"X"}</span>
-                                )}
-                            </ListGroup.Item>
-                        ))}
-                    </ListGroup>
+                {caret && (
+                    <FontAwesomeIcon
+                        className="pe-2 my-auto"
+                        icon={faCaretDown}
+                    />
                 )}
+                <div
+                    className={`position-absolute top-100 start-0 w-100 ${styles.select_dropdown}`}
+                >
+                    {displaySelect && (
+                        <ListGroup ref={dropdownReference}>
+                            {items.map((eachItem, _ind) => (
+                                <ListGroup.Item
+                                    action
+                                    className={styles.select_dropdown_item}
+                                    id={`item-${_ind}`}
+                                    key={
+                                        displayItemField
+                                            ? eachItem[displayItemField]
+                                            : eachItem
+                                    }
+                                >
+                                    {displayItemField
+                                        ? eachItem[displayItemField]
+                                        : eachItem}
+                                    {selectedItems.includes(_ind) && (
+                                        <span className="float-end">{"X"}</span>
+                                    )}
+                                </ListGroup.Item>
+                            ))}
+                        </ListGroup>
+                    )}
+                </div>
             </div>
+            {!displaySelect && (
+                <div className={`text-wrap ${styles.select_selected_display}`}>
+                    {selectedItems.map((eachSelectedItem) => {
+                        if (displayItemField) {
+                            return (
+                                <div
+                                    className={`d-inline-block p-3 bg-secondary bg-opacity-25 rounded-pill m-1 text-nowrap ${styles.select_selected_item}`}
+                                    key={`${items[eachSelectedItem][displayItemField]}-display-item`}
+                                    onClick={(): void => {
+                                        setSelectedItems((oldSelectedItems) => {
+                                            if (oldSelectedItems?.length) {
+                                                return oldSelectedItems.filter(
+                                                    (eachItem) =>
+                                                        eachItem !==
+                                                        eachSelectedItem,
+                                                );
+                                            }
+                                            return oldSelectedItems;
+                                        });
+                                    }}
+                                    role="button"
+                                >
+                                    {items[eachSelectedItem][displayItemField]}
+                                    <span className="ms-2 fw-bold text-danger">
+                                        {"X"}
+                                    </span>
+                                </div>
+                            );
+                        }
+                        return (
+                            <div
+                                className={`d-inline-block p-3 bg-secondary bg-opacity-25 rounded-pill m-1 text-nowrap ${styles.select_selected_item}`}
+                                key={`${items[eachSelectedItem]}-display-item`}
+                                onClick={(): void => {
+                                    setSelectedItems((oldSelectedItems) => {
+                                        if (oldSelectedItems?.length) {
+                                            return oldSelectedItems.filter(
+                                                (eachItem) =>
+                                                    eachItem !==
+                                                    eachSelectedItem,
+                                            );
+                                        }
+                                        return oldSelectedItems;
+                                    });
+                                }}
+                                role="button"
+                            >
+                                {items[eachSelectedItem]}
+                                <span className="ms-2 fw-bold text-danger">
+                                    {"X"}
+                                </span>
+                            </div>
+                        );
+                    })}
+                </div>
+            )}
         </div>
     );
 };
