@@ -114,7 +114,8 @@ export const MultiSelect = ({
         <div>
             <div
                 className={`${parentClassName} d-flex flex-row justify-content-end p-2 border border-2 rounded position-relative ${styles.select_container}`}
-                onBlurCapture={(): void => {
+                onBlur={(): void => {
+                    console.log("blurred");
                     setDisplaySelect(false);
                     setSelectedItem(0);
                 }}
@@ -187,6 +188,9 @@ export const MultiSelect = ({
                                             ? eachItem[displayItemField]
                                             : eachItem
                                     }
+                                    onMouseDown={(): void => {
+                                        markItem(_ind);
+                                    }}
                                 >
                                     {displayItemField
                                         ? eachItem[displayItemField]
@@ -211,6 +215,7 @@ export const MultiSelect = ({
                                     : items[eachSelectedItem]
                             }-display-item`}
                             onClick={(): void => {
+                                console.log("clicked");
                                 setSelectedItems((oldSelectedItems) => {
                                     if (oldSelectedItems?.length) {
                                         return oldSelectedItems.filter(
