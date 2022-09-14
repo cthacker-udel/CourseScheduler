@@ -124,6 +124,10 @@ export const MultiSelect = ({
                         dropdownReference.current.focus();
                     }
                 }}
+                onFocus={(): void => {
+                    setDisplaySelect(true);
+                    setSelectedItem(0);
+                }}
                 onKeyDown={(
                     event_: React.KeyboardEvent<HTMLDivElement>,
                 ): void => {
