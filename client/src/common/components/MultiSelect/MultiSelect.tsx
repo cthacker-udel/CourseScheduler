@@ -158,13 +158,7 @@ export const MultiSelect = ({
                     }
                 }}
                 onMouseDown={(): void => {
-                    if (
-                        dropdownContainerReference?.current ===
-                        document.activeElement
-                    ) {
-                        setDisplaySelect(false);
-                        setSelectedItem(0);
-                    }
+                    setDisplaySelect(!displaySelect);
                 }}
                 ref={dropdownContainerReference}
                 role="button"
