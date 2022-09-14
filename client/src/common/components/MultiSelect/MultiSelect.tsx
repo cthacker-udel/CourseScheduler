@@ -218,7 +218,6 @@ export const MultiSelect = ({
                                     : items[eachSelectedItem]
                             }-display-item`}
                             onClick={(): void => {
-                                console.log("clicked");
                                 setSelectedItems((oldSelectedItems) => {
                                     if (oldSelectedItems?.length) {
                                         return oldSelectedItems.filter(
