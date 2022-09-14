@@ -36,6 +36,10 @@ export const MultiSelect = ({
     parentClassName,
     pushSelectedItems,
 }: MultiSelectProperties): JSX.Element => {
+    const sortedItems = React.useMemo(
+        () => (customSort ? items.sort(customSort) : items),
+        [customSort, items],
+    );
     const [selectedItems, setSelectedItems] = React.useState<number[]>([]);
     const [selectedItem, setSelectedItem] = React.useState<number | undefined>(
         0,
@@ -81,7 +85,7 @@ export const MultiSelect = ({
             displaySelect &&
             selectedItem !== undefined &&
             selectedItem >= 0 &&
-            selectedItem < items.length
+            selectedItem < sortedItems.length
         ) {
             const itemOption = document.querySelector(`#item-${selectedItem}`);
             const itemOptionAbove = document.querySelector(
@@ -109,7 +113,7 @@ export const MultiSelect = ({
                 itemDivElement?.scrollIntoView({ behavior: "smooth" });
             }
         }
-    }, [displaySelect, selectedItem, items.length]);
+    }, [displaySelect, selectedItem, sortedItems.length]);
 
     return (
         <div>
@@ -140,7 +144,7 @@ export const MultiSelect = ({
                         case "ArrowDown": {
                             if (
                                 selectedItem !== undefined &&
-                                selectedItem < items.length - 1
+                                selectedItem < sortedItems.length - 1
                             ) {
                                 setSelectedItem(selectedItem + 1);
                             }
@@ -175,7 +179,7 @@ export const MultiSelect = ({
                 >
                     {displaySelect && (
                         <ListGroup ref={dropdownReference}>
-                            {items.map((eachItem, _ind) => (
+                            {sortedItems.map((eachItem, _ind) => (
                                 <ListGroup.Item
                                     action
                                     className={`${
@@ -213,8 +217,10 @@ export const MultiSelect = ({
                             className={`d-inline-block p-2 bg-secondary bg-opacity-25 rounded-pill m-1 text-nowrap ${styles.select_selected_item}`}
                             key={`${
                                 displayItemField
-                                    ? items[eachSelectedItem][displayItemField]
-                                    : items[eachSelectedItem]
+                                    ? sortedItems[eachSelectedItem][
+                                          displayItemField
+                                      ]
+                                    : sortedItems[eachSelectedItem]
                             }-display-item`}
                             onClick={(): void => {
                                 setSelectedItems((oldSelectedItems) => {
@@ -230,8 +236,10 @@ export const MultiSelect = ({
                             role="button"
                         >
                             {displayItemField
-                                ? items[eachSelectedItem][displayItemField]
-                                : items[eachSelectedItem]}
+                                ? sortedItems[eachSelectedItem][
+                                      displayItemField
+                                  ]
+                                : sortedItems[eachSelectedItem]}
                             <span className="ms-2 fw-bold text-danger">
                                 {"X"}
                             </span>
