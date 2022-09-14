@@ -1,10 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any -- needed for generic type structure of MultiSelect */
 import React from "react";
-import { MultiSelectProviderFunctionalProperties } from "src/@types";
+import type { MultiSelectProviderFunctionalProperties } from "src/@types";
+import type { iMultiSelectContext } from "src/@types/context/MultiSelect/iMultiSelectContext";
+import { MultiSelectContext } from "src/context/MultiSelectContext/MultiSelectContext";
 
 type MultiSelectProviderProperties = {
     children: JSX.Element;
-    multiSelectItems: any[] | any;
+    multiSelectItems: any;
 };
 
 /**
@@ -15,12 +17,15 @@ type MultiSelectProviderProperties = {
  * @param props.children - The children of the component
  * @param props.multiSelectItems - The items we are passing into the multiselect
  */
-export const MultiSelectProvider = ({ children, multiSelectItems }) => {
+export const MultiSelectProvider = ({
+    children,
+    multiSelectItems,
+}: MultiSelectProviderProperties): JSX.Element => {
     const [items, setItems] = React.useState(multiSelectItems);
     const [selectedItems, setSelectedItems] = React.useState([]);
 
     const functionalProperties = React.useMemo(
-        () => (): MultiSelectProviderFunctionalProperties => ({
+        (): MultiSelectProviderFunctionalProperties => ({
             setItems: (newItems: any): void => {
                 setItems(newItems);
             },
@@ -29,5 +34,20 @@ export const MultiSelectProvider = ({ children, multiSelectItems }) => {
             },
         }),
         [],
+    );
+
+    const memoizedValue = React.useMemo(
+        (): iMultiSelectContext => ({
+            ...functionalProperties,
+            items,
+            selectedItems,
+        }),
+        [functionalProperties, items, selectedItems],
+    );
+
+    return (
+        <MultiSelectContext.Provider value={memoizedValue}>
+            {children}
+        </MultiSelectContext.Provider>
     );
 };
