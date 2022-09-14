@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/indent -- prettier/eslint conflict */
 /* eslint-disable no-magic-numbers -- unnecessary for custom component */
 /* eslint-disable @typescript-eslint/no-explicit-any -- generic component takes any as items */
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
