@@ -17,6 +17,7 @@ type MultiSelectProperties = {
     displayItemField?: string;
     items: any[];
     parentClassName?: string;
+    pushSelectedItems?: (_items: any) => void;
 };
 
 /**
@@ -33,6 +34,7 @@ export const MultiSelect = ({
     displayItemField,
     items,
     parentClassName,
+    pushSelectedItems,
 }: MultiSelectProperties): JSX.Element => {
     const [selectedItems, setSelectedItems] = React.useState<number[]>([]);
     const [selectedItem, setSelectedItem] = React.useState<number | undefined>(
@@ -40,6 +42,12 @@ export const MultiSelect = ({
     );
     const [displaySelect, setDisplaySelect] = React.useState<boolean>(false);
     const dropdownReference = React.createRef<HTMLDivElement>();
+
+    React.useEffect(() => {
+        if (pushSelectedItems) {
+            pushSelectedItems(selectedItems);
+        }
+    }, [pushSelectedItems, selectedItems]);
 
     const markItem = React.useCallback((index: number) => {
         const selectedItemToMark = document.querySelector(`#item-${index}`);
@@ -59,7 +67,6 @@ export const MultiSelect = ({
                     ` ${styles.select_list_selected_item}`,
                 )
             ) {
-                console.log("in else if");
                 setSelectedItems((oldSelectedItems: number[]) =>
                     oldSelectedItems.filter((element) => element !== index),
                 );
@@ -69,7 +76,6 @@ export const MultiSelect = ({
     }, []);
 
     React.useEffect(() => {
-        console.log("in useeffect");
         if (
             displaySelect &&
             selectedItem !== undefined &&

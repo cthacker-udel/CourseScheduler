@@ -23,6 +23,13 @@ export const Create = (): JSX.Element => {
         reValidateMode: "onChange",
     });
     const semester = semesters as Semester[];
+    const [selectedSemesters, setSelectedSemesters] = React.useState<number[]>(
+        [],
+    );
+
+    React.useEffect(() => {
+        console.log("semesters = ", selectedSemesters);
+    }, [selectedSemesters]);
 
     const { errors } = formState;
 
@@ -52,6 +59,9 @@ export const Create = (): JSX.Element => {
                             displayItemField="title"
                             items={semester}
                             parentClassName="w-75 mx-auto"
+                            pushSelectedItems={(indexes: number[]): void => {
+                                setSelectedSemesters(indexes);
+                            }}
                         />
                     </Form.Group>
                 </Form>
