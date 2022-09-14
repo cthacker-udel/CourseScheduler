@@ -164,7 +164,7 @@ export const MultiSelect = ({
                 <div
                     className={`position-absolute top-100 start-0 w-100 ${styles.select_dropdown}`}
                 >
-                    {!displaySelect && (
+                    {displaySelect && (
                         <ListGroup ref={dropdownReference}>
                             {items.map((eachItem, _ind) => (
                                 <ListGroup.Item
