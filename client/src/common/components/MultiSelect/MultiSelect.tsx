@@ -115,7 +115,6 @@ export const MultiSelect = ({
             <div
                 className={`${parentClassName} d-flex flex-row justify-content-end p-2 border border-2 rounded position-relative ${styles.select_container}`}
                 onBlur={(): void => {
-                    console.log("blurred");
                     setDisplaySelect(false);
                     setSelectedItem(0);
                 }}
