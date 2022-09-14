@@ -42,6 +42,7 @@ export const MultiSelect = ({
     );
     const [displaySelect, setDisplaySelect] = React.useState<boolean>(false);
     const dropdownReference = React.createRef<HTMLDivElement>();
+    const dropdownContainerReference = React.createRef<HTMLDivElement>();
 
     React.useEffect(() => {
         if (pushSelectedItems) {
@@ -118,12 +119,6 @@ export const MultiSelect = ({
                     setDisplaySelect(false);
                     setSelectedItem(0);
                 }}
-                onClick={(): void => {
-                    setDisplaySelect(!displaySelect);
-                    if (dropdownReference?.current) {
-                        dropdownReference.current.focus();
-                    }
-                }}
                 onFocus={(): void => {
                     setDisplaySelect(true);
                     setSelectedItem(0);
@@ -162,6 +157,16 @@ export const MultiSelect = ({
                         }
                     }
                 }}
+                onMouseDown={(): void => {
+                    if (
+                        dropdownContainerReference?.current ===
+                        document.activeElement
+                    ) {
+                        setDisplaySelect(false);
+                        setSelectedItem(0);
+                    }
+                }}
+                ref={dropdownContainerReference}
                 role="button"
                 tabIndex={1}
             >
