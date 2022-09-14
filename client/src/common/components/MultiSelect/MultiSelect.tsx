@@ -76,7 +76,10 @@ export const MultiSelect = ({
                 setSelectedItems((oldSelectedItems: number[]) =>
                     oldSelectedItems.filter((element) => element !== index),
                 );
-                selectedDivElement.className = `${selectedDivElement.className} ${CONSTANTS.LISTGROUP_DARK_ITEM}`;
+                selectedDivElement.className = `${selectedDivElement.className.replace(
+                    ` ${styles.select_list_selected_item}`,
+                    "",
+                )} ${CONSTANTS.LISTGROUP_DARK_ITEM}`;
             }
         }
     }, []);
