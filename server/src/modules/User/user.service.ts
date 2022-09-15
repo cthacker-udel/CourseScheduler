@@ -8,7 +8,8 @@ import {
 import { User } from "src/entities";
 import { CryptoService, type EncodingResult } from "../Crypto/crypto.service";
 import { ResetTokenQuery, ResetTokenType } from "src/@types";
-import { ResetToken } from "src/entities/SubEntities";
+import { ResetToken } from "src/entities/Common";
+import { validateUpdateResult } from "src/helpers/validateUpdateResult";
 
 /**
  * The users service, handling all operations involving the users collection
@@ -44,6 +45,36 @@ export class UserService {
             encodingResult.salt,
             encodingResult.iterations,
         );
+    };
+
+    /**
+     * Adds a session token to the user, logs if any errors occur or the session token is not added
+     *
+     * @param sessionToken - The session token to add to the user
+     * @param username - The username upon which the session token is being added
+     */
+    addSessionToken = async (
+        sessionToken: string,
+        username: string,
+    ): Promise<boolean> => {
+        try {
+            const result = await this.usersRepository.update(
+                { username },
+                { sessionToken },
+            );
+            const { updated } = validateUpdateResult(result);
+            if (updated) {
+                this.logger.log("Added session token to user");
+            } else {
+                this.logger.log("Failed updating user with session token");
+            }
+            return updated;
+        } catch (error: unknown) {
+            this.logger.error(
+                "Failed adding session token",
+                (error as Error).stack,
+            );
+        }
     };
 
     /**
@@ -159,6 +190,12 @@ export class UserService {
         return existentEmail !== null;
     };
 
+    /**
+     * Verifies and pulls a user from the database if they exist with the supplied email, otherwise returns undefined
+     *
+     * @param email - The email to search for
+     * @returns The user if an user exists with the email supplied, otherwise undefined.
+     */
     findUserByEmail = async (email: string): Promise<User | undefined> => {
         const user = await this.usersRepository.findOneBy({ email });
         this.logger.log(
@@ -167,6 +204,12 @@ export class UserService {
         return user;
     };
 
+    /**
+     * Verifies and pulls a user from the database if they exist with the supplied username, otherwise returns undefined
+     *
+     * @param username - The username to search for
+     * @returns The user if an user exists with the username supplied, otherwise undefined.
+     */
     findUserByUsername = async (
         username: string,
     ): Promise<User | undefined> => {
@@ -201,6 +244,13 @@ export class UserService {
         }
     };
 
+    /**
+     * Updates a user's email
+     *
+     * @param username The username used to find the user
+     * @param email The new email to set the user as
+     * @returns Whether the user entity was updated or not
+     */
     updateEmail = async (username: string, email: string): Promise<boolean> => {
         try {
             const user = await this.usersRepository.findOneBy({ username });
@@ -215,6 +265,40 @@ export class UserService {
         }
     };
 
+    /**
+     * Update's the user's last login specifically to the user whom's username matches that which was passed in
+     *
+     * @param username - The username to query for the user with in the collection
+     * @returns Whether we updated the user's last login or not
+     */
+    updateLastLogin = async (username: string): Promise<boolean> => {
+        try {
+            const result = await this.usersRepository.update(
+                { username },
+                { lastLogin: new Date(Date.now()).toUTCString() },
+            );
+            const { updated } = validateUpdateResult(result);
+            if (updated) {
+                this.logger.log("Updated last login of user");
+            } else {
+                this.logger.log("Failed to update last login of user");
+            }
+            return updated;
+        } catch (error: unknown) {
+            this.logger.error(
+                "Failed updating last login",
+                (error as Error).stack,
+            );
+        }
+    };
+
+    /**
+     * Updates a user's password
+     *
+     * @param username The username used to find the user
+     * @param password The new password to set the user as
+     * @returns Whether the user entity was updated or not
+     */
     updatePassword = async (
         username: string,
         password: string,
@@ -257,6 +341,12 @@ export class UserService {
         }
     };
 
+    /**
+     * Removes a user's email token
+     *
+     * @param username The username used to find the user instance
+     * @returns Whether the token was removed or not
+     */
     removeEmailToken = async (username: string): Promise<boolean> => {
         try {
             const user = await this.usersRepository.findOneBy({ username });
@@ -271,6 +361,12 @@ export class UserService {
         }
     };
 
+    /**
+     * Removes a user's password token
+     *
+     * @param username The username used to find the user instance
+     * @returns Whether the token was removed or not
+     */
     removePasswordToken = async (username: string): Promise<boolean> => {
         try {
             const user = await this.usersRepository.findOneBy({ username });

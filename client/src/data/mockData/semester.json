@@ -1,0 +1,154 @@
+[
+    {
+        "id": 10,
+        "term": 0,
+        "year": 1997,
+        "title": "Semester 1",
+        "description": "Random description for Semester 3",
+        "courses": []
+    },
+    {
+        "id": 11,
+        "term": 1,
+        "year": 2000,
+        "title": "Semester 2",
+        "description": "Random description for Semester 2",
+        "courses": []
+    },
+    {
+        "id": 12,
+        "term": 2,
+        "year": 2001,
+        "title": "Semester 3",
+        "description": "Random description for Semester 3",
+        "courses": []
+    },
+    {
+        "id": 13,
+        "term": 3,
+        "year": 2002,
+        "title": "Semester 4",
+        "description": "Random description for Semester 4",
+        "courses": []
+    },
+    {
+        "id": 14,
+        "term": 4,
+        "year": 2003,
+        "title": "Semester 5",
+        "description": "Random description for Semester 5",
+        "courses": []
+    },
+    {
+        "id": 15,
+        "term": 0,
+        "year": 2004,
+        "title": "Semester 6",
+        "description": "Random description for Semester 6",
+        "courses": []
+    },
+    {
+        "id": 16,
+        "term": 2,
+        "year": 2005,
+        "title": "Semester 7",
+        "description": "Random description for Semester 7",
+        "courses": []
+    },
+    {
+        "id": 17,
+        "term": 1,
+        "year": 2006,
+        "title": "Semester 8",
+        "description": "Random description for Semester 8",
+        "courses": []
+    },
+    {
+        "id": 18,
+        "term": 3,
+        "year": 2002,
+        "title": "Semester 9",
+        "description": "Random description for Semester 9",
+        "courses": []
+    },
+    {
+        "id": 19,
+        "term": 2,
+        "year": 2005,
+        "title": "Semester 10",
+        "description": "Random description for Semester 10",
+        "courses": []
+    },
+    {
+        "id": 20,
+        "term": 3,
+        "year": 2006,
+        "title": "Semester 11",
+        "description": "Random description for Semester 11",
+        "courses": []
+    },
+    {
+        "id": 21,
+        "term": 0,
+        "year": 2004,
+        "title": "Semester 12",
+        "description": "Random description for Semester 12",
+        "courses": []
+    },
+    {
+        "id": 22,
+        "term": 0,
+        "year": 2004,
+        "title": "Semester 13",
+        "description": "Random description for Semester 13",
+        "courses": []
+    },
+    {
+        "id": 23,
+        "term": 0,
+        "year": 2004,
+        "title": "Semester 14",
+        "description": "Random description for Semester 14",
+        "courses": []
+    },
+    {
+        "id": 24,
+        "term": 0,
+        "year": 2004,
+        "title": "Semester 15",
+        "description": "Random description for Semester 15",
+        "courses": []
+    },
+    {
+        "id": 25,
+        "term": 0,
+        "year": 2004,
+        "title": "Semester 16",
+        "description": "Random description for Semester 16",
+        "courses": []
+    },
+    {
+        "id": 26,
+        "term": 0,
+        "year": 2004,
+        "title": "Semester 17",
+        "description": "Random description for Semester 17",
+        "courses": []
+    },
+    {
+        "id": 27,
+        "term": 0,
+        "year": 2004,
+        "title": "Semester 18",
+        "description": "Random description for Semester 18",
+        "courses": []
+    },
+    {
+        "id": 28,
+        "term": 0,
+        "year": 2004,
+        "title": "Semester 19",
+        "description": "Random description for Semester 19",
+        "courses": []
+    }
+]

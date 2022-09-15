@@ -74,7 +74,12 @@ export const Dashboard = (): JSX.Element => {
                     </span>
                 </div>
                 <div className="d-flex flex-row">
-                    <span className="p-3">
+                    <span
+                        className="p-3"
+                        onClick={async (): Promise<void> => {
+                            await router.push("/dashboard/plan");
+                        }}
+                    >
                         <OverlayTrigger
                             delay={{ hide: 100, show: 500 }}
                             overlay={(
@@ -91,7 +96,12 @@ export const Dashboard = (): JSX.Element => {
                             />
                         </OverlayTrigger>
                     </span>
-                    <span className="p-3">
+                    <span
+                        className="p-3"
+                        onClick={async (): Promise<void> => {
+                            await router.push("/courses/read");
+                        }}
+                    >
                         <OverlayTrigger
                             delay={{ hide: 100, show: 500 }}
                             overlay={(

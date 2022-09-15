@@ -49,7 +49,7 @@ export const CourseDashboard = (): JSX.Element => {
                         }
                     </span>
                     <Button
-                        className="w-75 mx-auto mt-4"
+                        className={`mt-4 w-75 mx-auto ${styles.alert_button}`}
                         onClick={async (): Promise<void> => {
                             await router.push("/courses/create");
                         }}
@@ -76,7 +76,7 @@ export const CourseDashboard = (): JSX.Element => {
                         }
                     </span>
                     <Button
-                        className="w-75 mx-auto mt-4"
+                        className={`mt-4 w-75 mx-auto ${styles.alert_button}`}
                         onClick={async (): Promise<void> => {
                             await router.push("/courses/read");
                         }}
@@ -103,7 +103,7 @@ export const CourseDashboard = (): JSX.Element => {
                         }
                     </span>
                     <Button
-                        className="mt-4 w-75 mx-auto"
+                        className={`mt-4 w-75 mx-auto ${styles.alert_button}`}
                         onClick={async (): Promise<void> => {
                             await router.push("/courses/update");
                         }}
@@ -130,7 +130,7 @@ export const CourseDashboard = (): JSX.Element => {
                         }
                     </span>
                     <Button
-                        className="mt-4 w-75 mx-auto"
+                        className={`mt-4 w-75 mx-auto ${styles.alert_button}`}
                         onClick={async (): Promise<void> => {
                             await router.push("/courses/delete");
                         }}

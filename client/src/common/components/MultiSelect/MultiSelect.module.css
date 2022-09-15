@@ -1,0 +1,69 @@
+/*
+
+    ANIMATIONS
+
+*/
+
+@keyframes select_selected_item_anim {
+    from {
+    }
+    to {
+        border-color: black;
+        border-width: .01rem;
+        border-style: solid;
+    }
+}
+
+
+/*
+
+    STYLING
+
+*/
+
+.select_container:hover {
+    box-shadow: 0 .07rem .14rem rgba(0,0,0,.15)!important;
+}
+
+.select_dropdown {
+    z-index: 2;
+    max-height: 20vh;
+    overflow-y: scroll;
+    scrollbar-color: lightgray transparent;
+    scrollbar-width: thin;
+}
+
+.select_dropdown::-webkit-scrollbar-button {
+    display: none;
+}
+
+.select_dropdown_item:hover {
+    font-weight: 700;
+}
+
+.select_dropdown_item:focus {
+    background-color: red;
+}
+
+.select_selected_item {
+    font-size: .75rem;
+    width: fit-content;
+}
+
+.select_selected_item:hover {
+    border-color: transparent;
+    border-width: .01rem;
+    border-style: solid;
+    animation-name: select_selected_item_anim;
+    animation-duration: .5s;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-in-out;
+}
+
+.select_selected_display {
+    width: fit-content;
+}
+
+.select_list_selected_item {
+    background-color: #cff4fc;
+}

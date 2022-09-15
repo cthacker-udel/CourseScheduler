@@ -80,6 +80,7 @@ export class AuthService {
                     return generateLoginResponse(false);
                 }
                 const token = this.cryptoService.generateToken();
+                await this.userService.updateLastLogin(username);
                 return generateLoginResponse(passwordValidationResult, token);
             } else {
                 this.logger.error(
@@ -95,6 +96,12 @@ export class AuthService {
         }
     };
 
+    /**
+     * Creates a user in the database, and does not create one if one with **any** similar fields already exists
+     *
+     * @param request - The request containing the data to create a user
+     * @returns Whether the creation was a success of a failure
+     */
     createUser = async (
         request: CreateUserDTO,
     ): Promise<ApiError | ApiSuccess> => {
