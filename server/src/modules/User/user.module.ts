@@ -6,7 +6,7 @@ import { User } from "src/entities";
 import { UserController } from "./users.controller";
 
 /**
- * The user module, exports the UserService while importing the SchemaModule
+ * The user module, exports the UserService while importing the TypeOrmModule for easy access to collection
  */
 @Module({
     imports: [TypeOrmModule.forFeature([User], "mongo"), CryptoModule],

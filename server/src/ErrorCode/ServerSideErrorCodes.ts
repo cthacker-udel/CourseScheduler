@@ -56,6 +56,11 @@ export const LOGIN_FAILED_ERROR_CODE: ErrorCode = {
     code: 6,
 };
 
+export const PLAN_CREATION_FAILED_ERROR_CODE: ErrorCode = {
+    message: "Plan failed to be created",
+    code: 7,
+};
+
 /**
  * Enumerations of the error codes
  */
@@ -67,4 +72,5 @@ export const ERROR_CODES = {
     EMAIL_DOES_NOT_EXIST: EMAIL_DOES_NOT_EXIST_ERROR_CODE,
     PASSWORD_INVALID: PASSWORD_INVALID_ERROR_CODE,
     LOGIN_FAILED: LOGIN_FAILED_ERROR_CODE,
+    PLAN_CREATION_FAILED_ERROR_CODE,
 };
