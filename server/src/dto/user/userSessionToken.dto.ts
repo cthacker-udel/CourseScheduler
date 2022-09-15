@@ -1,3 +1,3 @@
-export class userSessionTokenDTO {
+export class UserSessionTokenDTO {
     sessionToken: string;
 }

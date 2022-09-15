@@ -1,7 +1,7 @@
 /**
  * The login DTO
  */
-export class LoginDto {
+export class LoginDTO {
     /**
      * Entered username
      */
