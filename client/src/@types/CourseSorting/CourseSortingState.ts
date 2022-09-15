@@ -1,4 +1,4 @@
-import type { CourseFieldSort, CourseSort } from "../CourseSort/CourseSort";
+import type { CourseFieldSort, CourseSort } from "../Sort/CourseSort";
 
 export type CourseSortingState = CourseSort & {
     [key: string]: CourseFieldSort;
