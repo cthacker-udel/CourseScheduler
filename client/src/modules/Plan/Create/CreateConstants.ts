@@ -4,6 +4,7 @@ const TEXT = {
     nameFormHelpText: "Enter the name of your plan here.",
     nameFormTitle: "Name",
     semesterFormTitle: "Semesters",
+    submitButtonText: "Create Plan",
 };
 
 const VALIDATION = {

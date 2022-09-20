@@ -1,11 +1,12 @@
 /* eslint-disable no-magic-numbers -- trivial number, not needed to be constant */
 import React from "react";
-import { Alert, Form } from "react-bootstrap";
-import { useForm } from "react-hook-form";
+import { Alert, Button, Form } from "react-bootstrap";
+import { FieldErrors, useForm } from "react-hook-form";
 import type { Semester } from "src/@types";
 import { PLAN_NAME } from "src/common";
 import { MultiSelect } from "src/common/components/MultiSelect";
 import semesters from "src/data/mockData/semester.json";
+import { Logger } from "src/log/Logger";
 
 import { TEXT } from "./CreateConstants";
 import { CREATE_VALIDATION } from "./CreateValidation";
@@ -21,7 +22,7 @@ type FormData = {
  * @returns Create Plan Component
  */
 export const Create = (): JSX.Element => {
-    const { formState, register, setValue } = useForm<FormData>({
+    const { formState, handleSubmit, register, setValue } = useForm<FormData>({
         criteriaMode: "all",
         defaultValues: {
             name: "",
@@ -37,11 +38,43 @@ export const Create = (): JSX.Element => {
 
     const { errors, dirtyFields } = formState;
 
+    /**
+     * Submit handler, which allows for us to add specific behavior to the form submit action
+     *
+     * @param data - The form data being submitted
+     * @param event - The form submit event
+     */
+    const onSubmit = async (
+        data: FormData,
+        _event: React.BaseSyntheticEvent,
+    ): void => {
+        const { name, semesters } = data;
+    };
+
+    /**
+     * Submit handler for when errors are present in submitted form, allows us to add specific behavior to this type of situation
+     *
+     * @param errors - The errors present in the form
+     * @param event - The form submit event
+     */
+    const onError = (
+        fieldErrors: FieldErrors<FormData>,
+        _event: React.BaseSyntheticEvent,
+    ): void => {
+        Logger.log(
+            "error",
+            `Error creating plan: ${fieldErrors.name} ${fieldErrors.semesters}`,
+            "Create.tsx",
+            58,
+        );
+    };
+
     React.useEffect(() => {
         if (semester?.length) {
             setValue(
                 "semesters",
                 semester.filter((_, ind) => selectedSemesters.includes(ind)),
+                { shouldDirty: true },
             );
         }
     }, [semester, selectedSemesters, setValue]);
@@ -53,7 +86,10 @@ export const Create = (): JSX.Element => {
                     {TEXT.header}
                 </Alert>
                 <hr />
-                <Form className="shadow p-3">
+                <Form
+                    className="shadow p-3"
+                    onSubmit={handleSubmit(onSubmit, onError)}
+                >
                     <div className="fw-bold fs-5 text-center border-bottom w-25 mx-auto">
                         {TEXT.formTitle}
                     </div>
@@ -106,7 +142,7 @@ export const Create = (): JSX.Element => {
                         )}
                     </Form.Group>
                     <Form.Group className="mt-4" controlId="semester-form">
-                        <Form.Label className="fw-bold">
+                        <Form.Label className="fw-bold w-100 text-center">
                             {TEXT.semesterFormTitle}
                         </Form.Label>
                         <MultiSelect
@@ -118,6 +154,22 @@ export const Create = (): JSX.Element => {
                                 setSelectedSemesters(indexes);
                             }}
                         />
+                    </Form.Group>
+                    <Form.Group className="mt-4 d-flex flex-row justify-content-center">
+                        <Button
+                            className="w-25 rounded-pill"
+                            disabled={
+                                !dirtyFields.name || !dirtyFields.semesters
+                            }
+                            type="submit"
+                            variant={
+                                !dirtyFields.name || !dirtyFields.semesters
+                                    ? "primary"
+                                    : "outline-primary"
+                            }
+                        >
+                            {TEXT.submitButtonText}
+                        </Button>
                     </Form.Group>
                 </Form>
             </div>

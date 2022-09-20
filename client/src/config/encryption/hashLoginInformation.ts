@@ -14,7 +14,7 @@ const MIN_LENGTH = 0;
 export const hashLoginInformation = (loginInformation: LoginRequest): void => {
     if (
         Object.keys(loginInformation).length > MIN_LENGTH &&
-        localStorage.getItem(loginInformation.username) !== null
+        localStorage.getItem(SESSION_TOKEN_KEY) === null
     ) {
         const cipherText = AES.encrypt(
             JSON.stringify(loginInformation),

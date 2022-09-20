@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-floating-promises -- disabled for router pushes */
 /* eslint-disable max-lines-per-function -- major file, integral part of application should not be limited by line length */
 /* eslint-disable no-undefined -- disabled to use react-hook-form properly */
 import {
@@ -62,7 +63,7 @@ export const LoginPage = (): JSX.Element => {
         if (result.canLogin) {
             reset();
             hashLoginInformation(data);
-            await router.push("/dashboard");
+            router.push("/dashboard");
         } else {
             addNotification({
                 message: { body: "Login failed" },
@@ -245,8 +246,8 @@ export const LoginPage = (): JSX.Element => {
                 >
                     <Button
                         className="ms-2"
-                        onClick={async (): Promise<void> => {
-                            await router.push("/sign-up");
+                        onClick={(): void => {
+                            router.push("/sign-up");
                         }}
                         title="Sign Up"
                         variant="outline-info"

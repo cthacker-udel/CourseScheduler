@@ -1,4 +1,6 @@
+/* eslint-disable @typescript-eslint/no-floating-promises -- disabled for router push */
 import { useRouter } from "next/router";
+import React from "react";
 import type { SessionToken } from "src/@types";
 import { SESSION_TOKEN_KEY } from "src/config/encryption/keys";
 import { replenishToken } from "src/config/encryption/replenishToken";
@@ -16,12 +18,16 @@ const validateTokenTime = (sessionToken: SessionToken): boolean =>
  * Custom hook for redirecting if the token is not valid, otherwise replenishing the token
  *
  */
-export const useLogin = async (): Promise<void> => {
-    const token = localStorage.getItem(SESSION_TOKEN_KEY);
+export const useLogin = (): void => {
     const router = useRouter();
-    if (!token || !validateTokenTime(token as unknown as SessionToken)) {
-        await router.push("/login");
-    } else {
-        replenishToken(token as unknown as SessionToken);
-    }
+
+    React.useEffect(() => {
+        const token = localStorage.getItem(SESSION_TOKEN_KEY);
+        if (!token || !validateTokenTime(JSON.parse(token) as SessionToken)) {
+            localStorage.removeItem(SESSION_TOKEN_KEY);
+            router.push("/login");
+        } else {
+            replenishToken(token as unknown as SessionToken);
+        }
+    }, [router]);
 };
