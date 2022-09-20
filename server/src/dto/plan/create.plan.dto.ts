@@ -5,7 +5,7 @@ export class CreatePlanDTO {
     /**
      * The id of the user, which we will use to append the plan to.
      */
-    userId: string;
+    id: string;
     /**
      * The name of the plan
      */
@@ -13,5 +13,5 @@ export class CreatePlanDTO {
     /**
      * The ids of the semesters going into the plans
      */
-    linkedSemesters: string[];
+    semesters: string[];
 }

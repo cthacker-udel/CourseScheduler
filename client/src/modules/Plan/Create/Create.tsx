@@ -1,10 +1,14 @@
+/* eslint-disable @typescript-eslint/no-floating-promises -- disabled for compliance with router */
 /* eslint-disable no-magic-numbers -- trivial number, not needed to be constant */
+import { useRouter } from "next/router";
 import React from "react";
 import { Alert, Button, Form } from "react-bootstrap";
-import { FieldErrors, useForm } from "react-hook-form";
-import type { Semester } from "src/@types";
+import { type FieldErrors, useForm } from "react-hook-form";
+import type { ApiError, ApiSuccess, Semester } from "src/@types";
+import { PlansApi } from "src/api/client-side/PlansApi";
 import { PLAN_NAME } from "src/common";
 import { MultiSelect } from "src/common/components/MultiSelect";
+import { useNotificationContext } from "src/context/NotificationContext/useNotificationContext";
 import semesters from "src/data/mockData/semester.json";
 import { Logger } from "src/log/Logger";
 
@@ -13,7 +17,7 @@ import { CREATE_VALIDATION } from "./CreateValidation";
 
 type FormData = {
     name: string;
-    semesters: Semester[];
+    semesters: string[];
 };
 
 /**
@@ -22,19 +26,22 @@ type FormData = {
  * @returns Create Plan Component
  */
 export const Create = (): JSX.Element => {
-    const { formState, handleSubmit, register, setValue } = useForm<FormData>({
-        criteriaMode: "all",
-        defaultValues: {
-            name: "",
-            semesters: [],
-        },
-        mode: "all",
-        reValidateMode: "onChange",
-    });
+    const router = useRouter();
+    const { formState, handleSubmit, register, reset, setValue } =
+        useForm<FormData>({
+            criteriaMode: "all",
+            defaultValues: {
+                name: "",
+                semesters: [],
+            },
+            mode: "all",
+            reValidateMode: "onChange",
+        });
     const semester = semesters as Semester[];
     const [selectedSemesters, setSelectedSemesters] = React.useState<number[]>(
         [],
     );
+    const { addNotification } = useNotificationContext();
 
     const { errors, dirtyFields } = formState;
 
@@ -46,9 +53,46 @@ export const Create = (): JSX.Element => {
      */
     const onSubmit = async (
         data: FormData,
-        _event: React.BaseSyntheticEvent,
-    ): void => {
-        const { name, semesters } = data;
+        _event: React.BaseSyntheticEvent | undefined,
+    ): Promise<void> => {
+        try {
+            const result = await PlansApi.addPlan(data);
+            if ((result as ApiSuccess)?.status === 204) {
+                addNotification({
+                    message: {
+                        body: `Your plan ${data.name} has been created!`,
+                        header: "Plan Creation Success!",
+                    },
+                    variant: "success",
+                });
+                reset();
+                router.push("/dashboard/plan");
+            }
+        } catch (error: unknown) {
+            if ((error as ApiError) === undefined) {
+                Logger.log(
+                    "error",
+                    `Error creating plan, ${(error as Error).message}, stack: ${
+                        (error as Error).stack
+                    }`,
+                );
+                addNotification({
+                    message: {
+                        body: "An error occurred on our end, please wait and try again later. All error logs are being sent to the developer.",
+                        header: "Plan Creation Failed - Unknown Error",
+                    },
+                    variant: "danger",
+                });
+            } else {
+                addNotification({
+                    message: {
+                        body: "Plan creation has failed, re-evaluate whether you entered in the correct data, and try again.",
+                        header: "Plan Creation Failed",
+                    },
+                    variant: "danger",
+                });
+            }
+        }
     };
 
     /**
@@ -59,7 +103,7 @@ export const Create = (): JSX.Element => {
      */
     const onError = (
         fieldErrors: FieldErrors<FormData>,
-        _event: React.BaseSyntheticEvent,
+        _event: React.BaseSyntheticEvent | undefined,
     ): void => {
         Logger.log(
             "error",
@@ -73,7 +117,9 @@ export const Create = (): JSX.Element => {
         if (semester?.length) {
             setValue(
                 "semesters",
-                semester.filter((_, ind) => selectedSemesters.includes(ind)),
+                semester
+                    .filter((_, ind) => selectedSemesters.includes(ind))
+                    .map((eachSemester) => eachSemester.id),
                 { shouldDirty: true },
             );
         }
@@ -159,13 +205,19 @@ export const Create = (): JSX.Element => {
                         <Button
                             className="w-25 rounded-pill"
                             disabled={
-                                !dirtyFields.name || !dirtyFields.semesters
+                                !dirtyFields.name ||
+                                !dirtyFields.semesters ||
+                                !!errors.name ||
+                                !!errors.semesters
                             }
                             type="submit"
                             variant={
-                                !dirtyFields.name || !dirtyFields.semesters
-                                    ? "primary"
-                                    : "outline-primary"
+                                !dirtyFields.name ||
+                                !dirtyFields.semesters ||
+                                !!errors.name ||
+                                !!errors.semesters
+                                    ? "outline-primary"
+                                    : "primary"
                             }
                         >
                             {TEXT.submitButtonText}

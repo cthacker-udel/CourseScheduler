@@ -1,11 +1,11 @@
-import { Controller, HttpStatus, Logger, Post } from "@nestjs/common";
+import { Body, Controller, HttpStatus, Logger, Post } from "@nestjs/common";
 import { ApiError, ApiSuccess } from "src/@types";
 import { CreatePlanDTO } from "src/dto";
 import { ERROR_CODES } from "src/ErrorCode";
 import { generateApiError } from "src/helpers";
 import { PlanService } from "./plan.service";
 
-@Controller()
+@Controller("plan")
 export class PlanController {
     /**
      * Logger instance
@@ -25,9 +25,9 @@ export class PlanController {
      * @param createPlanRequest - The request to create the plan, contains userId, semesterIds, and name of plan
      * @returns - Whether the operation was successful or not, represented by the change to return a ApiError and ApiSuccess
      */
-    @Post()
+    @Post("add")
     async addPlan(
-        createPlanRequest: CreatePlanDTO,
+        @Body() createPlanRequest: CreatePlanDTO,
     ): Promise<ApiError | ApiSuccess> {
         try {
             const result = await this.planService.addPlan(createPlanRequest);

@@ -1,4 +1,11 @@
-import type { AddPlanRequest, ApiError, ApiSuccess } from "src/@types";
+import type {
+    AddPlanRequest,
+    ApiError,
+    ApiSuccess,
+    SessionToken,
+} from "src/@types";
+import { decryptLoginInformation } from "src/config/encryption/decryptLoginInformation";
+import { SESSION_TOKEN_KEY } from "src/config/encryption/keys";
 
 import { ClientSideApi } from "./ClientSideApi";
 
@@ -17,9 +24,20 @@ export class PlansApi extends ClientSideApi {
     public static addPlan = async (
         request: AddPlanRequest,
     ): Promise<ApiError | ApiSuccess> => {
+        const storedSession = localStorage.getItem(SESSION_TOKEN_KEY);
+        let username = "";
+        if (storedSession) {
+            const castedSession = JSON.parse(storedSession) as SessionToken;
+            const decryptedSession = decryptLoginInformation(
+                castedSession.session,
+            );
+            if (decryptedSession) {
+                username = decryptedSession.username;
+            }
+        }
         const result = await super.post<ApiError | ApiSuccess>(
             `${this.BASE_URL}add`,
-            request,
+            { ...request, username },
         );
         return result;
     };

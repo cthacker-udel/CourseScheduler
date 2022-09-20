@@ -9,7 +9,7 @@ export class Plan {
     /**
      * Id of the plan
      */
-    id: number;
+    id: string;
 
     @Column()
     /**
