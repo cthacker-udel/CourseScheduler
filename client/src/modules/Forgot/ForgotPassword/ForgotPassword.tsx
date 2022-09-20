@@ -310,7 +310,7 @@ export const ForgotPassword = (): JSX.Element => {
                     </Button>
                 </div>
             </div>
-            {passwordToken && passwordTokenValidUntil && (
+            {passwordToken && passwordTokenValidUntil !== undefined && (
                 <TokenModal
                     currentDate={new Date(Date.now())}
                     reset={(): void => {

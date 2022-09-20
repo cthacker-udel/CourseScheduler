@@ -1,5 +1,11 @@
+/* eslint-disable no-magic-numbers -- not needed */
 import type { NextApiRequest, NextApiResponse } from "next";
-import type { AddPlanRequest, ApiError, ApiSuccess } from "src/@types";
+import type {
+    AddPlanRequest,
+    ApiError,
+    ApiSuccess,
+    ServerSidePlan,
+} from "src/@types";
 
 import { ServerSideApi } from "./ServerSideApi";
 
@@ -20,6 +26,24 @@ export class PlansApi extends ServerSideApi {
         const result = await super.post<ApiError | ApiSuccess>(
             "/plan/add",
             JSON.parse(request.body) as AddPlanRequest,
+        );
+        response.json(result);
+    };
+
+    /**
+     * Get all plans with the supplied username via query string
+     *
+     * @param request - The request to fetch all plans with the supplied username
+     * @param response - The response of the request, which is used to propagate the server-side response back to the client-side caller
+     */
+    public static getAllPlansWithUsername = async (
+        request: NextApiRequest,
+        response: NextApiResponse,
+    ): Promise<void> => {
+        const { username } = request.query;
+        console.log("username =", username);
+        const result = await super.get<ServerSidePlan[] | undefined>(
+            `/plan/get/all?username=${username}`,
         );
         response.json(result);
     };

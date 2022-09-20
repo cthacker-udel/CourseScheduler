@@ -78,7 +78,7 @@ export const PlanDashboard = (): JSX.Element => {
                     <Button
                         className={`mt-4 w-75 mx-auto ${styles.alert_button}`}
                         onClick={async (): Promise<void> => {
-                            await router.push("/plans/read");
+                            await router.push("/plans/view");
                         }}
                         variant="outline-secondary"
                     >
