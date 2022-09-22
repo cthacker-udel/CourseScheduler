@@ -1,5 +1,5 @@
 import { AES, enc } from "crypto-js";
-import type { SessionToken } from "src/@types";
+import type { LoginRequest } from "src/@types";
 
 import { LOGIN_HASH_SECRET } from "./keys";
 
@@ -11,8 +11,11 @@ import { LOGIN_HASH_SECRET } from "./keys";
  */
 export const decryptLoginInformation = (
     encryptedLoginInformation: string,
-): SessionToken => {
-    const bytes = AES.decrypt(encryptedLoginInformation, LOGIN_HASH_SECRET);
-    const convertedText = bytes.toString(enc.Utf8);
-    return convertedText as unknown as SessionToken;
+): LoginRequest | undefined => {
+    if (encryptedLoginInformation) {
+        const bytes = AES.decrypt(encryptedLoginInformation, LOGIN_HASH_SECRET);
+        const convertedText = bytes.toString(enc.Utf8);
+        return JSON.parse(convertedText) as LoginRequest;
+    }
+    return undefined;
 };

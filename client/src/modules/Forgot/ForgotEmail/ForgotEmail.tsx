@@ -335,7 +335,7 @@ export const ForgotEmail = (): JSX.Element => {
                     </Button>
                 </div>
             </div>
-            {emailToken && emailTokenValidUntil && (
+            {emailToken && emailTokenValidUntil !== undefined && (
                 <TokenModal
                     currentDate={new Date(Date.now())}
                     reset={(): void => {

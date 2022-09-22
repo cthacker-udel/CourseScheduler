@@ -335,7 +335,7 @@ export const ForgotUsername = (): JSX.Element => {
                     </Button>
                 </div>
             </div>
-            {usernameToken && usernameTokenValidUntil && (
+            {usernameToken && usernameTokenValidUntil !== undefined && (
                 <TokenModal
                     currentDate={new Date(Date.now())}
                     reset={(): void => {

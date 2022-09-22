@@ -5,6 +5,5 @@ import type { Semester } from "../Semester/Semester";
  */
 export type Plan = {
     name: string;
-    description: string;
     semesters: Semester[];
 };

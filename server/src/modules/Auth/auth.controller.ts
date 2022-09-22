@@ -1,7 +1,7 @@
 import { Body, Controller, HttpStatus, Logger, Post } from "@nestjs/common";
 import { ApiError, ApiSuccess, LoginResponse } from "src/@types";
 import { CreateUserDTO } from "src/dto/user/create.user.dto";
-import { LoginDto } from "src/dto/user/login.dto";
+import { LoginDTO } from "src/dto/user/login.dto";
 import { ERROR_CODES } from "src/ErrorCode";
 import { generateApiError, generateLoginResponse } from "src/helpers";
 import { UserService } from "../User/user.service";
@@ -21,7 +21,7 @@ export class AuthController {
      * @returns Whether the user can login or not
      */
     @Post("auth/login")
-    async login(@Body() req: LoginDto): Promise<LoginResponse> {
+    async login(@Body() req: LoginDTO): Promise<LoginResponse> {
         try {
             const result = this.authService.login(
                 req.username,

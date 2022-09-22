@@ -7,6 +7,7 @@ import { configurations } from "config";
 import { LoggerOptions } from "typeorm";
 import { ForgotModule } from "./modules/Forgot/Forgot.module";
 import { StatusModule } from "./modules/Status/status.module";
+import { PlanModule } from "./modules/Plan/plan.module";
 
 @Module({
     imports: [
@@ -31,6 +32,7 @@ import { StatusModule } from "./modules/Status/status.module";
         }),
         ForgotModule,
         StatusModule,
+        PlanModule,
     ],
     controllers: [],
     providers: [],

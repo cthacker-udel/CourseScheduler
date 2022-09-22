@@ -10,6 +10,7 @@ import React from "react";
 import { OverlayTrigger } from "react-bootstrap";
 import type { OverlayInjectedProps } from "react-bootstrap/esm/Overlay";
 import { generateTooltip } from "src/helpers";
+import { useLogin } from "src/hooks/useLogin";
 
 import styles from "./Dashboard.module.css";
 
@@ -20,6 +21,7 @@ import styles from "./Dashboard.module.css";
  */
 export const Dashboard = (): JSX.Element => {
     const router = useRouter();
+    useLogin();
 
     return (
         <div className="h-100 mx-auto w-50 d-flex flex-column align-items-center justify-content-center">

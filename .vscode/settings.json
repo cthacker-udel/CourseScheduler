@@ -1,5 +1,14 @@
 {
   "discord.enabled": true,
   "eslint.validate": ["typescriptreact", "html"],
-  "eslint.workingDirectories": ["client", "src", "src/modules/*"]
+  "eslint.workingDirectories": ["client", "src", "src/modules/*"],
+  "files.exclude": {
+    "**/.git": false,
+    "**/.svn": false,
+    "**/.hg": false,
+    "**/CVS": false,
+    "**/.DS_Store": false,
+    "**/Thumbs.db": false,
+    "**/node_modules": true
+  }
 }
