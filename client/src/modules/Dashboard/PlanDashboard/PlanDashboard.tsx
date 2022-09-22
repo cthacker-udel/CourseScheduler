@@ -78,7 +78,7 @@ export const PlanDashboard = (): JSX.Element => {
                     <Button
                         className={`mt-4 w-75 mx-auto ${styles.alert_button}`}
                         onClick={async (): Promise<void> => {
-                            await router.push("/plans/view");
+                            await router.push("/plan/read");
                         }}
                         variant="outline-secondary"
                     >
@@ -105,7 +105,7 @@ export const PlanDashboard = (): JSX.Element => {
                     <Button
                         className={`mt-4 w-75 mx-auto ${styles.alert_button}`}
                         onClick={async (): Promise<void> => {
-                            await router.push("/plans/update");
+                            await router.push("/plan/update");
                         }}
                         variant="outline-primary"
                     >
@@ -130,7 +130,7 @@ export const PlanDashboard = (): JSX.Element => {
                     <Button
                         className={`mt-4 w-75 mx-auto ${styles.alert_button}`}
                         onClick={async (): Promise<void> => {
-                            await router.push("/plans/delete");
+                            await router.push("/plan/delete");
                         }}
                         variant="outline-warning"
                     >

@@ -43,7 +43,7 @@ export class PlansApi extends ServerSideApi {
         const { username } = request.query;
         console.log("username =", username);
         const result = await super.get<ServerSidePlan[] | undefined>(
-            `/plan/get/all?username=${username}`,
+            `/plan/all?username=${username}`,
         );
         response.json(result);
     };

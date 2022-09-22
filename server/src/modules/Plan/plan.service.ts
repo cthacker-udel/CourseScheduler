@@ -73,4 +73,37 @@ export class PlanService {
             );
         }
     };
+
+    /**
+     * Fetches all plans from the database with the userId associated with the requester's id
+     *
+     * @param username - The requester's username
+     * @returns - The plans (if exist) that match the userId of the user who's username matches the username passed in
+     */
+    allPlans = async (username: string): Promise<Plan[] | ApiError> => {
+        try {
+            const foundUser = await this.userService.findUserByUsername(
+                username,
+            );
+            if (!foundUser) {
+                Logger.error(
+                    "Unable to find user for whom to fetch all plans under",
+                );
+                return generateApiError(
+                    HttpStatus.BAD_REQUEST,
+                    ERROR_CODES.USER_DOES_NOT_EXIST,
+                );
+            }
+            const plans = this.planRepository.find({
+                where: { userId: foundUser.id },
+            });
+            return plans;
+        } catch (error: unknown) {
+            Logger.error("Unable to fetch all plans", (error as Error).stack);
+            return generateApiError(
+                HttpStatus.BAD_REQUEST,
+                ERROR_CODES.UNKNOWN_SERVER_FAILURE,
+            );
+        }
+    };
 }

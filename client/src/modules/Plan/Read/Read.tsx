@@ -21,6 +21,7 @@ import {
     renderPreRequisites,
     truncateText,
 } from "src/helpers";
+import { useAllPlans } from "src/hooks/Plans/useAllPlans";
 import { useCourses } from "src/hooks/useCourses";
 import { CourseSortingReducer } from "src/reducer";
 
@@ -59,4 +60,14 @@ const TEXT_CONSTANTS = {
 /**
  * General component for viewing courses
  */
-export const Read = (): JSX.Element => {};
+export const Read = (): JSX.Element => {
+    const { plans } = useAllPlans();
+
+    console.log(plans);
+
+    return (
+        <div>
+            <span>{"Hello"}</span>
+        </div>
+    );
+};
