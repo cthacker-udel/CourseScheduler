@@ -30,6 +30,7 @@ export class PlanController {
         @Body() createPlanRequest: CreatePlanDTO,
     ): Promise<ApiError | ApiSuccess> {
         try {
+            console.log("Req = ", createPlanRequest);
             const result = await this.planService.addPlan(createPlanRequest);
             return result;
         } catch (exception: unknown) {

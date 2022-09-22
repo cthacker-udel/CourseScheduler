@@ -6,6 +6,7 @@ import { Plan } from "src/entities/Plan/plan.entity";
 import { ERROR_CODES } from "src/ErrorCode";
 import { generateApiError, generateApiSuccess } from "src/helpers";
 import { Repository } from "typeorm";
+import { UserService } from "../User/user.service";
 
 /**
  * The plan service, where database operations are executed
@@ -25,6 +26,7 @@ export class PlanService {
     constructor(
         @InjectRepository(Plan, "mongo")
         private planRepository: Repository<Plan>,
+        private userService: UserService,
     ) {}
 
     /**
@@ -37,8 +39,22 @@ export class PlanService {
         createPlanRequest: CreatePlanDTO,
     ): Promise<ApiSuccess | ApiError> => {
         try {
-            const convertedEntity =
-                this.planRepository.create(createPlanRequest);
+            const foundUser = await this.userService.findUserByUsername(
+                createPlanRequest.username,
+            );
+            if (!foundUser) {
+                Logger.error("Unable to find user who created plan");
+                return generateApiError(
+                    HttpStatus.BAD_REQUEST,
+                    ERROR_CODES.USER_DOES_NOT_EXIST,
+                );
+            }
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars -- disabled until fixed
+            const { username: _username, ...rest } = createPlanRequest;
+            const convertedEntity = this.planRepository.create({
+                ...rest,
+                userId: foundUser.id,
+            });
             const result = await this.planRepository.save(convertedEntity);
             return result
                 ? generateApiSuccess(HttpStatus.NO_CONTENT, result)

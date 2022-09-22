@@ -15,7 +15,7 @@ export const decryptLoginInformation = (
     if (encryptedLoginInformation) {
         const bytes = AES.decrypt(encryptedLoginInformation, LOGIN_HASH_SECRET);
         const convertedText = bytes.toString(enc.Utf8);
-        return convertedText as unknown as LoginRequest;
+        return JSON.parse(convertedText) as LoginRequest;
     }
     return undefined;
 };

@@ -66,6 +66,7 @@ export const Create = (): JSX.Element => {
                     variant: "success",
                 });
                 reset();
+                setSelectedSemesters([]);
                 router.push("/dashboard/plan");
             }
         } catch (error: unknown) {
@@ -139,90 +140,97 @@ export const Create = (): JSX.Element => {
                     <div className="fw-bold fs-5 text-center border-bottom w-25 mx-auto">
                         {TEXT.formTitle}
                     </div>
-                    <Form.Group className="mt-4" controlId="name-form">
-                        <Form.Label className="fw-bold">
-                            {TEXT.nameFormTitle}
-                        </Form.Label>
-                        <Form.Control
-                            isInvalid={
-                                Object.keys(errors).length > 0 &&
-                                dirtyFields?.name
-                            }
-                            isValid={
-                                Object.keys(errors).length === 0 &&
-                                dirtyFields?.name
-                            }
-                            type="text"
-                            {...register("name", {
-                                maxLength: {
-                                    message:
-                                        CREATE_VALIDATION.NAME.MESSAGES.invalid
-                                            .maxLength,
-                                    value: CREATE_VALIDATION.NAME.VALUES
-                                        .maxLength,
-                                },
-                                minLength: {
-                                    message:
-                                        CREATE_VALIDATION.NAME.MESSAGES.invalid
-                                            .minLength,
-                                    value: CREATE_VALIDATION.NAME.VALUES
-                                        .minLength,
-                                },
-                                pattern: {
-                                    message:
-                                        CREATE_VALIDATION.NAME.MESSAGES.invalid
-                                            .pattern,
-                                    value: PLAN_NAME,
-                                },
-                            })}
-                        />
-                        {errors?.name?.message && dirtyFields?.name && (
-                            <Form.Control.Feedback type="invalid">
-                                {errors.name.message}
-                            </Form.Control.Feedback>
-                        )}
-                        {!errors?.name?.message && dirtyFields?.name && (
-                            <Form.Control.Feedback type="valid">
-                                {CREATE_VALIDATION.NAME.MESSAGES.valid}
-                            </Form.Control.Feedback>
-                        )}
-                    </Form.Group>
-                    <Form.Group className="mt-4" controlId="semester-form">
-                        <Form.Label className="fw-bold w-100 text-center">
-                            {TEXT.semesterFormTitle}
-                        </Form.Label>
-                        <MultiSelect
-                            caret
-                            displayItemField="title"
-                            items={semester}
-                            parentClassName="w-75 mx-auto"
-                            pushSelectedItems={(indexes: number[]): void => {
-                                setSelectedSemesters(indexes);
-                            }}
-                        />
-                    </Form.Group>
-                    <Form.Group className="mt-4 d-flex flex-row justify-content-center">
-                        <Button
-                            className="w-25 rounded-pill"
-                            disabled={
-                                !dirtyFields.name ||
-                                !dirtyFields.semesters ||
-                                !!errors.name ||
-                                !!errors.semesters
-                            }
-                            type="submit"
-                            variant={
-                                !dirtyFields.name ||
-                                !dirtyFields.semesters ||
-                                !!errors.name ||
-                                !!errors.semesters
-                                    ? "outline-primary"
-                                    : "primary"
-                            }
+                    <div className="shadow p-3 rounded border mt-5">
+                        <Form.Group
+                            className="mt-4 w-75 mx-auto"
+                            controlId="name-form"
                         >
-                            {TEXT.submitButtonText}
-                        </Button>
-                    </Form.Group>
+                            <Form.Label className="fw-bold text-center w-100">
+                                {TEXT.nameFormTitle}
+                            </Form.Label>
+                            <Form.Control
+                                isInvalid={
+                                    Object.keys(errors).length > 0 &&
+                                    dirtyFields?.name
+                                }
+                                isValid={
+                                    Object.keys(errors).length === 0 &&
+                                    dirtyFields?.name
+                                }
+                                type="text"
+                                {...register("name", {
+                                    maxLength: {
+                                        message:
+                                            CREATE_VALIDATION.NAME.MESSAGES
+                                                .invalid.maxLength,
+                                        value: CREATE_VALIDATION.NAME.VALUES
+                                            .maxLength,
+                                    },
+                                    minLength: {
+                                        message:
+                                            CREATE_VALIDATION.NAME.MESSAGES
+                                                .invalid.minLength,
+                                        value: CREATE_VALIDATION.NAME.VALUES
+                                            .minLength,
+                                    },
+                                    pattern: {
+                                        message:
+                                            CREATE_VALIDATION.NAME.MESSAGES
+                                                .invalid.pattern,
+                                        value: PLAN_NAME,
+                                    },
+                                })}
+                            />
+                            {errors?.name?.message && dirtyFields?.name && (
+                                <Form.Control.Feedback type="invalid">
+                                    {errors.name.message}
+                                </Form.Control.Feedback>
+                            )}
+                            {!errors?.name?.message && dirtyFields?.name && (
+                                <Form.Control.Feedback type="valid">
+                                    {CREATE_VALIDATION.NAME.MESSAGES.valid}
+                                </Form.Control.Feedback>
+                            )}
+                        </Form.Group>
+                        <Form.Group className="mt-4" controlId="semester-form">
+                            <Form.Label className="fw-bold text-center w-100">
+                                {TEXT.semesterFormTitle}
+                            </Form.Label>
+                            <MultiSelect
+                                caret
+                                displayItemField="title"
+                                items={semester}
+                                parentClassName="w-75 mx-auto"
+                                pushSelectedItems={(
+                                    indexes: number[],
+                                ): void => {
+                                    setSelectedSemesters(indexes);
+                                }}
+                            />
+                        </Form.Group>
+                        <Form.Group className="mt-4 d-flex flex-row justify-content-center">
+                            <Button
+                                className="w-25 rounded-pill"
+                                disabled={
+                                    !dirtyFields.name ||
+                                    !dirtyFields.semesters ||
+                                    !!errors.name ||
+                                    !!errors.semesters
+                                }
+                                type="submit"
+                                variant={
+                                    !dirtyFields.name ||
+                                    !dirtyFields.semesters ||
+                                    !!errors.name ||
+                                    !!errors.semesters
+                                        ? "outline-primary"
+                                        : "primary"
+                                }
+                            >
+                                {TEXT.submitButtonText}
+                            </Button>
+                        </Form.Group>
+                    </div>
                 </Form>
             </div>
         </div>

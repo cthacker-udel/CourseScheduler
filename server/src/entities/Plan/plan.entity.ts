@@ -22,4 +22,10 @@ export class Plan {
      * Ids of the semesters under this plan
      */
     semesters: string[];
+
+    @Column()
+    /**
+     * The id of the user who created the plan
+     */
+    userId: number;
 }
