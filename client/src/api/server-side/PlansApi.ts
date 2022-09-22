@@ -41,7 +41,6 @@ export class PlansApi extends ServerSideApi {
         response: NextApiResponse,
     ): Promise<void> => {
         const { username } = request.query;
-        console.log("username =", username);
         const result = await super.get<ServerSidePlan[] | undefined>(
             `/plan/all?username=${username}`,
         );
