@@ -92,10 +92,11 @@ export const Create = (): JSX.Element => {
                         <Form.Label className="w-100 text-start fw-bold ms-2">
                             {`${TEXT.FORM2_LABEL} - ${yearWatch}`}
                         </Form.Label>
+                        {"Year can be NaN (TODO)"}
                         <Form.Control
                             className="w-25 me-auto"
                             isInvalid={!!errors.year}
-                            isValid={!!!errors.year}
+                            isValid={!errors.year}
                             type="number"
                             {...register("year", {
                                 max: {
