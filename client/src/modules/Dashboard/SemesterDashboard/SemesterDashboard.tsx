@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-floating-promises -- disabled for this */
 import {
     faBookOpenReader,
     faCirclePlus,
@@ -50,8 +51,8 @@ export const SemesterDashboard = (): JSX.Element => {
                     </span>
                     <Button
                         className={`mt-4 w-75 mx-auto ${styles.alert_button}`}
-                        onClick={async (): Promise<void> => {
-                            await router.push("/semesters/create");
+                        onClick={(): void => {
+                            router.push("/semester/create");
                         }}
                         variant="outline-success"
                     >
