@@ -20,8 +20,6 @@ export const Read = (): JSX.Element => {
     const [pageSize, setPageSize] = React.useState(5);
     const pages = chunk(plans, pageSize);
 
-    console.log(plans);
-
     return (
         <div className="h-100 d-flex flex-column">
             <div className="w-75 mx-auto">

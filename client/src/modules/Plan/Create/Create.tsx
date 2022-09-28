@@ -4,12 +4,12 @@ import { useRouter } from "next/router";
 import React from "react";
 import { Alert, Button, Form } from "react-bootstrap";
 import { type FieldErrors, useForm } from "react-hook-form";
-import type { ApiError, ApiSuccess, Semester } from "src/@types";
+import type { ApiError, ApiSuccess } from "src/@types";
 import { PlansApi } from "src/api/client-side/PlansApi";
 import { PLAN_NAME } from "src/common";
 import { MultiSelect } from "src/common/components/MultiSelect";
 import { useNotificationContext } from "src/context/NotificationContext/useNotificationContext";
-import semesters from "src/data/mockData/semester.json";
+import { useAllSemesters } from "src/hooks/Semesters/useAllSemesters";
 import { Logger } from "src/log/Logger";
 
 import { TEXT } from "./CreateConstants";
@@ -37,7 +37,8 @@ export const Create = (): JSX.Element => {
             mode: "all",
             reValidateMode: "onChange",
         });
-    const semester = semesters as Semester[];
+    const { semesters } = useAllSemesters();
+    console.log(semesters);
     const [selectedSemesters, setSelectedSemesters] = React.useState<number[]>(
         [],
     );
@@ -49,7 +50,7 @@ export const Create = (): JSX.Element => {
      * Submit handler, which allows for us to add specific behavior to the form submit action
      *
      * @param data - The form data being submitted
-     * @param event - The form submit event
+     * @param _event - The form submit event
      */
     const onSubmit = async (
         data: FormData,
@@ -115,16 +116,16 @@ export const Create = (): JSX.Element => {
     };
 
     React.useEffect(() => {
-        if (semester?.length) {
+        if (semesters?.length) {
             setValue(
                 "semesters",
-                semester
+                semesters
                     .filter((_, ind) => selectedSemesters.includes(ind))
                     .map((eachSemester) => eachSemester.id),
                 { shouldDirty: true },
             );
         }
-    }, [semester, selectedSemesters, setValue]);
+    }, [semesters, selectedSemesters, setValue]);
 
     return (
         <div className="d-flex flex-row h-100 w-50 mx-auto align-items-center justify-content-center">
@@ -199,7 +200,7 @@ export const Create = (): JSX.Element => {
                             <MultiSelect
                                 caret
                                 displayItemField="title"
-                                items={semester}
+                                items={semesters}
                                 parentClassName="w-75 mx-auto"
                                 pushSelectedItems={(
                                     indexes: number[],

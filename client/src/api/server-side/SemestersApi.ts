@@ -25,4 +25,21 @@ export class SemestersApi extends ServerSideApi {
         );
         response.json(result);
     };
+
+    /**
+     * Makes a backend request to fetch all semesters with username `username` passed in as a query
+     *
+     * @param request - The request to send to the backend
+     * @param response - The response from the backend to send to the client
+     */
+    public static getAllSemesters = async (
+        request: NextApiRequest,
+        response: NextApiResponse,
+    ): Promise<void> => {
+        const { username } = request.query;
+        const result = await super.post(
+            `${this.BASE_URL}all?username=${username}`,
+        );
+        response.json(result);
+    };
 }

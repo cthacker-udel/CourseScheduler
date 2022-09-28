@@ -27,7 +27,7 @@ export const usePlans = (): usePlansReturn => {
                     decryptedLoginInformation.username,
                 );
                 if (result) {
-                    // batch fetch semesters
+                    // Comment
                 }
                 return result;
             }
@@ -35,6 +35,8 @@ export const usePlans = (): usePlansReturn => {
         }
         return undefined;
     }, []);
+    console.log(data);
+    console.log(setData);
 
     return { getAllPlans };
 };

@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { SemestersApi } from "src/api/client-side/SemestersApi";
 import { useNotificationContext } from "src/context/NotificationContext/useNotificationContext";
 import { SEMESTERS } from "src/enums";
-import { generateNotification, isApiError } from "src/helpers";
+import { generateNotification, getLoggedInUser, isApiError } from "src/helpers";
 import { Logger } from "src/log/Logger";
 
 import styles from "./Create.module.css";
@@ -56,7 +56,11 @@ export const Create = (): JSX.Element => {
      */
     const addSemester = async (data: FormData): Promise<void> => {
         try {
-            const result = await SemestersApi.addSemester(data);
+            const { username } = getLoggedInUser();
+            const result = await SemestersApi.addSemester({
+                ...data,
+                username,
+            });
             if (isApiError(result)) {
                 addNotification(
                     generateNotification(

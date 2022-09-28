@@ -5,6 +5,7 @@ export { generateSortingOrderBy } from "./generateSortingOrderBy/generateSorting
 export { generateTableColumns } from "./generateTableColumns/generateTableColumns";
 export { generateTooltip } from "./generateTooltip/generateTooltip";
 export { generateTooltipIntl } from "./generateTooltipIntl/generateTooltipIntl";
+export { getLoggedInUser } from "./getLoggedInUser";
 export { isApiError } from "./isApiError";
 export { isApiSuccess } from "./isApiSuccess";
 export { renderPreRequisites } from "./renderPreRequisites";

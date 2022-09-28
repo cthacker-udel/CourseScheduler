@@ -20,7 +20,6 @@ export class SemesterController {
         @Body() createSemesterRequest: CreateSemesterDTO,
     ): Promise<ApiError | ApiSuccess> {
         try {
-            console.log("hit controller");
             const result = await this.semesterService.addSemester(
                 createSemesterRequest,
             );

@@ -1,4 +1,9 @@
-import type { ApiError, ApiSuccess, CreateSemester } from "src/@types";
+import type {
+    ApiError,
+    ApiSuccess,
+    CreateSemester,
+    Semester,
+} from "src/@types";
 import { Logger } from "src/log/Logger";
 
 import { ClientSideApi } from "./ClientSideApi";
@@ -32,6 +37,26 @@ export class SemestersApi extends ClientSideApi {
                 }`,
             );
             return undefined;
+        }
+    };
+
+    /**
+     * Looks up all semesters with the given username as their creator
+     *
+     * @param username - The username to lookup the semesters with
+     * @returns The found semesters
+     */
+    public static getAllSemesters = async (
+        username: string,
+    ): Promise<Semester[]> => {
+        try {
+            const result = await super.post<Semester[]>(
+                `${this.BASE_URL}all?username=${username}`,
+            );
+            return result;
+        } catch (error: unknown) {
+            Logger.log("error", (error as Error).message);
+            return [];
         }
     };
 }
