@@ -1,7 +1,13 @@
+/* eslint-disable @typescript-eslint/no-floating-promises -- disabled for router */
+import { useRouter } from "next/router";
 import React from "react";
 import { Button, Card, Form } from "react-bootstrap";
 import { useForm } from "react-hook-form";
+import { SemestersApi } from "src/api/client-side/SemestersApi";
+import { useNotificationContext } from "src/context/NotificationContext/useNotificationContext";
 import { SEMESTERS } from "src/enums";
+import { generateNotification, isApiError } from "src/helpers";
+import { Logger } from "src/log/Logger";
 
 import styles from "./Create.module.css";
 import { TEXT, VALIDATION_TEXT, VALIDATION_VALUES } from "./CreateConstants";
@@ -27,7 +33,9 @@ const SEASON_TEXT = ["Spring", "Summer", "Fall", "Winter"];
  * @returns Interface to create a semester
  */
 export const Create = (): JSX.Element => {
-    const { formState, register, watch } = useForm<FormData>({
+    const router = useRouter();
+    const { addNotification } = useNotificationContext();
+    const { formState, handleSubmit, register, watch } = useForm<FormData>({
         defaultValues: {
             name: "",
             semester: SEMESTERS.SPRING,
@@ -38,9 +46,31 @@ export const Create = (): JSX.Element => {
     });
 
     const { dirtyFields, errors } = formState;
-    console.log(errors);
 
     const yearWatch = watch("year");
+
+    /**
+     * Adds a semester to the database, if an error occurs, it reports it via the notification service
+     *
+     * @param data - The form data that will be used to populate and add a semester to the database
+     */
+    const addSemester = async (data: FormData): Promise<void> => {
+        try {
+            const result = await SemestersApi.addSemester(data);
+            if (isApiError(result)) {
+                addNotification(
+                    generateNotification(
+                        "Failed to create semester",
+                        "Semester Creation Failed",
+                    ),
+                );
+            } else {
+                router.push("/dashboard/semester");
+            }
+        } catch (error: unknown) {
+            Logger.log("error", (error as Error).message);
+        }
+    };
 
     return (
         <Card
@@ -48,14 +78,14 @@ export const Create = (): JSX.Element => {
         >
             <Card.Title className="p-4 fw-bold">{TEXT.CARD_TITLE}</Card.Title>
             <Card.Body>
-                <Form>
+                <Form onSubmit={handleSubmit(addSemester)}>
                     <Form.Group controlId="semester-name">
                         <Form.Label className="w-100 text-start fw-bold ms-2">
                             {TEXT.FORM1_LABEL}
                         </Form.Label>
                         <Form.Control
                             className="w-50 me-auto"
-                            isInvalid={dirtyFields.name && errors.name}
+                            isInvalid={dirtyFields.name && !!errors.name}
                             isValid={dirtyFields.name && !errors.name}
                             type="text"
                             {...register("name", {
@@ -90,9 +120,10 @@ export const Create = (): JSX.Element => {
                     </Form.Group>
                     <Form.Group className="mt-3" controlId="semester-year">
                         <Form.Label className="w-100 text-start fw-bold ms-2">
-                            {`${TEXT.FORM2_LABEL} - ${yearWatch}`}
+                            {`${TEXT.FORM2_LABEL} - ${
+                                Number.isNaN(yearWatch) ? "Invalid" : yearWatch
+                            }`}
                         </Form.Label>
-                        {"Year can be NaN (TODO)"}
                         <Form.Control
                             className="w-25 me-auto"
                             isInvalid={!!errors.year}
@@ -108,6 +139,11 @@ export const Create = (): JSX.Element => {
                                     message:
                                         VALIDATION_TEXT.year.invalid.negative,
                                     value: 0,
+                                },
+                                validate: {
+                                    isNotNan: (value) =>
+                                        !Number.isNaN(value) ||
+                                        VALIDATION_TEXT.year.invalid.isNaN,
                                 },
                                 valueAsNumber: true,
                             })}
@@ -138,7 +174,17 @@ export const Create = (): JSX.Element => {
                         </Form.Select>
                     </Form.Group>
                     <hr />
-                    <Button className="mt-3" variant="primary">
+                    <Button
+                        className="mt-3"
+                        disabled={
+                            !!errors.name ||
+                            !!errors.semester ||
+                            !!errors.year ||
+                            !dirtyFields.name
+                        }
+                        type="submit"
+                        variant="primary"
+                    >
                         {TEXT.BUTTON_TEXT}
                     </Button>
                 </Form>

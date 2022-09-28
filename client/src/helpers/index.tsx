@@ -1,9 +1,12 @@
 export { copyTextToClipboard } from "./copyTextToClipboard/copyTextToClipboard";
+export { generateNotification } from "./generateNotification";
 export { generateSortingIcon } from "./generateSortingIcon/generateSortingIcon";
 export { generateSortingOrderBy } from "./generateSortingOrderBy/generateSortingOrderBy";
 export { generateTableColumns } from "./generateTableColumns/generateTableColumns";
 export { generateTooltip } from "./generateTooltip/generateTooltip";
 export { generateTooltipIntl } from "./generateTooltipIntl/generateTooltipIntl";
+export { isApiError } from "./isApiError";
+export { isApiSuccess } from "./isApiSuccess";
 export { renderPreRequisites } from "./renderPreRequisites";
 export { truncateText } from "./truncateText/truncateText";
 export { validatePassword } from "./validatePassword/validatePassword";

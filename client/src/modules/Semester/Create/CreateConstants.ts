@@ -17,6 +17,7 @@ const VALIDATION_TEXT = {
     },
     year: {
         invalid: {
+            isNaN: "Year must be a value",
             maximum: "Year cannot exceed maximum value",
             negative: "Year cannot be negative",
         },
@@ -27,7 +28,7 @@ const VALIDATION_TEXT = {
 const VALIDATION_VALUES = {
     name: {
         length: 75,
-        regex: /hello/gu,
+        regex: /^[^ ]+$/gu,
         required: true,
     },
     year: {

@@ -1,0 +1,1 @@
+export { generateNotification } from "./generateNotification";
