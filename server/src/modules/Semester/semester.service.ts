@@ -64,4 +64,25 @@ export class SemesterService {
             );
         }
     };
+
+    /**
+     * Finds and returns all semesters with matching username in request
+     *
+     * @param username - the username to search for the semesters with
+     * @returns The semesters that are matching the username passed in
+     */
+    getAllSemesters = async (username: string): Promise<Semester[]> => {
+        try {
+            const result = await this.semesterRepository.find({
+                where: { username },
+            });
+            return result;
+        } catch (error: unknown) {
+            this.logger.error(
+                "Failed to fetch all semesters",
+                (error as Error).stack,
+            );
+            return [];
+        }
+    };
 }

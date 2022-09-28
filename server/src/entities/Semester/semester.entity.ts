@@ -17,4 +17,7 @@ export class Semester {
 
     @Column()
     courses: string[];
+
+    @Column()
+    username: string;
 }
