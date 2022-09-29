@@ -35,6 +35,7 @@ export class SemestersApi extends ClientSideApi {
                 `Failed to create semester client-side ${
                     (error as Error).message
                 }`,
+                "SemestersApi.ts",
             );
             return undefined;
         }
@@ -50,7 +51,7 @@ export class SemestersApi extends ClientSideApi {
         username: string,
     ): Promise<Semester[]> => {
         try {
-            const result = await super.post<Semester[]>(
+            const result = await super.get<Semester[]>(
                 `${this.BASE_URL}all?username=${username}`,
             );
             return result;

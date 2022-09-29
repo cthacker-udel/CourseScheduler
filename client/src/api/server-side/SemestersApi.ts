@@ -37,7 +37,7 @@ export class SemestersApi extends ServerSideApi {
         response: NextApiResponse,
     ): Promise<void> => {
         const { username } = request.query;
-        const result = await super.post(
+        const result = await super.get(
             `${this.BASE_URL}all?username=${username}`,
         );
         response.json(result);

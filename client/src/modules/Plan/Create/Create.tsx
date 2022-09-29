@@ -38,7 +38,6 @@ export const Create = (): JSX.Element => {
             reValidateMode: "onChange",
         });
     const { semesters } = useAllSemesters();
-    console.log(semesters);
     const [selectedSemesters, setSelectedSemesters] = React.useState<number[]>(
         [],
     );
@@ -199,7 +198,7 @@ export const Create = (): JSX.Element => {
                             </Form.Label>
                             <MultiSelect
                                 caret
-                                displayItemField="title"
+                                displayItemField="name"
                                 items={semesters}
                                 parentClassName="w-75 mx-auto"
                                 pushSelectedItems={(
