@@ -1,6 +1,7 @@
 import React from "react";
 import { Card, Form } from "react-bootstrap";
 import { useForm } from "react-hook-form";
+import { useAllLabs } from "src/hooks/useAllLabs";
 
 import styles from "./create.module.css";
 import { TEXT } from "./CreateConstants";
@@ -24,7 +25,7 @@ export const Create = (): JSX.Element => {
         reValidateMode: "onChange",
     });
 
-    const { preRequisites } = useAllCourses();
+    const { courses } = useAllCourses();
     const { labs } = useAllLabs();
 
     return (

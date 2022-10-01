@@ -12,5 +12,5 @@ export class Lab {
     section: number;
 
     @Column()
-    courseId: number;
+    courseId: string;
 }

@@ -1,5 +1,6 @@
 export { copyTextToClipboard } from "./copyTextToClipboard/copyTextToClipboard";
 export { generateNotification } from "./generateNotification";
+export { generateQueryString } from "./generateQueryString/generateQueryString";
 export { generateSortingIcon } from "./generateSortingIcon/generateSortingIcon";
 export { generateSortingOrderBy } from "./generateSortingOrderBy/generateSortingOrderBy";
 export { generateTableColumns } from "./generateTableColumns/generateTableColumns";

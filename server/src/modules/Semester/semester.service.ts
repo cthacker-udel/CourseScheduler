@@ -51,7 +51,7 @@ export class SemesterService {
             }
             return generateApiError(
                 HttpStatus.BAD_REQUEST,
-                ERROR_CODES.SEMESTER_ALREADY_EXISTS_ERROR_CODE,
+                ERROR_CODES.SEMESTER_ALREADY_EXISTS,
             );
         } catch (error: unknown) {
             this.logger.error(

@@ -3,6 +3,6 @@
  */
 export class CreateLabDTO {
     title?: string;
-    section?: string;
+    section?: number;
     courseId?: string;
 }

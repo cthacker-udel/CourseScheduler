@@ -5,6 +5,7 @@ export * from "./CourseSorting";
 export * from "./CourseTable";
 export * from "./Encryption";
 export * from "./ForgotToken";
+export * from "./Lab";
 export * from "./Login";
 export * from "./Notification";
 export * from "./Plan";

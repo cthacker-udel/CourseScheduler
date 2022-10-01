@@ -1,4 +1,3 @@
-import { ValidCodes } from "./ValidCodes";
 import { HttpStatus } from "@nestjs/common";
 
 /**
@@ -16,5 +15,5 @@ export type ApiError = {
     /**
      * The error code, designating what kind of error occurred
      */
-    errorCode: ValidCodes;
+    errorCode: number;
 };

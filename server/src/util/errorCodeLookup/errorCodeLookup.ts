@@ -1,10 +1,10 @@
 import { ERROR_CODES } from "src/ErrorCode";
-import { ErrorCode, ValidCodes } from "src/@types";
+import { ErrorCode } from "src/@types";
 
 /**
  * Maps valid code numbers to their respective error codes
  */
-export const ERROR_CODE_LOOKUP: Record<ValidCodes, ErrorCode> = {
+export const ERROR_CODE_LOOKUP: Record<number, ErrorCode> = {
     0: ERROR_CODES.UNKNOWN_SERVER_FAILURE,
     1: ERROR_CODES.USER_ALREADY_EXISTS,
     2: ERROR_CODES.EMAIL_ALREADY_EXISTS,
@@ -12,6 +12,7 @@ export const ERROR_CODE_LOOKUP: Record<ValidCodes, ErrorCode> = {
     4: ERROR_CODES.EMAIL_DOES_NOT_EXIST,
     5: ERROR_CODES.PASSWORD_INVALID,
     6: ERROR_CODES.LOGIN_FAILED,
-    7: ERROR_CODES.PLAN_CREATION_FAILED_ERROR_CODE,
-    8: ERROR_CODES.SEMESTER_ALREADY_EXISTS_ERROR_CODE,
+    7: ERROR_CODES.PLAN_CREATION_FAILED,
+    8: ERROR_CODES.SEMESTER_ALREADY_EXISTS,
+    9: ERROR_CODES.LAB_CREATION_FAILED,
 };
