@@ -74,6 +74,11 @@ export const LAB_CREATION_FAILED_ERROR_CODE: ErrorCode = {
     code: 9,
 };
 
+export const COURSE_CREATION_FAILED: ErrorCode = {
+    message: "Course creation failed",
+    code: 10,
+};
+
 /**
  * Enumerations of the error codes
  */
@@ -88,4 +93,5 @@ export const ERROR_CODES = {
     PLAN_CREATION_FAILED: PLAN_CREATION_FAILED_ERROR_CODE,
     SEMESTER_ALREADY_EXISTS: SEMESTER_ALREADY_EXISTS_ERROR_CODE,
     LAB_CREATION_FAILED: LAB_CREATION_FAILED_ERROR_CODE,
+    COURSE_CREATION_FAILED: COURSE_CREATION_FAILED,
 };

@@ -1,0 +1,1 @@
+export { useAllCourses } from "./useAllCourses";
