@@ -6,13 +6,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import { ListGroup } from "react-bootstrap";
 
-import styles from "./MultiSelect.module.css";
+import styles from "./MultiSelectSearch.module.css";
 
 const CONSTANTS = {
     LISTGROUP_DARK_ITEM: "list-group-item-dark",
 };
 
-type MultiSelectProperties = {
+type MultiSelectSearchProperties = {
     caret?: boolean;
     customSort?: (_a: unknown, _b: unknown) => number;
     displayItemField?: string;
@@ -22,25 +22,25 @@ type MultiSelectProperties = {
 };
 
 /**
- * Common MultiSelect component, allows for any items to be passed in, and custom sorting algorithm as well on the items
+ * Common MultiSelectSearch component, allows for any items to be passed in, and custom sorting algorithm as well on the items
  *
- * @param props - The properties of the MultiSelect
+ * @param props - The properties of the MultiSelectSearch
  * @param props.caret - Whether to display the caret or not, defaults to true
- * @param props.customSort - The custom sorting algorithm for the items in the MultiSelect
+ * @param props.customSort - The custom sorting algorithm for the items in the MultiSelectSearch
  * @param props.displayItemField - The field to display to the user, for each object a field is used to represent what to display to the user, if it's not an object, then the item itself is displayed
- * @param props.items - The items the MultiSelect component will be displaying
+ * @param props.items - The items the MultiSelectSearch component will be displaying
  * @param props.parentClassName - The className of the parent div component
  * @param props.pushSelectedItems - An propagation function that sends the pushed items to the consumer
- * @returns The reusable MultiSelect component
+ * @returns The reusable MultiSelectSearch component
  */
-export const MultiSelect = ({
+export const MultiSelectSearch = ({
     caret = true,
     customSort,
     displayItemField,
     items,
     parentClassName,
     pushSelectedItems,
-}: MultiSelectProperties): JSX.Element => {
+}: MultiSelectSearchProperties): JSX.Element => {
     const sortedItems = React.useMemo(
         () => (customSort ? items.sort(customSort) : items),
         [customSort, items],
@@ -52,6 +52,77 @@ export const MultiSelect = ({
     const [displaySelect, setDisplaySelect] = React.useState<boolean>(false);
     const dropdownReference = React.createRef<HTMLDivElement>();
     const dropdownContainerReference = React.createRef<HTMLDivElement>();
+    const inputReference = React.createRef<HTMLInputElement>();
+
+    /**
+     * Callback that fires when the `focusin` event fires, effectively checking if we focused into the multiselect div
+     * and if so, then we apply focus to the input which the user types in
+     */
+    const focusInCallback = React.useCallback(
+        (event: FocusEvent) => {
+            if (event.target) {
+                const { target } = event;
+                if (
+                    (target as HTMLDivElement)?.id ===
+                        "multiselect-search-component" &&
+                    inputReference.current !== null
+                ) {
+                    inputReference.current.focus();
+                }
+            }
+        },
+        [inputReference],
+    );
+
+    /**
+     * Callback that fires when the `focusout` event fires, effectively checking if we focused out of the multiselect search
+     * input, and if so, we execute a blur event on the input and clear the inputted value
+     */
+    const focusOutCallback = React.useCallback(
+        (event: FocusEvent) => {
+            if (event.target) {
+                const { target } = event;
+                if (
+                    (target as HTMLInputElement)?.id ===
+                        "multiselect-search-input" &&
+                    inputReference.current !== null
+                ) {
+                    inputReference.current.value = "";
+                    inputReference.current.blur();
+                }
+            }
+        },
+        [inputReference],
+    );
+
+    /**
+     * Takes in an input, and decides which index we need to scroll to in the array to
+     * reach that course, used in accordance with selected item as well, which automatically
+     * scrolls the list down to the item
+     */
+    const findIndexToScrollTo = React.useCallback(
+        (inputtedValue: string) => {
+            const findFirstIndex = items.findIndex((eachItem) => {
+                const result = displayItemField
+                    ? eachItem[displayItemField] === inputtedValue ||
+                      (typeof eachItem[displayItemField] === "string" &&
+                          eachItem[displayItemField].includes(inputtedValue))
+                    : eachItem === inputtedValue;
+                return result;
+            });
+            return findFirstIndex;
+        },
+        [displayItemField, items],
+    );
+
+    React.useEffect(() => {
+        window.addEventListener("focusin", focusInCallback);
+        window.addEventListener("focusout", focusOutCallback);
+        return (): void => {
+            window.removeEventListener("focusin", focusInCallback);
+            window.removeEventListener("focusout", focusOutCallback);
+        };
+    }, [focusInCallback, focusOutCallback]);
 
     React.useEffect(() => {
         if (pushSelectedItems) {
@@ -127,6 +198,7 @@ export const MultiSelect = ({
         <div>
             <div
                 className={`${parentClassName} d-flex flex-row justify-content-end p-2 border border-2 rounded position-relative ${styles.select_container}`}
+                id="multiselect-search-component"
                 onBlur={(): void => {
                     setDisplaySelect(false);
                     setSelectedItem(0);
@@ -176,6 +248,31 @@ export const MultiSelect = ({
                 role="button"
                 tabIndex={1}
             >
+                <input
+                    autoComplete="off"
+                    className="border-0 w-100 me-4 pe-none"
+                    id="multiselect-search-input"
+                    onChange={(
+                        changeEvent: React.ChangeEvent<HTMLInputElement>,
+                    ): void => {
+                        if (changeEvent.target !== undefined) {
+                            const { target } = changeEvent;
+                            if (inputReference.current) {
+                                inputReference.current.value = target.value;
+                                const foundIndex = findIndexToScrollTo(
+                                    target.value,
+                                );
+                                if (foundIndex >= 0) {
+                                    setSelectedItem(foundIndex);
+                                } else {
+                                    setSelectedItem(0);
+                                }
+                            }
+                        }
+                    }}
+                    ref={inputReference}
+                    type="text"
+                />
                 {caret && (
                     <FontAwesomeIcon
                         className="pe-2 my-auto"

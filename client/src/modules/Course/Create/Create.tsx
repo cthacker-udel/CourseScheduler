@@ -2,7 +2,8 @@ import React from "react";
 import { Card, Form } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { LabsApi } from "src/api/client-side/LabsApi";
-import { useAllCourses, useAllLabs } from "src/hooks";
+import { MultiSelectSearch } from "src/common/components/MultiSelectSearch";
+import { useAllCourses } from "src/hooks";
 
 import styles from "./create.module.css";
 import { TEXT, VALIDATION_TEXT, VALIDATION_VALUES } from "./CreateConstants";
@@ -39,13 +40,14 @@ export const Create = (): JSX.Element => {
     ]);
 
     const { courses } = useAllCourses();
+    console.log("Courses = ", courses);
 
     return (
         <div className={`position-absolute ${styles.create_course_container}`}>
             <Card className="p-4 shadow rounded">
                 <Card.Title>{TEXT.CARD_TITLE}</Card.Title>
                 <Card.Body>
-                    <Form
+                    <div
                         className={`d-flex flex-column justify-content-between ${styles.create_course_form}`}
                     >
                         <Form.Group className="p-2" controlId="course-name">
@@ -259,11 +261,12 @@ export const Create = (): JSX.Element => {
                         </Form.Group>
                         <Form.Group controlId="course-prereqs">
                             <Form.Label>{TEXT.FORM8_LABEL}</Form.Label>
-                            {
-                                "TODO: IMPLEMENT ALL COURSE LOOKUP, AND PLUG INTO MULTISELECT"
-                            }
+                            <MultiSelectSearch
+                                displayItemField="id"
+                                items={courses}
+                            />
                         </Form.Group>
-                    </Form>
+                    </div>
                 </Card.Body>
             </Card>
         </div>

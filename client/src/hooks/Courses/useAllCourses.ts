@@ -1,18 +1,19 @@
 import React from "react";
 import type { Course } from "src/@types";
+import type { LocalCourse } from "src/@types/Course/LocalCourse";
 import { CoursesApi } from "src/api/client-side/CoursesApi";
 import LOCAL_COURSES from "src/data/catalog.json";
 import { Logger } from "src/log/Logger";
 
 type useAllCoursesReturn = {
-    courses: Course[];
+    courses: LocalCourse[];
 };
 
 /**
  * Fetches all courses from the local data and also the database, and returns that population
  */
 export const useAllCourses = (): useAllCoursesReturn => {
-    const [courses, setCourses] = React.useState<Course[]>([]);
+    const [courses, setCourses] = React.useState<LocalCourse[]>([]);
 
     React.useEffect(() => {
         CoursesApi.getAllCourses()
@@ -21,11 +22,19 @@ export const useAllCourses = (): useAllCoursesReturn => {
                     if (oldCourses?.length) {
                         return [
                             ...oldCourses,
-                            ...fetchedCourses,
-                            ...(LOCAL_COURSES as Course[]),
+                            ...(fetchedCourses.map((eachCourse) => ({
+                                ...eachCourse,
+                                credits: `${eachCourse.credits}`,
+                                ebreadth: "",
+                                id: "",
+                                preRequisites: "",
+                            })) as LocalCourse[]),
                         ];
                     }
-                    return [...fetchedCourses, ...(LOCAL_COURSES as Course[])];
+                    return [
+                        ...fetchedCourses,
+                        ...(LOCAL_COURSES as LocalCourse[]),
+                    ];
                 });
             })
             .catch((error: unknown) => {
