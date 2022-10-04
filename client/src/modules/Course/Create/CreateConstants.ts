@@ -22,17 +22,23 @@ const VALIDATION_VALUES = {
         required: true,
     },
     description: {
-        maxLength: 75,
+        maxLength: 300,
         required: true,
     },
     name: {
         maxLength: 75,
         required: true,
     },
+    section: {
+        maxLength: 3,
+        pattern: /^\d+$/giu,
+        required: true,
+    },
 };
 
 const VALIDATION_TEXT = {
     classSection: {
+        alreadyExists: "Lab Section already exists",
         maxLength: "Class section cannot be more then (3) characters",
         pattern: "Class section must be numerical",
         required: "Class section is required",
@@ -53,6 +59,12 @@ const VALIDATION_TEXT = {
         maxLength: "Name cannot be more then 75 characters",
         required: "Name is required",
         valid: "Name is valid",
+    },
+    section: {
+        maxLength: "Section cannot be more then (3) characters",
+        pattern: "Section must be numerical",
+        required: "Class section is required",
+        valid: "Class section is valid",
     },
 };
 

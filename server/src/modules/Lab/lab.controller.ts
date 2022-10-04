@@ -55,9 +55,9 @@ export class LabController {
      * @returns All the labs with the matching courseId supplied
      */
     @Get("all")
-    async getAllLabs(@Query("courseId") courseId?: string): Promise<Lab[]> {
+    async getAllLabs(@Query("courseName") courseName?: string): Promise<Lab[]> {
         try {
-            const result = await this.labService.getAllLabs(courseId);
+            const result = await this.labService.getAllLabs(courseName);
             return result;
         } catch (error: unknown) {
             this.logger.error(
@@ -65,6 +65,25 @@ export class LabController {
                 (error as Error).stack,
             );
             return [];
+        }
+    }
+
+    @Get("exist")
+    async doesSectionExist(
+        @Query("courseName") courseName: string,
+        @Query("courseSection") courseSection,
+        @Query("desiredSection") desiredSection,
+    ) {
+        try {
+            const result = await this.labService.doesSectionExist(
+                courseName,
+                courseSection,
+                desiredSection,
+            );
+            return result;
+        } catch (error: unknown) {
+            this.logger.error("Failed to check if lab section exists");
+            return true;
         }
     }
 }

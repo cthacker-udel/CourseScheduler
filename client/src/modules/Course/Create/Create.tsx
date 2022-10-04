@@ -1,6 +1,7 @@
 import React from "react";
 import { Card, Form } from "react-bootstrap";
 import { useForm } from "react-hook-form";
+import { LabsApi } from "src/api/client-side/LabsApi";
 import { useAllCourses, useAllLabs } from "src/hooks";
 
 import styles from "./create.module.css";
@@ -12,6 +13,7 @@ import { TEXT, VALIDATION_TEXT, VALIDATION_VALUES } from "./CreateConstants";
  * @returns The create course module
  */
 export const Create = (): JSX.Element => {
+    const [labExists, setLabExists] = React.useState<boolean>(false);
     const { formState, register, setValue, watch } = useForm({
         defaultValues: {
             classSection: "0",
@@ -20,18 +22,23 @@ export const Create = (): JSX.Element => {
             lab: true,
             name: "",
             preRequisites: [],
-            section: -1,
+            section: "0",
         },
         mode: "all",
         reValidateMode: "onChange",
     });
 
-    const { dirtyFields, errors } = formState;
+    const { dirtyFields, errors, touchedFields } = formState;
 
-    const [labWatch] = watch(["lab"]);
+    console.log(dirtyFields, errors);
+
+    const [labWatch, nameWatch, sectionWatch] = watch([
+        "lab",
+        "name",
+        "section",
+    ]);
 
     const { courses } = useAllCourses();
-    const { labs } = useAllLabs();
 
     return (
         <div className={`position-absolute ${styles.create_course_container}`}>
@@ -44,6 +51,8 @@ export const Create = (): JSX.Element => {
                         <Form.Group className="p-2" controlId="course-name">
                             <Form.Label>{TEXT.FORM1_LABEL}</Form.Label>
                             <Form.Control
+                                isInvalid={touchedFields.name && !!errors.name}
+                                isValid={dirtyFields.name && !errors.name}
                                 type="text"
                                 {...register("name", {
                                     maxLength: {
@@ -69,7 +78,15 @@ export const Create = (): JSX.Element => {
                         >
                             <Form.Label>{TEXT.FORM2_LABEL}</Form.Label>
                             <Form.Control
-                                type="text"
+                                as="textarea"
+                                isInvalid={
+                                    touchedFields.description &&
+                                    !!errors.description
+                                }
+                                isValid={
+                                    dirtyFields.description &&
+                                    !errors.description
+                                }
                                 {...register("description", {
                                     maxLength: {
                                         message:
@@ -98,7 +115,7 @@ export const Create = (): JSX.Element => {
                             <Form.Label>{TEXT.FORM3_LABEL}</Form.Label>
                             <Form.Control
                                 isInvalid={
-                                    dirtyFields.credits && !!errors.credits
+                                    touchedFields.credits && !!errors.credits
                                 }
                                 isValid={dirtyFields.credits && !errors.credits}
                                 type="number"
@@ -129,15 +146,44 @@ export const Create = (): JSX.Element => {
                         <Form.Group className="p-2" controlId="section">
                             <Form.Label>{TEXT.FORM4_LABEL}</Form.Label>
                             <Form.Control
-                                type="number"
-                                {...register("section")}
+                                isInvalid={
+                                    touchedFields.section && !!errors.section
+                                }
+                                isValid={dirtyFields.section && !errors.section}
+                                type="text"
+                                {...register("section", {
+                                    maxLength: {
+                                        message:
+                                            VALIDATION_TEXT.section.maxLength,
+                                        value: VALIDATION_VALUES.section
+                                            .maxLength,
+                                    },
+                                    pattern: {
+                                        message:
+                                            VALIDATION_TEXT.section.pattern,
+                                        value: VALIDATION_VALUES.section
+                                            .pattern,
+                                    },
+                                    required: {
+                                        message:
+                                            VALIDATION_TEXT.section.required,
+                                        value: VALIDATION_VALUES.section
+                                            .required,
+                                    },
+                                })}
                             />
+                            <Form.Control.Feedback type="invalid">
+                                {errors?.section?.message}
+                            </Form.Control.Feedback>
+                            <Form.Control.Feedback type="valid">
+                                {VALIDATION_TEXT.section.valid}
+                            </Form.Control.Feedback>
                         </Form.Group>
                         <Form.Group className="p-2" controlId="class-section">
                             <Form.Label>{TEXT.FORM5_LABEL}</Form.Label>
                             <Form.Control
                                 isInvalid={
-                                    dirtyFields.classSection &&
+                                    touchedFields.classSection &&
                                     !!errors.classSection
                                 }
                                 isValid={
@@ -167,6 +213,26 @@ export const Create = (): JSX.Element => {
                                         value: VALIDATION_VALUES.classSection
                                             .required,
                                     },
+                                    validate: {
+                                        ifLabDoesSectionExist: async (
+                                            desiredLabSection: string,
+                                        ) => {
+                                            if (labWatch) {
+                                                const result =
+                                                    await LabsApi.doesSectionExist(
+                                                        nameWatch,
+                                                        sectionWatch,
+                                                        desiredLabSection,
+                                                    );
+                                                return (
+                                                    result ||
+                                                    VALIDATION_TEXT.classSection
+                                                        .alreadyExists
+                                                );
+                                            }
+                                            return true;
+                                        },
+                                    },
                                 })}
                             />
                             <Form.Control.Feedback type="invalid">
@@ -191,11 +257,11 @@ export const Create = (): JSX.Element => {
                                 />
                             </Form.Check>
                         </Form.Group>
-                        <Form.Group controlId="lab-course">
-                            <Form.Label>{TEXT.FORM7_LABEL}</Form.Label>
-                        </Form.Group>
                         <Form.Group controlId="course-prereqs">
                             <Form.Label>{TEXT.FORM8_LABEL}</Form.Label>
+                            {
+                                "TODO: IMPLEMENT ALL COURSE LOOKUP, AND PLUG INTO MULTISELECT"
+                            }
                         </Form.Group>
                     </Form>
                 </Card.Body>

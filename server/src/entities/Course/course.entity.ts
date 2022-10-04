@@ -12,7 +12,7 @@ export class Course {
      * The class section, like ACCT100[classSection]
      */
     @Column()
-    classSection: number;
+    classSection: string;
 
     /**
      * The # of credits the course fulfills
@@ -42,7 +42,7 @@ export class Course {
      * The section of the course ACCT[section]010 for example
      */
     @Column()
-    section: number;
+    section: string;
 
     /**
      * The ids of the semester this course belongs to

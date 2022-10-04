@@ -37,11 +37,34 @@ export class LabsApi extends ServerSideApi {
         response: NextApiResponse,
     ): Promise<void> => {
         let url = this.BASE_URL;
-        if (request.query?.courseId !== undefined) {
-            const { courseId } = request.query;
-            url += `?courseId=${courseId}`;
+        if (request.query?.courseName !== undefined) {
+            const { courseName } = request.query;
+            url += `?courseName=${courseName}`;
         }
         const result = await super.post<Lab[]>(url);
+        response.json(result);
+    };
+
+    /**
+     * Checks if a lab section exists in the database given the course name, section, and lab section being analyzed
+     *
+     * @param request - api from consumer client-side
+     * @param response - response from server-side api to consumer
+     */
+    public static doesSectionExist = async (
+        request: NextApiRequest,
+        response: NextApiResponse,
+    ): Promise<void> => {
+        let url = `${this.BASE_URL}exist`;
+        if (
+            request.query?.courseName !== undefined &&
+            request.query?.courseSection !== undefined &&
+            request.query?.desiredSection !== undefined
+        ) {
+            const { courseName, courseSection, desiredSection } = request.query;
+            url += `?courseName=${courseName}&courseSection=${courseSection}&desiredSection=${desiredSection}`;
+        }
+        const result = await super.get<boolean>(url);
         response.json(result);
     };
 }

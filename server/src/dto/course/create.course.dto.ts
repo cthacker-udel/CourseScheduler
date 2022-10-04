@@ -2,12 +2,12 @@
  * DTO to create a course
  */
 export class CreateCourseDTO {
-    classSection: number;
+    classSection: string;
     credits: number;
     description: string;
     labIds: string[];
     name: string;
-    section: number;
+    section: string;
     semesterIds?: string[];
     username: string;
 }

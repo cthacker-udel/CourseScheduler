@@ -57,10 +57,10 @@ export class LabService {
      * @param courseId - The courseId to filter the labs by
      * @returns The labs filtered by the courseId
      */
-    getAllLabs = async (courseId: string): Promise<Lab[]> => {
+    getAllLabs = async (courseName: string): Promise<Lab[]> => {
         try {
             const result = await this.labRepository.find({
-                where: { courseId },
+                where: { courseName },
             });
             return result;
         } catch (error: unknown) {
@@ -69,6 +69,37 @@ export class LabService {
                 (error as Error).stack,
             );
             throw error;
+        }
+    };
+
+    /**
+     * Checks if a lab section already exists in the database
+     *
+     * @param courseName - The name of the course, ACCT in ACCT101
+     * @param courseSection - The section of the course 101 in ACCT101
+     * @param desiredSection - The desired lab section for the course, 222 in ACCT101222
+     * @returns Whether the lab section exists or not
+     */
+    doesSectionExist = async (
+        courseName: string,
+        courseSection: string,
+        desiredSection: string,
+    ): Promise<boolean> => {
+        try {
+            const result = await this.labRepository.find({
+                where: {
+                    courseName,
+                    courseSection,
+                    labSection: desiredSection,
+                },
+            });
+            return result !== undefined;
+        } catch (error: unknown) {
+            this.logger.error(
+                "Failed checking if lab section exists",
+                (error as Error).stack,
+            );
+            return false;
         }
     };
 }
