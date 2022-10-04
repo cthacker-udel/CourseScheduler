@@ -1,8 +1,7 @@
 import type { SemesterTerm } from "src/@types";
 
 export class CreateSemesterDTO {
-    term: SemesterTerm;
+    season: SemesterTerm;
     year: number;
-    title?: string;
-    description?: string;
+    name: string;
 }

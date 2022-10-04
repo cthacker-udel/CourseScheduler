@@ -1,0 +1,30 @@
+
+@keyframes table_row_anim {
+
+    from {
+
+    }
+    to {
+        background-color: #cff4fc;
+    }
+
+}
+
+
+.table_header {
+    max-width: 50%;
+    width: 50%;
+}
+
+.table_row {
+    max-width: 50%;
+    width: 50%;
+}
+
+.table_row:hover {
+    animation-name: table_row_anim;
+    animation-timing-function: ease-in-out;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+    cursor: pointer;
+}

@@ -1,0 +1,10 @@
+.create_course_container {
+    top: 5%;
+    right: 25vw;
+    width: 50vw;
+}
+
+.create_course_form > div {
+    padding-top: 1vh;
+    padding-bottom: 1vh;
+}

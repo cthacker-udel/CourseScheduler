@@ -28,6 +28,9 @@ type CoursePaginationProperties = {
  * Reusable pagination component
  *
  * @param props - The properties of the component
+ * @param props.currentPage - The current page of the pagination state
+ * @param props.customItemStyle - Custom style to apply to the course pagination component
+ * @param props.moveToPage - Custom function that is called every-time a page is moved to
  * @param props.pagesCount - The # of pages to render in the pagination display
  * @param props.paginationSize - The size of the pagination items, can either be "sm" or "lg"
  * @returns Reusable pagination component

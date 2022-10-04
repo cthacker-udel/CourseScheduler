@@ -3,6 +3,6 @@
 export type iMultiSelectContext = {
     items: any;
     selectedItems: any;
-    setItems: (_items: any) => void;
-    setSelectedItems: (_items: any) => void;
+    setItems?: (_items: any) => void;
+    setSelectedItems?: (_items: any) => void;
 };

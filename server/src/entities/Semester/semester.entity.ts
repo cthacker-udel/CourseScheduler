@@ -7,17 +7,17 @@ export class Semester {
     id: number;
 
     @Column()
-    term: SemesterTerm;
+    semester: SemesterTerm;
 
     @Column()
     year: number;
 
     @Column()
-    title: string;
-
-    @Column()
-    description: string;
+    name: string;
 
     @Column()
     courses: string[];
+
+    @Column()
+    username: string;
 }

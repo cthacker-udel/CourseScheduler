@@ -25,12 +25,16 @@ type MultiSelectProperties = {
  * Common MultiSelect component, allows for any items to be passed in, and custom sorting algorithm as well on the items
  *
  * @param props - The properties of the MultiSelect
+ * @param props.caret - Whether to display the caret or not, defaults to true
  * @param props.customSort - The custom sorting algorithm for the items in the MultiSelect
+ * @param props.displayItemField - The field to display to the user, for each object a field is used to represent what to display to the user, if it's not an object, then the item itself is displayed
  * @param props.items - The items the MultiSelect component will be displaying
+ * @param props.parentClassName - The className of the parent div component
+ * @param props.pushSelectedItems - An propagation function that sends the pushed items to the consumer
  * @returns The reusable MultiSelect component
  */
 export const MultiSelect = ({
-    caret,
+    caret = true,
     customSort,
     displayItemField,
     items,

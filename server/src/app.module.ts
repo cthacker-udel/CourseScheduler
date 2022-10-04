@@ -8,6 +8,8 @@ import { LoggerOptions } from "typeorm";
 import { ForgotModule } from "./modules/Forgot/Forgot.module";
 import { StatusModule } from "./modules/Status/status.module";
 import { PlanModule } from "./modules/Plan/plan.module";
+import { SemesterModule } from "./modules/Semester/semester.module";
+import { LabModule } from "./modules/Lab/lab.module";
 
 @Module({
     imports: [
@@ -33,6 +35,8 @@ import { PlanModule } from "./modules/Plan/plan.module";
         ForgotModule,
         StatusModule,
         PlanModule,
+        SemesterModule,
+        LabModule,
     ],
     controllers: [],
     providers: [],

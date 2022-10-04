@@ -56,9 +56,27 @@ export const LOGIN_FAILED_ERROR_CODE: ErrorCode = {
     code: 6,
 };
 
+/**
+ * Error code for failing to create a plan
+ */
 export const PLAN_CREATION_FAILED_ERROR_CODE: ErrorCode = {
     message: "Plan failed to be created",
     code: 7,
+};
+
+export const SEMESTER_ALREADY_EXISTS_ERROR_CODE: ErrorCode = {
+    message: "Semester already exists",
+    code: 8,
+};
+
+export const LAB_CREATION_FAILED_ERROR_CODE: ErrorCode = {
+    message: "Lab creation failed",
+    code: 9,
+};
+
+export const COURSE_CREATION_FAILED: ErrorCode = {
+    message: "Course creation failed",
+    code: 10,
 };
 
 /**
@@ -72,5 +90,8 @@ export const ERROR_CODES = {
     EMAIL_DOES_NOT_EXIST: EMAIL_DOES_NOT_EXIST_ERROR_CODE,
     PASSWORD_INVALID: PASSWORD_INVALID_ERROR_CODE,
     LOGIN_FAILED: LOGIN_FAILED_ERROR_CODE,
-    PLAN_CREATION_FAILED_ERROR_CODE,
+    PLAN_CREATION_FAILED: PLAN_CREATION_FAILED_ERROR_CODE,
+    SEMESTER_ALREADY_EXISTS: SEMESTER_ALREADY_EXISTS_ERROR_CODE,
+    LAB_CREATION_FAILED: LAB_CREATION_FAILED_ERROR_CODE,
+    COURSE_CREATION_FAILED: COURSE_CREATION_FAILED,
 };

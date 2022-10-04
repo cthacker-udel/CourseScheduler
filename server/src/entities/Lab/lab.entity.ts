@@ -6,11 +6,11 @@ export class Lab {
     id: number;
 
     @Column()
-    title: string;
+    courseName: string;
 
     @Column()
-    section: number;
+    courseSection: string;
 
     @Column()
-    courseId: number;
+    labSection: string;
 }

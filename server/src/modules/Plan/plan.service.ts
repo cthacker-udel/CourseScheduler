@@ -60,7 +60,7 @@ export class PlanService {
                 ? generateApiSuccess(HttpStatus.NO_CONTENT, result)
                 : generateApiError(
                       HttpStatus.BAD_REQUEST,
-                      ERROR_CODES.PLAN_CREATION_FAILED_ERROR_CODE,
+                      ERROR_CODES.PLAN_CREATION_FAILED,
                   );
         } catch (exception: unknown) {
             this.logger.error(

@@ -5,7 +5,7 @@ export type Course = {
     /**
      * The section of the course, something like CISC 100 for example
      */
-    section?: string;
+    section: string;
     /**
      * The name of the course, contains the ID and the text name of the course.
      */
@@ -13,7 +13,7 @@ export type Course = {
     /**
      * Format is: "[ClassPrefix] [ID#]" in that exact order, an unique identifier for the class
      */
-    id: string;
+    classSection: string;
     /**
      * General text description of the class
      */
@@ -25,7 +25,7 @@ export type Course = {
     /**
      * The Pre-Requisites of the course
      */
-    preRequisites: string;
+    preRequisiteIds: string[];
     /**
      * The university of breadth requirements that class fulfills
      */

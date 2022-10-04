@@ -4,7 +4,6 @@ export type { ApiSuccess } from "./api/ApiSuccess";
 export type { ErrorCode } from "./api/ErrorCode";
 export type { LoginResponse } from "./Login/LoginResponse";
 export type { ForgotUsernameRequest } from "./Forgot/ForgotUsernameRequest";
-export type { ValidCodes } from "./api/ValidCodes";
 export type { ResetTokenQuery } from "./ResetToken/ResetTokenQuery";
 export type { ResetTokenType } from "./ResetToken/ResetTokenType";
 export type { ResetToken } from "./ResetToken/ResetToken";
