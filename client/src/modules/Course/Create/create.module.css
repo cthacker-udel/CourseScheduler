@@ -1,6 +1,7 @@
 .create_course_container {
-    top: 15%;
-    right: 40vw;
+    top: 5%;
+    right: 25vw;
+    width: 50vw;
 }
 
 .create_course_form > div {
