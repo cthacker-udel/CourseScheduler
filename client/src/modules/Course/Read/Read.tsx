@@ -160,7 +160,7 @@ export const Read = (): JSX.Element => {
                     {segmentedCourses[page].map((eachCourse, _ind) => (
                         <div
                             className="border d-flex flex-row justify-content-around"
-                            key={`${eachCourse.id}-${eachCourse.section}`}
+                            key={`${eachCourse.name}-${eachCourse.section}`}
                         >
                             <div
                                 className={`${TEXT_CONSTANTS.TABLE_CELL_CLASS_NAME} ${_styles.course_table_cell}`}

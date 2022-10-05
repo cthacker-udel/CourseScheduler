@@ -67,3 +67,7 @@
 .select_list_selected_item {
     background-color: #cff4fc;
 }
+
+.select_text_input {
+    outline: none !important;
+}

@@ -1,7 +1,7 @@
 .create_course_container {
-    top: 5%;
     right: 25vw;
     width: 50vw;
+    height: fit-content;
 }
 
 .create_course_form > div {

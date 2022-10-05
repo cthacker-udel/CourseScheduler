@@ -250,7 +250,7 @@ export const MultiSelectSearch = ({
             >
                 <input
                     autoComplete="off"
-                    className="border-0 w-100 me-4 pe-none"
+                    className={`border-0 w-100 me-4 pe-none ${styles.select_text_input}`}
                     id="multiselect-search-input"
                     onChange={(
                         changeEvent: React.ChangeEvent<HTMLInputElement>,

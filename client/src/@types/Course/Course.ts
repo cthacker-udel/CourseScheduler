@@ -3,6 +3,10 @@
  */
 export type Course = {
     /**
+     * The prefix of the course, ACCT in ACCT101
+     */
+    prefix: string;
+    /**
      * The section of the course, something like CISC 100 for example
      */
     section: string;
@@ -21,7 +25,7 @@ export type Course = {
     /**
      * The # of credits the class takes
      */
-    credits: string;
+    credits: number;
     /**
      * The Pre-Requisites of the course
      */
@@ -29,5 +33,5 @@ export type Course = {
     /**
      * The university of breadth requirements that class fulfills
      */
-    breadthRequirements: string;
+    breadthRequirements: string[];
 };

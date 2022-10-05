@@ -1,13 +1,15 @@
 const TEXT = {
+    BUTTON_TEXT: "Create",
     CARD_TITLE: "Create a Course",
     FORM1_LABEL: "Course Name",
     FORM2_LABEL: "Course Description",
-    FORM3_LABEL: "Credits",
-    FORM4_LABEL: "Section",
-    FORM5_LABEL: "Class Section",
-    FORM6_LABEL: "Is Lab",
-    FORM7_LABEL: "Lab Sections",
-    FORM8_LABEL: "Course Pre-Requisites",
+    FORM3_LABEL: "Course Prefix",
+    FORM4_LABEL: "Credits",
+    FORM5_LABEL: "Section",
+    FORM6_LABEL: "Class Section",
+    FORM7_LABEL: "Is Lab",
+    FORM8_LABEL: "Lab Sections",
+    FORM9_LABEL: "Course Pre-Requisites",
 };
 
 const VALIDATION_VALUES = {
@@ -27,6 +29,11 @@ const VALIDATION_VALUES = {
     },
     name: {
         maxLength: 75,
+        required: true,
+    },
+    prefix: {
+        maxLength: 4,
+        pattern: /^[a-zA-Z]+$/giu,
         required: true,
     },
     section: {
@@ -59,6 +66,12 @@ const VALIDATION_TEXT = {
         maxLength: "Name cannot be more then 75 characters",
         required: "Name is required",
         valid: "Name is valid",
+    },
+    prefix: {
+        maxLength: "Prefix cannot be more then 4 characters",
+        pattern: "Prefix can only be alphabetic",
+        required: "Prefix is required",
+        valid: "Prefix is invalid",
     },
     section: {
         maxLength: "Section cannot be more then (3) characters",
