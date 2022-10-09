@@ -8,7 +8,7 @@ import { CoursesApi } from "src/api/client-side/CoursesApi";
 import { LabsApi } from "src/api/client-side/LabsApi";
 import { MultiSelectSearch } from "src/common/components/MultiSelectSearch";
 import { useNotificationContext } from "src/context/NotificationContext/useNotificationContext";
-import { generateNotification, isApiError } from "src/helpers";
+import { generateNotification, getLoggedInUser, isApiError } from "src/helpers";
 import { useAllCourses } from "src/hooks";
 
 import styles from "./Create.module.css";
@@ -36,6 +36,7 @@ type CreateFormData = {
  */
 export const Create = (): JSX.Element => {
     const router = useRouter();
+    const [username, setUsername] = React.useState<string>("");
     const { formState, getValues, register, reset, setValue, watch } =
         useForm<CreateFormData>({
             defaultValues: {
@@ -61,7 +62,12 @@ export const Create = (): JSX.Element => {
         "section",
     ]);
 
-    const { courses } = useAllCourses();
+    const { courses } = useAllCourses({ username });
+
+    React.useEffect(() => {
+        const user = getLoggedInUser();
+        setUsername(user.username);
+    }, []);
 
     /**
      * Determines if there are any errors in the form before adding it to the database

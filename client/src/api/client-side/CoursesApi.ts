@@ -1,7 +1,10 @@
 import type { ApiError, ApiSuccess, Course } from "src/@types";
+import { generateQueryString } from "src/helpers";
 import { Logger } from "src/log/Logger";
 
 import { ClientSideApi } from "./ClientSideApi";
+
+type CourseFilter = Course & { username?: string };
 
 /**
  * Client-side Course api
@@ -33,11 +36,17 @@ export class CoursesApi extends ClientSideApi {
     /**
      * Fetches all courses from the database
      *
+     * @param username - The logged in user, used to filter the courses
      * @returns All courses
      */
-    public static getAllCourses = async (): Promise<Course[]> => {
+    public static getAllCourses = async (
+        filter?: CourseFilter,
+    ): Promise<Course[]> => {
         try {
-            const result = await super.get<Course[]>(`${this.BASE_URL}all`);
+            const queryString = generateQueryString(filter);
+            const result = await super.get<Course[]>(
+                `${this.BASE_URL}all?${queryString}`,
+            );
             return result;
         } catch (error: unknown) {
             Logger.log("error", (error as Error).message);

@@ -10,6 +10,7 @@ import { StatusModule } from "./modules/Status/status.module";
 import { PlanModule } from "./modules/Plan/plan.module";
 import { SemesterModule } from "./modules/Semester/semester.module";
 import { LabModule } from "./modules/Lab/lab.module";
+import { CourseModule } from "./modules/Course/course.module";
 
 @Module({
     imports: [
@@ -37,6 +38,7 @@ import { LabModule } from "./modules/Lab/lab.module";
         PlanModule,
         SemesterModule,
         LabModule,
+        CourseModule,
     ],
     controllers: [],
     providers: [],
