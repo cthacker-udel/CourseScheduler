@@ -66,6 +66,10 @@ export const Create = (): JSX.Element => {
     const { courses } = useAllCourses(memoizedFilter);
 
     React.useEffect(() => {
+        console.log(courses);
+    }, [courses]);
+
+    React.useEffect(() => {
         const user = getLoggedInUser();
         setUsername(user.username);
     }, []);

@@ -1,0 +1,9 @@
+
+.course_card_header {
+    letter-spacing: 0.04em;
+}
+
+.course_card_body {
+    letter-spacing: 0.02em;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif
+}

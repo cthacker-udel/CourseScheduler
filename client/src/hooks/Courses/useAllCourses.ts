@@ -10,6 +10,7 @@ type useAllCoursesReturn = {
 
 /**
  * Fetches all courses from the local data and also the database, and returns that population
+ * @param filter - **MUST BE MEMOIZED** : The filter to apply to the search.
  */
 export const useAllCourses = (
     filter: Course | { username: string },
