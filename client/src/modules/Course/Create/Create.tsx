@@ -37,6 +37,7 @@ type CreateFormData = {
 export const Create = (): JSX.Element => {
     const router = useRouter();
     const [username, setUsername] = React.useState<string>("");
+    const memoizedFilter = React.useMemo(() => ({ username }), [username]);
     const { formState, getValues, register, reset, setValue, watch } =
         useForm<CreateFormData>({
             defaultValues: {
@@ -62,7 +63,7 @@ export const Create = (): JSX.Element => {
         "section",
     ]);
 
-    const { courses } = useAllCourses({ username });
+    const { courses } = useAllCourses(memoizedFilter);
 
     React.useEffect(() => {
         const user = getLoggedInUser();

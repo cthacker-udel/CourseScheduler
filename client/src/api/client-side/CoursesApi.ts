@@ -4,7 +4,7 @@ import { Logger } from "src/log/Logger";
 
 import { ClientSideApi } from "./ClientSideApi";
 
-type CourseFilter = Course & { username?: string };
+type CourseFilter = Course | { username?: string };
 
 /**
  * Client-side Course api

@@ -15,7 +15,7 @@ const CONSTANTS = {
 type MultiSelectSearchProperties = {
     caret?: boolean;
     customSort?: (_a: unknown, _b: unknown) => number;
-    displayItemField?: string;
+    displayItemField?: string | ((_argument: any) => string);
     items: any[];
     parentClassName?: string;
     pushSelectedItems?: (_items: any) => void;
@@ -110,13 +110,17 @@ export const MultiSelectSearch = ({
                 return searchCache[inputtedValue];
             }
             const findFirstIndex = items.findIndex((eachItem) => {
-                const result = displayItemField
-                    ? eachItem[displayItemField] === inputtedValue ||
-                      (typeof eachItem[displayItemField] === "string" &&
+                const result =
+                    displayItemField === undefined
+                        ? eachItem === inputtedValue
+                        : typeof displayItemField === "string"
+                        ? eachItem[displayItemField] === inputtedValue ||
                           eachItem[displayItemField]
                               .toLowerCase()
-                              .includes(inputtedValue.toLowerCase()))
-                    : eachItem === inputtedValue;
+                              .includes(inputtedValue.toLowerCase())
+                        : displayItemField(eachItem)
+                              .toLowerCase()
+                              .includes(inputtedValue.toLowerCase());
                 return result;
             });
             searchCache[inputtedValue] = findFirstIndex;
@@ -305,17 +309,23 @@ export const MultiSelectSearch = ({
                                     }`}
                                     id={`item-${_ind}`}
                                     key={
-                                        displayItemField
-                                            ? eachItem[displayItemField]
-                                            : eachItem
+                                        typeof displayItemField === "string"
+                                            ? eachItem[displayItemField] ===
+                                              undefined
+                                                ? eachItem
+                                                : eachItem[displayItemField]
+                                            : displayItemField(eachItem)
                                     }
                                     onMouseDown={(): void => {
                                         markItem(_ind);
                                     }}
                                 >
-                                    {displayItemField
-                                        ? eachItem[displayItemField]
-                                        : eachItem}
+                                    {typeof displayItemField === "string"
+                                        ? eachItem[displayItemField] ===
+                                          undefined
+                                            ? eachItem
+                                            : eachItem[displayItemField]
+                                        : displayItemField(eachItem)}
                                     {selectedItems.includes(_ind) && (
                                         <span className="float-end">{"X"}</span>
                                     )}
@@ -331,11 +341,15 @@ export const MultiSelectSearch = ({
                         <div
                             className={`d-inline-block p-2 bg-secondary bg-opacity-25 rounded-pill m-1 text-nowrap ${styles.select_selected_item}`}
                             key={`${
-                                displayItemField
+                                displayItemField === undefined
+                                    ? sortedItems[eachSelectedItem]
+                                    : typeof displayItemField === "string"
                                     ? sortedItems[eachSelectedItem][
                                           displayItemField
                                       ]
-                                    : sortedItems[eachSelectedItem]
+                                    : displayItemField(
+                                          sortedItems[eachSelectedItem],
+                                      )
                             }-display-item`}
                             onClick={(): void => {
                                 setSelectedItems((oldSelectedItems) => {
@@ -350,11 +364,15 @@ export const MultiSelectSearch = ({
                             }}
                             role="button"
                         >
-                            {displayItemField
+                            {displayItemField === undefined
+                                ? sortedItems[eachSelectedItem]
+                                : typeof displayItemField === "string"
                                 ? sortedItems[eachSelectedItem][
                                       displayItemField
                                   ]
-                                : sortedItems[eachSelectedItem]}
+                                : displayItemField(
+                                      sortedItems[eachSelectedItem],
+                                  )}
                             <span className="ms-2 fw-bold text-danger">
                                 {"X"}
                             </span>
