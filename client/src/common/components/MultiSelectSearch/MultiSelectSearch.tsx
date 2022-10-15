@@ -113,7 +113,9 @@ export const MultiSelectSearch = ({
                 const result = displayItemField
                     ? eachItem[displayItemField] === inputtedValue ||
                       (typeof eachItem[displayItemField] === "string" &&
-                          eachItem[displayItemField].includes(inputtedValue))
+                          eachItem[displayItemField]
+                              .toLowerCase()
+                              .includes(inputtedValue.toLowerCase()))
                     : eachItem === inputtedValue;
                 return result;
             });

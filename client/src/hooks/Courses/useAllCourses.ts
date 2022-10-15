@@ -12,7 +12,7 @@ type useAllCoursesReturn = {
  * Fetches all courses from the local data and also the database, and returns that population
  */
 export const useAllCourses = (
-    filter: Course & { username: string },
+    filter: Course | { username: string },
 ): useAllCoursesReturn => {
     const [courses, setCourses] = React.useState<Course[]>([]);
 
