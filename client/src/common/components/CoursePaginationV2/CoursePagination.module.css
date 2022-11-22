@@ -34,3 +34,9 @@
 .pagination_button_active {
     background-color: lightblue;
 }
+
+.pagination_select {
+    top: 130%;
+    left: 45%;
+    width: 8vw;
+}

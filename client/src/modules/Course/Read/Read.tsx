@@ -6,6 +6,7 @@ import React, { Suspense } from "react";
 import { Spinner } from "react-bootstrap";
 import type { Course } from "src/@types";
 import { CoursePaginationV2 } from "src/common";
+import { paginateItems } from "src/helpers";
 import { useCourses } from "src/hooks/useCourses";
 
 import _styles from "./Read.module.css";
@@ -26,10 +27,16 @@ export const Read = (): JSX.Element => {
     const [section, setSection] = React.useState<string>("CISC");
     const [currentPage, setCurrentPage] = React.useState<number>(0);
     const { courses } = useCourses({ section });
+    const [paginatedCourses, setPaginatedCourses] = React.useState<Course[][]>(
+        [],
+    );
+    const [itemsPerPage, setItemsPerPage] = React.useState<number>(5);
 
     React.useEffect(() => {
-        console.log(courses);
-    }, [courses]);
+        if (courses !== undefined) {
+            setPaginatedCourses(paginateItems<Course>(courses, itemsPerPage));
+        }
+    }, [courses, itemsPerPage]);
 
     return (
         <Suspense fallback={<Spinner animation="border" />}>
@@ -46,8 +53,7 @@ export const Read = (): JSX.Element => {
                 </div>
                 <CoursePaginationV2<Course>
                     currentPage={currentPage}
-                    items={courses}
-                    itemsPerPage={5}
+                    paginatedItems={paginatedCourses}
                     updatePage={(newPage: number): void => {
                         setCurrentPage(newPage);
                     }}
