@@ -1,4 +1,3 @@
-export { CoursePagination } from "./components/CoursePagination";
-export { Layout } from "./components/Layout/Layout";
+export * from "./components";
 export * from "./constants";
 export * from "./regex/expressions";

@@ -9,6 +9,7 @@ export { generateTooltipIntl } from "./generateTooltipIntl/generateTooltipIntl";
 export { getLoggedInUser } from "./getLoggedInUser";
 export { isApiError } from "./isApiError";
 export { isApiSuccess } from "./isApiSuccess";
+export { paginateItems } from "./paginateItems";
 export { renderPreRequisites } from "./renderPreRequisites";
 export { truncateText } from "./truncateText/truncateText";
 export { validatePassword } from "./validatePassword/validatePassword";

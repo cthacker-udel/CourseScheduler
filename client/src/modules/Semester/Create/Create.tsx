@@ -81,14 +81,14 @@ export const Create = (): JSX.Element => {
             className={`position-absolute ${styles.create_semester_card} text-center`}
         >
             <Card.Title className="p-4 fw-bold">{TEXT.CARD_TITLE}</Card.Title>
-            <Card.Body>
-                <Form onSubmit={handleSubmit(addSemester)}>
+            <Card.Body className="d-flex flex-row justify-content-around">
+                <Form className="w-50" onSubmit={handleSubmit(addSemester)}>
                     <Form.Group controlId="semester-name">
                         <Form.Label className="w-100 text-start fw-bold ms-2">
                             {TEXT.FORM1_LABEL}
                         </Form.Label>
                         <Form.Control
-                            className="w-50 me-auto"
+                            className="w-75 me-auto"
                             isInvalid={dirtyFields.name && !!errors.name}
                             isValid={dirtyFields.name && !errors.name}
                             type="text"
@@ -129,7 +129,7 @@ export const Create = (): JSX.Element => {
                             }`}
                         </Form.Label>
                         <Form.Control
-                            className="w-25 me-auto"
+                            className="w-50 me-auto"
                             isInvalid={!!errors.year}
                             isValid={!errors.year}
                             type="number"
@@ -192,6 +192,11 @@ export const Create = (): JSX.Element => {
                         {TEXT.BUTTON_TEXT}
                     </Button>
                 </Form>
+                <div className="text-wrap w-25 fs-4">
+                    {
+                        "This is where you create a semester. You can create a custom name for the semester to have, and also select a year to set the semester as, as well as set the season of the semester as well."
+                    }
+                </div>
             </Card.Body>
         </Card>
     );

@@ -1,0 +1,36 @@
+
+.pagination_button {
+    min-width: 1.5vw;
+    max-width: fit-content;
+    cursor: pointer;
+}
+
+.pagination_button:hover {
+    transition: background-color .25s ease-in-out;
+    background-color: lightgray;
+}
+
+.pagination_button_disabled {
+    transition: opacity 1s ease-in-out;
+    opacity: 25%;
+    background-color: gray;
+    cursor: not-allowed;
+}
+
+.pagination_button_disabled:hover {
+    transition: none;
+    background-color: gray;
+}
+
+.pagination_button_dots:hover {
+    transition: none;
+    background-color: transparent;
+}
+
+.pagination_button_dots {
+    cursor: auto;
+}
+
+.pagination_button_active {
+    background-color: lightblue;
+}
