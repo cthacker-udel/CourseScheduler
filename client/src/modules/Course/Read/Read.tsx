@@ -5,9 +5,9 @@
 /* eslint-disable @typescript-eslint/indent -- prettier - eslint errors */
 
 import React, { Suspense } from "react";
-import { Spinner } from "react-bootstrap";
+import { FloatingLabel, Form, Spinner } from "react-bootstrap";
 import type { Course } from "src/@types";
-import { CoursePaginationV2 } from "src/common";
+import { CoursePaginationV2, MultiSelectSearch } from "src/common";
 import { paginateItems } from "src/helpers";
 import { useCourses } from "src/hooks/useCourses";
 
@@ -46,7 +46,7 @@ const readifyCourse = (course: Course): string[] => {
 export const Read = (): JSX.Element => {
     const [section, setSection] = React.useState<string>("CISC");
     const [currentPage, setCurrentPage] = React.useState<number>(0);
-    const { courses } = useCourses({ section });
+    const { courses, sections } = useCourses({ section });
     const [paginatedCourses, setPaginatedCourses] = React.useState<Course[][]>(
         [],
     );
@@ -60,7 +60,12 @@ export const Read = (): JSX.Element => {
 
     return (
         <Suspense fallback={<Spinner animation="border" />}>
-            <div className="h-100 w-100 d-flex flex-column justify-content-center align-items-center">
+            <div className="h-100 w-100 d-flex flex-column justify-content-center align-items-center position-relative">
+                <div
+                    className={`position-absolute ${_styles.course_section_selector}`}
+                >
+                    <MultiSelectSearch items={sections} />
+                </div>
                 <div className={`d-flex flex-row ${_styles.table_header}`}>
                     {SORTING_OPTIONS.map((eachSortingOption: string) => (
                         <div

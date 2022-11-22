@@ -314,7 +314,9 @@ export const MultiSelectSearch = ({
                                               undefined
                                                 ? eachItem
                                                 : eachItem[displayItemField]
-                                            : displayItemField(eachItem)
+                                            : displayItemField === undefined
+                                            ? `${eachItem}-${_ind}`
+                                            : displayItemField?.(eachItem)
                                     }
                                     onMouseDown={(): void => {
                                         markItem(_ind);
@@ -325,6 +327,8 @@ export const MultiSelectSearch = ({
                                           undefined
                                             ? eachItem
                                             : eachItem[displayItemField]
+                                        : displayItemField === undefined
+                                        ? eachItem
                                         : displayItemField(eachItem)}
                                     {selectedItems.includes(_ind) && (
                                         <span className="float-end">{"X"}</span>

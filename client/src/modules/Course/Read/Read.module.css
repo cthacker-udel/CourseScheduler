@@ -36,3 +36,8 @@
 .course_container > div {
     min-height: 10%;
 }
+
+.course_section_selector {
+    top: 5%;
+    left: 50%;
+}
