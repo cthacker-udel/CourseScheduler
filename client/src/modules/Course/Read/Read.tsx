@@ -38,6 +38,10 @@ export const Read = (): JSX.Element => {
         }
     }, [courses, itemsPerPage]);
 
+    React.useEffect(() => {
+        console.log(paginatedCourses);
+    }, [paginatedCourses]);
+
     return (
         <Suspense fallback={<Spinner animation="border" />}>
             <div className="h-100 w-100 d-flex flex-column justify-content-center align-items-center">
@@ -54,6 +58,9 @@ export const Read = (): JSX.Element => {
                 <CoursePaginationV2<Course>
                     currentPage={currentPage}
                     paginatedItems={paginatedCourses}
+                    updateItemsPerPage={(newAmount: number): void => {
+                        setItemsPerPage(newAmount);
+                    }}
                     updatePage={(newPage: number): void => {
                         setCurrentPage(newPage);
                     }}
