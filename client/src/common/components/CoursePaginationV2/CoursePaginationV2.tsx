@@ -222,6 +222,15 @@ export const CoursePaginationV2: CoursePaginationFunctionalSignature = <T,>({
                             <Form.Select
                                 aria-label="Select # of items per page"
                                 id="#ofItems"
+                                onChange={(
+                                    element: React.ChangeEvent<HTMLSelectElement>,
+                                ): void => {
+                                    const { target } = element;
+                                    if (target !== undefined) {
+                                        const { value } = target;
+                                        updateItemsPerPage?.(Number(value));
+                                    }
+                                }}
                             >
                                 {itemsPerPage.map((eachAmount: number) => (
                                     <option
