@@ -1,6 +1,6 @@
 /* eslint-disable no-magic-numbers -- disabled */
 /**
- * Paginates items of type T into pages of `itemsPerPage`
+ * Paginates items of type T into pages of `itemsPerPage`. Runs in **O(n)** time, n being the # of elements in the `items` array
  *
  * @param items - items to generate pagination of
  * @param itemsPerPage - # of items per page of pagination

@@ -228,6 +228,7 @@ export const CoursePaginationV2: CoursePaginationFunctionalSignature = <T,>({
                                     const { target } = element;
                                     if (target !== undefined) {
                                         const { value } = target;
+                                        updatePage?.(0);
                                         updateItemsPerPage?.(Number(value));
                                     }
                                 }}
