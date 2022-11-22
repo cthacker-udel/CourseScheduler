@@ -22,11 +22,12 @@
     justify-content: center;
     align-items: center;
     padding: 1em;
-    font-size: 1.15em;
+    font-size: 1.25em;
+    font-family:fantasy;
 }
 
 .course_container {
-    min-height: 40%;
+    min-height: 60%;
     max-height: 60%;
     overflow-y: scroll;
     scrollbar-width: thin;
