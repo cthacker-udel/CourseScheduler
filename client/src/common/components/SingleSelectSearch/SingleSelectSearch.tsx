@@ -327,7 +327,9 @@ const handleSingleSelectKeyPress = <T,>(
                                 "#single_select_input",
                             );
                             if (singleSelectInput !== null) {
-                                (singleSelectInput as HTMLInputElement).value =
+                                const singleSelectInputAsHtmlInput =
+                                    singleSelectInput as HTMLInputElement;
+                                singleSelectInputAsHtmlInput.value =
                                     customDisplayField === undefined
                                         ? (selectedItem as string)
                                         : typeof customDisplayField === "string"
@@ -337,6 +339,7 @@ const handleSingleSelectKeyPress = <T,>(
                                               }
                                           )[customDisplayField]
                                         : customDisplayField(selectedItem);
+                                singleSelectInputAsHtmlInput.blur();
                             }
                         }
                     }
