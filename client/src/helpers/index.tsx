@@ -1,4 +1,5 @@
 export { copyTextToClipboard } from "./copyTextToClipboard/copyTextToClipboard";
+export { findMatches } from "./findMatches";
 export { generateNotification } from "./generateNotification";
 export { generateQueryString } from "./generateQueryString/generateQueryString";
 export { generateSortingIcon } from "./generateSortingIcon/generateSortingIcon";

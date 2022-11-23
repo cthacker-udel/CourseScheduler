@@ -59,13 +59,25 @@ export const Read = (): JSX.Element => {
         }
     }, [courses, itemsPerPage]);
 
+    const customSectionComparator = React.useCallback(
+        (streamSection: string, matchingValue: string) =>
+            streamSection.toLowerCase().startsWith(matchingValue.toLowerCase()),
+        [],
+    );
+
     return (
         <Suspense fallback={<Spinner animation="border" />}>
             <div className="h-100 w-100 d-flex flex-column justify-content-center align-items-center position-relative">
                 <div
                     className={`position-absolute ${_styles.course_section_selector}`}
                 >
-                    <SingleSelectSearch caret items={sections} />
+                    <SingleSelectSearch
+                        caret
+                        customContainerInputOnChangeCustomComparator={
+                            customSectionComparator
+                        }
+                        items={sections}
+                    />
                 </div>
                 <div className={`d-flex flex-row ${_styles.table_header}`}>
                     {SORTING_OPTIONS.map((eachSortingOption: string) => (
