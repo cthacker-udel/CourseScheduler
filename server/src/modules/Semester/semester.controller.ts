@@ -56,7 +56,6 @@ export class SemesterController {
     async getAllSemesters(
         @Query("username") username: string,
     ): Promise<Semester[]> {
-        console.log("hit controller");
         try {
             const result = await this.semesterService.getAllSemesters(username);
             return result;

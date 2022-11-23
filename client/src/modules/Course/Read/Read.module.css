@@ -1,44 +1,43 @@
-/*
 
-Table cell styling
 
-*/
-
-.course_info {
-    font-size: .785em;
+.table_header {
+    min-width: 75vw;
+    max-width: 75vw;
 }
 
-/*
-
-Table styling
-
-*/
-
-.course_table {
-    height: 75vh !important;
+.table_header_cell {
+    min-width: 16.666666666666668%;
+    letter-spacing: .04em;
 }
 
-.course_table_header {
-    max-height: 5vh !important;
-    min-height: 5vh !important;
-    min-width: 5vw !important;
-    max-width: 10vw !important;
+.table_row {
+    min-width: 75vw;
+    max-width: 75vw;
 }
 
-@keyframes course_table_cell_anim {
-
-    from {
-        background-color: transparent;
-    }
-    to {
-        background-color: rgb(211, 249, 255);
-    }
-
+.table_row_cell {
+    min-width: 16.666666666666668%;
+    max-width: 16.666666666666668%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1em;
+    font-size: 1.25em;
+    font-family:fantasy;
 }
 
-.course_table_cell:hover {
-    animation-name: course_table_cell_anim;
-    animation-timing-function: ease-in-out;
-    animation-duration: .25s;
-    animation-fill-mode: forwards;
+.course_container {
+    min-height: 60%;
+    max-height: 60%;
+    overflow-y: scroll;
+    scrollbar-width: thin;
+}
+
+.course_container > div {
+    min-height: 10%;
+}
+
+.course_section_selector {
+    top: 5%;
+    left: 50%;
 }

@@ -15,7 +15,7 @@ const CONSTANTS = {
 type MultiSelectSearchProperties = {
     caret?: boolean;
     customSort?: (_a: unknown, _b: unknown) => number;
-    displayItemField?: string;
+    displayItemField?: string | ((_argument: any) => string);
     items: any[];
     parentClassName?: string;
     pushSelectedItems?: (_items: any) => void;
@@ -53,6 +53,10 @@ export const MultiSelectSearch = ({
     const dropdownReference = React.createRef<HTMLDivElement>();
     const dropdownContainerReference = React.createRef<HTMLDivElement>();
     const inputReference = React.createRef<HTMLInputElement>();
+    const searchCache: { [key: string]: number } = React.useMemo(
+        () => ({}),
+        [],
+    );
 
     /**
      * Callback that fires when the `focusin` event fires, effectively checking if we focused into the multiselect div
@@ -102,17 +106,27 @@ export const MultiSelectSearch = ({
      */
     const findIndexToScrollTo = React.useCallback(
         (inputtedValue: string) => {
+            if (searchCache[inputtedValue]) {
+                return searchCache[inputtedValue];
+            }
             const findFirstIndex = items.findIndex((eachItem) => {
-                const result = displayItemField
-                    ? eachItem[displayItemField] === inputtedValue ||
-                      (typeof eachItem[displayItemField] === "string" &&
-                          eachItem[displayItemField].includes(inputtedValue))
-                    : eachItem === inputtedValue;
+                const result =
+                    displayItemField === undefined
+                        ? eachItem === inputtedValue
+                        : typeof displayItemField === "string"
+                        ? eachItem[displayItemField] === inputtedValue ||
+                          eachItem[displayItemField]
+                              .toLowerCase()
+                              .includes(inputtedValue.toLowerCase())
+                        : displayItemField(eachItem)
+                              .toLowerCase()
+                              .includes(inputtedValue.toLowerCase());
                 return result;
             });
+            searchCache[inputtedValue] = findFirstIndex;
             return findFirstIndex;
         },
-        [displayItemField, items],
+        [displayItemField, items, searchCache],
     );
 
     React.useEffect(() => {
@@ -250,7 +264,7 @@ export const MultiSelectSearch = ({
             >
                 <input
                     autoComplete="off"
-                    className="border-0 w-100 me-4 pe-none"
+                    className={`border-0 w-100 me-4 pe-none ${styles.select_text_input}`}
                     id="multiselect-search-input"
                     onChange={(
                         changeEvent: React.ChangeEvent<HTMLInputElement>,
@@ -295,17 +309,27 @@ export const MultiSelectSearch = ({
                                     }`}
                                     id={`item-${_ind}`}
                                     key={
-                                        displayItemField
-                                            ? eachItem[displayItemField]
-                                            : eachItem
+                                        typeof displayItemField === "string"
+                                            ? eachItem[displayItemField] ===
+                                              undefined
+                                                ? eachItem
+                                                : eachItem[displayItemField]
+                                            : displayItemField === undefined
+                                            ? `${eachItem}-${_ind}`
+                                            : displayItemField?.(eachItem)
                                     }
                                     onMouseDown={(): void => {
                                         markItem(_ind);
                                     }}
                                 >
-                                    {displayItemField
-                                        ? eachItem[displayItemField]
-                                        : eachItem}
+                                    {typeof displayItemField === "string"
+                                        ? eachItem[displayItemField] ===
+                                          undefined
+                                            ? eachItem
+                                            : eachItem[displayItemField]
+                                        : displayItemField === undefined
+                                        ? eachItem
+                                        : displayItemField(eachItem)}
                                     {selectedItems.includes(_ind) && (
                                         <span className="float-end">{"X"}</span>
                                     )}
@@ -321,11 +345,15 @@ export const MultiSelectSearch = ({
                         <div
                             className={`d-inline-block p-2 bg-secondary bg-opacity-25 rounded-pill m-1 text-nowrap ${styles.select_selected_item}`}
                             key={`${
-                                displayItemField
+                                displayItemField === undefined
+                                    ? sortedItems[eachSelectedItem]
+                                    : typeof displayItemField === "string"
                                     ? sortedItems[eachSelectedItem][
                                           displayItemField
                                       ]
-                                    : sortedItems[eachSelectedItem]
+                                    : displayItemField(
+                                          sortedItems[eachSelectedItem],
+                                      )
                             }-display-item`}
                             onClick={(): void => {
                                 setSelectedItems((oldSelectedItems) => {
@@ -340,11 +368,15 @@ export const MultiSelectSearch = ({
                             }}
                             role="button"
                         >
-                            {displayItemField
+                            {displayItemField === undefined
+                                ? sortedItems[eachSelectedItem]
+                                : typeof displayItemField === "string"
                                 ? sortedItems[eachSelectedItem][
                                       displayItemField
                                   ]
-                                : sortedItems[eachSelectedItem]}
+                                : displayItemField(
+                                      sortedItems[eachSelectedItem],
+                                  )}
                             <span className="ms-2 fw-bold text-danger">
                                 {"X"}
                             </span>

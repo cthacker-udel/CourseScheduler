@@ -1,11 +1,6 @@
 /* eslint-disable no-unexpected-multiline -- 1 error due to prettier */
-import orderBy from "lodash.orderby";
 import React from "react";
-import type {
-    Course,
-    CourseSortingFields,
-    CourseSortingOrder,
-} from "src/@types";
+import type { Course } from "src/@types";
 import COURSES from "src/data/catalog.json";
 
 const NAME_INDEX_SPLIT = 1;
@@ -72,13 +67,9 @@ type useCourseReturn = {
     resetCourses: () => void;
 
     /**
-     * Function for sorting courses via lodash's orderBy function, passing in fields to sort and order to sort them by
-     * @see https://lodash.com/docs/4.17.15#orderBy
+     * Courses organized by the section they are assigned to
      */
-    sortCourses: (
-        _fields: CourseSortingFields[],
-        _orders: CourseSortingOrder[],
-    ) => void;
+    sectionizedCourses: { [key: string]: Course[] };
 };
 
 /**
@@ -88,93 +79,50 @@ type useCourseReturn = {
  */
 export const useCourses = ({
     section,
-    sectionRange,
 }: useCoursesProperties = {}): useCourseReturn => {
     const [courses, setCourses] = React.useState<Course[]>(
         CONSTANTS.parsedCourses,
     );
 
-    const sections = React.useMemo(
+    const sections: string[] = React.useMemo(
         () => [
             ...new Set(
-                CONSTANTS.parsedCourses.map(
-                    (eachCourse) =>
-                        eachCourse.id.split(" ")[CONSTANTS.SECTION_IND],
-                ),
+                CONSTANTS.parsedCourses.map((eachCourse) => eachCourse.section),
             ),
         ],
         [],
     );
 
-    /**
-     * Utility for sorting the courses via the lodash orderBy function
-     *
-     * @param fields The fields to sort the courses by
-     * @param orders The order to order the courses by, ascending or descending
-     * @see https://lodash.com/docs/4.17.15#orderBy
-     */
-    const sortCourses = React.useCallback(
-        (fields: CourseSortingFields[], orders: CourseSortingOrder[]): void => {
-            const sortedCourses = orderBy(courses, fields, orders);
-            setCourses(sortedCourses);
-        },
-        [courses],
-    );
-
-    /**
-     * Utility function for sorting courses by filters provided by the user
-     * @param oldCourses The old courses, previous state
-     * @returns The filtered courses
-     */
-    const filterCourses = React.useCallback(
-        (oldCourses: Course[]): Course[] => {
-            let oldCoursesClone = [...oldCourses];
-            if (section) {
-                oldCoursesClone = oldCourses.filter((eachCourse: Course) =>
-                    eachCourse.id
-                        .split(" ")
-                        [CONSTANTS.SECTION_IND].includes(section),
-                );
+    const sectionizedCourses = React.useMemo(() => {
+        if (sections?.length) {
+            const organizedSections: { [key: string]: Course[] } = {};
+            // O(k)
+            for (const eachSection of sections) {
+                organizedSections[eachSection] = [];
             }
-            if (
-                sectionRange &&
-                sectionRange.length === CONSTANTS.SECTION_RANGE_LENGTH
-            ) {
-                oldCoursesClone = oldCourses.filter((eachCourse: Course) => {
-                    const sectionNumber = Number.parseInt(
-                        eachCourse.id.split(" ")[CONSTANTS.ID_INDEX],
-                        10,
-                    );
-                    return (
-                        (sectionNumber >=
-                            sectionRange[CONSTANTS.SECTION_RANGE_MIN_IND] ??
-                            sectionNumber) &&
-                        (sectionNumber <=
-                            sectionRange[CONSTANTS.SECTION_RANGE_MAX_IND] ??
-                            sectionNumber)
-                    );
-                });
+            // O(n)
+            for (const eachCourse of CONSTANTS.parsedCourses) {
+                organizedSections[eachCourse.section] = [
+                    ...organizedSections[eachCourse.section],
+                    eachCourse,
+                ];
             }
-            return oldCoursesClone;
-        },
-        [section, sectionRange],
-    );
-
-    React.useEffect(() => {
-        setCourses(() => filterCourses(CONSTANTS.parsedCourses));
-    }, [filterCourses]);
+            return organizedSections;
+        }
+        return undefined;
+    }, [sections]);
 
     /**
      * If no sort is specified, and the sorting is triggered, then that means all sorting was neutralized, so therefore we should refresh the courses back to the original
      */
     const resetCourses = (): void => {
-        setCourses(filterCourses(CONSTANTS.parsedCourses));
+        setCourses(CONSTANTS.parsedCourses);
     };
 
     return {
-        courses,
+        courses: sectionizedCourses ? sectionizedCourses[section] : courses,
         resetCourses,
+        sectionizedCourses,
         sections,
-        sortCourses,
     };
 };

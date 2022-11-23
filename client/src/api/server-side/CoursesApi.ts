@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/indent -- prettier/eslint conflicts */
+/* eslint-disable no-magic-numbers -- not needed */
 import type { NextApiRequest, NextApiResponse } from "next";
 import type { ApiError, ApiSuccess, Course } from "src/@types";
 
@@ -36,7 +38,13 @@ export class CoursesApi extends ServerSideApi {
         request: NextApiRequest,
         response: NextApiResponse,
     ): Promise<void> => {
-        const result = await super.get<Course[]>(`${this.BASE_URL}all`);
+        const query =
+            Object.keys(request.query).length > 0
+                ? `?${Object.entries(request.query)
+                      .map((eachEntry) => `${eachEntry[0]}=${eachEntry[1]}`)
+                      .join("&")}`
+                : "";
+        const result = await super.get<Course[]>(`${this.BASE_URL}all${query}`);
         response.json(result);
     };
 }

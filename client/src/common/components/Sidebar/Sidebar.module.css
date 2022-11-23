@@ -1,135 +1,29 @@
-@keyframes sidebar_open_anim {
-    from {
-        right: 100;
-        left: 0;
-    }
 
-    to {
-        right: 0;
-        left: 10vw;
-    }
-}
-
-@keyframes sidebar_closed_anim {
-    from {
-        left: 10vw;
-        right: 0;
-    }
-
-    to {
-        right: 100;
-        left: 0;
-    }
-}
-@keyframes sidebar_content_open_anim {
-    from {
-        display: none;
-        width: 0vw;
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-        width: 10vw;
-    }
-}
-
-@keyframes sidebar_content_closed_anim {
-    from {
-        width: 10vw;
-        opacity: 1;
-        left: 0;
-    }
-    to {
-        display: none;
-        opacity: 0;
-    }
-}
-
-@keyframes sidebar_content_closed_inner_anim {
-    from {
-        display: flex;
-        flex-direction: row;
-    }
-    to {
-        display: none;
-        visibility: hidden;
-    }
-}
-
-.sidebar_closed {
-    position: absolute;
-    top: 80px;
-    animation-name: sidebar_closed_anim;
-    animation-timing-function: ease-in-out;
-    animation-duration: 3s;
-    animation-fill-mode: forwards;
-}
-
-.sidebar_open {
-    position: absolute;
-    top: 80px;
-    animation-name: sidebar_open_anim;
-    animation-timing-function: ease-in-out;
-    animation-duration: 3s;
-    animation-fill-mode: forwards;
+.sidebar {
+    min-height: 100vh;
+    max-height: 100vh;
+    min-width: 20vw;
+    top: 0%;
+    right: 100%;
 }
 
 .sidebar_toggle {
-    position: absolute;
-    width: 20px;
-    height: 30px;
-    border-color: rgba(var(--bs-dark-rgb), 0.5) !important;
-    z-index: 1;
+    top: 5%;
+    min-width: 2vw;
+    right: calc(-2vw);
 }
 
-.sidebar_toggle_icon {
-    position: relative;
-    top: 3px;
-    left: 5px;
+.sidebar_activated {
+    transition: right 1s ease-in-out;
+    right: 80%;
 }
 
-.sidebar_content_closed {
-    animation-name: sidebar_content_closed_anim;
-    animation-duration: 1s;
-    animation-timing-function: linear;
-    animation-fill-mode: forwards;
-    position: absolute;
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    top: 0;
-    background-color: aliceblue;
+.sidebar_closed {
+    transition: right 1s ease-in-out;
+    right: 100%;
 }
 
-
-.sidebar_content_open_inner {
-    display: flex;
-    flex-direction: row;
-}
-
-.sidebar_content_closed_inner {
-    animation-name: sidebar_content_closed_inner_anim;
-    animation-duration: 1.5s;
-    animation-timing-function: ease-in-out;
-    animation-fill-mode: forwards;
-    text-align: center;
-}
-
-.sidebar_content_open {
-    animation-name: sidebar_content_open_anim;
-    animation-duration: 3s;
-    animation-timing-function: ease-in-out;
-    animation-fill-mode: forwards;
-    display: flex;
-    flex-direction: column;
-    position: absolute;
-    height: 100vh;
-    width: 10vw;
-    top: 0;
-    background-color: aliceblue;
-}
-
-.sidebar_individual_content:hover {
-    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+.sidebar_item:hover {
+    transition: background-color 1s ease-in-out;
+    background-color: lightgray;
 }

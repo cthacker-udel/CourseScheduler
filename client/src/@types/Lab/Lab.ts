@@ -1,5 +1,5 @@
 export type Lab = {
-    courseId: string;
-    section: number;
-    title: string;
+    name: string;
+    section: string;
+    prefix: string;
 };

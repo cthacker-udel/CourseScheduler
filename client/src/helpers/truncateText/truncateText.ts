@@ -16,6 +16,8 @@ export const truncateText = (
     description: string,
     limit = CONSTANTS.BASE_LIMIT,
 ): string =>
-    description.length > limit
-        ? `${description.slice(CONSTANTS.SUBSTRING_START, limit)}...`
-        : description;
+    description
+        ? description.length > limit
+            ? `${description.slice(CONSTANTS.SUBSTRING_START, limit)}...`
+            : description
+        : "";

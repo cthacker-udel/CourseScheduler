@@ -22,7 +22,7 @@ const ApplicationWrapper = ({
     pageProps,
 }: AppProps): JSX.Element => (
     <IntlProvider defaultLocale="en" locale="en" messages={homeMessages}>
-        <Container className="vh-100 p-0" fluid>
+        <Container className="vh-100 p-0 position-relative" fluid>
             <Layout>
                 <Component {...pageProps} />
             </Layout>

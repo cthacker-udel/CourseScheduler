@@ -5,8 +5,9 @@ import {
     HttpStatus,
     Logger,
     Post,
-    Query,
+    Req,
 } from "@nestjs/common";
+import { Request } from "express";
 import { ApiError, ApiSuccess } from "src/@types";
 import { CreateCourseDTO } from "src/dto";
 import { Course } from "src/entities";
@@ -40,11 +41,11 @@ export class CourseController {
     }
 
     @Get("all")
-    async getAllCourses(
-        @Query("username") username: string,
-    ): Promise<Course[]> {
+    async getAllCourses(@Req() request: Request): Promise<Course[]> {
         try {
-            const result = await this.courseService.getAllCourses(username);
+            const result = await this.courseService.getAllCourses(
+                this.courseService.createCourseFromFilter(request.query),
+            );
             return result;
         } catch (error: unknown) {
             this.logger.error(

@@ -57,10 +57,20 @@ export class CourseService {
      * @param username - the username to filter all the courses by
      * @returns All the courses filtered by the username
      */
-    getAllCourses = async (username: string): Promise<Course[]> => {
+    getAllCourses = async (courseFilter: Course): Promise<Course[]> => {
         try {
+            const {
+                day: _day,
+                prereqs: _prereqs,
+                coreqs: _coreqs,
+                breadth: _breadth,
+                education_objectives: _objectives,
+                course_time: _time,
+                location: _location,
+                ...rest
+            } = courseFilter;
             const result = await this.courseRepository.find({
-                where: { username },
+                where: { ...rest },
             });
             return result;
         } catch (error: unknown) {
@@ -69,6 +79,27 @@ export class CourseService {
                 (error as Error).message,
             );
             return [];
+        }
+    };
+
+    /**
+     * Creates a course entity from the provided filter
+     *
+     * @param courseFilter - The filter provided to either search, delete, or check before insertion
+     * @returns Course if filter provided is correct or undefined if not
+     */
+    createCourseFromFilter = (courseFilter: any): Course | undefined => {
+        try {
+            const convertedCourse = this.courseRepository.create(
+                courseFilter as unknown as Course,
+            );
+            return convertedCourse;
+        } catch (error: unknown) {
+            this.logger.error(
+                "Failed to create course from filter",
+                (error as Error).message,
+            );
+            return undefined;
         }
     };
 }

@@ -35,8 +35,6 @@ export const usePlans = (): usePlansReturn => {
         }
         return undefined;
     }, []);
-    console.log(data);
-    console.log(setData);
 
     return { getAllPlans };
 };
