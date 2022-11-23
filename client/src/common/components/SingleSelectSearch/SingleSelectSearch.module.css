@@ -71,3 +71,10 @@
 .single_select_dropdown_visible {
     visibility: visible;
 }
+
+.single_select_selected_dropdown_element {
+    transition: background-color 1s ease-in-out;
+    background-color: lightblue;
+    font-size: 1.25em;
+    font-weight: 600;
+}

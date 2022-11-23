@@ -1,3 +1,5 @@
+/* eslint-disable max-statements -- disabled */
+/* eslint-disable sonarjs/no-duplicate-string -- disabled, only used 3 times */
 /* eslint-disable no-console -- disabled */
 /* eslint-disable @typescript-eslint/indent  -- disabled */
 /* eslint-disable no-magic-numbers -- disabled */
@@ -22,6 +24,9 @@ type SingleSelectSearchProperties<T> = {
     caret?: boolean;
     customContainerClassName?: string;
     customContainerOnClick?: (..._arguments: any) => any;
+    customContainerOnEnter?: (..._arguments: any) => any;
+    customContainerOnArrowDown?: (..._arguments: any) => any;
+    customContainerOnArrowUp?: (..._arguments: any) => any;
     customContainerCaretClassName?: string;
     customContainerDropdownClassName?: string;
     customContainerDropdownItemClassName?: string;
@@ -33,6 +38,7 @@ type SingleSelectSearchProperties<T> = {
         _matchingValue: any,
     ) => boolean;
     customContainerInputOnClick?: (..._arguments: any) => any;
+    customContainerInputOnSelect?: (..._arguments: any) => any;
     customDisplayField?: string | ((_argument: T) => string);
     customSort?: (_item1: T, _item2: T) => number;
     items: T[];
@@ -97,6 +103,34 @@ const handleSingleSelectContainerClick = (event: MouseEvent): void => {
 };
 
 /**
+ * Clears the selected input, removing it's selected css effect
+ * @returns - the child index
+ */
+const clearSelectedDropdownElement = (): void => {
+    const selectedElement = document.querySelector(
+        `.${styles.single_select_selected_dropdown_element}`,
+    );
+    if (selectedElement !== null) {
+        selectedElement.className = selectedElement.className.replace(
+            styles.single_select_selected_dropdown_element,
+            "",
+        );
+    }
+};
+
+/**
+ * Finds the selected element within the dropdown
+ *
+ * @returns The element if found, undefined if not
+ */
+const getSelectedDropdownElement = (): HTMLElement | undefined => {
+    const selectedElement = document.querySelector(
+        `.${styles.single_select_selected_dropdown_element}`,
+    );
+    return (selectedElement as HTMLElement) ?? undefined;
+};
+
+/**
  * Handles the user input and searches for matches, finds them, and then scrolls to them
  *
  * @param items - The items we are using the match finding with
@@ -126,30 +160,152 @@ const handleSingleSelectInputOnChange = <T,>(
             if (firstMatchId === undefined) {
                 console.info(`Could not access first match ${matches[0]} id`);
             } else {
+                const selectedElement = getSelectedDropdownElement();
+                console.log(selectedElement);
+                if (
+                    selectedElement?.id !==
+                    (customIdGenerator
+                        ? customIdGenerator(matches[0])
+                        : matches[0])
+                ) {
+                    console.log("clearing");
+                    clearSelectedDropdownElement();
+                }
                 const foundElement = document.querySelector(`#${firstMatchId}`);
-                foundElement?.scrollIntoView({ behavior: "smooth" });
-                foundElement?.animate(
-                    [
-                        {
-                            backgroundColor: "lightgray",
-                        },
-                        {
-                            backgroundColor: "lightblue",
-                        },
-                    ],
-                    { duration: 1200, easing: "ease-in-out", fill: "forwards" },
-                );
-                foundElement?.animate(
-                    [
-                        {
-                            backgroundColor: "lightblue",
-                        },
-                        {
-                            backgroundColor: "lightgray",
-                        },
-                    ],
-                    { duration: 800, easing: "ease-in-out", fill: "forwards" },
-                );
+                if (foundElement !== null) {
+                    foundElement.scrollIntoView({ behavior: "smooth" });
+                    foundElement.className = `${foundElement.className} ${styles.single_select_selected_dropdown_element}`;
+                }
+            }
+        }
+    }
+};
+
+/**
+ * Handles all key presses, and has the select handler to call it if necessary according to the keypress
+ *
+ * @param keyPressEvent - The keypress event itself
+ * @param customEnterHandler - The custom enter handler
+ * @param customArrowDownHandler - The custom keydown handler
+ * @param customArrowUpHandler - The custom keyup handler
+ * @param customInputOnSelectHandler - The custom onSelect handler, used when the user selects an element (ties into the enter handler)
+ */
+const handleSingleSelectKeyPress = (
+    keyPressEvent: KeyboardEvent,
+    customEnterHandler?: (..._arguments: any) => any,
+    customArrowDownHandler?: (..._arguments: any) => any,
+    customArrowUpHandler?: (..._arguments: any) => any,
+    customInputOnSelectHandler?: (..._arguments: any) => any,
+): void => {
+    const isDropdownVisible =
+        document.querySelector(`.${styles.single_select_dropdown_visible}`) !==
+        null;
+    console.log("is dropdown visible = ", isDropdownVisible);
+    if (isDropdownVisible) {
+        console.log("firing listener");
+        const { code } = keyPressEvent;
+        switch (code) {
+            case "ArrowUp": {
+                if (customArrowUpHandler) {
+                    customArrowUpHandler(
+                        keyPressEvent,
+                        customInputOnSelectHandler,
+                    );
+                } else {
+                    const selectedElement = getSelectedDropdownElement();
+                    clearSelectedDropdownElement();
+                    if (selectedElement === undefined) {
+                        // No selected element, must be stale list
+                        const singleSelectDropdown = document.querySelector(
+                            "#single_select_dropdown",
+                        );
+                        if (singleSelectDropdown !== null) {
+                            const singleSelectDropdownChildren =
+                                singleSelectDropdown.children;
+                            if (singleSelectDropdownChildren.length > 0) {
+                                singleSelectDropdownChildren[0].className = `${singleSelectDropdownChildren[0].className} ${styles.single_select_selected_dropdown_element}`;
+                            }
+                        }
+                    } else {
+                        const selectedElementIndex =
+                            selectedElement.dataset.colind;
+                        if (selectedElementIndex !== null) {
+                            const singleSelectDropdown = document.querySelector(
+                                "#single_select_dropdown",
+                            );
+                            if (singleSelectDropdown !== null) {
+                                const newSelectedElement =
+                                    singleSelectDropdown.children[
+                                        Number(selectedElementIndex) - 1
+                                    ];
+                                if (newSelectedElement !== undefined) {
+                                    newSelectedElement.className = `${newSelectedElement.className} ${styles.single_select_selected_dropdown_element}`;
+                                    newSelectedElement.scrollIntoView({
+                                        behavior: "smooth",
+                                    });
+                                }
+                            }
+                        }
+                    }
+                }
+                break;
+            }
+            case "ArrowDown": {
+                if (customArrowDownHandler) {
+                    customArrowDownHandler(
+                        keyPressEvent,
+                        customInputOnSelectHandler,
+                    );
+                } else {
+                    const selectedElement = getSelectedDropdownElement();
+                    clearSelectedDropdownElement();
+                    if (selectedElement === undefined) {
+                        // No selected element, must be stale list
+                        const singleSelectDropdown = document.querySelector(
+                            "#single_select_dropdown",
+                        );
+                        if (singleSelectDropdown !== null) {
+                            const singleSelectDropdownChildren =
+                                singleSelectDropdown.children;
+                            if (singleSelectDropdownChildren.length > 0) {
+                                singleSelectDropdownChildren[0].className = `${singleSelectDropdownChildren[0].className} ${styles.single_select_selected_dropdown_element}`;
+                            }
+                        }
+                    } else {
+                        const selectedElementIndex =
+                            selectedElement.dataset.colind;
+                        if (selectedElementIndex !== null) {
+                            const singleSelectDropdown = document.querySelector(
+                                "#single_select_dropdown",
+                            );
+                            if (singleSelectDropdown !== null) {
+                                const newSelectedElement =
+                                    singleSelectDropdown.children[
+                                        Number(selectedElementIndex) + 1
+                                    ];
+                                if (newSelectedElement !== undefined) {
+                                    newSelectedElement.className = `${newSelectedElement.className} ${styles.single_select_selected_dropdown_element}`;
+                                    newSelectedElement.scrollIntoView({
+                                        behavior: "smooth",
+                                    });
+                                }
+                            }
+                        }
+                    }
+                }
+                break;
+            }
+            case "Enter": {
+                if (customEnterHandler) {
+                    customEnterHandler(
+                        keyPressEvent,
+                        customInputOnSelectHandler,
+                    );
+                }
+                break;
+            }
+            default: {
+                break;
             }
         }
     }
@@ -161,6 +317,10 @@ const handleSingleSelectInputOnChange = <T,>(
  * @param props - The properties of the single select search component
  * @param props.caret - Whether to display the caret in the select component or not
  * @param props.customContainerClassName - The custom class name to apply to the container, will override the default css applied
+ * @param props.customContainerOnClick - The custom onClick method that fires once the container itself is clicked on
+ * @param props.customContainerOnEnter - The custom method that fires once the enter key is pressed
+ * @param props.customContainerOnArrowDown - The custom method that fires once the arrow down key is pressed
+ * @param props.customContainerOnArrowUp - The custom method that fires once the arrow up key is pressed
  * @param props.customContainerCaretClassName - The custom class name to apply to the container's caret style, will override the default css applied
  * @param props.customContainerDropdownClassName - The custom class name to apply to the container's dropdown style, will override the default css applied
  * @param props.customContainerDropdownItemClassName - The custom class name to apply to the container's dropdown item's style, will override the default css applied
@@ -169,6 +329,7 @@ const handleSingleSelectInputOnChange = <T,>(
  * @param props.customContainerInputOnClick - The custom onClick handler for the single select input
  * @param props.customContainerInputOnChange - The custom onChange handler for the single select input
  * @param props.customContainerInputOnChangeCustomComparator - The custom comparator to be used when filtering values within the single select search
+ * @param props.customContainerInputOnSelect - The custom handler method that fires when an item is selected within the input (dropdown)
  * @param props.customDisplayField - Whether the items being passed in are custom, and the display is not as simple as just displaying the element
  * @param props.items - The items to display
  * @returns - The generic Single Select Search component
@@ -177,18 +338,44 @@ export const SingleSelectSearch: SingleSelectSearchFunctionalSignature = <T,>({
     caret,
     customContainerClassName,
     customContainerOnClick,
+    customContainerOnEnter,
+    customContainerOnArrowDown,
+    customContainerOnArrowUp,
     customContainerCaretClassName,
     customContainerDropdownClassName,
     customContainerDropdownItemClassName,
     customContainerInputClassName,
-    customContainerInputOnChange,
-    customContainerInputOnChangeCustomComparator,
     customContainerDropdownItemIdGenerator,
     customContainerInputOnClick,
+    customContainerInputOnChange,
+    customContainerInputOnChangeCustomComparator,
+    customContainerInputOnSelect,
     customDisplayField,
     customSort,
     items,
 }: SingleSelectSearchProperties<T>) => {
+    /**
+     * Handler for propagating all the custom arguments into the keypress function, rather then
+     * have to do it manually within the useEffect. Allows also for the event to be removed due to the function being an object
+     * rather then an anonymous function
+     */
+    const handleSingleSelectKeyPressArgumentPropagation = React.useCallback(
+        (event: KeyboardEvent) =>
+            handleSingleSelectKeyPress(
+                event,
+                customContainerOnEnter ?? undefined,
+                customContainerOnArrowDown ?? undefined,
+                customContainerOnArrowUp ?? undefined,
+                customContainerInputOnSelect ?? undefined,
+            ),
+        [
+            customContainerOnEnter,
+            customContainerOnArrowDown,
+            customContainerOnArrowUp,
+            customContainerInputOnSelect,
+        ],
+    );
+
     /**
      * The useEffect hook for appending the onClick listener that
      * makes the dropdown options appear and disappear as the user clicks on/off the input
@@ -200,13 +387,22 @@ export const SingleSelectSearch: SingleSelectSearchFunctionalSignature = <T,>({
             customContainerOnClick ?? handleSingleSelectContainerClick,
         );
 
+        document.addEventListener(
+            "keydown",
+            handleSingleSelectKeyPressArgumentPropagation,
+        );
+
         return () => {
             document.removeEventListener(
                 "click",
                 customContainerOnClick ?? handleSingleSelectContainerClick,
             );
+            document.removeEventListener(
+                "keypress",
+                handleSingleSelectKeyPressArgumentPropagation,
+            );
         };
-    }, [customContainerOnClick]);
+    }, [customContainerOnClick, handleSingleSelectKeyPressArgumentPropagation]);
 
     /**
      * The onChange callback that is fired as the user enters input into the single select input,
@@ -274,6 +470,7 @@ export const SingleSelectSearch: SingleSelectSearchFunctionalSignature = <T,>({
                                         customContainerDropdownItemClassName ??
                                         ""
                                     }`}
+                                    data-colind={_ind}
                                     id={
                                         customContainerDropdownItemIdGenerator
                                             ? customContainerDropdownItemIdGenerator(
@@ -303,6 +500,7 @@ export const SingleSelectSearch: SingleSelectSearchFunctionalSignature = <T,>({
                                         customContainerDropdownItemClassName ??
                                         ""
                                     }`}
+                                    data-colind={_ind}
                                     id={
                                         customContainerDropdownItemIdGenerator
                                             ? customContainerDropdownItemIdGenerator(
@@ -325,6 +523,7 @@ export const SingleSelectSearch: SingleSelectSearchFunctionalSignature = <T,>({
                                 } ${
                                     customContainerDropdownItemClassName ?? ""
                                 }`}
+                                data-colind={_ind}
                                 id={
                                     customContainerDropdownItemIdGenerator
                                         ? customContainerDropdownItemIdGenerator(
