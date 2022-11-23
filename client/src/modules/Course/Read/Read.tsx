@@ -76,6 +76,12 @@ export const Read = (): JSX.Element => {
                         customContainerInputOnChangeCustomComparator={
                             customSectionComparator
                         }
+                        customContainerInputOnSelect={(
+                            newSection: string,
+                        ): void => {
+                            console.log("setting section ", newSection);
+                            setSection(newSection);
+                        }}
                         items={sections}
                     />
                 </div>

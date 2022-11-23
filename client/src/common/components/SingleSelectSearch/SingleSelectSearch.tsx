@@ -270,6 +270,9 @@ const handleSingleSelectKeyPress = <T,>(
                                 singleSelectDropdown.children;
                             if (singleSelectDropdownChildren.length > 0) {
                                 singleSelectDropdownChildren[0].className = `${singleSelectDropdownChildren[0].className} ${styles.single_select_selected_dropdown_element}`;
+                                singleSelectDropdownChildren[0].scrollIntoView({
+                                    behavior: "smooth",
+                                });
                             }
                         }
                     } else {
@@ -326,7 +329,7 @@ const handleSingleSelectKeyPress = <T,>(
                             if (singleSelectInput !== null) {
                                 (singleSelectInput as HTMLInputElement).value =
                                     customDisplayField === undefined
-                                        ? selectedItem as string
+                                        ? (selectedItem as string)
                                         : typeof customDisplayField === "string"
                                         ? (
                                               selectedItem as {
@@ -345,6 +348,7 @@ const handleSingleSelectKeyPress = <T,>(
             }
         }
     }
+    keyPressEvent.stopImmediatePropagation();
 };
 
 /**
