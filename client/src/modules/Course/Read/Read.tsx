@@ -8,6 +8,7 @@ import React, { Suspense } from "react";
 import { FloatingLabel, Form, Spinner } from "react-bootstrap";
 import type { Course } from "src/@types";
 import { CoursePaginationV2, MultiSelectSearch } from "src/common";
+import { SingleSelectSearch } from "src/common/components/SingleSelectSearch";
 import { paginateItems } from "src/helpers";
 import { useCourses } from "src/hooks/useCourses";
 
@@ -64,7 +65,7 @@ export const Read = (): JSX.Element => {
                 <div
                     className={`position-absolute ${_styles.course_section_selector}`}
                 >
-                    <MultiSelectSearch items={sections} />
+                    <SingleSelectSearch items={sections} />
                 </div>
                 <div className={`d-flex flex-row ${_styles.table_header}`}>
                     {SORTING_OPTIONS.map((eachSortingOption: string) => (

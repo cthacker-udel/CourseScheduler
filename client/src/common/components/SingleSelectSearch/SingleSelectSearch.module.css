@@ -1,0 +1,23 @@
+
+.single_select_container {
+    position: relative;
+    padding: 1em;
+    border: 1px solid gray;
+    width: 25vw;
+    border-radius: 1em;
+    cursor: text;
+}
+
+.single_select_container:hover {
+    transition: border 1s ease-in-out;
+    transition: background-color 1s ease-in-out;
+    border: 1px solid black;
+    background-color: rgba(0, 0, 0, .05);
+}
+
+.single_select_input {
+    border: none;
+    border-radius: 1em;
+    width: 100%;
+    height
+}
