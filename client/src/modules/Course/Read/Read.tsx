@@ -65,7 +65,7 @@ export const Read = (): JSX.Element => {
                 <div
                     className={`position-absolute ${_styles.course_section_selector}`}
                 >
-                    <SingleSelectSearch items={sections} />
+                    <SingleSelectSearch caret items={sections} />
                 </div>
                 <div className={`d-flex flex-row ${_styles.table_header}`}>
                     {SORTING_OPTIONS.map((eachSortingOption: string) => (

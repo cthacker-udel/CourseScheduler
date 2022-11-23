@@ -1,3 +1,5 @@
+import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 
 import styles from "./SingleSelectSearch.module.css";
@@ -44,5 +46,11 @@ export const SingleSelectSearch: SingleSelectSearchFunctionalSignature = <T,>({
             }`}
             type="text"
         />
+        {caret && (
+            <FontAwesomeIcon
+                className={`position-absolute ${styles.single_select_caret}`}
+                icon={faCaretDown}
+            />
+        )}
     </div>
 );

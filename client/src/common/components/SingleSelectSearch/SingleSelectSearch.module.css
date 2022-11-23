@@ -17,7 +17,16 @@
 
 .single_select_input {
     border: none;
-    border-radius: 1em;
-    width: 100%;
-    height
+    border-radius: .1em;
+    width: 90%;
+    height: 100%;
+}
+
+.single_select_input:focus {
+    box-shadow: 0 .5em .5em lightgray;
+}
+
+.single_select_caret {
+    right: 5%;
+    top: 30%;
 }
