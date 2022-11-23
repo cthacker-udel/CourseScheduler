@@ -182,16 +182,19 @@ const handleSingleSelectInputOnChange = <T,>(
 };
 
 /**
- * Handles all key presses, and has the select handler to call it if necessary according to the keypress
+ * ### Handles all key presses and has the select handler to call it *if necessary* according to the keypress
  *
+ * @param items - The items to send via the onSelect handler, which will be accessed through the index (`colind`) with each dropdown element
  * @param keyPressEvent - The keypress event itself
  * @param customEnterHandler - The custom enter handler
  * @param customArrowDownHandler - The custom keydown handler
  * @param customArrowUpHandler - The custom keyup handler
  * @param customInputOnSelectHandler - The custom onSelect handler, used when the user selects an element (ties into the enter handler)
  */
-const handleSingleSelectKeyPress = (
+const handleSingleSelectKeyPress = <T,>(
     keyPressEvent: KeyboardEvent,
+    items: T[],
+    customDisplayField?: string | ((_argument: T) => string),
     customEnterHandler?: (..._arguments: any) => any,
     customArrowDownHandler?: (..._arguments: any) => any,
     customArrowUpHandler?: (..._arguments: any) => any,
@@ -200,9 +203,7 @@ const handleSingleSelectKeyPress = (
     const isDropdownVisible =
         document.querySelector(`.${styles.single_select_dropdown_visible}`) !==
         null;
-    console.log("is dropdown visible = ", isDropdownVisible);
     if (isDropdownVisible) {
-        console.log("firing listener");
         const { code } = keyPressEvent;
         switch (code) {
             case "ArrowUp": {
@@ -301,6 +302,41 @@ const handleSingleSelectKeyPress = (
                         keyPressEvent,
                         customInputOnSelectHandler,
                     );
+                } else if (customInputOnSelectHandler !== undefined) {
+                    const selectedElement = getSelectedDropdownElement();
+                    if (selectedElement !== undefined) {
+                        const selectedElementIndex =
+                            selectedElement.dataset.colind;
+                        if (selectedElementIndex !== undefined) {
+                            const selectedItem =
+                                items[Number(selectedElementIndex)];
+                            customInputOnSelectHandler(selectedItem);
+                            const singleSelectDropdown = document.querySelector(
+                                "#single_select_dropdown",
+                            );
+                            if (singleSelectDropdown !== null) {
+                                singleSelectDropdown.className = `${singleSelectDropdown.className.replace(
+                                    styles.single_select_dropdown_visible,
+                                    "",
+                                )} ${styles.single_select_dropdown_invisible}`;
+                            }
+                            const singleSelectInput = document.querySelector(
+                                "#single_select_input",
+                            );
+                            if (singleSelectInput !== null) {
+                                (singleSelectInput as HTMLInputElement).value =
+                                    customDisplayField === undefined
+                                        ? selectedItem as string
+                                        : typeof customDisplayField === "string"
+                                        ? (
+                                              selectedItem as {
+                                                  [key: string]: string;
+                                              }
+                                          )[customDisplayField]
+                                        : customDisplayField(selectedItem);
+                            }
+                        }
+                    }
                 }
                 break;
             }
@@ -361,8 +397,10 @@ export const SingleSelectSearch: SingleSelectSearchFunctionalSignature = <T,>({
      */
     const handleSingleSelectKeyPressArgumentPropagation = React.useCallback(
         (event: KeyboardEvent) =>
-            handleSingleSelectKeyPress(
+            handleSingleSelectKeyPress<T>(
                 event,
+                items,
+                customDisplayField,
                 customContainerOnEnter ?? undefined,
                 customContainerOnArrowDown ?? undefined,
                 customContainerOnArrowUp ?? undefined,
@@ -373,6 +411,8 @@ export const SingleSelectSearch: SingleSelectSearchFunctionalSignature = <T,>({
             customContainerOnArrowDown,
             customContainerOnArrowUp,
             customContainerInputOnSelect,
+            customDisplayField,
+            items,
         ],
     );
 
