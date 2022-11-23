@@ -63,3 +63,11 @@
     letter-spacing: .10em;
     border: 1px dotted black;
 }
+
+.single_select_dropdown_invisible {
+    visibility: hidden;
+}
+
+.single_select_dropdown_visible {
+    visibility: visible;
+}
