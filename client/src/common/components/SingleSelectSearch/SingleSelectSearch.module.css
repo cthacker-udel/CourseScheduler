@@ -1,7 +1,8 @@
 
 .single_select_container {
     position: relative;
-    padding: 1em;
+    margin: 1em;
+    padding: .5em;
     border: 1px solid gray;
     width: 25vw;
     border-radius: 1em;
@@ -29,4 +30,36 @@
 .single_select_caret {
     right: 5%;
     top: 30%;
+}
+
+.single_select_dropdown {
+    top: 100%;
+    width: 100%;
+    min-height: 25vh;
+    max-height: 25vh;
+    overflow-y: scroll;
+    scrollbar-width: thin;
+    display: flex;
+    flex-direction: column;
+    border-radius: 1em;
+}
+
+.single_select_dropdown_item {
+    text-align: center;
+    padding: .5em;
+    background-color: lightgray;
+    z-index: 1;
+    cursor: pointer;
+    border: .1em solid rgba(0, 0, 0, .05);
+}
+
+.single_select_dropdown_item:hover {
+    transition: background-color .25s ease-in-out;
+    transition: font-size .1s ease-in-out;
+    transition: letter-spacing .25s ease-in-out;
+    background-color: lightblue;
+    font-weight: 600;
+    font-size: 1.25em;
+    letter-spacing: .10em;
+    border: 1px dotted black;
 }
