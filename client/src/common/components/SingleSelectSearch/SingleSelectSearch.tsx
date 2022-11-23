@@ -1,3 +1,4 @@
+/* eslint-disable no-console -- disabled */
 /* eslint-disable @typescript-eslint/indent  -- disabled */
 /* eslint-disable no-magic-numbers -- disabled */
 /* eslint-disable arrow-body-style -- disabled */
