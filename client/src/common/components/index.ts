@@ -6,4 +6,5 @@ export * from "./Layout";
 export * from "./MultiSelect";
 export * from "./MultiSelectSearch";
 export * from "./Notifications";
+export * from "./Playground";
 export * from "./Sidebar";

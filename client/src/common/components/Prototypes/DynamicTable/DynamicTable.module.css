@@ -1,0 +1,35 @@
+
+.dynamic_table {
+    height: 75%;
+    width: 75%;
+    border: 1px solid black;
+    position: relative;
+}
+
+.dynamic_table_column_row {
+    display: flex;
+}
+
+.dynamic_table_column_row_element {
+    flex-grow: 100;
+    flex-basis: 0;
+    text-align: center;
+    box-sizing: border-box;
+    padding: 1em;
+    line-height: 2rem;
+    cursor: pointer;
+}
+
+.dynamic_table_column_row_element:hover {
+    transition: font-weight 1s ease-in-out;
+    font-weight: 600;
+}
+
+.dynamic_table_column_row_element.dynamic_table_dark_theme {
+    border: 1px solid rgba(0, 0, 0, .5);
+}
+
+.dynamic_table_dark_theme.dynamic_table_column_row_element:hover {
+    transition: background-color 1s ease-in-out;
+    background-color: lightgray;
+}
