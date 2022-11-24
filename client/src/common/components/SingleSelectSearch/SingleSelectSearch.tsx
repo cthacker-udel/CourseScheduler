@@ -108,14 +108,16 @@ const handleSingleSelectContainerClick = (event: MouseEvent): void => {
  * @returns - the child index
  */
 const clearSelectedDropdownElement = (): void => {
-    const selectedElement = document.querySelector(
+    const selectedElements = document.querySelectorAll(
         `.${styles.single_select_selected_dropdown_element}`,
     );
-    if (selectedElement !== null) {
-        selectedElement.className = selectedElement.className.replace(
-            styles.single_select_selected_dropdown_element,
-            "",
-        );
+    if (selectedElements !== null) {
+        for (const selectedElement of selectedElements) {
+            selectedElement.className = selectedElement.className.replace(
+                styles.single_select_selected_dropdown_element,
+                "",
+            );
+        }
     }
 };
 
