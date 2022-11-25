@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-confusing-void-expression -- disabled */
+/* eslint-disable arrow-body-style -- disabled */
 /* eslint-disable @typescript-eslint/indent -- disabled */
 /* eslint-disable no-unused-vars -- disabled */
 /* eslint-disable no-shadow -- disabled */
@@ -50,6 +52,8 @@ type DynamicTableProperties<T> = {
     customTableOverride?: string;
     customTableColumnRowOverride?: string;
     customTableColumnRowElementOverride?: string;
+    customTableColumnRowOnClickOverride?: (..._arguments: any) => any;
+    customTableColumnRowElementTitleOverride?: string;
     customTablePaginationOverride?: string;
     customTablePerPageOverride?: string;
     customTableRowOverride?: string;
@@ -73,82 +77,84 @@ const DynamicTableThemeMapping = [
  * @param ind
  * @returns
  */
-const generateSortingIcon = (title: string, ind: number): JSX.Element => {
+const toggleSorting = (title: string, ind: number): void => {
     const foundColumn = document.querySelector(
-        `dynamic-table-column-${title}-${ind}`,
+        `#dynamic-table-column-${title}-${ind}`,
     );
-    if (foundColumn !== null) {
+    const sortingIcon = document.querySelector(
+        `#dynamic-table-column-${title}-${ind}-sorting-icon`,
+    );
+    if (foundColumn !== null && sortingIcon !== null) {
         const columnAsElement = foundColumn as HTMLElement;
-        if (columnAsElement !== null) {
-            const sortingStatus = Number(
-                columnAsElement.dataset.sortDirection,
-            ) as DynamicTableSorting;
-            const sortingTrajectory = Number(
-                columnAsElement.dataset.sortTrajectory,
-            ) as DynamicTableSortingTrajectory;
-            if (
-                sortingStatus !== undefined &&
-                sortingTrajectory !== undefined
-            ) {
-                switch (sortingStatus) {
-                    case DynamicTableSorting.NO_DIRECTION: {
-                        const newSorting =
-                            sortingTrajectory ===
-                            DynamicTableSortingTrajectory.NO_TRAJECTORY
-                                ? DynamicTableSorting.DESCENDING
-                                : sortingTrajectory ===
-                                  DynamicTableSortingTrajectory.MOVING_DOWN
-                                ? DynamicTableSorting.DESCENDING
-                                : DynamicTableSorting.ASCENDING;
-                        const newTrajectory =
-                            newSorting === DynamicTableSorting.DESCENDING
-                                ? DynamicTableSortingTrajectory.MOVING_UP
-                                : DynamicTableSortingTrajectory.MOVING_DOWN;
-                        columnAsElement.dataset.sortDirection =
-                            newSorting.toString();
-                        columnAsElement.dataset.sortTrajectory =
-                            newTrajectory.toString();
-                        return (
-                            <FontAwesomeIcon
-                                icon={
-                                    newSorting ===
-                                    DynamicTableSorting.DESCENDING
-                                        ? faSortDown
-                                        : faSortUp
-                                }
-                            />
-                        );
-                    }
-                    case DynamicTableSorting.ASCENDING: {
-                        const newSorting = DynamicTableSorting.NO_DIRECTION;
-                        const newTrajectory =
-                            DynamicTableSortingTrajectory.MOVING_DOWN;
-                        columnAsElement.dataset.sortDirection =
-                            newSorting.toString();
-                        columnAsElement.dataset.sortTrajectory =
-                            newTrajectory.toString();
-                        return <FontAwesomeIcon icon={faSort} />;
-                    }
-                    case DynamicTableSorting.DESCENDING: {
-                        const newSorting = DynamicTableSorting.NO_DIRECTION;
-                        const newTrajectory =
-                            DynamicTableSortingTrajectory.MOVING_UP;
-                        columnAsElement.dataset.sortDirection =
-                            newSorting.toString();
-                        columnAsElement.dataset.sortTrajectory =
-                            newTrajectory.toString();
-                        return <FontAwesomeIcon icon={faSort} />;
-                    }
-                    default: {
-                        break;
-                    }
+        const sortingStatus = Number(
+            columnAsElement.dataset.sortdirection,
+        ) as DynamicTableSorting;
+        const sortingTrajectory = Number(
+            columnAsElement.dataset.sorttrajectory,
+        ) as DynamicTableSortingTrajectory;
+        if (sortingStatus !== undefined && sortingTrajectory !== undefined) {
+            switch (sortingStatus) {
+                case DynamicTableSorting.NO_DIRECTION: {
+                    const newSorting =
+                        sortingTrajectory ===
+                        DynamicTableSortingTrajectory.NO_TRAJECTORY
+                            ? DynamicTableSorting.DESCENDING
+                            : sortingTrajectory ===
+                              DynamicTableSortingTrajectory.MOVING_DOWN
+                            ? DynamicTableSorting.DESCENDING
+                            : DynamicTableSorting.ASCENDING;
+                    const newTrajectory =
+                        newSorting === DynamicTableSorting.DESCENDING
+                            ? DynamicTableSortingTrajectory.MOVING_UP
+                            : DynamicTableSortingTrajectory.MOVING_DOWN;
+                    columnAsElement.dataset.sortdirection =
+                        newSorting.toString();
+                    columnAsElement.dataset.sorttrajectory =
+                        newTrajectory.toString();
+                    sortingIcon.className = `${sortingIcon.className.replace(
+                        "fa-sort",
+                        "",
+                    )} ${
+                        newSorting === DynamicTableSorting.DESCENDING
+                            ? "fa-sort-down"
+                            : "fa-sort-up"
+                    }`;
+                    break;
+                }
+                case DynamicTableSorting.ASCENDING: {
+                    const newSorting = DynamicTableSorting.NO_DIRECTION;
+                    const newTrajectory =
+                        DynamicTableSortingTrajectory.MOVING_DOWN;
+                    columnAsElement.dataset.sortdirection =
+                        newSorting.toString();
+                    columnAsElement.dataset.sorttrajectory =
+                        newTrajectory.toString();
+                    sortingIcon.className = `${sortingIcon.className.replace(
+                        "fa-sort-up",
+                        "",
+                    )} fa-sort`;
+                    break;
+                }
+                case DynamicTableSorting.DESCENDING: {
+                    const newSorting = DynamicTableSorting.NO_DIRECTION;
+                    const newTrajectory =
+                        DynamicTableSortingTrajectory.MOVING_UP;
+                    columnAsElement.dataset.sortdirection =
+                        newSorting.toString();
+                    columnAsElement.dataset.sorttrajectory =
+                        newTrajectory.toString();
+                    sortingIcon.className = `${sortingIcon.className.replace(
+                        "fa-sort-down",
+                        "",
+                    )} fa-sort`;
+                    break;
+                }
+                default: {
+                    break;
                 }
             }
-            return <FontAwesomeIcon icon={faSort} />;
         }
-        return <FontAwesomeIcon icon={faSort} />;
     }
-    return <FontAwesomeIcon icon={faSort} />;
 };
 
 /**
@@ -160,6 +166,8 @@ export const DynamicTable = <T,>({
     customTableOverride,
     customTableColumnRowOverride,
     customTableColumnRowElementOverride,
+    customTableColumnRowOnClickOverride,
+    customTableColumnRowElementTitleOverride,
     customTablePaginationOverride,
     customTablePerPageOverride,
     customTableRowOverride,
@@ -190,19 +198,32 @@ export const DynamicTable = <T,>({
                             } ${DynamicTableThemeMapping[theme]} ${
                                 customTableColumnRowElementOverride ?? ""
                             }`}
-                            id={`dynamic-table-column-${eachDefinition.title}- ${_ind}`}
                             key={`dynamic-table-column-${_ind}`}
                         >
                             <div
                                 className="position-relative"
-                                data-sortDirection="0"
-                                data-sortTrajectory="-1"
+                                data-sortdirection="0"
+                                data-sorttrajectory="-1"
+                                id={`dynamic-table-column-${eachDefinition.title}-${_ind}`}
+                                onClick={(): any =>
+                                    customTableColumnRowOnClickOverride ??
+                                    toggleSorting(eachDefinition.title, _ind)
+                                }
                             >
-                                {eachDefinition.title}
-                                {generateSortingIcon(
-                                    eachDefinition.title,
-                                    _ind,
-                                )}
+                                <span
+                                    className={`${
+                                        styles.dynamic_table_column_row_element_title
+                                    } ${
+                                        customTableColumnRowElementTitleOverride ??
+                                        ""
+                                    }`}
+                                >
+                                    {eachDefinition.title}
+                                </span>
+                                <i
+                                    className="fa fa-sort ms-1"
+                                    id={`dynamic-table-column-${eachDefinition.title}-${_ind}-sorting-icon`}
+                                />
                             </div>
                         </div>
                     ),
