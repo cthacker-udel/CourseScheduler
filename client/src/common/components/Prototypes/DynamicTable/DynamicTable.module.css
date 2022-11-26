@@ -4,6 +4,9 @@
     width: 75%;
     border: 1px solid black;
     position: relative;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
 }
 
 .dynamic_table_column_row {
@@ -40,4 +43,23 @@
     -webkit-user-select: none;
     -ms-user-select: none;
     user-select: none;
+}
+
+.dynamic_table_row {
+    display: flex;
+}
+
+.dynamic_table_row_element {
+    flex-grow: 100;
+    flex-basis: 0;
+    text-align: center;
+    box-sizing: border-box;
+    line-height: 2rem;
+    cursor: pointer;
+    border: 1px solid rgba(0, 0, 0, .25);
+}
+
+.dynamic_table_row_element:hover {
+    transition: background-color .5s ease-in-out;
+    background-color: rgba(173, 216, 230, .25);
 }

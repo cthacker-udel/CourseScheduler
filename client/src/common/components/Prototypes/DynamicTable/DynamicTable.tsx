@@ -47,6 +47,17 @@ type DynamicTableColumnDefinition<E> = {
     title: string;
 };
 
+type DynamicTableRowCell<E> = {
+    title: string;
+    displayFunction: (_injectedProperties: any) => JSX.Element;
+};
+
+type DynamicTableRowCellDisplayFunctionProperties = any;
+
+type DynamicTableRow<E> = {
+    cells: DynamicTableRowCell<E>[];
+};
+
 type DynamicTableProperties<T> = {
     customSort?: (_argument1: T, _argument2: T) => number;
     customTableOverride?: string;
@@ -58,12 +69,14 @@ type DynamicTableProperties<T> = {
     customTablePerPageOverride?: string;
     customTableRowOverride?: string;
     customTableRowElementOverride?: string;
+    customTableRowElementInjectedPropsOverride?: any;
     columns?: DynamicTableColumnDefinition<T>[];
     displayPagination?: boolean;
     displayPerPage?: boolean;
     hoverEffect?: boolean;
     items: T[];
-    theme: DynamicTableTheme;
+    itemRowGenerator?: (_argument: T) => DynamicTableRow<T>;
+    theme?: DynamicTableTheme;
 };
 
 const DynamicTableThemeMapping = [
@@ -72,10 +85,11 @@ const DynamicTableThemeMapping = [
 ];
 
 /**
+ * Toggles the sorting column, altering the svg icon next to the title
  *
- * @param title
- * @param ind
- * @returns
+ * @param title - The title of the column
+ * @param ind - The index of the column
+ * @returns - nothing, directly modifies the dom to manipulate the sorting icon
  */
 const toggleSorting = (title: string, ind: number): void => {
     const foundColumn = document.querySelector(
@@ -161,7 +175,7 @@ const toggleSorting = (title: string, ind: number): void => {
  *
  * @returns - The dynamic table element
  */
-export const DynamicTable = <T,>({
+const DynamicTable = <T,>({
     customSort,
     customTableOverride,
     customTableColumnRowOverride,
@@ -172,11 +186,13 @@ export const DynamicTable = <T,>({
     customTablePerPageOverride,
     customTableRowOverride,
     customTableRowElementOverride,
+    customTableRowElementInjectedPropsOverride,
     columns,
     displayPagination,
     displayPerPage,
     hoverEffect,
     items,
+    itemRowGenerator,
     theme = DynamicTableTheme.DARK,
 }: DynamicTableProperties<T>): JSX.Element => (
     <div className={`${styles.dynamic_table} ${customTableOverride ?? ""}`}>
@@ -199,16 +215,16 @@ export const DynamicTable = <T,>({
                                 customTableColumnRowElementOverride ?? ""
                             }`}
                             key={`dynamic-table-column-${_ind}`}
+                            onClick={(): any =>
+                                customTableColumnRowOnClickOverride ??
+                                toggleSorting(eachDefinition.title, _ind)
+                            }
                         >
                             <div
                                 className="position-relative"
                                 data-sortdirection="0"
                                 data-sorttrajectory="-1"
                                 id={`dynamic-table-column-${eachDefinition.title}-${_ind}`}
-                                onClick={(): any =>
-                                    customTableColumnRowOnClickOverride ??
-                                    toggleSorting(eachDefinition.title, _ind)
-                                }
                             >
                                 <span
                                     className={`${
@@ -229,5 +245,51 @@ export const DynamicTable = <T,>({
                     ),
                 )}
         </div>
+        {items !== undefined &&
+            items.length > 0 &&
+            items.map((eachItem: T, _eachItemInd: number) => {
+                if (itemRowGenerator !== undefined) {
+                    const row = itemRowGenerator(eachItem);
+                    const { cells } = row;
+                    return (
+                        <div
+                            className={`${styles.dynamic_table_row} ${
+                                customTableRowOverride ?? ""
+                            }`}
+                            key={`dynamic-table-row-${_eachItemInd}`}
+                        >
+                            {cells.map(
+                                (
+                                    eachDynamicCell: DynamicTableRowCell<T>,
+                                    _ind: number,
+                                ) =>
+                                    eachDynamicCell.displayFunction(
+                                        customTableRowElementInjectedPropsOverride ?? {
+                                            className: `${
+                                                styles.dynamic_table_row_element
+                                            } ${
+                                                customTableRowElementOverride ??
+                                                ""
+                                            }`,
+                                            key: `dynamic-table-row-item-${eachDynamicCell.title}-${_ind}`,
+                                        },
+                                    ),
+                            )}
+                        </div>
+                    );
+                }
+                console.info(
+                    "Must supply itemRowGenerator DynamicTable prop to generate row cells",
+                );
+                return undefined;
+            })}
     </div>
 );
+
+export {
+    type DynamicTableColumnDefinition,
+    type DynamicTableRow,
+    type DynamicTableRowCell,
+    type DynamicTableRowCellDisplayFunctionProperties,
+    DynamicTable,
+};
